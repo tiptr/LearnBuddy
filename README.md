@@ -1,6 +1,6 @@
 # SoftwareEngineering-WS2022-Unicorns
 
-### Linksammlung:
+## Linksammlung:
 
 **Figma-Mockups (öffentlich)**
 
