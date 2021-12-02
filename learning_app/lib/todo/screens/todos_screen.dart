@@ -16,7 +16,10 @@ class TodosScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: BlocBuilder<TodosCubit, List<Todo>>(
           builder: (context, todos) => Column(
-            children: todos.map((t) => _todoCard(t, context)).toList(),
+            children: [
+              ...todos.map((t) => _todoCard(t, context)).toList(),
+              const SizedBox(height: 100.0)
+            ],
           ),
         ),
       ),
@@ -44,24 +47,30 @@ class TodosScreen extends StatelessWidget {
           ),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            todo.title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          _doneMark(
-              todo, () => {BlocProvider.of<TodosCubit>(context).toggle(todo)}),
-        ],
-      ),
+      child: _todoListItem(todo, context),
+    );
+  }
+
+  Widget _todoListItem(Todo todo, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          todo.title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        _doneMark(
+          todo,
+          () => {BlocProvider.of<TodosCubit>(context).toggle(todo)},
+        ),
+      ],
     );
   }
 
   // Generates a green circle when done or a red circle when still todo
   Widget _doneMark(Todo todo, Function onToggle) {
     return GestureDetector(
-      onTap: () => {print("Toggling done for $todo"), onToggle()},
+      onTap: () => onToggle(),
       child: Container(
         width: 35.0,
         height: 35.0,
