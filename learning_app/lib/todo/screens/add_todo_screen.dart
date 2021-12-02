@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/todo/bloc/todos_cubit.dart';
 import 'package:learning_app/todo/models/todo.dart';
 
 class AddTodoScreen extends StatelessWidget {
@@ -20,7 +22,9 @@ class AddTodoScreen extends StatelessWidget {
             const SizedBox(height: 15.0),
             InkWell(
               onTap: () => {
-                print(Todo(title: _controller.text, done: false).toString()),
+                BlocProvider.of<TodosCubit>(context).add(
+                  Todo(title: _controller.text, done: false),
+                ),
                 Navigator.pop(context)
               },
               child: Ink(

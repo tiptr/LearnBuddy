@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/todo/models/todo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/todo/bloc/todos_cubit.dart';
 import 'package:learning_app/todo/screens/todos_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<TodosCubit>(
+          create: (context) => TodosCubit(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Learning App',
+      title: 'Lernbuddy',
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
@@ -34,21 +44,13 @@ class MyHomePage extends StatelessWidget {
       ),
       body: const Center(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TodosScreen(
-              todos: [
-                // TODO: These items should be loaded from the DB and then
-                //       be managed in a state management solution like Bloc.
-                Todo(title: "Todo 1", done: true),
-                Todo(title: "Todo 2", done: false),
-                Todo(title: "Todo 3", done: true),
-                Todo(title: "Todo 4", done: false),
-              ],
-            ),
+        onPressed: () => {
+          print("Navigating to TODOS"),
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TodosScreen()),
           ),
-        ),
+        },
         child: const Icon(Icons.list),
       ),
     );
