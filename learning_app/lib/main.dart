@@ -45,7 +45,6 @@ class MyHomePage extends StatelessWidget {
       body: const Center(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          print("Navigating to TODOS"),
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const TodosScreen()),

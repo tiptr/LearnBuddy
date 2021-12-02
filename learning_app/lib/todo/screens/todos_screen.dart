@@ -9,6 +9,8 @@ class TodosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<TodosCubit>(context).loadTodos();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Todos"),
@@ -52,18 +54,23 @@ class TodosScreen extends StatelessWidget {
   }
 
   Widget _todoListItem(Todo todo, BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          todo.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        _doneMark(
-          todo,
-          () => {BlocProvider.of<TodosCubit>(context).toggle(todo)},
-        ),
-      ],
+    return Dismissible(
+      key: Key(todo.id.toString()),
+      onDismissed: (_) =>
+          BlocProvider.of<TodosCubit>(context).deleteTodo(todo.id!),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            todo.title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          _doneMark(
+            todo,
+            () => {BlocProvider.of<TodosCubit>(context).updateTodo(todo)},
+          ),
+        ],
+      ),
     );
   }
 

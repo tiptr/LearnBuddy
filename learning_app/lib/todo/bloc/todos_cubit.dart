@@ -1,26 +1,38 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/todo/models/todo.dart';
+import 'package:learning_app/todo/repositories/todo_repository.dart';
 
 class TodosCubit extends Cubit<List<Todo>> {
-  TodosCubit()
-      : super(
-          [
-            Todo(title: "Todo 1", done: true),
-            Todo(title: "Todo 2", done: false),
-            Todo(title: "Todo 3", done: true),
-            Todo(title: "Todo 4", done: false),
-          ],
-        );
+  final _repository = TodoRepository();
 
-  // Adds a new todo to the cubit state
-  void add(Todo todo) => emit(state + [todo]);
+  TodosCubit() : super([]);
+
+  Future<void> loadTodos() async {
+    var todos = await _repository.fetchTodos();
+    emit(todos);
+  }
 
   // Toggles the done flag in a todo in the cubit state
-  void toggle(Todo todo) {
-    var newState = state;
-    int index = state.indexWhere((Todo t) => t == todo);
-    newState[index].done = !newState[index].done;
+  Future<void> updateTodo(Todo todo) async {
+    todo.done = !todo.done;
+    await _repository.update(todo);
+
+    int index = state.indexWhere((Todo t) => t.id == todo.id);
+    state[index] = todo;
 
     emit(state.toList());
+  }
+
+  Future<void> createTodo(String title) async {
+    var todoData = Todo(title: title, done: false);
+    var createdTodo = await _repository.insertTodo(todoData);
+
+    emit(state + [createdTodo]);
+  }
+
+  Future<void> deleteTodo(int id) async {
+    await _repository.delete(id);
+
+    emit(state.where((element) => element.id != id).toList());
   }
 }

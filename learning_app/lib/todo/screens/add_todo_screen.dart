@@ -22,9 +22,8 @@ class AddTodoScreen extends StatelessWidget {
             const SizedBox(height: 15.0),
             InkWell(
               onTap: () => {
-                BlocProvider.of<TodosCubit>(context).add(
-                  Todo(title: _controller.text, done: false),
-                ),
+                BlocProvider.of<TodosCubit>(context)
+                    .createTodo(_controller.text),
                 Navigator.pop(context)
               },
               child: Ink(
