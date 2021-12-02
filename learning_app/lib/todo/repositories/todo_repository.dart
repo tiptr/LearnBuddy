@@ -15,7 +15,7 @@ class TodoRepository {
     var db = await DbProvider().database;
     var todoMaps = await db.query('todos');
 
-    var todos = List.generate(todoMaps.length, (i) {
+    return List.generate(todoMaps.length, (i) {
       var todo = Todo(
         title: todoMaps[i]['title'] as String,
         done: todoMaps[i]['done'] == 1 ? true : false,
@@ -25,12 +25,6 @@ class TodoRepository {
 
       return todo;
     });
-
-    todos.forEach((element) {
-      print(element);
-    });
-
-    return todos;
   }
 
   Future<void> update(Todo todo) async {
@@ -49,9 +43,7 @@ class TodoRepository {
 
     await db.delete(
       'todos',
-      // Use a `where` clause to delete a specific dog.
       where: 'id = ?',
-      // Pass the Dog's id as a whereArg to prevent SQL injection.
       whereArgs: [id],
     );
   }
