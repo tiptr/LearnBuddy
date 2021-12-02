@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/todo/bloc/todos_cubit.dart';
 
 class AddTodoScreen extends StatelessWidget {
+  AddTodoScreen({Key? key}) : super(key: key);
+
   // Controller that handles text input events and state
   final _controller = TextEditingController();
 
