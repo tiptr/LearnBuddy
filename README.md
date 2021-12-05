@@ -6,7 +6,7 @@
 
 **Figma-Mockups (öffentlich)**
 
-[LearnBuddy V2 Präsentation](https://www.figma.com/proto/E8o1DZ41wPEzrKEDCHNmsE/LearnBuddy-V2?node-id=517%3A5300&scaling=scale-down&page-id=0%3A1&starting-point-node-id=537%3A16734)
+[LearnBuddy V2 Präsentation](https://www.figma.com/proto/E8o1DZ41wPEzrKEDCHNmsE/LearnBuddy-V2?node-id=537%3A16734&scaling=scale-down&page-id=0%3A1&starting-point-node-id=537%3A16734)
 
 **Figma-Mockups (nicht öffentlich)**
 
