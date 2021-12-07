@@ -3,7 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/todo/bloc/todos_cubit.dart';
 import 'package:learning_app/todo/screens/todos_screen.dart';
 
-import 'widgets/bar_menu.dart';
+const List<Widget> _pages = <Widget>[
+  Text("Page Timer not implemented yet"),
+  TodosScreen(),
+  Text("Page Dashboard not implemented yet"),
+  Text("Page Ausgleich not implemented yet"),
+  Text("Page Lernhilfen not implemented yet"),
+];
 
 void main() {
   runApp(
@@ -26,46 +32,66 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Lernbuddy',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.lightBlue,
       ),
-      home: const MyHomePage(title: 'Lernbuddy'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
-  final String title;
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: const Text("Lernbuddy"),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const BarMenu(),
-      floatingActionButton: SizedBox(
-        height: 65.0,
-        width: 65.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const TodosScreen(),
-                ),
-              );
-            },
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
+      bottomNavigationBar: _navBar(context),
+    );
+  }
+
+  BottomNavigationBar _navBar(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      showUnselectedLabels: true,
+      showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        _navItem(Icons.timer, "Timer"),
+        _navItem(Icons.document_scanner_outlined, "Aufgaben"),
+        _navItem(Icons.home_outlined, "Dashboard"),
+        _navItem(Icons.beach_access_outlined, "Ausgleich"),
+        _navItem(Icons.book_outlined, "Lernhilfen"),
+      ],
+    );
+  }
+
+  BottomNavigationBarItem _navItem(IconData icon, String label) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      label: label,
     );
   }
 }

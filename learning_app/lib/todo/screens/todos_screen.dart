@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/todo/bloc/todos_cubit.dart';
 import 'package:learning_app/todo/models/todo.dart';
-import 'package:learning_app/todo/screens/add_todo_screen.dart';
+import 'package:learning_app/todo/screens/todos_add_screen.dart';
 
 class TodosScreen extends StatelessWidget {
   const TodosScreen({Key? key}) : super(key: key);
@@ -12,9 +12,6 @@ class TodosScreen extends StatelessWidget {
     BlocProvider.of<TodosCubit>(context).loadTodos();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Todos"),
-      ),
       body: SingleChildScrollView(
         child: BlocBuilder<TodosCubit, List<Todo>>(
           builder: (context, todos) => Column(
