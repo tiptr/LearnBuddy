@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/todo/bloc/todos_cubit.dart';
-import 'package:learning_app/todo/models/todo.dart';
-import 'package:learning_app/todo/screens/todos_add_screen.dart';
+import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
 
-class TodosScreen extends StatelessWidget {
-  const TodosScreen({Key? key}) : super(key: key);
+class TaskScreen extends StatelessWidget {
+  const TaskScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<TodosCubit>(context).loadTodos();
+    BlocProvider.of<TaskCubit>(context).loadTasks();
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: BlocBuilder<TodosCubit, List<Todo>>(
+        child: BlocBuilder<TaskCubit, List<Task>>(
           builder: (context, todos) => Column(
             children: [
               ...todos.map((t) => _todoCard(t, context)).toList(),
@@ -26,7 +26,7 @@ class TodosScreen extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AddTodoScreen(),
+            builder: (context) => TaskAddScreen(),
           ),
         ),
         child: const Icon(Icons.add),
@@ -35,7 +35,7 @@ class TodosScreen extends StatelessWidget {
   }
 
   // Generates a card that represents a todo element
-  Widget _todoCard(Todo todo, BuildContext context) {
+  Widget _todoCard(Task todo, BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
       decoration: BoxDecoration(
@@ -50,11 +50,11 @@ class TodosScreen extends StatelessWidget {
     );
   }
 
-  Widget _todoListItem(Todo todo, BuildContext context) {
+  Widget _todoListItem(Task todo, BuildContext context) {
     return Dismissible(
       key: Key(todo.id.toString()),
       onDismissed: (_) =>
-          BlocProvider.of<TodosCubit>(context).deleteTodo(todo.id!),
+          BlocProvider.of<TaskCubit>(context).deleteTask(todo.id!),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -64,7 +64,7 @@ class TodosScreen extends StatelessWidget {
           ),
           _doneMark(
             todo,
-            () => {BlocProvider.of<TodosCubit>(context).updateTodo(todo)},
+            () => {BlocProvider.of<TaskCubit>(context).updateTask(todo)},
           ),
         ],
       ),
@@ -72,7 +72,7 @@ class TodosScreen extends StatelessWidget {
   }
 
   // Generates a green circle when done or a red circle when still todo
-  Widget _doneMark(Todo todo, Function onToggle) {
+  Widget _doneMark(Task todo, Function onToggle) {
     return GestureDetector(
       onTap: () => onToggle(),
       child: Container(

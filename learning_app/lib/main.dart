@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/todo/bloc/todos_cubit.dart';
-import 'package:learning_app/todo/screens/todos_screen.dart';
+import 'package:learning_app/features/ausgleich/screens/ausgleich_screen.dart';
+import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
+import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'features/lernhilfen/screens/lernhilfen_screen.dart';
+import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
-  Text("Page Timer not implemented yet"),
-  TodosScreen(),
-  Text("Page Dashboard not implemented yet"),
-  Text("Page Ausgleich not implemented yet"),
-  Text("Page Lernhilfen not implemented yet"),
+  TimerScreen(),
+  TaskScreen(),
+  DashboardScreen(),
+  AusgleichScreen(),
+  LernhilfenScreen(),
 ];
 
 void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<TodosCubit>(
-          create: (context) => TodosCubit(),
+        BlocProvider<TaskCubit>(
+          create: (context) => TaskCubit(),
         ),
       ],
       child: const MyApp(),
@@ -47,7 +51,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  // The Dashboard is at index 2 in the _pages-List
+  int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {

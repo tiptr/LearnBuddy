@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/todo/bloc/todos_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 
-class AddTodoScreen extends StatelessWidget {
-  AddTodoScreen({Key? key}) : super(key: key);
+class TaskAddScreen extends StatelessWidget {
+  TaskAddScreen({Key? key}) : super(key: key);
 
   // Controller that handles text input events and state
   final _controller = TextEditingController();
@@ -24,8 +24,8 @@ class AddTodoScreen extends StatelessWidget {
             const SizedBox(height: 15.0),
             InkWell(
               onTap: () => {
-                BlocProvider.of<TodosCubit>(context)
-                    .createTodo(_controller.text)
+                BlocProvider.of<TaskCubit>(context)
+                    .createTask(_controller.text)
                     .whenComplete(() => Navigator.pop(context))
               },
               child: _submitButtonWidget(context),
