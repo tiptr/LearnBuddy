@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/todo/bloc/todos_cubit.dart';
-import 'package:learning_app/todo/screens/todos_screen.dart';
+import 'package:learning_app/features/ausgleich/screens/ausgleich_screen.dart';
+import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
+import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'features/lernhilfen/screens/lernhilfen_screen.dart';
+import 'features/timer/screens/timer_screen.dart';
+
+const List<Widget> _pages = <Widget>[
+  TimerScreen(),
+  TaskScreen(),
+  DashboardScreen(),
+  AusgleichScreen(),
+  LernhilfenScreen(),
+];
 
 void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<TodosCubit>(
-          create: (context) => TodosCubit(),
+        BlocProvider<TaskCubit>(
+          create: (context) => TaskCubit(),
         ),
       ],
       child: const MyApp(),
@@ -24,34 +36,67 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Lernbuddy',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.lightBlue,
       ),
-      home: const MyHomePage(title: 'Lernbuddy'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
-  final String title;
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  // The Dashboard is at index 2 in the _pages-List
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: const Text("Lernbuddy"),
       ),
-      body: const Center(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TodosScreen()),
-          ),
-        },
-        child: const Icon(Icons.list),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
+      bottomNavigationBar: _navBar(context),
+    );
+  }
+
+  BottomNavigationBar _navBar(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      showUnselectedLabels: true,
+      showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        _navItem(Icons.timer, "Timer"),
+        _navItem(Icons.document_scanner_outlined, "Aufgaben"),
+        _navItem(Icons.home_outlined, "Dashboard"),
+        _navItem(Icons.beach_access_outlined, "Ausgleich"),
+        _navItem(Icons.book_outlined, "Lernhilfen"),
+      ],
+    );
+  }
+
+  BottomNavigationBarItem _navItem(IconData icon, String label) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      label: label,
     );
   }
 }

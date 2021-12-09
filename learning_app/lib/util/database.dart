@@ -19,7 +19,7 @@ class DbProvider {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-            'CREATE TABLE todos (id INTEGER PRIMARY KEY, title TEXT, done INTEGER)');
+            'CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT, done INTEGER)');
       },
     );
   }

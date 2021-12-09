@@ -1,9 +1,9 @@
-class Todo {
+class Task {
   int? id;
   String title;
   bool done;
 
-  Todo({required this.title, required this.done});
+  Task({required this.title, required this.done});
 
   @override
   String toString() {
