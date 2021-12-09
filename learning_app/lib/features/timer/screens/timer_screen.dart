@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
-import 'package:learning_app/features/timer/models/ticker.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/background.dart'
@@ -13,7 +12,7 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TimerBloc(ticker: const Ticker()),
+      create: (_) => TimerBloc(),
       child: const TimerView(),
     );
   }
@@ -50,6 +49,8 @@ class TimerText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final duration = context.select((TimerBloc bloc) => bloc.state.duration);
+    //select only rebuilds the Widget if the selected property changes: here duration.
+    // If the TimerState changes, TimerText won't rebuild
     final minutesStr =
         ((duration / 60) % 60).floor().toString().padLeft(2, '0');
     final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
