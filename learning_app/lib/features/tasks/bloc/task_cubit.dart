@@ -5,7 +5,9 @@ import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 class TaskCubit extends Cubit<List<Task>> {
   final _repository = TaskRepository();
 
-  TaskCubit() : super([]);
+  TaskCubit() : super([]) {
+    loadTasks();
+  }
 
   Future<void> loadTasks() async {
     var aufgaben = await _repository.fetchTasks();

@@ -10,18 +10,15 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<TaskCubit>(context).loadTasks();
-
     return Scaffold(
-      body: SingleChildScrollView(
-        child: BlocBuilder<TaskCubit, List<Task>>(
-          builder: (context, todos) => Column(
-            children: [
-              ...todos.map((t) => _todoCard(t, context)).toList(),
-              // Spacing at the bottom for FloatingActionButton
-              const SizedBox(height: 100.0)
-            ],
-          ),
+      body: BlocBuilder<TaskCubit, List<Task>>(
+        builder: (context, todos) => ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: todos.length,
+          itemBuilder: (BuildContext ctx, int idx) =>
+              TaskCard(task: todos[idx]),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -34,10 +31,5 @@ class TaskScreen extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  // Generates a card that represents a todo element
-  Widget _todoCard(Task task, BuildContext context) {
-    return TaskCard(task: task);
   }
 }
