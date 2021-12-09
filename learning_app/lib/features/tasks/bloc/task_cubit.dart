@@ -13,7 +13,7 @@ class TaskCubit extends Cubit<List<Task>> {
   }
 
   // Toggles the done flag in a aufgabe in the cubit state
-  Future<void> updateTask(Task aufgabe) async {
+  Future<void> toggleDone(Task aufgabe) async {
     aufgabe.done = !aufgabe.done;
     await _repository.update(aufgabe);
 
