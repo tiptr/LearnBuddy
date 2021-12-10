@@ -31,6 +31,7 @@ class TimerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: const <Widget>[
+              PomodoroState(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 100.0),
                 child: Center(child: TimerText()),
@@ -48,7 +49,7 @@ class TimerText extends StatelessWidget {
   const TimerText({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final duration = context.select((TimerBloc bloc) => bloc.state.duration);
+    final duration = context.select((TimerBloc bloc) => bloc.state.getDuration());
     //select only rebuilds the Widget if the selected property changes: here duration.
     // If the TimerState changes, TimerText won't rebuild
     final minutesStr =
@@ -57,6 +58,33 @@ class TimerText extends StatelessWidget {
     return Text(
       '$minutesStr:$secondsStr',
       style: Theme.of(context).textTheme.headline1,
+    );
+  }
+}
+
+
+class PomodoroState extends StatelessWidget {
+  const PomodoroState({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String pomoState = context.select((TimerBloc bloc) => bloc.state.getPomodoroMode().toString());
+    pomoState = pomoState.substring(13);
+    String timerState = context.select((TimerBloc bloc) => bloc.state.toString());
+    //timerState = timerState.substring(0,20);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            pomoState,
+            style: Theme.of(context).textTheme.headline3,
+          ),
+          Text(
+            timerState,
+            style: Theme.of(context).textTheme.headline5,
+          ),
+      ]
     );
   }
 }
