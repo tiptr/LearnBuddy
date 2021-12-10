@@ -6,26 +6,24 @@ import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 class TaskCubit extends Cubit<TaskState> {
   final TaskRepository _taskRepository;
 
-  TaskCubit(this._taskRepository) : super(InitialTaskState()) {
-    loadTasks();
-  }
+  TaskCubit(this._taskRepository) : super(InitialTaskState());
 
   Future<void> loadTasks() async {
     var tasks = await _taskRepository.loadTasks();
     emit(TasksLoaded(tasks: tasks));
   }
 
-  // Toggles the done flag in a aufgabe in the cubit state
-  Future<void> toggleDone(Task aufgabe) async {
+  // Toggles the done flag in a task in the cubit state
+  Future<void> toggleDone(Task task) async {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      aufgabe.done = !aufgabe.done;
-      await _taskRepository.update(aufgabe);
+      task.done = !task.done;
+      await _taskRepository.update(task);
 
       var tasks = currentState.tasks;
-      int index = tasks.indexWhere((Task t) => t.id == aufgabe.id);
-      tasks[index] = aufgabe;
+      int index = tasks.indexWhere((Task t) => t.id == task.id);
+      tasks[index] = task;
 
       emit(TasksLoaded(tasks: tasks));
     }
@@ -35,8 +33,8 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var aufgabeData = Task(title: title, done: false);
-      var createdTask = await _taskRepository.insertTask(aufgabeData);
+      var taskData = Task(title: title, done: false);
+      var createdTask = await _taskRepository.insertTask(taskData);
 
       emit(TasksLoaded(tasks: currentState.tasks + [createdTask]));
     }
