@@ -21,7 +21,14 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<TaskCubit>(
-          create: (context) => TaskCubit(TaskRepository()),
+          create: (context) {
+            var cubit = TaskCubit(TaskRepository());
+
+            // Loading tasks initially is probably a good idea
+            // since many features depend on the tasks.
+            cubit.loadTasks();
+            return cubit;
+          },
         ),
       ],
       child: const MyApp(),

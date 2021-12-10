@@ -28,6 +28,7 @@ class TaskScreen extends StatelessWidget {
         );
       }),
       floatingActionButton: FloatingActionButton(
+        heroTag: "NavigateToTaskAddScreen",
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
