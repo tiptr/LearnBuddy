@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Lernbuddy',
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
+        primarySwatch: null,
       ),
       home: const MyHomePage(),
     );
