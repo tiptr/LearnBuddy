@@ -2,6 +2,18 @@
 
 ## Linksammlung:
 
+### Finales Projekt (LearnBuddy):
+
+**Figma-Mockups (öffentlich)**
+
+[LearnBuddy V2 Präsentation](https://www.figma.com/proto/E8o1DZ41wPEzrKEDCHNmsE/LearnBuddy-V2?node-id=537%3A16734&scaling=scale-down&page-id=0%3A1&starting-point-node-id=537%3A16734)
+
+**Figma-Mockups (nicht öffentlich)**
+
+[LearnBuddy V2](https://www.figma.com/file/E8o1DZ41wPEzrKEDCHNmsE/LearnBuddy-V2)
+
+### Erste Prototypen:
+
 **Figma-Mockups (öffentlich)**
 
 [FörderBot Präsenation](https://www.figma.com/proto/Ko0Gm8JhHINOPG75DsksQU/F%C3%B6rderBot?node-id=35%3A1550&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=35%3A1550)
