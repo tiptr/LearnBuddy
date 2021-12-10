@@ -11,7 +11,7 @@ class TaskRepository {
     return task;
   }
 
-  Future<List<Task>> fetchTasks() async {
+  Future<List<Task>> loadTasks() async {
     var db = await DbProvider().database;
     var taskMaps = await db.query('tasks');
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/ausgleich/screens/ausgleich_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'features/lernhilfen/screens/lernhilfen_screen.dart';
 import 'features/timer/screens/timer_screen.dart';
@@ -20,7 +21,7 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<TaskCubit>(
-          create: (context) => TaskCubit(),
+          create: (context) => TaskCubit(TaskRepository()),
         ),
       ],
       child: const MyApp(),

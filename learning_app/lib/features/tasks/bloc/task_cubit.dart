@@ -1,40 +1,56 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/task_state.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 
-class TaskCubit extends Cubit<List<Task>> {
-  final _repository = TaskRepository();
+class TaskCubit extends Cubit<TaskState> {
+  final TaskRepository _taskRepository;
 
-  TaskCubit() : super([]) {
+  TaskCubit(this._taskRepository) : super(InitialTaskState()) {
     loadTasks();
   }
 
   Future<void> loadTasks() async {
-    var aufgaben = await _repository.fetchTasks();
-    emit(aufgaben);
+    var tasks = await _taskRepository.loadTasks();
+    emit(TasksLoaded(tasks: tasks));
   }
 
   // Toggles the done flag in a aufgabe in the cubit state
   Future<void> toggleDone(Task aufgabe) async {
-    aufgabe.done = !aufgabe.done;
-    await _repository.update(aufgabe);
+    final currentState = state;
 
-    int index = state.indexWhere((Task t) => t.id == aufgabe.id);
-    state[index] = aufgabe;
+    if (currentState is TasksLoaded) {
+      aufgabe.done = !aufgabe.done;
+      await _taskRepository.update(aufgabe);
 
-    emit(state.toList());
+      var tasks = currentState.tasks;
+      int index = tasks.indexWhere((Task t) => t.id == aufgabe.id);
+      tasks[index] = aufgabe;
+
+      emit(TasksLoaded(tasks: tasks));
+    }
   }
 
   Future<void> createTask(String title) async {
-    var aufgabeData = Task(title: title, done: false);
-    var createdTask = await _repository.insertTask(aufgabeData);
+    final currentState = state;
 
-    emit(state + [createdTask]);
+    if (currentState is TasksLoaded) {
+      var aufgabeData = Task(title: title, done: false);
+      var createdTask = await _taskRepository.insertTask(aufgabeData);
+
+      emit(TasksLoaded(tasks: currentState.tasks + [createdTask]));
+    }
   }
 
   Future<void> deleteTask(int id) async {
-    await _repository.delete(id);
+    final currentState = state;
 
-    emit(state.where((element) => element.id != id).toList());
+    if (currentState is TasksLoaded) {
+      await _taskRepository.delete(id);
+
+      var tasks =
+          currentState.tasks.where((element) => element.id != id).toList();
+      emit(TasksLoaded(tasks: tasks));
+    }
   }
 }
