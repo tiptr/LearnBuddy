@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:learning_app/features/timer/invalid_state_exception.dart';
+import 'package:learning_app/features/timer/models/invalid_state_exception.dart';
 import 'package:learning_app/features/timer/models/Config.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/models/ticker.dart';

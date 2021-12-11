@@ -20,13 +20,11 @@ class TimerScreen extends StatelessWidget {
 
 class TimerView extends StatelessWidget {
   const TimerView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Timer')),
-      body: Stack(
+      return Stack(
         children: [
-          const Background(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,43 +32,66 @@ class TimerView extends StatelessWidget {
               PomodoroState(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 100.0),
-                child: Center(child: TimerText()),
+                child:  TimerWidget(),
               ),
               TimerActions(),
             ],
           ),
         ],
-      ),
-    );
+      );
   }
 }
 
-class TimerText extends StatelessWidget {
-  const TimerText({Key? key}) : super(key: key);
+class TimerWidget extends StatelessWidget {
+  const TimerWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final duration = context.select((TimerBloc bloc) => bloc.state.getDuration());
+    final duration =
+    context.select((TimerBloc bloc) => bloc.state.getDuration());
     //select only rebuilds the Widget if the selected property changes: here duration.
     // If the TimerState changes, TimerText won't rebuild
     final minutesStr =
-        ((duration / 60) % 60).floor().toString().padLeft(2, '0');
+    ((duration / 60) % 60).floor().toString().padLeft(2, '0');
     final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
-    return Text(
-      '$minutesStr:$secondsStr',
-      style: Theme.of(context).textTheme.headline1,
-    );
+    final phaseDuration = context.select((TimerBloc bloc) =>
+    bloc.state
+        .getConfig()
+        .getPomodoroMinuets()[bloc.state.getPomodoroMode()]);
+    return SizedBox(
+        width: 200,
+        height: 200,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CircularProgressIndicator(
+              value: duration / phaseDuration,
+            ),
+            Center(
+                child: Text(
+                    '$minutesStr:$secondsStr',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline2
+                )
+            ),
+          ],
+        ));
   }
 }
 
-
+// Displays the Pomodoro State: in  {concentration, shortBreak, longBreak)
 class PomodoroState extends StatelessWidget {
   const PomodoroState({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String pomoState = context.select((TimerBloc bloc) => bloc.state.getPomodoroMode().toString());
+    String pomoState = context
+        .select((TimerBloc bloc) => bloc.state.getPomodoroMode().toString());
     pomoState = pomoState.substring(13);
-    String timerState = context.select((TimerBloc bloc) => bloc.state.toString());
+    String timerState =
+    context.select((TimerBloc bloc) => bloc.state.toString());
     //timerState = timerState.substring(0,20);
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -78,13 +99,19 @@ class PomodoroState extends StatelessWidget {
         children: [
           Text(
             pomoState,
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline3,
           ),
+          // This is just for Debugging
           Text(
             timerState,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
-      ]
-    );
+        ]);
   }
 }

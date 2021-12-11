@@ -39,6 +39,7 @@ abstract class TimerState {
 
   int getDuration() => _duration;
   PomodoroMode getPomodoroMode() => _pomodoroMode;
+  Config getConfig() => _config;
 
 
 }
