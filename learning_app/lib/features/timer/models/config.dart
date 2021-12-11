@@ -16,6 +16,7 @@ class Config {
 
   Map getPomodoroMinuets() => _pomodoroMinutes;
   int getCountUntilLongerBreak() => _countUntilLongerBreak;
+  int getPhaseCount() => _countUntilLongerBreak * 2;
 
 
 

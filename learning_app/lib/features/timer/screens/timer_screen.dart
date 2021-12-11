@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
+import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
-import 'package:learning_app/features/timer/widgets/background.dart'
-    show Background;
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -23,22 +23,55 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget>[
-              PomodoroState(),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 100.0),
-                child:  TimerWidget(),
-              ),
-              TimerActions(),
-            ],
-          ),
-        ],
-      );
+    return Stack(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const <Widget>[
+            // Just for Debugging
+            PomodoroState(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 50.0),
+              child: TimerWidget(),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+                child: PomodoroPhaseCountWidget()),
+            TimerActions(),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class PomodoroPhaseCountWidget extends StatelessWidget {
+  const PomodoroPhaseCountWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final currentStep =
+        context.select((TimerBloc bloc) => bloc.state.getCountPhase());
+    final totalSteps = context
+        .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCount());
+    return StepProgressIndicator(
+        totalSteps: totalSteps,
+        currentStep: currentStep + 1,
+        // index starts with 1 apparently :(
+        selectedColor: Colors.blue,
+        size: 30,
+        padding: 10,
+        customStep: (index, color, _) {
+          return Container(
+            width: 30.0,
+            height: 30.0,
+            decoration: BoxDecoration(
+              color: color == Colors.blue ? Colors.blue : Colors.grey,
+              shape: BoxShape.circle,
+            ),
+          );
+        });
   }
 }
 
@@ -48,36 +81,48 @@ class TimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final duration =
-    context.select((TimerBloc bloc) => bloc.state.getDuration());
+        context.select((TimerBloc bloc) => bloc.state.getDuration());
     //select only rebuilds the Widget if the selected property changes: here duration.
     // If the TimerState changes, TimerText won't rebuild
     final minutesStr =
-    ((duration / 60) % 60).floor().toString().padLeft(2, '0');
+        ((duration / 60) % 60).floor().toString().padLeft(2, '0');
     final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
-    final phaseDuration = context.select((TimerBloc bloc) =>
-    bloc.state
+    final phaseDuration = context.select((TimerBloc bloc) => bloc.state
         .getConfig()
         .getPomodoroMinuets()[bloc.state.getPomodoroMode()]);
+    final pomoState = getPomoStateText(context);
+
     return SizedBox(
         width: 200,
         height: 200,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            CircularProgressIndicator(
-              value: duration / phaseDuration,
-            ),
-            Center(
+        child: Stack(fit: StackFit.expand, children: [
+          CircularProgressIndicator(
+            value: duration / phaseDuration,
+            strokeWidth: 15,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
                 child: Text(
-                    '$minutesStr:$secondsStr',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline2
-                )
-            ),
-          ],
-        ));
+                  pomoState,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+              // This text should be in the middle of the circular progress bar
+              Text('$minutesStr:$secondsStr',
+                  style: Theme.of(context).textTheme.headline2),
+            ],
+          )
+        ]));
+  }
+
+  String getPomoStateText(BuildContext context) {
+    PomodoroMode pomoState = context
+        .select((TimerBloc bloc) => bloc.state.getPomodoroMode());
+    if (pomoState == PomodoroMode.concentration) return "Concentration";
+    if (pomoState == PomodoroMode.shortBreak) return "Short Break";
+    return "Long Break";
   }
 }
 
@@ -87,30 +132,17 @@ class PomodoroState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String pomoState = context
-        .select((TimerBloc bloc) => bloc.state.getPomodoroMode().toString());
-    pomoState = pomoState.substring(13);
     String timerState =
-    context.select((TimerBloc bloc) => bloc.state.toString());
+        context.select((TimerBloc bloc) => bloc.state.toString());
     //timerState = timerState.substring(0,20);
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            pomoState,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline3,
-          ),
           // This is just for Debugging
           Text(
             timerState,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ]);
   }
