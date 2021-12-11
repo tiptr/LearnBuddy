@@ -97,7 +97,7 @@ class TaskCard extends StatelessWidget {
       children: [
         Expanded(
           // 70 %
-          flex: 7,
+          flex: 65,
           child: Wrap(
             children: [
               _buildTag("Förderbot", Colors.red),
@@ -106,9 +106,9 @@ class TaskCard extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
+        Flexible(
           // 30 %
-          flex: 3,
+          flex: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
