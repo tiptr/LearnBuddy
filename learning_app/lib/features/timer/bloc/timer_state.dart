@@ -14,7 +14,7 @@ abstract class TimerState {
   TimerState onSkipPhase() {
     incrementPhaseCount();
     PomodoroMode nextMode = getNextPomodoroMode();
-    if(_countPhase == (2 * _config.getCountUntilLongerBreak()) - 1) {
+    if(_countPhase == (2 * _config.getCountUntilLongerBreak())) {
       // return to Initial State if Pomodoro Cycle is done.
       return TimerInitial();
     }
@@ -168,8 +168,10 @@ class TimerRunPause extends TimerState {
 
 
 class TimerRunComplete extends TimerState {
-  TimerRunComplete(){
-    _duration = 0;
+  TimerRunComplete(int duration, PomodoroMode pomodoroMode, int countPhase){
+    _duration = duration;
+    _pomodoroMode = pomodoroMode;
+    _countPhase = countPhase;
 
   }
 
@@ -186,10 +188,6 @@ class TimerRunComplete extends TimerState {
     throw InvalidStateException();
   }
 
-  @override
-  TimerState onSkipPhase() {
-    throw InvalidStateException();
-  }
 
   @override
   TimerState onStarted() {

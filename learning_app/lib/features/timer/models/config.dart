@@ -6,7 +6,7 @@ class Config {
 
   Config(concentrationMinutes, breakMinutes, longerBreakMinutes, countUntilLongerBreak){
     _pomodoroMinutes = {
-      PomodoroMode.concentration: concentrationMinutes * 60,
+      PomodoroMode.concentration: concentrationMinutes * 5,
       PomodoroMode.shortBreak: breakMinutes* 60,
       PomodoroMode.longBreak: longerBreakMinutes* 60,
     };

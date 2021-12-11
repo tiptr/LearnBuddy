@@ -80,25 +80,32 @@ class TimerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final duration =
+    int duration =
         context.select((TimerBloc bloc) => bloc.state.getDuration());
     //select only rebuilds the Widget if the selected property changes: here duration.
     // If the TimerState changes, TimerText won't rebuild
+    final sign = duration.sign;
+    duration = duration * sign; // Keep duration positive
     final minutesStr =
         ((duration / 60) % 60).floor().toString().padLeft(2, '0');
     final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
+    final signStr = sign == - 1 ? "- " : "";
     final phaseDuration = context.select((TimerBloc bloc) => bloc.state
         .getConfig()
         .getPomodoroMinuets()[bloc.state.getPomodoroMode()]);
     final pomoState = getPomoStateText(context);
+    bool showProgressBar = context.select((TimerBloc bloc) => bloc.state is! TimerRunComplete);
 
     return SizedBox(
         width: 200,
         height: 200,
         child: Stack(fit: StackFit.expand, children: [
-          CircularProgressIndicator(
-            value: duration / phaseDuration,
-            strokeWidth: 15,
+          Visibility(
+            visible: showProgressBar,
+            child:CircularProgressIndicator(
+              value: duration / phaseDuration,
+              strokeWidth: 15,
+            )
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +117,7 @@ class TimerWidget extends StatelessWidget {
                 ),
               ),
               // This text should be in the middle of the circular progress bar
-              Text('$minutesStr:$secondsStr',
+              Text('$signStr$minutesStr:$secondsStr',
                   style: Theme.of(context).textTheme.headline2),
             ],
           )

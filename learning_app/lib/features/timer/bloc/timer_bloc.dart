@@ -42,7 +42,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     emit(
       event.duration > 0
           ? TimerRunInProgress(event.duration, state._pomodoroMode, state._countPhase)
-          : state.onSkipPhase(),
+          : TimerRunComplete(event.duration, state._pomodoroMode, state._countPhase),
     );
   }
 
@@ -61,8 +61,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
-    TimerState tmp_state = state.onSkipPhase();
-    emit(tmp_state);
+    emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
 
   }
