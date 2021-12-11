@@ -1,2 +1,1 @@
-class InvalidStateException implements Exception{
-}
+class InvalidStateException implements Exception {}

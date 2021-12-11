@@ -58,7 +58,7 @@ class TimerActions extends StatelessWidget {
                 child: const Icon(Icons.play_arrow),
                 onPressed: () => context
                     .read<TimerBloc>()
-                //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
+                    //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
                     .add(TimerStarted(duration: state.getDuration())),
               ),
               FloatingActionButton(
@@ -66,7 +66,6 @@ class TimerActions extends StatelessWidget {
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerSkip()),
               ),
-
             ]
           ],
         );

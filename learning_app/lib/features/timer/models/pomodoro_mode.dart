@@ -1,5 +1,1 @@
-enum PomodoroMode {
-  concentration,
-  shortBreak,
-  longBreak
-}
+enum PomodoroMode { concentration, shortBreak, longBreak }
