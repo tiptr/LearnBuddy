@@ -5,7 +5,9 @@ import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 class TaskCubit extends Cubit<List<Task>> {
   final _repository = TaskRepository();
 
-  TaskCubit() : super([]);
+  TaskCubit() : super([]) {
+    loadTasks();
+  }
 
   Future<void> loadTasks() async {
     var aufgaben = await _repository.fetchTasks();
@@ -13,7 +15,7 @@ class TaskCubit extends Cubit<List<Task>> {
   }
 
   // Toggles the done flag in a aufgabe in the cubit state
-  Future<void> updateTask(Task aufgabe) async {
+  Future<void> toggleDone(Task aufgabe) async {
     aufgabe.done = !aufgabe.done;
     await _repository.update(aufgabe);
 
