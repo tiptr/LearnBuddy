@@ -4,25 +4,24 @@
 
 ### Material Design
 
-Wir benutzen das Material Design von Google. Material ist ein anpassungsfähiges System von Richtlinien, Komponenten und Werkzeugen, die die besten Praktiken für die Gestaltung von Benutzeroberflächen unterstützen. Unterstützt durch Open-Source-Code optimiert Material die Zusammenarbeit zwischen Designern und Entwicklern und hilft Teams, schnell schöne Produkte zu entwickeln. Einige Teammitglieder haben bereits mit dem Material Design gearbeitet.
+In der App soll das Material Design von Google verwendet werden. Material ist ein anpassungsfähiges System von Richtlinien, Komponenten und Werkzeugen, die die besten Praktiken für die Gestaltung von Benutzeroberflächen unterstützen. Unterstützt durch Open-Source-Code optimiert Material die Zusammenarbeit zwischen Designern und Entwicklern und hilft Teams, schnell schöne Produkte zu entwickeln. Einige Teammitglieder haben bereits mit dem Material Design gearbeitet. Einen weiteren Vorteil stellt die Integration des Material Designs in die für die App-Entwicklung verwendete Technologie Flutter dar.
 
 ###  Figma
 
-Figma ist ein mächtiges Tool für UI-Design und Prototyping. Wir haben im Zuge der Vorbereitung einen ausführlichen Prototypen mit diesem Tool erstellt.  
-
-
-
+Figma ist ein mächtiges Tool für UI-Design und Prototyping. Im Zuge der Vorbereitung wurde für die App-Entwicklung mit Figma ein ausführlicher Prototyp erstellt. Auch in Figma gab es bereits Vorerfahrungen bei Teammitgliedern.
 
 ## Framework
 
 ### IOS/Android App
 
-Schon früh in unserem Projekt entschieden wir uns dafür eine App schreiben zu wollen. Aus den Interviews mit den Schüler:innen und Lehrer:innen kam heraus, dass viel im Unterricht mit Tablets gearbeitet wird. Außerdem hat inzwischen wohl fast jeder Schüler ein Smartphone. Nicht jeder Schüler hat allerdings einen Laptop, insbesondere nicht im Unterricht. In unserer Erfahrung ist die Benutzung einer Web-App auf dem Smartphone, auch wenn sie noch so gut ist, sehr schwierig zu benutzen. Deshalb die Entscheidung für eine App.
+Schon früh im Projektablauf wurde sich für die Entwicklung einer Mobile-App entscheiden. Aus den Interviews mit den Schüler:innen und Lehrer:innen kam heraus, dass viel im Unterricht mit Tablets gearbeitet wird. Außerdem ist die Nutzungsbarriere einer App sehr gering, da fast jede:r Schüler:in sowieso ein Smartphone besitzt. Im Vergleich dazu ist der Anteil der Schüler:innen, die einen Computer besitzen deutlich geringer - gerade wenn es um die Nutzung des Computers für und während des Schulunterrichts geht. Während auch webbasierte Technologien für die Entwicklung von Cross-Platform-Applications wie Cordova oder Ionic für die Entwicklung einer App infrage kämen, wurde sich trotzdem für die Entwicklung einer nativen App entschieden, da die Benutzerfreundlichkeit von nativen Apps noch immer einen großen Pluspunkt darstellt.
 
 ### Flutter
 
-Wir wollten unbedingt eine Cross-Platform App schreiben, damit sie auch von allen Schüler:innen benutzt werden kann. Zur Auswahl standen in unserem Team Flutter und React-Native. Wir entschieden uns schließlich für Flutter. 
+Sehr wichtig für die Entwicklung der App war der Support für sämtliche Plattformen (im wesentlichen Android und iOS), sodass die Anwendung auch von sämtlichen Schüler:innen benutzt werden kann. Zur Auswahl standen im Team die Technologien Flutter und React Native, wobei sich schlussendlich für Flutter entschieden wurde, wobei die Entscheidung hauptsächlich auf das global immer größer werdende Interesse an Flutter zurückzuführen war.  
 
-### Bloc 
+### BLoC Pattern und flutter-bloc 
 
-Wir brauchten eine Zustandsverwaltungslösung und ein Kommilitone empfahl uns flutter-bloc. Es gibt viele Zustandsverwaltungslösungen, aus denen wir uns eine aussuchen mussten. Bloc versucht, Zustandsänderungen vorhersehbar zu machen, indem es regelt, wann eine Zustandsänderung auftreten kann, und einen einzigen Weg zur Zustandsänderung in der gesamten Anwendung erzwingt.
+Wie auch in typischen Web-Anwendungen in Angular, React, etc. ist es auch in Flutter von enormer Wichtigkeit eine gute Struktur zur Zustandsverwaltung in einer Anwendung zu implementieren. Neben der besseren Struktur hat eine gute Zustandsverwaltung auch oft mit Render-Zyklen der UI-Schicht zu tun, wobei viel Platz für Optimierung besteht. Im Kontext Flutter ist hierfür das sogennante BLoC-Pattern eines der beliebtesten Patterns. BLoC steht hierbei für Business Logic Component und stellt Systemkomponenten dar, in denen die Anwendungslogik abgekapselt von den Domänenmodellen und der Präsentationsschicht Platz findet. Derartige BLoCs bilden somit die View-Model-Schicht der MVVM-Architektur. 
+
+Da das BLoC-Pattern ein sehr beliebtes Pattern in der Flutter-Entwicklung darstellt, exisitert eine Library namens flutter-bloc, welche es den Entwicklern ermöglicht, schnell und übersichtlich streambasierte Business Logic Components zu bauen, die einerseits hochperformant und optimiert und andererseits gut testbar sind.
