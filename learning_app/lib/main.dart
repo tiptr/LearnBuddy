@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/ausgleich/screens/ausgleich_screen.dart';
+import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
-import 'features/lernhilfen/screens/lernhilfen_screen.dart';
+import 'features/learningAids/screens/learningAids_screen.dart';
 import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
   TaskScreen(),
   DashboardScreen(),
-  AusgleichScreen(),
-  LernhilfenScreen(),
+  LeisureScreen(),
+  LearningAidsScreen(),
 ];
 
 void main() {
