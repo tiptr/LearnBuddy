@@ -20,9 +20,12 @@ return Positioned(
               Positioned(
                   top: 0,
                   left: 0,
-                  child: SvgPicture.asset(
-                      'assets/images/r_ankle.svg',
-                      semanticsLabel: 'r_ankle'
+                  child: InkWell(
+                    child: SvgPicture.asset(
+                        'assets/body_parts_activated/r_ankle.svg',
+                        semanticsLabel: 'r_ankle'
+                    ),
+                    onTap: () => print("Test"),
                   )
               ), Positioned(
                   top: 0,
@@ -30,7 +33,7 @@ return Positioned(
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
                     child: SvgPicture.asset(
-                        'assets/images/l_ankle.svg',
+                        'assets/body_parts_not_activated/l_ankle.svg',
                         semanticsLabel: 'l_ankle'
                     ),
                   )

@@ -18,14 +18,14 @@ class UpperArms extends StatelessWidget {
               Positioned(
                   top: 0,
                   left: 0,
-                  child: SvgPicture.asset('assets/images/r_upper_arm.svg',
+                  child: SvgPicture.asset('assets/body_parts_not_activated/r_upper_arm.svg',
                       semanticsLabel: 'r_upper_arm')),
               Positioned(
                   top: 0,
                   left: 90.2900390625,
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
-                    child: SvgPicture.asset('assets/images/l_upper_arm.svg',
+                    child: SvgPicture.asset('assets/body_parts_not_activated/l_upper_arm.svg',
                         semanticsLabel: 'l_upper_arm'),
                   )),
             ])));

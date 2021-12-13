@@ -18,14 +18,14 @@ class Wrists extends StatelessWidget {
               Positioned(
                   top: 0.00677620992064476,
                   left: 0,
-                  child: SvgPicture.asset('assets/images/r_wrist.svg',
+                  child: SvgPicture.asset('assets/body_parts_not_activated/r_wrist.svg',
                       semanticsLabel: 'r_wrist')),
               Positioned(
                   top: 0,
                   left: 104.88976287841797,
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
-                    child: SvgPicture.asset('assets/images/l_wrist.svg',
+                    child: SvgPicture.asset('assets/body_parts_not_activated/l_wrist.svg',
                         semanticsLabel: 'l_wrist'),
                   )),
             ])));

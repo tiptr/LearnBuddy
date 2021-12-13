@@ -18,14 +18,14 @@ class Breasts extends StatelessWidget {
               Positioned(
                   top: 0,
                   left: 0,
-                  child: SvgPicture.asset('assets/images/path18.svg',
+                  child: SvgPicture.asset('assets/body_parts_not_activated/path18.svg',
                       semanticsLabel: 'path18')),
               Positioned(
                   top: 0,
                   left: 52.04296875,
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
-                    child: SvgPicture.asset('assets/images/path18.svg',
+                    child: SvgPicture.asset('assets/body_parts_not_activated/path18.svg',
                         semanticsLabel: 'path18'),
                   )),
             ])));

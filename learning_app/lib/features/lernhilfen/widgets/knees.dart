@@ -18,14 +18,14 @@ class Knees extends StatelessWidget {
               Positioned(
                   top: 0,
                   left: 0,
-                  child: SvgPicture.asset('assets/images/r_knee.svg',
+                  child: SvgPicture.asset('assets/body_parts_not_activated/r_knee.svg',
                       semanticsLabel: 'r_knee')),
               Positioned(
                   top: 0,
                   left: 55.646484375,
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
-                    child: SvgPicture.asset('assets/images/l_knee.svg',
+                    child: SvgPicture.asset('assets/body_parts_not_activated/l_knee.svg',
                         semanticsLabel: 'l_knee'),
                   )),
             ])));

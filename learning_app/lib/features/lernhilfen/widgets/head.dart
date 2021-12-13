@@ -25,7 +25,7 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 0,
-                            child: SvgPicture.asset('assets/images/path22.svg',
+                            child: SvgPicture.asset('assets/body_parts_not_activated/path22.svg',
                                 semanticsLabel: 'path22')),
                         Positioned(
                             top: 0,
@@ -33,7 +33,7 @@ class Head extends StatelessWidget {
                             child: Transform(
                               transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset(
-                                  'assets/images/path22.svg',
+                                  'assets/body_parts_not_activated/path22.svg',
                                   semanticsLabel: 'path22'),
                             )),
                       ]))),
@@ -47,7 +47,7 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 0,
-                            child: SvgPicture.asset('assets/images/path24.svg',
+                            child: SvgPicture.asset('assets/body_parts_not_activated/path24.svg',
                                 semanticsLabel: 'path24')),
                         Positioned(
                             top: 0,
@@ -55,7 +55,7 @@ class Head extends StatelessWidget {
                             child: Transform(
                               transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset(
-                                  'assets/images/path24.svg',
+                                  'assets/body_parts_not_activated/path24.svg',
                                   semanticsLabel: 'path24'),
                             )),
                       ]))),
@@ -69,14 +69,14 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 0,
-                            child: SvgPicture.asset('assets/images/r_ear.svg',
+                            child: SvgPicture.asset('assets/body_parts_not_activated/r_ear.svg',
                                 semanticsLabel: 'r_ear')),
                         Positioned(
                             top: 0,
                             left: 28.46875,
                             child: Transform(
                               transform: Matrix4.rotationY(math.pi),
-                              child: SvgPicture.asset('assets/images/l_ear.svg',
+                              child: SvgPicture.asset('assets/body_parts_not_activated/l_ear.svg',
                                   semanticsLabel: 'l_ear'),
                             )),
                       ]))),
@@ -90,7 +90,7 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 0,
-                            child: SvgPicture.asset('assets/images/path28.svg',
+                            child: SvgPicture.asset('assets/body_parts_not_activated/path28.svg',
                                 semanticsLabel: 'path28')),
                         Positioned(
                             top: 0,
@@ -98,7 +98,7 @@ class Head extends StatelessWidget {
                             child: Transform(
                               transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset(
-                                  'assets/images/path28.svg',
+                                  'assets/body_parts_not_activated/path28.svg',
                                   semanticsLabel: 'path28'),
                             )),
                       ]))),

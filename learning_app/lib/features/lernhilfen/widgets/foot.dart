@@ -31,7 +31,7 @@ return Positioned(
                                 left: 0,
                                 child: SvgPicture
                                     .asset(
-                                    'assets/images/r_foot_middle.svg',
+                                    'assets/body_parts_not_activated/r_foot_middle.svg',
                                     semanticsLabel: 'r_foot_middle'
                                 )
                             ), Positioned(
@@ -41,7 +41,7 @@ return Positioned(
                                   transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture
                                       .asset(
-                                      'assets/images/l_foot_middle.svg',
+                                      'assets/body_parts_not_activated/l_foot_middle.svg',
                                       semanticsLabel: 'l_foot_middle'
                                   ),
                                 )
@@ -63,7 +63,7 @@ return Positioned(
                                 left: 0,
                                 child: SvgPicture
                                     .asset(
-                                    'assets/images/r_heel.svg',
+                                    'assets/body_parts_not_activated/r_heel.svg',
                                     semanticsLabel: 'r_heel'
                                 )
                             ), Positioned(
@@ -73,7 +73,7 @@ return Positioned(
                                   transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture
                                       .asset(
-                                      'assets/images/l_heel.svg',
+                                      'assets/body_parts_not_activated/l_heel.svg',
                                       semanticsLabel: 'l_heel'
                                   ),
                                 )
@@ -95,7 +95,7 @@ return Positioned(
                                 left: 0,
                                 child: SvgPicture
                                     .asset(
-                                    'assets/images/r_toe.svg',
+                                    'assets/body_parts_not_activated/r_toe.svg',
                                     semanticsLabel: 'r_toe'
                                 )
                             ), Positioned(
@@ -105,7 +105,7 @@ return Positioned(
                                   transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture
                                       .asset(
-                                      'assets/images/l_toe.svg',
+                                      'assets/body_parts_not_activated/l_toe.svg',
                                       semanticsLabel: 'l_toe'
                                   ),
                                 )

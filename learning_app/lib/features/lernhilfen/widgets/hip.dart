@@ -18,14 +18,14 @@ class Hip extends StatelessWidget {
               Positioned(
                   top: 0,
                   left: 0,
-                  child: SvgPicture.asset('assets/images/path30.svg',
+                  child: SvgPicture.asset('assets/body_parts_not_activated/path30.svg',
                       semanticsLabel: 'path30')),
               Positioned(
                   top: 0,
                   left: 57.6064453125,
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
-                    child: SvgPicture.asset('assets/images/path30.svg',
+                    child: SvgPicture.asset('assets/body_parts_not_activated/path30.svg',
                         semanticsLabel: 'path30'),
                   )),
             ])));

@@ -31,7 +31,7 @@ class Hands extends StatelessWidget {
                                     left: 0,
                                     child: SvgPicture
                                         .asset(
-                                        'assets/images/r_finger.svg',
+                                        'assets/body_parts_not_activated/r_finger.svg',
                                         semanticsLabel: 'r_finger'
                                     ),
                                   ),
@@ -42,7 +42,7 @@ class Hands extends StatelessWidget {
                                       transform: Matrix4.rotationY(math.pi),
                                       child: SvgPicture
                                           .asset(
-                                          'assets/images/l_finger.svg',
+                                          'assets/body_parts_not_activated/l_finger.svg',
                                           semanticsLabel: 'l_finger'
                                       ),
                                     ),
@@ -65,7 +65,7 @@ class Hands extends StatelessWidget {
                                     left: 0,
                                     child: SvgPicture
                                         .asset(
-                                        'assets/images/r_thump.svg',
+                                        'assets/body_parts_not_activated/r_thump.svg',
                                         semanticsLabel: 'r_thump'
                                     )
                                 ), Positioned(
@@ -75,7 +75,7 @@ class Hands extends StatelessWidget {
                                       transform: Matrix4.rotationY(math.pi),
                                       child: SvgPicture
                                           .asset(
-                                          'assets/images/l_thump.svg',
+                                          'assets/body_parts_not_activated/l_thump.svg',
                                           semanticsLabel: 'l_thump'
                                       ),
                                     )
@@ -97,7 +97,7 @@ class Hands extends StatelessWidget {
                                     left: 0,
                                     child: SvgPicture
                                         .asset(
-                                        'assets/images/r_palm.svg',
+                                        'assets/body_parts_not_activated/r_palm.svg',
                                         semanticsLabel: 'r_palm'
                                     )
                                 ), Positioned(
@@ -107,7 +107,7 @@ class Hands extends StatelessWidget {
                                       transform: Matrix4.rotationY(math.pi),
                                       child: SvgPicture
                                           .asset(
-                                          'assets/images/l_palm.svg',
+                                          'assets/body_parts_not_activated/l_palm.svg',
                                           semanticsLabel: 'l_palm'
                                       ),
                                     )

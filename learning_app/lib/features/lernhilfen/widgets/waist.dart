@@ -18,14 +18,14 @@ class Waist extends StatelessWidget {
               Positioned(
                   top: 0,
                   left: 0,
-                  child: SvgPicture.asset('assets/images/path20.svg',
+                  child: SvgPicture.asset('assets/body_parts_not_activated/path20.svg',
                       semanticsLabel: 'path20')),
               Positioned(
                   top: 0,
                   left: 49.916015625,
                   child: Transform(
                     transform: Matrix4.rotationY(math.pi),
-                    child: SvgPicture.asset('assets/images/path20.svg',
+                    child: SvgPicture.asset('assets/body_parts_not_activated/path20.svg',
                         semanticsLabel: 'path20'),
                   )),
             ])));
