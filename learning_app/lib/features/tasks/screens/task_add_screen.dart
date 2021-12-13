@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
+import 'package:duration_picker/duration_picker.dart';
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({Key? key}) : super(key: key);
@@ -9,14 +10,15 @@ class TaskAddScreen extends StatefulWidget {
 }
 
 class _TaskAddScreenState extends State<TaskAddScreen> {
-  final _nameController = TextEditingController();
+  final _titleController = TextEditingController();
 
   DateTime? selectedDate;
+  Duration? selectedDuration;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(textController: _nameController),
+      appBar: CustomAppBar(textController: _titleController),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20.0),
@@ -34,7 +36,15 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 },
               ),
               const SizedBox(height: 20.0),
-              _generateTextField(context: context),
+              _generateDurationField(
+                selectedDuration: selectedDuration,
+                context: context,
+                onSelect: (Duration duration) {
+                  setState(() {
+                    selectedDuration = duration;
+                  });
+                },
+              ),
               const SizedBox(height: 20.0),
               _generateTextField(context: context),
             ],
@@ -56,6 +66,45 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         prefixIcon: const Icon(Icons.book_outlined),
         label: const Text("Beschreibung"),
         hintText: "Text eingeben",
+      ),
+    );
+  }
+
+  Widget _generateDurationField({
+    required Duration? selectedDuration,
+    required BuildContext context,
+    required Function onSelect,
+  }) {
+    return GestureDetector(
+      onTap: () async {
+        var resultingDuration = await showDurationPicker(
+          context: context,
+          initialTime: const Duration(minutes: 30),
+          snapToMins: 5,
+        );
+
+        if (resultingDuration != null) {
+          onSelect(resultingDuration);
+        }
+      },
+      child: AbsorbPointer(
+        child: TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            filled: true,
+            prefixIcon: const Icon(Icons.timer_outlined),
+            label: const Text("Zeitschätzung"),
+            hintText: selectedDuration == null
+                ? "Dauer auswählen"
+                : selectedDuration.toString(),
+          ),
+        ),
       ),
     );
   }
