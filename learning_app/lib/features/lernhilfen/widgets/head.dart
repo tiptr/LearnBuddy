@@ -30,8 +30,8 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 26.669921875,
-                            child: Transform.rotate(
-                              angle: -180 * (math.pi / 180),
+                            child: Transform(
+                              transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset(
                                   'assets/images/path22.svg',
                                   semanticsLabel: 'path22'),
@@ -52,8 +52,8 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 24.576171875,
-                            child: Transform.rotate(
-                              angle: -180 * (math.pi / 180),
+                            child: Transform(
+                              transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset(
                                   'assets/images/path24.svg',
                                   semanticsLabel: 'path24'),
@@ -74,8 +74,8 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 28.46875,
-                            child: Transform.rotate(
-                              angle: -180 * (math.pi / 180),
+                            child: Transform(
+                              transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset('assets/images/l_ear.svg',
                                   semanticsLabel: 'l_ear'),
                             )),
@@ -95,8 +95,8 @@ class Head extends StatelessWidget {
                         Positioned(
                             top: 0,
                             left: 24.1953125,
-                            child: Transform.rotate(
-                              angle: -180 * (math.pi / 180),
+                            child: Transform(
+                              transform: Matrix4.rotationY(math.pi),
                               child: SvgPicture.asset(
                                   'assets/images/path28.svg',
                                   semanticsLabel: 'path28'),

@@ -14,39 +14,20 @@ class Underarms extends StatelessWidget {
         child: Container(
             width: 99.46150970458984,
             height: 19.50722885131836,
-
-            child: Stack(
-                children: <Widget>[
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      child: SvgPicture.asset(
-                          'assets/images/r_underarm.svg',
-                          semanticsLabel: 'r_underarm'
-                      )
-                  ), Positioned(
-                      top: 0.04209478572010994,
-                      left: 99.46150970458984,
-                      child: Transform.rotate(
-                        angle: -180 * (math.pi / 180),
-                        child: SvgPicture.asset(
-                            'assets/images/l_underarm.svg',
-                            semanticsLabel: 'l_underarm'
-                        ),
-                      )
-                  ),
-                ]
-            )
-        )
-    );
+            child: Stack(children: <Widget>[
+              Positioned(
+                  top: 0,
+                  left: 0,
+                  child: SvgPicture.asset('assets/images/r_underarm.svg',
+                      semanticsLabel: 'r_underarm')),
+              Positioned(
+                  top: 0.04209478572010994,
+                  left: 99.46150970458984,
+                  child: Transform(
+                    transform: Matrix4.rotationY(math.pi),
+                    child: SvgPicture.asset('assets/images/l_underarm.svg',
+                        semanticsLabel: 'l_underarm'),
+                  )),
+            ])));
   }
 }
-
-
-
-
-
-
-
-
-

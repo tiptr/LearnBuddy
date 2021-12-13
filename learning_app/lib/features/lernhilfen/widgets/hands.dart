@@ -26,9 +26,7 @@ class Hands extends StatelessWidget {
 
                           child: Stack(
                               children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(color: Colors.green),
-                                  child: Positioned(
+                                  Positioned(
                                     top: 0.04415157064795494,
                                     left: 0,
                                     child: SvgPicture
@@ -37,25 +35,19 @@ class Hands extends StatelessWidget {
                                         semanticsLabel: 'r_finger'
                                     ),
                                   ),
+                                Positioned(
+                                    top: 0,
+                                    left: 280.93535614013672,
+                                    child: Transform(
+                                      transform: Matrix4.rotationY(math.pi),
+                                      child: SvgPicture
+                                          .asset(
+                                          'assets/images/l_finger.svg',
+                                          semanticsLabel: 'l_finger'
+                                      ),
+                                    ),
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(color: Colors.red),
-                                  child: Positioned(
-                                      top: 0,
-                                      left: 280.93535614013672,
-                                      child: Transform
-                                          .rotate(
-                                        angle: -180 *
-                                            (math.pi /
-                                                180),
-                                        child: SvgPicture
-                                            .asset(
-                                            'assets/images/l_finger.svg',
-                                            semanticsLabel: 'l_finger'
-                                        ),
-                                      )
-                                  ),
-                                ),
+
                               ]
                           )
                       )
@@ -63,7 +55,7 @@ class Hands extends StatelessWidget {
                       top: 2.87992525100708,
                       left: 0,
                       child: Container(
-                          width: 134.241455078125,
+                          width: 260.241455078125,
                           height: 7.10014009475708,
 
                           child: Stack(
@@ -79,11 +71,8 @@ class Hands extends StatelessWidget {
                                 ), Positioned(
                                     top: 0,
                                     left: 134.241455078125,
-                                    child: Transform
-                                        .rotate(
-                                      angle: -180 *
-                                          (math.pi /
-                                              180),
+                                    child: Transform(
+                                      transform: Matrix4.rotationY(math.pi),
                                       child: SvgPicture
                                           .asset(
                                           'assets/images/l_thump.svg',
@@ -98,7 +87,7 @@ class Hands extends StatelessWidget {
                       top: 0,
                       left: 7.501255512237549,
                       child: Container(
-                          width: 119.23280334472656,
+                          width: 300.23280334472656,
                           height: 24.91265869140625,
 
                           child: Stack(
@@ -113,12 +102,9 @@ class Hands extends StatelessWidget {
                                     )
                                 ), Positioned(
                                     top: 0,
-                                    left: 119.23280334472656,
-                                    child: Transform
-                                        .rotate(
-                                      angle: -180 *
-                                          (math.pi /
-                                              180),
+                                    left: 120.23280334472656,
+                                    child: Transform(
+                                      transform: Matrix4.rotationY(math.pi),
                                       child: SvgPicture
                                           .asset(
                                           'assets/images/l_palm.svg',

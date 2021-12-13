@@ -37,11 +37,8 @@ return Positioned(
                             ), Positioned(
                                 top: 0,
                                 left: 81.830078125,
-                                child: Transform
-                                    .rotate(
-                                  angle: -180 *
-                                      (math.pi /
-                                          180),
+                                child: Transform(
+                                  transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture
                                       .asset(
                                       'assets/images/l_foot_middle.svg',
@@ -72,11 +69,8 @@ return Positioned(
                             ), Positioned(
                                 top: 0,
                                 left: 45.771484375,
-                                child: Transform
-                                    .rotate(
-                                  angle: -180 *
-                                      (math.pi /
-                                          180),
+                                child: Transform(
+                                  transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture
                                       .asset(
                                       'assets/images/l_heel.svg',
@@ -107,11 +101,8 @@ return Positioned(
                             ), Positioned(
                                 top: 0,
                                 left: 80.0517578125,
-                                child: Transform
-                                    .rotate(
-                                  angle: -180 *
-                                      (math.pi /
-                                          180),
+                                child: Transform(
+                                  transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture
                                       .asset(
                                       'assets/images/l_toe.svg',

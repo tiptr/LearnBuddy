@@ -23,8 +23,8 @@ class Breasts extends StatelessWidget {
               Positioned(
                   top: 0,
                   left: 52.04296875,
-                  child: Transform.rotate(
-                    angle: -180 * (math.pi / 180),
+                  child: Transform(
+                    transform: Matrix4.rotationY(math.pi),
                     child: SvgPicture.asset('assets/images/path18.svg',
                         semanticsLabel: 'path18'),
                   )),

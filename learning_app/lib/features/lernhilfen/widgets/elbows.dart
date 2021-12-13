@@ -23,8 +23,8 @@ class Elbows extends StatelessWidget {
               Positioned(
                   top: 0.06029230356216431,
                   left: 94.38938903808594,
-                  child: Transform.rotate(
-                    angle: -180 * (math.pi / 180),
+                  child: Transform(
+                    transform: Matrix4.rotationY(math.pi),
                     child: SvgPicture.asset('assets/images/l_ellbow.svg',
                         semanticsLabel: 'l_ellbow'),
                   )),

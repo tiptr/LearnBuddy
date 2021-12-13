@@ -27,12 +27,11 @@ class LernhilfenScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
+      children: [
         Spacer(),
-        SizedBox(
-            width: 200,
-            height: 200,
-            child: Hands()),
+        Center(
+          child: Body(),
+        ),
         Spacer(),
       ],
     );
