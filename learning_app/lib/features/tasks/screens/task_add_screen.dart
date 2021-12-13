@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
 import 'package:duration_picker/duration_picker.dart';
+import 'package:intl/intl.dart';
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({Key? key}) : super(key: key);
@@ -88,23 +89,28 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
       child: AbsorbPointer(
         child: TextField(
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            filled: true,
-            prefixIcon: const Icon(Icons.timer_outlined),
-            label: const Text("Zeitschätzung"),
-            hintText: selectedDuration == null
-                ? "Dauer auswählen"
-                : selectedDuration.toString(),
-          ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              filled: true,
+              prefixIcon: const Icon(Icons.timer_outlined),
+              label: const Text("Zeitschätzung"),
+              hintText: selectedDuration == null
+                  ? "Dauer auswählen"
+                  : _formatDuration(selectedDuration)),
         ),
       ),
     );
+  }
+
+  String _formatDuration(Duration duration) {
+    var hours = (duration.inMinutes / 60).floor().toString();
+    var minutes = (duration.inMinutes % 60).toString();
+    return "$hours h $minutes min";
   }
 
   Widget _generateDateField({
@@ -141,7 +147,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
             label: const Text("Fälligkeitsdatum"),
             hintText: selectedDate == null
                 ? "Datum auswählen"
-                : selectedDate.toString(),
+                : DateFormat('dd.MM.yyyy').format(selectedDate),
           ),
         ),
       ),
