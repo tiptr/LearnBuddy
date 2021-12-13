@@ -13,36 +13,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: Column(
         children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-                iconSize: 30,
-              ),
-              Expanded(
-                child: TextField(
-                  decoration: const InputDecoration.collapsed(
-                    hintText: 'Name der Aufgabe',
-                    border: InputBorder.none,
-                  ),
-                  controller: textController,
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                  iconSize: 30,
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  BlocProvider.of<TaskCubit>(context)
-                      .createTask(textController.text)
-                      .whenComplete(() => Navigator.pop(context));
-                },
-                icon: const Icon(Icons.save),
-                iconSize: 30,
-              ),
-            ],
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration.collapsed(
+                      hintText: 'Name der Aufgabe',
+                      border: InputBorder.none,
+                    ),
+                    controller: textController,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    BlocProvider.of<TaskCubit>(context)
+                        .createTask(textController.text)
+                        .whenComplete(() => Navigator.pop(context));
+                  },
+                  icon: const Icon(Icons.save),
+                  iconSize: 30,
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -50,5 +53,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => const Size.fromHeight(80);
 }

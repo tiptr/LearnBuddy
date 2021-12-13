@@ -24,8 +24,6 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           margin: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              _generateTextField(context: context),
-              const SizedBox(height: 20.0),
               _generateDateField(
                 selectedDate: selectedDate,
                 context: context,
