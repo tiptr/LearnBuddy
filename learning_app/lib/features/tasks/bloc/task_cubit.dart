@@ -20,9 +20,12 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      emit(TaskLoading());
       var createdTask = await _taskRepository.createTask(createTaskDto);
-      emit(TasksLoaded(tasks: currentState.tasks + [createdTask]));
+
+      // Create a deep copy so the actual state isn't mutated
+      var tasks = List<Task>.from(currentState.tasks);
+
+      emit(TasksLoaded(tasks: tasks + [createdTask]));
     }
   }
 
@@ -31,13 +34,13 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      emit(TaskLoading());
       var updateDto = UpdateTaskDto(title: task.title, done: !task.done);
 
       var success = await _taskRepository.update(task.id, updateDto);
       if (!success) return;
 
-      var tasks = currentState.tasks;
+      // Create a deep copy so the actual state isn't mutated
+      var tasks = List<Task>.from(currentState.tasks);
       int index = tasks.indexWhere((Task t) => t.id == task.id);
       tasks[index] = Task(id: task.id, title: task.title, done: !task.done);
 
@@ -49,12 +52,13 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      emit(TaskLoading());
       var success = await _taskRepository.deleteById(id);
       if (!success) return;
 
-      var tasks =
-          currentState.tasks.where((element) => element.id != id).toList();
+      // Create a deep copy so the actual state isn't mutated
+      var tasks = List<Task>.from(currentState.tasks);
+
+      tasks = tasks.where((element) => element.id != id).toList();
       emit(TasksLoaded(tasks: tasks));
     }
   }

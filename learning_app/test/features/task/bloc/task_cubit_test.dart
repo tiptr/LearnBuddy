@@ -89,7 +89,6 @@ void main() {
         seed: () => TasksLoaded(tasks: const []),
         act: (cubit) async => await cubit.createTask(mockCreateDto),
         expect: () => [
-          TaskLoading(),
           TasksLoaded(
             tasks: [mockTask],
           ),
@@ -114,7 +113,6 @@ void main() {
         seed: () => TasksLoaded(tasks: [mockTask]),
         act: (cubit) async => await cubit.toggleDone(mockTask),
         expect: () => [
-          TaskLoading(),
           TasksLoaded(
             tasks: [
               Task(id: mockTask.id, title: mockTask.title, done: !mockTask.done)
@@ -142,7 +140,6 @@ void main() {
         seed: () => TasksLoaded(tasks: [mockTask]),
         act: (cubit) async => await cubit.deleteTaskById(mockTask.id),
         expect: () => [
-          TaskLoading(),
           TasksLoaded(
             tasks: const [],
           ),
