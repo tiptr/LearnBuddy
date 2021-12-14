@@ -97,7 +97,7 @@ class TaskCard extends StatelessWidget {
       children: [
         Expanded(
           // 70 %
-          flex: 7,
+          flex: 70,
           child: Wrap(
             children: [
               _buildTag("Förderbot", Colors.red),
@@ -108,27 +108,29 @@ class TaskCard extends StatelessWidget {
         ),
         Expanded(
           // 30 %
-          flex: 3,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                children: const [
-                  Icon(Icons.hourglass_top, size: iconSize),
-                  Text("~ 1 h"),
-                ],
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 7.5),
-                child: Row(
+          flex: 30,
+          child: FittedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
                   children: const [
-                    Icon(Icons.dynamic_feed_outlined, size: iconSize),
-                    SizedBox(width: 5.0),
-                    Text("5 / 7")
+                    Icon(Icons.hourglass_top, size: iconSize),
+                    Text("~ 1 h"),
                   ],
                 ),
-              ),
-            ],
+                Container(
+                  margin: const EdgeInsets.only(left: 7.5),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.dynamic_feed_outlined, size: iconSize),
+                      SizedBox(width: 5.0),
+                      Text("5 / 8987")
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         )
       ],
