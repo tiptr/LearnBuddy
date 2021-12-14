@@ -1,20 +1,22 @@
 part of 'timer_bloc.dart';
 
 abstract class TimerState {
-  final Config _config = Config(1, 5, 15, 2);
+  final Config _config = Config(1, 5, 15, 4);
   late int
       _countPhase; // Phase count is between 0 and (2 * countUntilLongerBreak - 1)
   late PomodoroMode _pomodoroMode;
   late int _duration;
 
+  // Every State has to implement these Functions.
+  // Not every method in any state makes sense -> throw InvalidStateException
   TimerState onStarted();
   TimerState onPaused();
   TimerState onResumed();
 
   //onSkip is available everywhere. In TimerRunComplete it equals a dismiss!
   TimerState onSkipPhase() {
-    incrementPhaseCount();
-    PomodoroMode nextMode = getNextPomodoroMode();
+    _countPhase++;
+    PomodoroMode nextMode = _getNextPomodoroMode();
     if (_countPhase == (2 * _config.getCountUntilLongerBreak())) {
       // return to Initial State if Pomodoro Cycle is done.
       return TimerInitial();
@@ -22,12 +24,7 @@ abstract class TimerState {
     return TimerInitialInSession(nextMode, _countPhase);
   }
 
-  // returns true if the session should continue -> _count_phase != 0
-  void incrementPhaseCount() {
-    _countPhase++;
-  }
-
-  PomodoroMode getNextPomodoroMode() {
+  PomodoroMode _getNextPomodoroMode() {
     if (_countPhase % 2 == 0) {
       return PomodoroMode.concentration;
     }
@@ -37,12 +34,15 @@ abstract class TimerState {
     return PomodoroMode.shortBreak;
   }
 
+  //getters
   int getDuration() => _duration;
   PomodoroMode getPomodoroMode() => _pomodoroMode;
   Config getConfig() => _config;
   int getCountPhase() => _countPhase;
 }
 
+// Initial State
+// Start and Skip are available
 class TimerInitial extends TimerState {
   TimerInitial() {
     _countPhase = 0;
@@ -70,6 +70,8 @@ class TimerInitial extends TimerState {
   }
 }
 
+// Timer is in Session, but at the start of a Phase
+// Start and Skip are available
 class TimerInitialInSession extends TimerState {
   TimerInitialInSession(PomodoroMode pomodoroMode, int countPhase) {
     _pomodoroMode = pomodoroMode;
@@ -96,6 +98,8 @@ class TimerInitialInSession extends TimerState {
   }
 }
 
+// Timer is Running
+// Skip and Pause are available
 class TimerRunInProgress extends TimerState {
   TimerRunInProgress(int duration, PomodoroMode pomodoroMode, int countPhase) {
     _pomodoroMode = pomodoroMode;
@@ -122,6 +126,8 @@ class TimerRunInProgress extends TimerState {
   }
 }
 
+// The timer is in Pause
+// Skip and Resume are available
 class TimerRunPause extends TimerState {
   TimerRunPause(int duration, PomodoroMode pomodoroMode, int countPhase) {
     _pomodoroMode = pomodoroMode;
@@ -149,6 +155,8 @@ class TimerRunPause extends TimerState {
   }
 }
 
+// The timer runs into negaitve numbers
+// only skip is available
 class TimerRunComplete extends TimerState {
   TimerRunComplete(int duration, PomodoroMode pomodoroMode, int countPhase) {
     _duration = duration;
