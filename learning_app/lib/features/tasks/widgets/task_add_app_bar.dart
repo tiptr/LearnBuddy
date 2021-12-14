@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController textController;
 
-  const CustomAppBar({Key? key, required this.textController})
+  const TaskAddAppBar({Key? key, required this.textController})
       : super(key: key);
 
   @override

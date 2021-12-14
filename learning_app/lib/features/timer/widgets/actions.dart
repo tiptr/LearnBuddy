@@ -15,6 +15,7 @@ class TimerActions extends StatelessWidget {
           children: [
             if (state is TimerInitial) ...[
               FloatingActionButton(
+                heroTag: "TimerInitialPlayButton",
                 child: const Icon(Icons.play_arrow),
                 onPressed: () => context
                     .read<TimerBloc>()
@@ -22,6 +23,7 @@ class TimerActions extends StatelessWidget {
                     .add(TimerStarted(duration: state.getDuration())),
               ),
               FloatingActionButton(
+                heroTag: "TimerInitialSkipButton",
                 child: const Icon(Icons.skip_next),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerSkip()),
@@ -29,11 +31,13 @@ class TimerActions extends StatelessWidget {
             ],
             if (state is TimerRunInProgress) ...[
               FloatingActionButton(
+                heroTag: "TimerInProgressPauseButton",
                 child: const Icon(Icons.pause),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerPaused()),
               ),
               FloatingActionButton(
+                heroTag: "TimerInProgressSkipButton",
                 child: const Icon(Icons.skip_next),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerSkip()),
@@ -41,11 +45,13 @@ class TimerActions extends StatelessWidget {
             ],
             if (state is TimerRunPause) ...[
               FloatingActionButton(
+                heroTag: "TimerPausePlayButton",
                 child: const Icon(Icons.play_arrow),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerResumed()),
               ),
               FloatingActionButton(
+                heroTag: "TimerPauseSkipButton",
                 child: const Icon(Icons.skip_next),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerSkip()),
@@ -53,6 +59,7 @@ class TimerActions extends StatelessWidget {
             ],
             if (state is TimerRunComplete) ...[
               FloatingActionButton(
+                heroTag: "TimerCompleteSkipButton",
                 child: const Icon(Icons.skip_next),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerSkip()),
@@ -60,6 +67,7 @@ class TimerActions extends StatelessWidget {
             ],
             if (state is TimerInitialInSession) ...[
               FloatingActionButton(
+                heroTag: "TimerInitialInSessionPlayButton",
                 child: const Icon(Icons.play_arrow),
                 onPressed: () => context
                     .read<TimerBloc>()
@@ -67,6 +75,7 @@ class TimerActions extends StatelessWidget {
                     .add(TimerStarted(duration: state.getDuration())),
               ),
               FloatingActionButton(
+                heroTag: "TimerInitialInSessionSkipButton",
                 child: const Icon(Icons.skip_next),
                 onPressed: () =>
                     context.read<TimerBloc>().add(const TimerSkip()),
