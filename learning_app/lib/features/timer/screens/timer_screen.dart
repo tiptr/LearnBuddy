@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
+import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
-import 'package:learning_app/features/timer/widgets/background.dart'
-    show Background;
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -20,43 +20,136 @@ class TimerScreen extends StatelessWidget {
 
 class TimerView extends StatelessWidget {
   const TimerView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Timer')),
-      body: Stack(
-        children: [
-          const Background(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 100.0),
-                child: Center(child: TimerText()),
-              ),
-              TimerActions(),
-            ],
-          ),
-        ],
-      ),
+    return Stack(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const <Widget>[
+            // Just for Debugging
+            PomodoroState(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 50.0),
+              child: TimerWidget(),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+                child: PomodoroPhaseCountWidget()),
+            TimerActions(),
+          ],
+        ),
+      ],
     );
   }
 }
 
-class TimerText extends StatelessWidget {
-  const TimerText({Key? key}) : super(key: key);
+class PomodoroPhaseCountWidget extends StatelessWidget {
+  const PomodoroPhaseCountWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final duration = context.select((TimerBloc bloc) => bloc.state.duration);
+    final currentStep =
+        context.select((TimerBloc bloc) => bloc.state.getCountPhase());
+    final totalSteps = context
+        .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCount());
+    return StepProgressIndicator(
+        totalSteps: totalSteps,
+        currentStep: currentStep + 1,
+        // index starts with 1 apparently :(
+        selectedColor: Colors.blue,
+        size: 30,
+        padding: 10,
+        customStep: (index, color, _) {
+          return Container(
+            width: 30.0,
+            height: 30.0,
+            decoration: BoxDecoration(
+              color: color == Colors.blue ? Colors.blue : Colors.grey,
+              shape: BoxShape.circle,
+            ),
+          );
+        });
+  }
+}
+
+class TimerWidget extends StatelessWidget {
+  const TimerWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int duration = context.select((TimerBloc bloc) => bloc.state.getDuration());
     //select only rebuilds the Widget if the selected property changes: here duration.
     // If the TimerState changes, TimerText won't rebuild
+    final sign = duration.sign;
+    duration = duration * sign; // Keep duration positive
     final minutesStr =
         ((duration / 60) % 60).floor().toString().padLeft(2, '0');
     final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
-    return Text(
-      '$minutesStr:$secondsStr',
-      style: Theme.of(context).textTheme.headline1,
-    );
+    final signStr = sign == -1 ? "- " : "";
+    final phaseDuration = context.select((TimerBloc bloc) => bloc.state
+        .getConfig()
+        .getPomodoroMinuets()[bloc.state.getPomodoroMode()]);
+    final pomoState = getPomoStateText(context);
+    bool showProgressBar =
+        context.select((TimerBloc bloc) => bloc.state is! TimerRunComplete);
+
+    return SizedBox(
+        width: 200,
+        height: 200,
+        child: Stack(fit: StackFit.expand, children: [
+          Visibility(
+              visible: showProgressBar,
+              child: CircularProgressIndicator(
+                value: duration / phaseDuration,
+                strokeWidth: 15,
+              )),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  pomoState,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+              // This text should be in the middle of the circular progress bar
+              Text('$signStr$minutesStr:$secondsStr',
+                  style: Theme.of(context).textTheme.headline2),
+            ],
+          )
+        ]));
+  }
+
+  String getPomoStateText(BuildContext context) {
+    PomodoroMode pomoState =
+        context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
+    if (pomoState == PomodoroMode.concentration) return "Concentration";
+    if (pomoState == PomodoroMode.shortBreak) return "Short Break";
+    return "Long Break";
+  }
+}
+
+// Displays the Pomodoro State: in  {concentration, shortBreak, longBreak)
+class PomodoroState extends StatelessWidget {
+  const PomodoroState({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String timerState =
+        context.select((TimerBloc bloc) => bloc.state.toString());
+    //timerState = timerState.substring(0,20);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // This is just for Debugging
+          Text(
+            timerState,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ]);
   }
 }
