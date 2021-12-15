@@ -33,7 +33,7 @@ class LeftShoulder extends StatefulWidget {
 }
 
 class _LeftShoulderState extends State<LeftShoulder> {
-  bool _selected = true;
+  bool _selected = false;
 
   void changeSelection(){
     setState(() {
@@ -44,17 +44,19 @@ class _LeftShoulderState extends State<LeftShoulder> {
 
   @override
   Widget build(BuildContext context) {
-      String selectedString = _selected ? '' : 'not_';
+      String assetString = _selected ? 'assets/body_parts_activated/l_shoulder.svg' :
+                                       'assets/body_parts_not_activated/l_shoulder.svg';
       return Positioned(
           top: 0,
           left: 72.3388671875,
-          child: InkWell(
+          child: GestureDetector(
             child: Transform(
               transform: Matrix4.rotationY(math.pi),
-              child: SvgPicture.asset('assets/body_parts_${selectedString}activated/l_shoulder.svg',
+              child: SvgPicture.asset(assetString,
                   semanticsLabel: 'l_shoulder'),
             ),
             onTap: () => print("dskjhflkdjf"),
+            behavior: HitTestBehavior.translucent,
           ));
 
   }

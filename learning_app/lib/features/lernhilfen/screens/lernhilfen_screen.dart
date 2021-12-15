@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:learning_app/features/lernhilfen/screens/test.dart';
 import 'package:learning_app/features/lernhilfen/widgets/ankles.dart';
 import 'package:learning_app/features/lernhilfen/widgets/breasts.dart';
 import 'package:learning_app/features/lernhilfen/widgets/elbows.dart';
@@ -27,12 +27,28 @@ class LernhilfenScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      // ignore: prefer_const_literals_to_create_immutables
       children: [
-        Spacer(),
-        Center(
+        const Spacer(),
+        const Center(
           child: Body(),
         ),
-        Spacer(),
+        const Spacer(),
+        Center(
+          child: GestureDetector(
+            child: SizedBox(
+              height:100,
+              width: 100,
+              child: CustomPaint(
+    size: Size(100, (100*1.2804048760196658).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+    painter: RPSCustomPainter(),
+)
+              
+            ),
+            onTap: () => print("TESTERTEST"),
+          ),
+        ),
+        const Spacer(),
       ],
     );
   }
@@ -52,42 +68,26 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator Body_countour_splitted_namedWidget - COMPONENT
-    return Container(
+    return SizedBox(
         width: 134,
         height: 252,
-
         child: Stack(
-            children: <Widget>[
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Container(
-                      width: 134,
-                      height: 252,
-                      decoration: const BoxDecoration(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                      ),
-                      child: Stack(
-                          children: const <Widget>[
-                             Hands(),
-                             Wrists(),
-                             Underarms(),
-                             Elbows(),
-                             UpperArms(),
-                             Shoulders(),
-                             Breasts(),
-                             Waist(),
-                             Head(),
-                             Hip(),
-                             Femorals(),
-                             Knees(),
-                             Shanks(),
-                             Ankles(),
-                             Foot(),
-                          ]
-                      )
-                  )
-              ),
+            children: const <Widget>[
+               Hands(),
+               Wrists(),
+               Underarms(),
+               Elbows(),
+               UpperArms(),
+               Shoulders(),
+               Breasts(),
+               Waist(),
+               Head(),
+               Hip(),
+               Femorals(),
+               Knees(),
+               Shanks(),
+               Ankles(),
+               Foot(),
             ]
         )
     );
