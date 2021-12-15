@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 
 class TaskAddScreen extends StatelessWidget {
   TaskAddScreen({Key? key}) : super(key: key);
@@ -25,7 +26,9 @@ class TaskAddScreen extends StatelessWidget {
             InkWell(
               onTap: () => {
                 BlocProvider.of<TaskCubit>(context)
-                    .createTask(_controller.text)
+                    .createTask(
+                      CreateTaskDto(title: _controller.text, done: false),
+                    )
                     .whenComplete(() => Navigator.pop(context))
               },
               child: _submitButtonWidget(context),

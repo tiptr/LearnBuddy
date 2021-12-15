@@ -24,7 +24,7 @@ class TaskCard extends StatelessWidget {
     return Dismissible(
         key: Key(_task.id.toString()),
         onDismissed: (_) =>
-            BlocProvider.of<TaskCubit>(context).deleteTask(_task.id!),
+            BlocProvider.of<TaskCubit>(context).deleteTaskById(_task.id),
         child: Card(
           margin: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(
