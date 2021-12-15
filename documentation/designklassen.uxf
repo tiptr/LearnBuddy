@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>804</x>
+      <y>492</y>
+      <w>100</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>LearningAid
+-
+String _title
+Date _create_on
+bool _done
+-
+get_learning_card_count(): int
+Task(String title, String content, Timespan duration, Date date)
+logTime(TimerInterface ti)
+toggleDone()
+addTag(TagInterface)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>788</x>
+      <y>596</y>
+      <w>124</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>BodypartLearning
+-
+List&lt;LearningCard&gt; _list_to_learn
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>848</x>
+      <y>560</y>
+      <w>12</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>668</y>
+      <w>100</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>LearningCard
+-
+String _content
+bool _show
+Bodypart _bodypart</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1288</x>
+      <y>892</y>
+      <w>96</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>TimerConfig
+-
+int _concentrationMinutes
+int _breakMinutes
+int _longerBreakMinutes
+int _countUntilLongerBreak</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1284</x>
+      <y>784</y>
+      <w>100</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Timer
+-
+TimerState _timerState
+List&lt;LogItems&gt; _logItems
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1028</x>
+      <y>312</y>
+      <w>100</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>template=T
+Repository
+--
+fetch(): Future&lt;List&lt;T&gt;&gt;
+update():Future&lt;T&gt;
+insert(): Future&lt;T&gt;
+delete(): Furture&lt;bool&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>980</x>
+      <y>352</y>
+      <w>88</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+&lt;&lt;bind&gt;&gt; T: Tag</panel_attributes>
+    <additional_attributes>200.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>940</x>
+      <y>392</y>
+      <w>100</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>TagRepository
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>864</x>
+      <y>336</y>
+      <w>172</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+
+&lt;&lt;bind&gt;&gt; T: LearningAid</panel_attributes>
+    <additional_attributes>410.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>824</x>
+      <y>392</y>
+      <w>100</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>LearningAidRepository
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>352</y>
+      <w>60</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+&lt;&lt;bind&gt;&gt; T: Task</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1076</x>
+      <y>392</y>
+      <w>100</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>TaskRepository
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1116</x>
+      <y>340</y>
+      <w>164</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+&lt;&lt;bind&gt;&gt; T: Leisure</panel_attributes>
+    <additional_attributes>10.0;10.0;390.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1224</x>
+      <y>392</y>
+      <w>100</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>LeisureRepository
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>804</x>
+      <y>288</y>
+      <w>524</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Repositories</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1300</x>
+      <y>640</y>
+      <w>100</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>TimerInterface
+--
+start()
+pause()
+resetCycle()
+resetSession()
+skipSession()
+addLoggingItem()
+removeLoggingItem(LogItem)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>924</x>
+      <y>492</y>
+      <w>132</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Tag
+--
+Color _color
+String _title
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1156</x>
+      <y>580</y>
+      <w>32</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+</panel_attributes>
+    <additional_attributes>60.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>444</y>
+      <w>68</w>
+      <h>264</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Enum&gt;&gt;
+Bodypart
+-
+upper_head
+left_ear
+right_ear
+face
+neck
+left_shoulder
+right_shoulder
+left_upper_arm
+right_upper_arm
+left_elbow
+right_elbow
+left_underarm
+right_underarm
+left_wrist
+right_wrist
+left_palm
+right_palm
+left_thumb
+right_thumb
+left_finger
+right_finger
+breast
+waist
+hip
+left_femoral
+right_femoral
+left_knee
+right_knee
+left_shin
+right_shin
+left_ankle
+right_ankle
+left_toe
+right_toe
+left_heel
+right_heel
+left_foot_middle
+right_foot_middle
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>848</x>
+      <y>628</y>
+      <w>12</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1076</x>
+      <y>492</y>
+      <w>132</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>Task
+--
+List&lt;Task&gt; _subTasks
+List&lt;Tag&gt; _tags
+Timespan _exptected_duration
+Timespan _logged_duration
+Date _date
+List&lt;LearningAid&gt; _learning_aid
+--
+Task(String title, String content, Timespan duration, Date date)
+toggleDone()
+addSubTask(Task subTask)
+addTag(TagInterface)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1328</x>
+      <y>844</y>
+      <w>12</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1152</x>
+      <y>656</y>
+      <w>76</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>LogItems
+--
+push_time(Timespan ts)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1208</x>
+      <y>676</y>
+      <w>100</w>
+      <h>116</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+uses</panel_attributes>
+    <additional_attributes>10.0;10.0;230.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1340</x>
+      <y>708</y>
+      <w>12</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1440</x>
+      <y>892</y>
+      <w>96</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>UserProfile
+-
+String _name
+int _age
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1304</x>
+      <y>1008</y>
+      <w>68</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>StandardTimerConfig</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1328</x>
+      <y>948</y>
+      <w>12</w>
+      <h>68</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1068</x>
+      <y>204</y>
+      <w>28</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=provide
+</panel_attributes>
+    <additional_attributes>10.0;210.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1064</x>
+      <y>116</y>
+      <w>32</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=)-
+m1=require
+</panel_attributes>
+    <additional_attributes>20.0;210.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1036</x>
+      <y>96</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Bloc</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1260</x>
+      <y>868</y>
+      <w>316</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>symbol=component
+Settings</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1252</x>
+      <y>492</y>
+      <w>132</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Leisure
+--
+String _title
+List&lt;Tag&gt; _tags
+Image _img
+Timespan _duration
+String description
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>984</x>
+      <y>412</y>
+      <w>12</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1124</x>
+      <y>412</y>
+      <w>12</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1276</x>
+      <y>412</y>
+      <w>12</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>844</x>
+      <y>412</y>
+      <w>12</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
