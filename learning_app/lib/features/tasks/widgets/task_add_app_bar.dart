@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 
 class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController textController;
@@ -38,7 +39,12 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   onPressed: () {
                     BlocProvider.of<TaskCubit>(context)
-                        .createTask(textController.text)
+                        .createTask(
+                          CreateTaskDto(
+                            title: textController.text,
+                            done: false,
+                          ),
+                        )
                         .whenComplete(() => Navigator.pop(context));
                   },
                   icon: const Icon(Icons.save),
