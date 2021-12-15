@@ -11,7 +11,7 @@ import 'package:learning_app/features/lernhilfen/widgets/head.dart';
 import 'package:learning_app/features/lernhilfen/widgets/hip.dart';
 import 'package:learning_app/features/lernhilfen/widgets/knees.dart';
 import 'package:learning_app/features/lernhilfen/widgets/shanks.dart';
-import 'package:learning_app/features/lernhilfen/widgets/shoulders.dart';
+import 'package:learning_app/features/lernhilfen/widgets/shoulders_test.dart';
 import 'package:learning_app/features/lernhilfen/widgets/underarms.dart';
 import 'package:learning_app/features/lernhilfen/widgets/upper_arms.dart';
 import 'package:learning_app/features/lernhilfen/widgets/waist.dart';
@@ -35,18 +35,7 @@ class LernhilfenScreen extends StatelessWidget {
         ),
         const Spacer(),
         Center(
-          child: GestureDetector(
-            child: SizedBox(
-              height:100,
-              width: 100,
-              child: CustomPaint(
-    size: Size(100, (100*1.2804048760196658).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-    painter: RPSCustomPainter(),
-)
-              
-            ),
-            onTap: () => print("TESTERTEST"),
-          ),
+          child: LeftShoulder(),
         ),
         const Spacer(),
       ],
