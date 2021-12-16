@@ -45,7 +45,7 @@ class TagCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 30,
+              flex: 15,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: const [
@@ -67,18 +67,27 @@ class TagCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 30,
+              flex: 45,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(
-                    Icons.palette_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                  IconButton(
+                    onPressed: () {
+                      print("TODO: Handle palette click");
+                    },
+                    icon: Icon(
+                      Icons.palette_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                  const SizedBox(width: 20.0),
-                  Icon(
-                    Icons.delete_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                  IconButton(
+                    onPressed: () {
+                      print("TODO: Handle delete click");
+                    },
+                    icon: Icon(
+                      Icons.delete_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   )
                 ],
               ),
