@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/tags/models/tag.dart';
+import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
 
@@ -73,7 +74,7 @@ class TagCard extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      print("TODO: Handle palette click");
+                      logger.d("TODO: Handle palette click");
                     },
                     icon: Icon(
                       Icons.palette_outlined,
@@ -82,7 +83,7 @@ class TagCard extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      print("TODO: Handle delete click");
+                      logger.d("TODO: Handle delete click");
                     },
                     icon: Icon(
                       Icons.delete_outlined,

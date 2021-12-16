@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/tags/models/tag.dart';
 import 'package:learning_app/features/tags/widgets/tag_app_bar.dart';
 import 'package:learning_app/features/tags/widgets/tag_card.dart';
+import 'package:learning_app/util/logger.dart';
 
 class TagOverviewScreen extends StatelessWidget {
   final tags = <Tag>[
@@ -29,7 +30,7 @@ class TagOverviewScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToTagAddScreen",
         onPressed: () {
-          print("TODO: Open tag creation page");
+          logger.d("TODO: Open tag creation page");
         },
         child: const Icon(Icons.add),
       ),

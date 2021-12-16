@@ -5,6 +5,7 @@ import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:logger/logger.dart';
 import 'features/lernhilfen/screens/lernhilfen_screen.dart';
 import 'features/timer/screens/timer_screen.dart';
 
@@ -17,6 +18,8 @@ const List<Widget> _pages = <Widget>[
 ];
 
 void main() {
+  Logger.level = Level.debug;
+
   runApp(
     MultiBlocProvider(
       providers: [
