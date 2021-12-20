@@ -6,8 +6,8 @@ class LeasureCategory extends Equatable {
   final int starCount;
   final int countAids;
 
-
-  const LeasureCategory(this.title, this.assetString, this.starCount, this.countAids);
+  const LeasureCategory(
+      this.title, this.assetString, this.starCount, this.countAids);
 
   @override
   List<Object?> get props => [title, assetString];

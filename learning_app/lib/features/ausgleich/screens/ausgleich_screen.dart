@@ -12,15 +12,15 @@ class AusgleichScreen extends StatelessWidget {
     return BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
         bloc: LeasureCategoryCubit(),
         builder: (context, state) {
-      return ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: state.leasureCategories.length,
-        itemBuilder: (BuildContext ctx, int idx) =>
-            LeasureCategoryCard(leasureCategory: state.leasureCategories[idx]),
-      );
-    });
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.leasureCategories.length,
+            itemBuilder: (BuildContext ctx, int idx) => LeasureCategoryCard(
+                leasureCategory: state.leasureCategories[idx]),
+          );
+        });
   }
 }
 
@@ -47,22 +47,19 @@ class LeasureCategoryCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 70,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: StartCount(leasureCategory.starCount),
-                      ),
-                      LeasureCategoryDescription(
-                        title: leasureCategory.title,
-                        countExercises: leasureCategory.countAids
-                      )
-                    ],
-                  )
-                  ),
-
+                    flex: 70,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: StartCount(leasureCategory.starCount),
+                        ),
+                        LeasureCategoryDescription(
+                            title: leasureCategory.title,
+                            countExercises: leasureCategory.countAids)
+                      ],
+                    )),
                 Expanded(
                     flex: 30,
                     child:
@@ -77,9 +74,9 @@ class LeasureCategoryCard extends StatelessWidget {
 class StartCount extends StatelessWidget {
   final int count;
 
-  const StartCount(this.count, {
+  const StartCount(
+    this.count, {
     Key? key,
-    
   }) : super(key: key);
 
   @override
@@ -87,24 +84,20 @@ class StartCount extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Icon(
-          Icons.star,
-          color: Colors.purple
-        ),
+        const Icon(Icons.star, color: Colors.purple),
         Text(count.toString())
       ],
     );
   }
 }
 
-
-
 class LeasureCategoryDescription extends StatelessWidget {
   final String title;
-  final  int countExercises;
+  final int countExercises;
 
-
-  const LeasureCategoryDescription({Key? key, required this.title, required this.countExercises}) : super(key: key);
+  const LeasureCategoryDescription(
+      {Key? key, required this.title, required this.countExercises})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,17 +105,15 @@ class LeasureCategoryDescription extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-          Text(
-              title,
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-            ),
-            Text(
-              "$countExercises Übungen",
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
-            )
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+        ),
+        Text(
+          "$countExercises Übungen",
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+        )
       ],
-      );
+    );
   }
 }
