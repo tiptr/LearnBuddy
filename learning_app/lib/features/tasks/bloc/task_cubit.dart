@@ -1,38 +1,65 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/task_state.dart';
+import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 
-class TaskCubit extends Cubit<List<Task>> {
-  final _repository = TaskRepository();
+class TaskCubit extends Cubit<TaskState> {
+  final TaskRepository _taskRepository;
 
-  TaskCubit() : super([]);
+  TaskCubit(this._taskRepository) : super(InitialTaskState());
 
   Future<void> loadTasks() async {
-    var aufgaben = await _repository.fetchTasks();
-    emit(aufgaben);
+    emit(TaskLoading());
+    var tasks = await _taskRepository.loadTasks();
+    emit(TasksLoaded(tasks: tasks));
   }
 
-  // Toggles the done flag in a aufgabe in the cubit state
-  Future<void> updateTask(Task aufgabe) async {
-    aufgabe.done = !aufgabe.done;
-    await _repository.update(aufgabe);
+  Future<void> createTask(CreateTaskDto createTaskDto) async {
+    final currentState = state;
 
-    int index = state.indexWhere((Task t) => t.id == aufgabe.id);
-    state[index] = aufgabe;
+    if (currentState is TasksLoaded) {
+      var createdTask = await _taskRepository.createTask(createTaskDto);
 
-    emit(state.toList());
+      // Create a deep copy so the actual state isn't mutated
+      var tasks = List<Task>.from(currentState.tasks);
+
+      emit(TasksLoaded(tasks: tasks + [createdTask]));
+    }
   }
 
-  Future<void> createTask(String title) async {
-    var aufgabeData = Task(title: title, done: false);
-    var createdTask = await _repository.insertTask(aufgabeData);
+  // Toggles the done flag in a task in the cubit state
+  Future<void> toggleDone(Task task) async {
+    final currentState = state;
 
-    emit(state + [createdTask]);
+    if (currentState is TasksLoaded) {
+      var updateDto = UpdateTaskDto(title: task.title, done: !task.done);
+
+      var success = await _taskRepository.update(task.id, updateDto);
+      if (!success) return;
+
+      // Create a deep copy so the actual state isn't mutated
+      var tasks = List<Task>.from(currentState.tasks);
+      int index = tasks.indexWhere((Task t) => t.id == task.id);
+      tasks[index] = Task(id: task.id, title: task.title, done: !task.done);
+
+      emit(TasksLoaded(tasks: tasks));
+    }
   }
 
-  Future<void> deleteTask(int id) async {
-    await _repository.delete(id);
+  Future<void> deleteTaskById(int id) async {
+    final currentState = state;
 
-    emit(state.where((element) => element.id != id).toList());
+    if (currentState is TasksLoaded) {
+      var success = await _taskRepository.deleteById(id);
+      if (!success) return;
+
+      // Create a deep copy so the actual state isn't mutated
+      var tasks = List<Task>.from(currentState.tasks);
+
+      tasks = tasks.where((element) => element.id != id).toList();
+      emit(TasksLoaded(tasks: tasks));
+    }
   }
 }
