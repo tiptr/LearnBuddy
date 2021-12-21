@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'features/learning_aids/screens/learning_aids_screen.dart';
+import 'package:logger/logger.dart';
 import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
@@ -16,11 +18,20 @@ const List<Widget> _pages = <Widget>[
 ];
 
 void main() {
+  Logger.level = Level.debug;
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<TaskCubit>(
-          create: (context) => TaskCubit(),
+          create: (context) {
+            var cubit = TaskCubit(TaskRepository());
+
+            // Loading tasks initially is probably a good idea
+            // since many features depend on the tasks.
+            cubit.loadTasks();
+            return cubit;
+          },
         ),
       ],
       child: const MyApp(),
@@ -36,7 +47,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Lernbuddy',
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
+        primarySwatch: null,
       ),
       home: const MyHomePage(),
     );

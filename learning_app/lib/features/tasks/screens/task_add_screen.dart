@@ -1,53 +1,82 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tags/screens/tag_overview_screen.dart';
+import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
+import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
+import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
+import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
 
-class TaskAddScreen extends StatelessWidget {
-  TaskAddScreen({Key? key}) : super(key: key);
+class TaskAddScreen extends StatefulWidget {
+  const TaskAddScreen({Key? key}) : super(key: key);
 
-  // Controller that handles text input events and state
-  final _controller = TextEditingController();
+  @override
+  State<TaskAddScreen> createState() => _TaskAddScreenState();
+}
+
+class _TaskAddScreenState extends State<TaskAddScreen> {
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  DateTime? selectedDate;
+  Duration? selectedDuration;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Todo"),
-      ),
-      body: Container(
-        margin: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-            ),
-            const SizedBox(height: 15.0),
-            InkWell(
-              onTap: () => {
-                BlocProvider.of<TaskCubit>(context)
-                    .createTask(_controller.text)
-                    .whenComplete(() => Navigator.pop(context))
-              },
-              child: _submitButtonWidget(context),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _submitButtonWidget(BuildContext context) {
-    return Ink(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: 50.0,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      child: const Center(
-        child: Text(
-          "Speichern",
-          style: TextStyle(color: Colors.white),
+      appBar: TaskAddAppBar(textController: _titleController),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              DateInputField(
+                selectedDate: selectedDate,
+                onSelect: (DateTime datetime) {
+                  setState(() {
+                    selectedDate = datetime;
+                  });
+                },
+              ),
+              const SizedBox(height: 20.0),
+              DurationInputField(
+                selectedDuration: selectedDuration,
+                onSelect: (Duration duration) {
+                  setState(() {
+                    selectedDuration = duration;
+                  });
+                },
+              ),
+              const SizedBox(height: 20.0),
+              TextInputField(
+                label: "Beschreibung",
+                hintText: "Text eingeben",
+                iconData: Icons.book_outlined,
+                textController: _descriptionController,
+              ),
+              // Only for navigation to tags
+              const SizedBox(height: 40.0),
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TagOverviewScreen(),
+                  ),
+                ),
+                child: Ink(
+                    width: 200,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.purple,
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Tag Overview",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );

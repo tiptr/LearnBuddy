@@ -36,7 +36,7 @@ In Android Studio kann jetzt im [Android Device Emulator](https://docs.flutter.d
 
 Als Projekt kann das komplette Repository oder das App-Verzeichnis 'learning_app' geöffnet werden.
 Falls angezeigt wird, dass keine Dart-Konfiguration vorliegt, dies ignorieren und unter `Settings -> Languages & Frameworks -> Flutter` den `Flutter SDK path` entsprechend der Installation eintragen.
-Daraufhin wird Dart automatisch erkann.
+Daraufhin wird Dart automatisch erkannt.
 
 Unter `Edit Configurations` kann nun eine Run-Konfigration eingerichtet werden: Dafür über `+` eine Konfiguration mit der `Flutter` Vorlage erstellen und `\learning_app\lib\main.dart` als Dart Entrypoint auswählen. Auch der Debugging-Modus sollte damit bereits funktionieren.
 
