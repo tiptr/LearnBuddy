@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
 
 const double iconSize = 18.0;
 
@@ -40,7 +41,7 @@ class TaskCard extends StatelessWidget {
                 const SizedBox(height: 7.5),
                 _subtitleRow(context),
                 const SizedBox(height: 5.0),
-                _tagRow()
+                _tagRow(context)
               ],
             ),
           ),
@@ -61,8 +62,8 @@ class TaskCard extends StatelessWidget {
                 child: Checkbox(
                   value: _task.done,
                   activeColor: Theme.of(context).colorScheme.primary,
-                  onChanged: (bool? _) {
-                    BlocProvider.of<TaskCubit>(context).toggleDone(_task);
+                  onChanged: (bool? _) async {
+                    await BlocProvider.of<TaskCubit>(context).toggleDone(_task);
                   },
                 ),
               ),
@@ -92,7 +93,8 @@ class TaskCard extends StatelessWidget {
     );
   }
 
-  Widget _tagRow() {
+  Widget _tagRow(BuildContext context) {
+
     return Row(
       children: [
         Expanded(
@@ -114,9 +116,9 @@ class TaskCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(
-                  children: const [
-                    Icon(Icons.hourglass_top, size: iconSize),
-                    Text("~ 1 h"),
+                  children: [
+                    const Icon(Icons.hourglass_top, size: iconSize),
+                    TimeLoggingWidget(task: _task),
                   ],
                 ),
                 Container(
@@ -150,5 +152,29 @@ class TaskCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+
+class TimeLoggingWidget extends StatelessWidget {
+  final Task task;
+
+  const TimeLoggingWidget({required this.task, Key? key}) : super(key: key);
+
+  String _printDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+  var bloc = BlocProvider.of<TimeLoggingBloc>(context);
+  Duration duration = bloc.repository.read(task.id); 
+  String string = _printDuration(duration);
+  return Text(string);
   }
 }

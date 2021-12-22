@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:learning_app/features/ausgleich/screens/ausgleich_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
+import 'package:learning_app/services/time_logging/models/time_logging_object.dart';
+import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
 import 'package:logger/logger.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'features/lernhilfen/screens/lernhilfen_screen.dart';
 import 'features/timer/screens/timer_screen.dart';
 
@@ -17,7 +22,9 @@ const List<Widget> _pages = <Widget>[
   LernhilfenScreen(),
 ];
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TimeLoggingObjectAdapter());
   Logger.level = Level.debug;
 
   runApp(
@@ -32,6 +39,14 @@ void main() {
             cubit.loadTasks();
             return cubit;
           },
+          
+        ),
+        BlocProvider<TimeLoggingBloc>(
+          create: (context) {
+            var bloc = TimeLoggingBloc(TimeLoggingRepository());
+            return bloc;
+          },
+          
         ),
       ],
       child: const MyApp(),

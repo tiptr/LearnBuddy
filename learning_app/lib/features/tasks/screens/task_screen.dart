@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/task_state.dart';
 import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
+import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<TimeLoggingBloc>(context);
+     return FutureBuilder(
+      future: bloc.init(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError){
+            return Text(snapshot.error.toString());
+          }
+          else {
+            return const TaskScreenContent();
+          }
+        }
+        return Text(snapshot.connectionState.toString()) ;
+      },
+    );
+  }
+}
+
+
+
+class TaskScreenContent extends StatelessWidget {
+  const TaskScreenContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
