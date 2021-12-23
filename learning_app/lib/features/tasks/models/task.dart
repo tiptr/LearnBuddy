@@ -1,11 +1,17 @@
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/categories/models/category.dart';
 
 class Task extends Equatable {
   final int id;
   final String title;
   final bool done;
+  final Category category;
 
-  const Task({required this.id, required this.title, required this.done});
+  const Task(
+      {required this.id,
+      required this.title,
+      required this.done,
+      required this.category});
 
   @override
   String toString() {
