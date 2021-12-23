@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class Tag extends Equatable {
+class Category extends Equatable {
   final int id;
   final String name;
   final int color;
 
-  const Tag({required this.id, required this.name, required this.color});
+  const Category({required this.id, required this.name, required this.color});
 
   @override
   String toString() {
