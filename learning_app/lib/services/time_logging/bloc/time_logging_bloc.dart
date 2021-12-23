@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
 
 
