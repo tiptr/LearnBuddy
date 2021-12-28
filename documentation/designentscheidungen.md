@@ -25,3 +25,88 @@ Sehr wichtig für die Entwicklung der App war der Support für sämtliche Plattf
 Wie auch in typischen Web-Anwendungen in *Angular*, *React*, etc. ist es auch in *Flutter* von enormer Wichtigkeit, eine gute Struktur zur Zustandsverwaltung in einer Anwendung zu implementieren. Neben der besseren Struktur hat eine gute Zustandsverwaltung auch oft mit Render-Zyklen der UI-Schicht zu tun, wobei viel Platz für Optimierung besteht. Im Kontext *Flutter* ist hierfür das sogennante *BLoC-Pattern* eines der beliebtesten Patterns. *BLoC* steht hierbei für *Business Logic Component* und stellt Systemkomponenten dar, in denen die Anwendungslogik abgekapselt von den Domänenmodellen und der Präsentationsschicht Platz findet. Derartige *BLoCs* bilden somit die View-Model-Schicht der MVVM-Architektur. 
 
 Da das *BLoC-Pattern* ein sehr beliebtes Pattern in der *Flutter*-Entwicklung darstellt, exisitert eine Library namens *flutter-bloc*, welche es den Entwicklern ermöglicht, schnell und übersichtlich streambasierte *Business Logic Components* zu bauen, die einerseits hochperformant und optimiert und andererseits gut testbar sind.
+
+### Datenhaltung
+
+#### Betrachtete Möglichkeiten
+
+##### Relationale Datenbanken
+
+###### SQfLite
+
+Grundlegender Adapter für SQLite Datenbanken mit Flutter.
+
+**Pro**
+
+- Basiert auf ausgereifter SQLite Datenbank
+- Viel Dokumentation etc.
+
+**Contra**
+
+- Lediglich grundlegende DB-Schnittstelle: Keine Adapter für automatische Typisierung, Query-Generation etc.
+- Keine Unterstützung für Migrationen
+- Viel unnötiger Entwicklungsaufwand
+
+###### Drift (früher Moor)
+
+**Pro**
+
+- ORM mit stark getypten Models
+- Unterstützung von Schema-Migrationen für langfristige Datenhaltung
+- Query-API und ergänzende Möglichkeit für manuelles SQL
+- Ausgereift, viel Dokumentation, bekannt
+- Aktiv gewartet
+
+**Contra**
+
+- Etwas mehr Entwicklungsaufwand als z.B. Hydrated BLoC
+
+###### Floor
+
+**Pro**
+
+- ORM mit stark getypten Models
+- Unterstützung von Schema-Migrationen für langfristige Datenhaltung
+- Schönere und bekanntere Entity-Definition als Drift
+
+**Contra**
+
+- Weniger ausgereift als Drift
+- Queries werden ausschließlich manuell per SQL geschrieben
+
+##### NoSQL Lösungen
+
+###### Hive
+
+**Pro**
+
+- Sehr einfaches Framework, wenig Boilerplate
+- Häufig eingesetzt
+
+**Contra**
+
+- Keine Queriesprache: Filter etc. erst in Dart umsetzbar
+- Keine Unterstützung für Migrations: Änderungen in Produktion werden sehr hässlich, da unter anderem die Typen von immutable sind: Es muss für jede Änderung eine neue Culumn angelegt werden
+
+###### Hydrated BLoC
+
+Einfache Lösung zur Persistierung von BLoc-Komponenten. Verwendet standardmäßig die grundlegenden Funktionen der Hive-NoSQL Datenbank zur tatsächlichen Abspeicherung, dies ist jedoch veränderbar.
+
+**Pro**
+
+- Sehr einfache Integration
+- Wenig Boilerplate
+
+**Contra**
+
+- Handling von großen Listen: Dynamisches Nachladen etc. -> Muss alles selbst implementiert werden, da immer der ganze BLoC geladen wird?
+- Keine Versionierung: Was passiert bei Veränderungen des BLoC? -> Eigener Test folgt.
+
+###### Google Firebase
+
+Ausgeschlossen, da es sich um eine cloudbasierte Lösung handelt. Die App zielt dagegen darauf ab, durch lokale Datenhaltung den Datenschutz zu gewähren und keinerlei Nutzerdaten gelesen werden können, weder von den Entwicklern, noch von Cloudanbietern.
+
+Verschiedene Möglichkeiten zur Datensynchronisierung werden zu einem späteren Zeitpunkt in Betracht gezogen.
+
+#### Ausgewählte Technologie
+
