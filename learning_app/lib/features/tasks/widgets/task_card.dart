@@ -22,11 +22,16 @@ class TaskCard extends StatelessWidget {
 
   Widget _card(BuildContext context) {
     const borderRadius = 12.5;
+
+    //////////////////////////////////////////////////
+    //----------For Testing multiple options----------
+    // TODO use real values from Task
     var categoryColor =
         _task.id % 2 == 1 ? Colors.red : Colors.lightBlue.shade600;
     var checkboxColor =
         categoryColor; // Colors.green.shade400; // Colors.black54; //categoryColor;
     // const categoryColor = Colors.lightBlue.shade600;
+    //////////////////////////////////////////////////
 
     return Dismissible(
       key: Key(_task.id.toString()),
@@ -119,6 +124,7 @@ class TaskCard extends StatelessWidget {
                                     : Colors.white),
                           ),
                           avatar: Icon(
+                            // TODO check if task is overdue for color selection
                             Icons.calendar_today_outlined,
                             size: 16,
                             color:
@@ -134,6 +140,7 @@ class TaskCard extends StatelessWidget {
                             Row(
                               children: const [
                                 Icon(Icons.hourglass_top, size: iconSize),
+                                // TODO use real time of Task
                                 Text("~ 1 h"),
                               ],
                             ),
@@ -144,6 +151,7 @@ class TaskCard extends StatelessWidget {
                                   Icon(Icons.dynamic_feed_outlined,
                                       size: iconSize),
                                   SizedBox(width: 5.0),
+                                  // TODO use real completion of Task
                                   Text("5 / 8")
                                 ],
                               ),
