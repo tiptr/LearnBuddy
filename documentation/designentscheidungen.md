@@ -101,6 +101,8 @@ Einfache Lösung zur Persistierung von BLoc-Komponenten. Verwendet standardmäß
 
 - Handling von großen Listen: Dynamisches Nachladen etc. -> Muss alles selbst implementiert werden, da immer der ganze BLoC geladen wird?
 - Keine Versionierung: Was passiert bei Veränderungen des BLoC? -> Eigener Test folgt.
+- Nicht für langfristige Persistierung gedacht, sondern eher für Caching von einfachen Einstellungen wie im Beispiel des Entwicklers: https://medium.com/flutter-community/caching-bloc-state-with-hydrated-bloc-e565f81520a4
+- Keine ausreichende Dokumentation. Z.B. fehlt die Integration in Apps mit State-Management (mit 'InitialState' etc., wie bei uns eingesetzt). Lediglich veraltete, nicht mehr funktionierende Tutorials von Drittanbietern sind zu diesen Thematiken vorhanden
 
 ###### Google Firebase
 
