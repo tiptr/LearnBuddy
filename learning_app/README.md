@@ -50,3 +50,12 @@ Für Mac kann auch XCode eingesetzt werden: [XCode](https://developer.apple.com/
 Zunächst der Anleitung für Android Studio folgen, um den Android Device Emulator zu installieren.
 
 In [Visual Studio Code](https://code.visualstudio.com/) kann nun die Extension [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) heruntergeladen werden. Jetzt sollte es in Visual Studio Code rechts unten möglich sein, ein virtuelles Gerät für die Entwicklung auszuwählen. Ist das Gerät gestartet, kann die App mit `flutter run` bzw. F5 in VS Code auf dem virtuellen Endgerät geladen werden. Dies benötigt bei der ersten Ausführung einige Minuten. 
+
+## Development
+
+### Code Generation
+
+In order for the json serialization based on annotation to work, you have to run the code generator after every change to the json serialized entity structure.
+To do this, run this command inside the `learning_app` folder:
+
+`dart run build_runner build`

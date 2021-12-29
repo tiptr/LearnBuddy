@@ -1,20 +1,28 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
+import 'package:learning_app/util/logger.dart';
+import 'package:logger/logger.dart';
 
-class TaskCubit extends Cubit<TaskState> {
+class TaskCubit extends HydratedCubit<TaskState> {
   final TaskRepository _taskRepository;
 
   TaskCubit(this._taskRepository) : super(InitialTaskState());
 
-  Future<void> loadTasks() async {
-    emit(TaskLoading());
-    var tasks = await _taskRepository.loadTasks();
-    emit(TasksLoaded(tasks: tasks));
+  @override
+  TaskState get state {
+    return super.state ?? InitialTaskState();
   }
+
+  // Future<void> loadTasks() async {
+  //   emit(TaskLoading());
+  //   var tasks = await _taskRepository.loadTasks();
+  //   emit(TasksLoaded(tasks: tasks));
+  // }
 
   Future<void> createTask(CreateTaskDto createTaskDto) async {
     final currentState = state;
@@ -61,5 +69,25 @@ class TaskCubit extends Cubit<TaskState> {
       tasks = tasks.where((element) => element.id != id).toList();
       emit(TasksLoaded(tasks: tasks));
     }
+  }
+
+  @override
+  TaskState? fromJson(Map<String, dynamic> json) {
+
+    // final tasks = json['tasks'];
+    //
+    // return TasksLoaded(
+    //     tasks:
+    // );
+    logger.log(Level.debug, 'Loaded tasks: JSON: ${json}');
+    logger.log(Level.debug, 'Loaded tasks: TasksLoaded: ${TasksLoaded.fromJson(json)}');
+
+    return TasksLoaded.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(TaskState state) {
+    final tasksLoaded = state as TasksLoaded;
+    return tasksLoaded.toJson();
   }
 }

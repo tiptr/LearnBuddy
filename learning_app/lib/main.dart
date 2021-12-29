@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
@@ -17,25 +19,32 @@ const List<Widget> _pages = <Widget>[
   LearningAidsScreen(),
 ];
 
-void main() {
+void main() async {
   Logger.level = Level.debug;
 
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<TaskCubit>(
-          create: (context) {
-            var cubit = TaskCubit(TaskRepository());
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
+  HydratedBlocOverrides.runZoned(
+    () => runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<TaskCubit>(
+            create: (context) {
+              var cubit = TaskCubit(TaskRepository());
 
-            // Loading tasks initially is probably a good idea
-            // since many features depend on the tasks.
-            cubit.loadTasks();
-            return cubit;
-          },
-        ),
-      ],
-      child: const MyApp(),
+              // Loading tasks initially is probably a good idea
+              // since many features depend on the tasks.
+              // cubit.loadTasks();
+              return cubit;
+            },
+          ),
+        ],
+        child: const MyApp(),
+      ),
     ),
+    storage: storage,
   );
 }
 
