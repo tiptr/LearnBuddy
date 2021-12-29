@@ -7,9 +7,11 @@ import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
 class TaskCubit extends Cubit<TaskState> {
-  final TaskRepository _taskRepository = getIt<TaskRepository>();
+  late final TaskRepository _taskRepository; // = getIt<TaskRepository>();
 
-  TaskCubit() : super(InitialTaskState());
+  TaskCubit({TaskRepository? taskRepository}) : super(InitialTaskState()){
+    _taskRepository = taskRepository ?? getIt<TaskRepository>();
+  }
 
   Future<void> loadTasks() async {
     emit(TaskLoading());

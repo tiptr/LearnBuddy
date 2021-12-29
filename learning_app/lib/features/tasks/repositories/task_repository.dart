@@ -4,7 +4,9 @@ import 'package:learning_app/features/tasks/models/task.dart';
 
 /// Repository interface to separate business logic from the persistence layer
 abstract class TaskRepository {
-  Future<List<Task>> loadTasks();
+  Future<List<Task>> loadTasks() {
+    return Future.value([const Task(id: 17, title: 'asdfasd', done: false)]);
+  }
 
   Future<Task> createTask(CreateTaskDto taskDto);
 
