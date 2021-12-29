@@ -72,3 +72,11 @@ If you want the generator to run one time and exits use:
 Drift uses code generation to generate converters and more. After every change, run inside the directory `learning_app`:
 
 `flutter packages pub run build_runner build`
+
+#### Migrations
+
+During the core development, until a certain point, the creation of migrations can be omitted. This means that whenever changes to the schema are made, every developer has to delete the app storage on their devices / emulators. On Android, this can be achieved by long pressing the app-icon on the start screen -> 'App-Info' -> 'Storage & cache' -> 'Clear storage'.
+
+At a later point (and naturally after the first release), this will not be acceptable anymore. Then, migrations for every change between versions have to be created (see the database.dart file). This should be done in a way, so that skipping versions will work.
+
+This will be an important feature for tests, as the user's data depends on it.
