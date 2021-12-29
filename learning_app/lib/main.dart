@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
@@ -19,7 +20,7 @@ const List<Widget> _pages = <Widget>[
 
 void main() {
   // Initialize dependency injection:
-  configureDependencies();
+  configureDependencies(Environment.prod);
 
   Logger.level = Level.debug;
 

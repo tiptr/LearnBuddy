@@ -7,6 +7,7 @@ import 'package:learning_app/util/database.dart';
 import 'package:learning_app/util/injection.dart';
 
 /// Concrete repository implementation using the database with drift
+@Environment(Environment.prod)
 @Injectable(as: TaskRepository)
 class DbTaskRepository implements TaskRepository{
 

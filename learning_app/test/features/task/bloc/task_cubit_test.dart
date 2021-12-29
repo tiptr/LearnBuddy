@@ -1,21 +1,29 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
+import 'package:learning_app/util/injection.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockTaskRepository extends Mock implements TaskRepository {}
+// @Environment(Environment.test)
+// @Injectable(as: TaskRepository)
+// class MockTaskRepository extends Mock implements TaskRepository {
+// }
 
 class AnyCreateTaskDto extends Mock implements CreateTaskDto {}
 
 class AnyUpdateTaskDto extends Mock implements UpdateTaskDto {}
 
 void main() {
-  late MockTaskRepository mockTaskRepository;
+  // Initialize dependency injection:
+  configureDependencies(Environment.test);
+
+  late TaskRepository mockTaskRepository;
   late TaskCubit taskCubit;
 
   Task mockTask = const Task(id: 1, title: 'Do something', done: false);
@@ -25,8 +33,8 @@ void main() {
       UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
 
   setUp(() {
-    mockTaskRepository = MockTaskRepository();
-    taskCubit = TaskCubit(mockTaskRepository);
+    mockTaskRepository = getIt<TaskRepository>();
+    taskCubit = TaskCubit();
   });
 
   setUpAll(() {
