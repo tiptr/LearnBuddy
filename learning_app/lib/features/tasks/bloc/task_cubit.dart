@@ -4,11 +4,12 @@ import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
+import 'package:learning_app/util/injection.dart';
 
 class TaskCubit extends Cubit<TaskState> {
-  final TaskRepository _taskRepository;
+  final TaskRepository _taskRepository = getIt<TaskRepository>();
 
-  TaskCubit(this._taskRepository) : super(InitialTaskState());
+  TaskCubit() : super(InitialTaskState());
 
   Future<void> loadTasks() async {
     emit(TaskLoading());

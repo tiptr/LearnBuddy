@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
-import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/util/injection.dart';
 import 'features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
 import 'features/timer/screens/timer_screen.dart';
@@ -18,6 +18,9 @@ const List<Widget> _pages = <Widget>[
 ];
 
 void main() {
+  // Initialize dependency injection:
+  configureDependencies();
+
   Logger.level = Level.debug;
 
   runApp(
@@ -25,7 +28,7 @@ void main() {
       providers: [
         BlocProvider<TaskCubit>(
           create: (context) {
-            var cubit = TaskCubit(TaskRepository());
+            var cubit = TaskCubit();
 
             // Loading tasks initially is probably a good idea
             // since many features depend on the tasks.
@@ -90,7 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
       unselectedItemColor: Colors.grey,
-      selectedItemColor: Theme.of(context).colorScheme.primary,
+      selectedItemColor: Theme
+          .of(context)
+          .colorScheme
+          .primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,
       type: BottomNavigationBarType.fixed,

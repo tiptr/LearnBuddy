@@ -112,3 +112,7 @@ Verschiedene Möglichkeiten zur Datensynchronisierung werden zu einem späteren 
 
 #### Ausgewählte Technologie
 
+Drift
+
+Eigene Data-Models -> Abhängigkeiten in richtung Clean Architecture (DB implementiert dieses Model
+und Business Logic Layer muss Datenhaltung nicht kennen)

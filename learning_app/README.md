@@ -50,3 +50,25 @@ Für Mac kann auch XCode eingesetzt werden: [XCode](https://developer.apple.com/
 Zunächst der Anleitung für Android Studio folgen, um den Android Device Emulator zu installieren.
 
 In [Visual Studio Code](https://code.visualstudio.com/) kann nun die Extension [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) heruntergeladen werden. Jetzt sollte es in Visual Studio Code rechts unten möglich sein, ein virtuelles Gerät für die Entwicklung auszuwählen. Ist das Gerät gestartet, kann die App mit `flutter run` bzw. F5 in VS Code auf dem virtuellen Endgerät geladen werden. Dies benötigt bei der ersten Ausführung einige Minuten. 
+
+
+## Development Guide
+
+### Dependency Injection
+
+**Run the generator**
+
+Use the [watch] flag to watch the files' system for edits and rebuild as necessary. Inside the directory `learning_app`:
+
+`flutter packages pub run build_runner watch`
+
+If you want the generator to run one time and exits use:
+
+`flutter packages pub run build_runner build`
+
+
+### Database and Persistence
+
+Drift uses code generation to generate converters and more. After every change, run inside the directory `learning_app`:
+
+`flutter packages pub run build_runner build`
