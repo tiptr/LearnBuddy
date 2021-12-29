@@ -20,9 +20,9 @@ void main() {
 
   Task mockTask = const Task(id: 1, title: 'Do something', done: false);
   CreateTaskDto mockCreateDto =
-  CreateTaskDto(title: mockTask.title, done: mockTask.done);
+      CreateTaskDto(title: mockTask.title, done: mockTask.done);
   UpdateTaskDto mockUpdateDto =
-  UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
+      UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
@@ -36,7 +36,7 @@ void main() {
 
   group(
     'when calling fetchTasks',
-        () {
+    () {
       blocTest<TaskCubit, TaskState>(
         'CounterCubit should fetch all tasks and store the result',
         build: () {
@@ -78,7 +78,7 @@ void main() {
 
   group(
     'when calling createTask',
-        () {
+    () {
       blocTest<TaskCubit, TaskState>(
         'CounterCubit should create the task and store the result',
         build: () {
@@ -102,7 +102,7 @@ void main() {
 
   group(
     'when calling toggleDone',
-        () {
+    () {
       blocTest<TaskCubit, TaskState>(
         'CounterCubit should update the task and store the result',
         build: () {
@@ -129,7 +129,7 @@ void main() {
 
   group(
     'when calling deleteTaskById',
-        () {
+    () {
       blocTest<TaskCubit, TaskState>(
         'CounterCubit delete the task and store the result',
         build: () {

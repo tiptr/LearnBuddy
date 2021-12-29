@@ -9,14 +9,12 @@ import 'package:learning_app/util/injection.dart';
 /// Concrete repository implementation using the database with drift
 @Environment(Environment.prod)
 @Injectable(as: TaskRepository)
-class DbTaskRepository implements TaskRepository{
-
+class DbTaskRepository implements TaskRepository {
   // load the database (with generated entities and queries) via dependency inj.
   final Database _db = getIt<Database>();
 
   @override
   Future<List<Task>> loadTasks() async {
-
     return _db.getAll().get();
 
     // var db = await DbProvider().database;
@@ -37,7 +35,6 @@ class DbTaskRepository implements TaskRepository{
 
   @override
   Future<Task> createTask(CreateTaskDto taskDto) async {
-
     final id = await _db.createEntry(taskDto.title);
 
     return Task(id: id, title: taskDto.title, done: taskDto.done);

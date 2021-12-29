@@ -99,10 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
       unselectedItemColor: Colors.grey,
-      selectedItemColor: Theme
-          .of(context)
-          .colorScheme
-          .primary,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,
       type: BottomNavigationBarType.fixed,
