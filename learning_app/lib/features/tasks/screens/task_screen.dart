@@ -36,6 +36,7 @@ class TaskScreen extends StatelessWidget {
           ),
         ),
         child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }

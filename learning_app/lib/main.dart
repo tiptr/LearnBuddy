@@ -47,10 +47,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
+
     return MaterialApp(
       title: 'Lernbuddy',
-      theme: ThemeData(
-        primarySwatch: null,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          primary: const Color(0xFF3444CF),
+          secondary: const Color(0xFF9E5EE1),
+        ),
       ),
       home: const MyHomePage(),
     );

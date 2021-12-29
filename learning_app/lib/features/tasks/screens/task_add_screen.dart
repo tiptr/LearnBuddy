@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/tags/screens/tag_overview_screen.dart';
+import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
@@ -58,7 +58,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TagOverviewScreen(),
+                    builder: (context) => CategoryOverviewScreen(),
                   ),
                 ),
                 child: Ink(
