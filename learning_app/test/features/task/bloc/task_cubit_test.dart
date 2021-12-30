@@ -106,7 +106,7 @@ void main() {
       blocTest<TaskCubit, TaskState>(
         'CounterCubit should update the task and store the result',
         build: () {
-          when(() => mockTaskRepository.update(mockTask.id, any()))
+          when(() => mockTaskRepository.toggleDone(mockTask.id))
               .thenAnswer((_) => Future.value(true));
           return taskCubit;
         },
@@ -120,7 +120,7 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => mockTaskRepository.update(mockTask.id, mockUpdateDto))
+          verify(() => mockTaskRepository.toggleDone(mockTask.id))
               .called(1);
         },
       );
