@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 
-class TagAddAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TagAddAppBar({Key? key}) : super(key: key);
+class CategoryAddAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CategoryAddAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class TagAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 const Expanded(
                   child: Text(
-                    "Tag-Verwaltung",
+                    "Kategorien",
                     style: TextStyle(
                       fontSize: 22.0,
                       fontWeight: FontWeight.bold,

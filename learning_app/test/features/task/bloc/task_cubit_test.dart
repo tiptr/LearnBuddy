@@ -26,7 +26,7 @@ void main() {
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
-    taskCubit = TaskCubit(mockTaskRepository);
+    taskCubit = TaskCubit(taskRepository: mockTaskRepository);
   });
 
   setUpAll(() {

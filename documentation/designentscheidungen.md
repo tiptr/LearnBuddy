@@ -110,5 +110,19 @@ Ausgeschlossen, da es sich um eine cloudbasierte Lösung handelt. Die App zielt 
 
 Verschiedene Möglichkeiten zur Datensynchronisierung werden zu einem späteren Zeitpunkt in Betracht gezogen.
 
-#### Ausgewählte Technologie
+#### Ausgewählte Technologie: Relationale Datenbank SQLite mit ORM Drift (ehemals Moor)
 
+**Grund für die Entscheidung**
+
+Ausgereifte Lösung, die auch eine gute Strukturierung des Projekts ermöglicht und sich mit Migrations etc. auch für eine langfristige Weiterentwicklung der App eignet.
+
+
+### Architektur
+
+Es wurde eine vollständige Entkopplung der Persistenzschicht von der Business Logik erzielt. Zur Business Logik gehören die Data-Models und die BLoC Komponenten, sowie als Schnittstelle die DTOs sowie Repository-Interfaces.
+
+Diese Interfaces werden in der Persistenzschicht mithilfe der relationalen Datenbank implementiert. Dazu werden Entitäten erstellt, die durch Codegenerierung auf die Data-Models der Business-Logik-Schicht gemappt werden.
+
+Ebenfalls ist die Business-Logik vollständig unabhängig von der UI-Schicht.
+
+Insgesamt ergibt sich somit eine Architektur, die sich an der Solution-Architecture / Clean-Architecture orientiert.

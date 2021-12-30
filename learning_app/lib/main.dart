@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
-import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/util/injection.dart';
 import 'features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
 import 'features/timer/screens/timer_screen.dart';
@@ -18,6 +19,9 @@ const List<Widget> _pages = <Widget>[
 ];
 
 void main() {
+  // Initialize dependency injection:
+  configureDependencies(Environment.prod);
+
   Logger.level = Level.debug;
 
   runApp(
@@ -25,7 +29,7 @@ void main() {
       providers: [
         BlocProvider<TaskCubit>(
           create: (context) {
-            var cubit = TaskCubit(TaskRepository());
+            var cubit = TaskCubit();
 
             // Loading tasks initially is probably a good idea
             // since many features depend on the tasks.
@@ -44,10 +48,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
+
     return MaterialApp(
       title: 'Lernbuddy',
-      theme: ThemeData(
-        primarySwatch: null,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          primary: const Color(0xFF3444CF),
+          secondary: const Color(0xFF9E5EE1),
+        ),
       ),
       home: const MyHomePage(),
     );
