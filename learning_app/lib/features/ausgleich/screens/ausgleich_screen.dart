@@ -35,7 +35,7 @@ class LeasureCategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding: const EdgeInsets.all(10.0),
       child: Card(
         margin: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
@@ -44,38 +44,67 @@ class LeasureCategoryCard extends StatelessWidget {
         color: Colors.white,
         elevation: 5,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+          padding: const EdgeInsets.all(20.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                flex: 70,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: StartCount(
-                        count: leasureCategory.starCount,
-                      ),
-                    ),
-                    LeasureCategoryDescription(
-                      title: leasureCategory.title,
-                      countExercises: leasureCategory.countAids,
-                    )
-                  ],
+                flex: 60,
+                child: LeasureCategoryDescription(
+                  title: leasureCategory.title,
+                  countExercises: leasureCategory.countAids,
                 ),
               ),
               Expanded(
-                flex: 30,
-                child: Image(
-                  image: AssetImage(leasureCategory.assetString),
+                flex: 40,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    StartCount(
+                      count: leasureCategory.starCount,
+                    ),
+                    Image(
+                      image: AssetImage(leasureCategory.assetString),
+                      width: 85.0,
+                      height: 85.0,
+                    ),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class LeasureCategoryDescription extends StatelessWidget {
+  final String title;
+  final int countExercises;
+
+  const LeasureCategoryDescription({
+    Key? key,
+    required this.title,
+    required this.countExercises,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+        ),
+        Text(
+          "$countExercises Übungen",
+          style: const TextStyle(fontSize: 14.0),
+        )
+      ],
     );
   }
 }
@@ -91,37 +120,9 @@ class StartCount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         const Icon(Icons.star, color: Colors.purple),
         Text(count.toString())
-      ],
-    );
-  }
-}
-
-class LeasureCategoryDescription extends StatelessWidget {
-  final String title;
-  final int countExercises;
-
-  const LeasureCategoryDescription(
-      {Key? key, required this.title, required this.countExercises})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-        ),
-        Text(
-          "$countExercises Übungen",
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
-        )
       ],
     );
   }
