@@ -4,8 +4,12 @@ class Config {
   late final int _countUntilLongerBreak;
   late Map _pomodoroMinutes;
 
-  Config(concentrationMinutes, breakMinutes, longerBreakMinutes,
-      countUntilLongerBreak) {
+  Config(
+    concentrationMinutes,
+    breakMinutes,
+    longerBreakMinutes,
+    countUntilLongerBreak,
+  ) {
     _pomodoroMinutes = {
       PomodoroMode.concentration: concentrationMinutes * 60,
       PomodoroMode.shortBreak: breakMinutes * 60,
@@ -14,7 +18,7 @@ class Config {
     _countUntilLongerBreak = countUntilLongerBreak;
   }
 
-  Map getPomodoroMinuets() => _pomodoroMinutes;
+  Map getPomodoroMinutes() => _pomodoroMinutes;
   int getCountUntilLongerBreak() => _countUntilLongerBreak;
   int getPhaseCount() => _countUntilLongerBreak * 2;
 }
