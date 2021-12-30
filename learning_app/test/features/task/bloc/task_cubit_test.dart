@@ -21,8 +21,8 @@ void main() {
   Task mockTask = const Task(id: 1, title: 'Do something', done: false);
   CreateTaskDto mockCreateDto =
       CreateTaskDto(title: mockTask.title, done: mockTask.done);
-  UpdateTaskDto mockUpdateDto =
-      UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
+  // UpdateTaskDto mockUpdateDto =
+  //     UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
@@ -120,8 +120,7 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => mockTaskRepository.toggleDone(mockTask.id))
-              .called(1);
+          verify(() => mockTaskRepository.toggleDone(mockTask.id)).called(1);
         },
       );
     },
