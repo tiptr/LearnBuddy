@@ -10,17 +10,19 @@ class AusgleichScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
-        bloc: LeasureCategoryCubit(),
-        builder: (context, state) {
-          return ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: state.leasureCategories.length,
-            itemBuilder: (BuildContext ctx, int idx) => LeasureCategoryCard(
-                leasureCategory: state.leasureCategories[idx]),
-          );
-        });
+      bloc: LeasureCategoryCubit(),
+      builder: (context, state) {
+        return ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: state.leasureCategories.length,
+          itemBuilder: (BuildContext ctx, int idx) => LeasureCategoryCard(
+            leasureCategory: state.leasureCategories[idx],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -33,49 +35,56 @@ class LeasureCategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: Card(
-          margin: const EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: Card(
+        margin: const EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        color: Colors.white,
+        elevation: 5,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 70,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: StartCount(
+                        count: leasureCategory.starCount,
+                      ),
+                    ),
+                    LeasureCategoryDescription(
+                      title: leasureCategory.title,
+                      countExercises: leasureCategory.countAids,
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 30,
+                child: Image(
+                  image: AssetImage(leasureCategory.assetString),
+                ),
+              )
+            ],
           ),
-          color: Colors.white,
-          elevation: 5,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                    flex: 70,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: StartCount(leasureCategory.starCount),
-                        ),
-                        LeasureCategoryDescription(
-                            title: leasureCategory.title,
-                            countExercises: leasureCategory.countAids)
-                      ],
-                    )),
-                Expanded(
-                    flex: 30,
-                    child:
-                        Image(image: AssetImage(leasureCategory.assetString)))
-              ],
-            ),
-          ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
 class StartCount extends StatelessWidget {
   final int count;
 
-  const StartCount(
-    this.count, {
+  const StartCount({
+    required this.count,
     Key? key,
   }) : super(key: key);
 

@@ -7,15 +7,35 @@ class LeasureCategoryState extends Equatable {
   LeasureCategoryState() {
     leasureCategories = [
       const LeasureCategory(
-          "Fun Challenges", "assets/leasure/leasure-group-fun.png", 3, 9),
-      const LeasureCategory("Fitness ohne Geräte",
-          "assets/leasure/leasure-group-fitness.png", 7, 17),
+        title: "Fun Challenges",
+        assetString: "assets/leasure/leasure-group-fun.png",
+        starCount: 3,
+        countAids: 9,
+      ),
       const LeasureCategory(
-          "Yoga & Meditation", "assets/leasure/leasure-group-yoga.png", 4, 11),
-      const LeasureCategory("Outdoor & Bewegung",
-          "assets/leasure/leasure-group-outdoor.png", 0, 5),
-      const LeasureCategory("Weitere Vorschäge",
-          "assets/leasure/leasure-group-further.png", 1, 7),
+        title: "Fitness ohne Geräte",
+        assetString: "assets/leasure/leasure-group-fitness.png",
+        starCount: 7,
+        countAids: 17,
+      ),
+      const LeasureCategory(
+        title: "Yoga & Meditation",
+        assetString: "assets/leasure/leasure-group-yoga.png",
+        starCount: 4,
+        countAids: 11,
+      ),
+      const LeasureCategory(
+        title: "Outdoor & Bewegung",
+        assetString: "assets/leasure/leasure-group-outdoor.png",
+        starCount: 0,
+        countAids: 5,
+      ),
+      const LeasureCategory(
+        title: "Weitere Vorschäge",
+        assetString: "assets/leasure/leasure-group-further.png",
+        starCount: 1,
+        countAids: 7,
+      ),
     ];
   }
 
