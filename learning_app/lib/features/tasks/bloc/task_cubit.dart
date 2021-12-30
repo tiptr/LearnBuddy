@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
+// import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -37,7 +37,6 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-
       var success = await _taskRepository.toggleDone(task.id);
       if (!success) return;
 
