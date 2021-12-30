@@ -1,14 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
+// import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
+import 'package:learning_app/util/injection.dart';
 
 class TaskCubit extends Cubit<TaskState> {
-  final TaskRepository _taskRepository;
+  late final TaskRepository _taskRepository; // = getIt<TaskRepository>();
 
-  TaskCubit(this._taskRepository) : super(InitialTaskState());
+  TaskCubit({TaskRepository? taskRepository}) : super(InitialTaskState()) {
+    _taskRepository = taskRepository ?? getIt<TaskRepository>();
+  }
 
   Future<void> loadTasks() async {
     emit(TaskLoading());
@@ -34,9 +37,7 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var updateDto = UpdateTaskDto(title: task.title, done: !task.done);
-
-      var success = await _taskRepository.update(task.id, updateDto);
+      var success = await _taskRepository.toggleDone(task.id);
       if (!success) return;
 
       // Create a deep copy so the actual state isn't mutated
