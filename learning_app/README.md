@@ -54,6 +54,18 @@ In [Visual Studio Code](https://code.visualstudio.com/) kann nun die Extension [
 
 ## Development Guide
 
+### Code formatting and checking:
+
+Before committing, you can run (inside `learning app`):
+
+`flutter format .`
+
+to correct the formatting and have no Lint errors. And:
+
+`flutter analyze .`
+
+to check, if any problems were still found.
+
 ### Dependency Injection
 
 **Run the generator**
