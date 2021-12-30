@@ -37,9 +37,8 @@ class TaskCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var updateDto = UpdateTaskDto(title: task.title, done: !task.done);
 
-      var success = await _taskRepository.update(task.id, updateDto);
+      var success = await _taskRepository.toggleDone(task.id);
       if (!success) return;
 
       // Create a deep copy so the actual state isn't mutated

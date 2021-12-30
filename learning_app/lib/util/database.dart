@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 
+// DAOs used to structure the database queries access
+import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
+
 // Also import all used models, as they are required in the generated extension file
 import 'package:learning_app/features/tasks/models/task.dart';
 
@@ -26,6 +29,7 @@ LazyDatabase _openConnection() {
 
 @singleton // Injectable via dependency injection
 @DriftDatabase(
+  daos: [TasksDao],
   // Include all drift files containing the entity definitions and queries
   include: {'package:learning_app/features/tasks/persistence/tasks.drift'},
 )

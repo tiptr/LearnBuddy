@@ -35,6 +35,4 @@ createEntry: INSERT INTO tasks (title) VALUES (:title);
 
 deleteById: DELETE FROM tasks WHERE id = :id;
 
-markDoneById: UPDATE tasks SET done = true WHERE id = :id;
-
-markUnDoneById: UPDATE tasks SET done = false WHERE id = :id;
+toggleDoneById: UPDATE tasks SET done = (not done) WHERE id = :id;

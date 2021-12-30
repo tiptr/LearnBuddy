@@ -145,6 +145,7 @@ class Tasks extends Table with TableInfo<Tasks, Task> {
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final Tasks tasks = Tasks(this);
+  late final TasksDao tasksDao = TasksDao(this as Database);
   Selectable<Task> getAll() {
     return customSelect('SELECT * FROM tasks', variables: [], readsFrom: {
       tasks,
@@ -176,18 +177,9 @@ abstract class _$Database extends GeneratedDatabase {
     );
   }
 
-  Future<int> markDoneById(int id) {
+  Future<int> toggleDoneById(int id) {
     return customUpdate(
-      'UPDATE tasks SET done = true WHERE id = :id',
-      variables: [Variable<int>(id)],
-      updates: {tasks},
-      updateKind: UpdateKind.update,
-    );
-  }
-
-  Future<int> markUnDoneById(int id) {
-    return customUpdate(
-      'UPDATE tasks SET done = false WHERE id = :id',
+      'UPDATE tasks SET done = (not done) WHERE id = :id',
       variables: [Variable<int>(id)],
       updates: {tasks},
       updateKind: UpdateKind.update,

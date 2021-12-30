@@ -7,6 +7,7 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
+import '../features/tasks/persistence/tasks_dao.dart' as _i6;
 import '../features/tasks/repositories/db_task_repository.dart' as _i5;
 import '../features/tasks/repositories/task_repository.dart' as _i4;
 import 'database.dart' as _i3;
@@ -21,5 +22,6 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i3.Database>(_i3.Database());
   gh.factory<_i4.TaskRepository>(() => _i5.DbTaskRepository(),
       registerFor: {_prod});
+  gh.singleton<_i6.TasksDao>(_i6.TasksDao(get<_i3.Database>()));
   return get;
 }
