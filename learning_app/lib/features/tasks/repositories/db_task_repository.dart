@@ -41,7 +41,6 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<bool> toggleDone(int id) async {
-    final affected = await _dao.toggleDoneById(id);
-    return affected > 0;
+    return _dao.toggleDoneById(id).then((value) => value > 0);
   }
 }
