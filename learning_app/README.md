@@ -72,18 +72,18 @@ to check, if any problems were still found.
 
 Use the [watch] flag to watch the files' system for edits and rebuild as necessary. Inside the directory `learning_app`:
 
-`flutter packages pub run build_runner watch`
+`flutter packages pub run build_runner watch --delete-conflicting-outputs`
 
 If you want the generator to run one time and exits use:
 
-`flutter packages pub run build_runner build`
+`flutter packages pub run build_runner build --delete-conflicting-outputs`
 
 
 ### Database and Persistence
 
 Drift uses code generation to generate converters and more. After every change, run inside the directory `learning_app`:
 
-`flutter packages pub run build_runner build`
+`flutter packages pub run build_runner build --delete-conflicting-outputs`
 
 #### Migrations
 
