@@ -4,12 +4,21 @@ import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:learning_app/constants/database_constants.dart';
 
 // DAOs used to structure the database queries access
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 
 // Also import all used models, as they are required in the generated extension file
 import 'package:learning_app/features/tasks/models/task.dart';
+
+// Initialization scripts:
+import 'initializations/initialization_01_category_colors.dart';
+import 'initializations/initialization_02_categories.dart';
+
+// Migration scripts:
+import 'migrations/v01_to_v02_migration.dart';
+import 'migrations/v02_to_v03_migration.dart';
 
 // The generated file:
 // This will give an error at first,
@@ -22,7 +31,7 @@ LazyDatabase _openConnection() {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'learning_app_db.sqlite'));
+    final file = File(p.join(dbFolder.path, databaseName));
     return NativeDatabase(file);
   });
 }
@@ -48,14 +57,14 @@ class Database extends _$Database {
         return m.createAll();
       },
       onUpgrade: (Migrator m, int from, int to) async {
-        if (from == 1) {
-          // In the future, this can be used to perform migrations between
-          // previous versions of the database and the current one
+        // Execute all migrations scripts that are required to get from the
+        // current to the latest version step by step
+        if (from <= 1) {
+          await migrateV01ToV02();
+        }
 
-          // TODO: consider moving this to another file(s)
-
-          // Example code:
-          // await m.addColumn(todos, todos.targetDate);
+        if (from <= 2) {
+          await migrateV02ToV03();
         }
       },
       beforeOpen: (details) async {
@@ -63,27 +72,9 @@ class Database extends _$Database {
           // This is called on a fresh installation, when the database is not yet
           // present and after the schema has been created.
 
-          // This is where insert statements for e.g. some
-          // predefined categories would go.
-
-          // Example code for inspiration:
-          // final workId = await into(categories)
-          //     .insert(const CategoriesCompanion(description: Value('Work')));
-          //
-          // await into(todos).insert(TodosCompanion(
-          //   content: const Value('A first todo entry'),
-          //   targetDate: Value(DateTime.now()),
-          // ));
-          //
-          // await into(todos).insert(
-          //   TodosCompanion(
-          //     content: const Value('Rework persistence code'),
-          //     category: Value(workId),
-          //     targetDate: Value(
-          //       DateTime.now().add(const Duration(days: 4)),
-          //     ),
-          //   ),
-          // );
+          // Call every initialization scripts that are implemented:
+          await initialization01CategoryColors();
+          await initialization02Categories();
         }
       },
     );

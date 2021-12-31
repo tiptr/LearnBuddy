@@ -27,11 +27,14 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<TaskCubit>(
+          lazy: true,
           create: (context) {
             var cubit = TaskCubit();
-
             // Loading tasks initially is probably a good idea
             // since many features depend on the tasks.
+
+            // Loading is acync., but will not take long anyways thanks to
+            // dynamic loading (only the first X tasks are being loaded)
             cubit.loadTasks();
             return cubit;
           },
@@ -85,6 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Lernbuddy"),
       ),
+      // TODO: think about changing to something like lazy_load_indexed_stack
+      // (separate package), so that not every page has to be loaded at startup
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,

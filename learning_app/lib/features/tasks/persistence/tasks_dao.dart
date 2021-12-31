@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
-import 'package:learning_app/util/database.dart';
+import 'package:learning_app/database/database.dart';
 
 // Also import the used model(s), as they are required in the generated extension file
 import 'package:learning_app/features/tasks/models/task.dart';
