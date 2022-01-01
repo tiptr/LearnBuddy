@@ -5,7 +5,11 @@ class Task extends Equatable {
   final String title;
   final bool done;
 
-  const Task({required this.id, required this.title, required this.done});
+  const Task({
+    required this.id,
+    required this.title,
+    required this.done,
+  });
 
   @override
   String toString() {
