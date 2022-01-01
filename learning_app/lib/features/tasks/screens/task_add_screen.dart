@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
