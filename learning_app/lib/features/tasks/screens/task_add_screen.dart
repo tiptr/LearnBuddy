@@ -52,30 +52,6 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 iconData: Icons.book_outlined,
                 textController: _descriptionController,
               ),
-              // Only for navigation to tags
-              const SizedBox(height: 40.0),
-              InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryOverviewScreen(),
-                  ),
-                ),
-                child: Ink(
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.purple,
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Tag Overview",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),
