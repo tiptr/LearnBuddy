@@ -1,15 +1,15 @@
 # Nicht-funktionale Anforderungen
 ### Benutzbarkeit
-+ **NFA01**: Das Einrichten der grundlegenden Einstellungen beim ersten Öffnen der App muss innerhalb von 30 Sekunden möglich sein.
+ **NFA01**: Unter normalen Umständen, also ohne Netzwerkprobleme und einem uneingeschränkt funktionsfähigen Smartphone, muss das Einrichten der grundlegenden Einstellungen beim ersten Öffnen der App muss innerhalb von 30 Sekunden möglich sein.
 + **NFA02**: Das System muss für Schüler ab der vierten Klasse intuitiv nutzbar sein, sodass ein durchschnittlicher Schüler, der zuvor noch nie die App benutzt hat, innerhalb von 60 Sekunden bewusst mithilfe der unteren Menüleiste durch die einzelnen Teile der App navigieren kann. 
 + **NFA03**: Das Starten eines Timers muss innerhalb von zwei Clicks nach dem Öffnen der App möglich sein.
 + **NFA04**: Die App muss offline - bis auf das dynamische Laden von Ausgleichsübungen - vollständig funktionsfähig sein.
 ### Zuverlässigkeit
 + **NFA05**: Sicherheit - Sämtliche privaten Daten des Schülers werden ausschließlich lokal auf dem Smartphone des Schülers gespeichert.
 + **NFA06**: Die App darf nicht aufgrund von zufälligen beliebigen Benutzereingaben abstürzen.
-+ **NFA07**: Benachrichtigungen zu anstehenden Deadlines müssen zum vorhergesehenen Zeitpunkt abgesendet werden und dürfen insbesondere nicht erst nach Ablauf der Deadline erscheinen.
++ **NFA07**: Sofern das Smartphone in der Zeit nicht ausgeschaltet ist und die Benachrichtigungen der App nicht deaktiviert wurden, müssen Benachrichtigungen zu anstehenden Deadlines zum vorhergesehenen Zeitpunkt abgesendet werden und dürfen insbesondere nicht erst nach Ablauf der Deadline erscheinen.
 ### Effizienz
-+ **NFA08**: Jede Benutzereingabe muss innerhalb von maximal zwei Sekunden verarbeitet werden.
++ **NFA08**:  Unter normalen Umständen, also ohne Netzwerkprobleme und einem uneingeschränkt funktionsfähigen Smartphone, muss jede Benutzereingabe innerhalb von maximal zwei Sekunden verarbeitet werden.
 + **NFA09**: Stromverbrauch - Die Verwendung der App darf die Akkulaufzeit nicht mehr als 20% im Vergleich zu Full-HD-Videowiedergabe verringern.
 ### Wartbarkeit
 + **NFA10**: Die App muss über den _Google Play_, bzw. den _Appstore_, geupdated werden können.

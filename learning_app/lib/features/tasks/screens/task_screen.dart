@@ -11,22 +11,24 @@ class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<TaskCubit, TaskState>(builder: (context, state) {
-        // This only checks for the success state, we might want to check for
-        // errors in the future here.
-        if (state is! TasksLoaded) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: BlocBuilder<TaskCubit, TaskState>(
+        builder: (context, state) {
+          // This only checks for the success state, we might want to check for
+          // errors in the future here.
+          if (state is! TasksLoaded) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: state.tasks.length,
-          itemBuilder: (BuildContext ctx, int idx) =>
-              TaskCard(task: state.tasks[idx]),
-        );
-      }),
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.tasks.length,
+            itemBuilder: (BuildContext ctx, int idx) =>
+                TaskCard(task: state.tasks[idx]),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToTaskAddScreen",
         onPressed: () => Navigator.push(
@@ -36,6 +38,7 @@ class TaskScreen extends StatelessWidget {
           ),
         ),
         child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }
