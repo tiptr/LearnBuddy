@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
@@ -18,9 +20,15 @@ class DbTaskRepository implements TaskRepository {
   }
 
   @override
-  Future<Task> createTask(CreateTaskDto taskDto) async {
-    final id = await _dao.createEntry(taskDto.title);
-    return Task(id: id, title: taskDto.title, done: taskDto.done);
+
+  /// Creates a new task and returns it with its newly generated id
+  Future<Task> createTask(CreateTaskDto newTask) async {
+    return _dao.createTask(TasksCompanion(
+      title: Value.ofNullable(newTask.title),
+      description: Value.ofNullable(newTask.description),
+      estimatedTime: Value.ofNullable(newTask.estimatedTime),
+      dueDate: Value.ofNullable(newTask.dueDate),
+    ));
   }
 
   @override
@@ -29,7 +37,6 @@ class DbTaskRepository implements TaskRepository {
     // var db = await DbProvider().database;
     // var affected = await db.update('tasks', updateDto.toMap(), where: 'id = ?',whereArgs: [id],);
     // return affected > 0;
-
     return false;
   }
 

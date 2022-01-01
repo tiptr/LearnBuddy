@@ -1,15 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/tasks/bloc/task_state.dart';
-import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-// import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
-class TaskCubit extends Cubit<TaskState> {
-  late final TaskRepository _taskRepository; // = getIt<TaskRepository>();
+class TasksCubit extends Cubit<TaskState> {
+  late final TaskRepository _taskRepository;
 
-  TaskCubit({TaskRepository? taskRepository}) : super(InitialTaskState()) {
+  TasksCubit({TaskRepository? taskRepository}) : super(InitialTaskState()) {
     _taskRepository = taskRepository ?? getIt<TaskRepository>();
   }
 
@@ -19,16 +17,15 @@ class TaskCubit extends Cubit<TaskState> {
     emit(TasksLoaded(tasks: tasks));
   }
 
-  Future<void> createTask(CreateTaskDto createTaskDto) async {
+  /// Updates the currently cached list by adding the new task.
+  ///
+  /// Note that persisting the change is handled by "add_task_cubit.dart"
+  Future<void> refreshTaskListAddTask(Task newTask) async {
     final currentState = state;
-
     if (currentState is TasksLoaded) {
-      var createdTask = await _taskRepository.createTask(createTaskDto);
-
       // Create a deep copy so the actual state isn't mutated
       var tasks = List<Task>.from(currentState.tasks);
-
-      emit(TasksLoaded(tasks: tasks + [createdTask]));
+      emit(TasksLoaded(tasks: tasks + [newTask]));
     }
   }
 
@@ -43,7 +40,17 @@ class TaskCubit extends Cubit<TaskState> {
       // Create a deep copy so the actual state isn't mutated
       var tasks = List<Task>.from(currentState.tasks);
       int index = tasks.indexWhere((Task t) => t.id == task.id);
-      tasks[index] = Task(id: task.id, title: task.title, done: !task.done);
+      tasks[index] = Task(
+        id: task.id,
+        title: task.title,
+        done: !task.done,
+        creationDateTime: task.creationDateTime,
+        dueDate: task.dueDate,
+        estimatedTime: task.estimatedTime,
+        description: task.description,
+        manualTimeEffortDelta: task.manualTimeEffortDelta,
+        parentTask: task.parentTask,
+      );
 
       emit(TasksLoaded(tasks: tasks));
     }

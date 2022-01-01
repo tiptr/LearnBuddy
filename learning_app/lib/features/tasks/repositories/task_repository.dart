@@ -6,7 +6,8 @@ import 'package:learning_app/features/tasks/models/task.dart';
 abstract class TaskRepository {
   Future<List<Task>> loadTasks();
 
-  Future<Task> createTask(CreateTaskDto taskDto);
+  /// Creates a new task and returns it with its newly generated id
+  Future<Task> createTask(CreateTaskDto newTask);
 
   Future<bool> update(int id, UpdateTaskDto updateDto);
 

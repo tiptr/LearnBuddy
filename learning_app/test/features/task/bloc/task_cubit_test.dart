@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
-import 'package:learning_app/features/tasks/bloc/task_state.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
@@ -16,7 +16,7 @@ class AnyUpdateTaskDto extends Mock implements UpdateTaskDto {}
 
 void main() {
   late MockTaskRepository mockTaskRepository;
-  late TaskCubit taskCubit;
+  late TasksCubit taskCubit;
 
   Task mockTask = const Task(id: 1, title: 'Do something', done: false);
   CreateTaskDto mockCreateDto =
@@ -26,7 +26,7 @@ void main() {
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
-    taskCubit = TaskCubit(taskRepository: mockTaskRepository);
+    taskCubit = TasksCubit(taskRepository: mockTaskRepository);
   });
 
   setUpAll(() {
@@ -37,7 +37,7 @@ void main() {
   group(
     'when calling fetchTasks',
     () {
-      blocTest<TaskCubit, TaskState>(
+      blocTest<TasksCubit, TaskState>(
         'CounterCubit should fetch all tasks and store the result',
         build: () {
           var mockResponse = Future.value([mockTask]);
@@ -56,7 +56,7 @@ void main() {
         },
       );
 
-      blocTest<TaskCubit, TaskState>(
+      blocTest<TasksCubit, TaskState>(
         'CounterCubit should overwrite existing tasks in the state',
         build: () {
           var mockResponse = Future.value(<Task>[]);
@@ -79,7 +79,7 @@ void main() {
   group(
     'when calling createTask',
     () {
-      blocTest<TaskCubit, TaskState>(
+      blocTest<TasksCubit, TaskState>(
         'CounterCubit should create the task and store the result',
         build: () {
           when(() => mockTaskRepository.createTask(any()))
@@ -103,7 +103,7 @@ void main() {
   group(
     'when calling toggleDone',
     () {
-      blocTest<TaskCubit, TaskState>(
+      blocTest<TasksCubit, TaskState>(
         'CounterCubit should update the task and store the result',
         build: () {
           when(() => mockTaskRepository.toggleDone(mockTask.id))
@@ -129,7 +129,7 @@ void main() {
   group(
     'when calling deleteTaskById',
     () {
-      blocTest<TaskCubit, TaskState>(
+      blocTest<TasksCubit, TaskState>(
         'CounterCubit delete the task and store the result',
         build: () {
           when(() => mockTaskRepository.deleteById(mockTask.id))

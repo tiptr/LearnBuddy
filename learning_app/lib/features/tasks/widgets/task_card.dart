@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 
 const double iconSize = 18.0;
@@ -37,7 +37,7 @@ class TaskCard extends StatelessWidget {
     return Dismissible(
       key: Key(_task.id.toString()),
       onDismissed: (_) =>
-          BlocProvider.of<TaskCubit>(context).deleteTaskById(_task.id),
+          BlocProvider.of<TasksCubit>(context).deleteTaskById(_task.id),
       child: Card(
         clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.all(0),
@@ -79,7 +79,7 @@ class TaskCard extends StatelessWidget {
                       value: _task.done,
                       shape: const CircleBorder(),
                       onChanged: (bool? value) {
-                        BlocProvider.of<TaskCubit>(context).toggleDone(_task);
+                        BlocProvider.of<TasksCubit>(context).toggleDone(_task);
                       },
                     ),
                   ),

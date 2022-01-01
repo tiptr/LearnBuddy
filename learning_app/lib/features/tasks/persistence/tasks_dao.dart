@@ -23,4 +23,15 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // this constructor is required so that the main database can create an instance
   // of this object.
   TasksDao(Database db) : super(db);
+
+  /// Creates a new task and returns its id.
+  ///
+  /// Takes a TasksCompanion rather than a task. This is auto-generated and
+  /// here allows to define only required values that are not auto-generated
+  /// like the ID.
+  Future<Task> createTask(TasksCompanion tasksCompanion) {
+    // insertReturning() already provides the whole created entity instead of
+    // the single ID provided by insert()
+    return into(tasks).insertReturning(tasksCompanion);
+  }
 }
