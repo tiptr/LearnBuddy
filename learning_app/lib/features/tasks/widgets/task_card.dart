@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 
@@ -37,30 +38,30 @@ class TaskCard extends StatelessWidget {
       key: Key(_task.id.toString()),
       onDismissed: (_) =>
           BlocProvider.of<TaskCubit>(context).deleteTaskById(_task.id),
-      child: ColorFiltered(
-        // Grey out when done -> Overlay with semitransparent white; Else
-        // overlay with fulltransparent "black" (no effect)
-        colorFilter: ColorFilter.mode(
-            _task.done ? const Color(0xB8FFFFFF) : const Color(0x00000000),
-            BlendMode.lighten),
-
-        child: Card(
-          clipBehavior: Clip.hardEdge,
-          margin: const EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-          ),
-          elevation: _task.done ? 2 : 10,
-          color: Colors.white,
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        margin: const EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        elevation: _task.done ? CardElevation.low : CardElevation.high,
+        child: ColorFiltered(
+          // Grey out when done -> Overlay with semitransparent white; Else
+          // overlay with fulltransparent "black" (no effect)
+          colorFilter: ColorFilter.mode(
+              _task.done ? const Color(0xB8FFFFFF) : const Color(0x00000000),
+              BlendMode.lighten),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
             decoration: BoxDecoration(
               border: Border(
-                  // TODO: Use color of category once added
-                  left: BorderSide(width: 12.5, color: categoryColor)),
+                // TODO: Use color of category once added
+                left: BorderSide(width: 12.5, color: categoryColor),
+              ),
               color: Colors.white,
             ),
-            height: 100.0,
+            height: 110.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,82 +84,19 @@ class TaskCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10.0),
-                // Title and Description
+                const Spacer(),
+                // Content
                 Expanded(
-                  flex: 60,
+                  flex: 80,
+                  // This column holds the title + datechip
+                  // and the description + further info row
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        _task.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          decoration: _task.done
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                          decorationThickness: 2.0,
-                          fontSize: 20,
-                        ),
-                      ),
-                      // TODO: Use task's real tags (Schlagworte)
-                      Text(_task.id % 3 == 1 ? "Lernen" : "Hausaufgabe"),
-                    ],
-                  ),
-                ),
-                // Date and further info
-                Expanded(
-                  flex: 30,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Chip(
-                          label: Text(
-                            // TODO: Use real date here
-                            _task.id % 2 == 1 ? "Heute" : "1. Dez",
-                            style: TextStyle(
-                                color: _task.id % 2 == 1
-                                    ? Colors.black
-                                    : Colors.white),
-                          ),
-                          avatar: Icon(
-                            // TODO check if task is overdue for color selection
-                            Icons.calendar_today_outlined,
-                            size: 16,
-                            color:
-                                _task.id % 2 == 1 ? Colors.black : Colors.white,
-                          ),
-                          backgroundColor: _task.id % 2 == 1
-                              ? const Color(0x00000000) // Transparent Fakecolor
-                              : Colors.purpleAccent),
-                      FittedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: const [
-                                Icon(Icons.hourglass_top, size: iconSize),
-                                // TODO use real time of Task
-                                Text("~ 1 h"),
-                              ],
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 7.5),
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.dynamic_feed_outlined,
-                                      size: iconSize),
-                                  SizedBox(width: 5.0),
-                                  // TODO use real completion of Task
-                                  Text("5 / 8")
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      // Upper Row
+                      _buildUpperRow(context),
+                      // Lower Row
+                      _buildLowerRow()
                     ],
                   ),
                 )
@@ -166,6 +104,92 @@ class TaskCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildUpperRow(BuildContext context) {
+    return Expanded(
+      flex: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Title
+          Expanded(
+            flex: 70,
+            child: Text(
+              _task.title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                decoration: _task.done
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
+                decorationThickness: 2.0,
+                fontSize: 20,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          // Date Chip
+          Expanded(
+            flex: 30,
+            child: Chip(
+              label: Text(
+                // TODO: Use real date here
+                _task.id % 2 == 1 ? "Heute" : "1. Dez",
+                style: TextStyle(
+                  color: _task.id % 2 == 1 ? Colors.black : Colors.white,
+                ),
+              ),
+              avatar: Icon(
+                // TODO check if task is overdue for color selection
+                Icons.calendar_today_outlined,
+                size: 16,
+                color: _task.id % 2 == 1 ? Colors.black : Colors.white,
+              ),
+              backgroundColor: _task.id % 2 == 1
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : Colors.purpleAccent,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLowerRow() {
+    return Expanded(
+      flex: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            _task.id % 3 == 1 ? "Lernen, Nachhilfe" : "Hausaufgabe",
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                children: const [
+                  Icon(Icons.hourglass_top, size: iconSize),
+                  // TODO use real time of Task
+                  Text("~ 1 h"),
+                ],
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 7.5),
+                child: Row(
+                  children: const [
+                    Icon(Icons.dynamic_feed_outlined, size: iconSize),
+                    SizedBox(width: 5.0),
+                    // TODO use real completion of Task
+                    Text("5 / 8")
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

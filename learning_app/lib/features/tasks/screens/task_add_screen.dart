@@ -62,18 +62,19 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                   ),
                 ),
                 child: Ink(
-                    width: 200,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.purple,
-                      borderRadius: BorderRadius.circular(25.0),
+                  width: 200,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Tag Overview",
+                      style: TextStyle(color: Colors.white),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "Tag Overview",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )),
+                  ),
+                ),
               )
             ],
           ),
