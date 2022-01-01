@@ -61,7 +61,7 @@ class LeisureCategoryCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StartCount(
+                    StarCount(
                       count: leisureCategory.starCount,
                     ),
                     Image(
@@ -100,19 +100,20 @@ class LeisureCategoryDescription extends StatelessWidget {
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
         ),
+        const SizedBox(height: 10),
         Text(
           "$countExercises Übungen",
-          style: const TextStyle(fontSize: 14.0),
+          style: const TextStyle(fontSize: 14.0, color: Colors.grey),
         )
       ],
     );
   }
 }
 
-class StartCount extends StatelessWidget {
+class StarCount extends StatelessWidget {
   final int count;
 
-  const StartCount({
+  const StarCount({
     required this.count,
     Key? key,
   }) : super(key: key);
