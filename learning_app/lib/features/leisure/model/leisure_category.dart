@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class LeasureCategory extends Equatable {
+class LeisureCategory extends Equatable {
   final String title;
   final String assetString;
   final int starCount;
   final int countAids;
 
-  const LeasureCategory({
+  const LeisureCategory({
     required this.title,
     required this.assetString,
     required this.starCount,
