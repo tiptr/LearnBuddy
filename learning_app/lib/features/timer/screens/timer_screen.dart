@@ -81,31 +81,38 @@ class TimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int duration = context.select((TimerBloc bloc) => bloc.state.getDuration());
-    //select only rebuilds the Widget if the selected property changes: here duration.
-    // If the TimerState changes, TimerText won't rebuild
+    // select only rebuilds the Widget if the selected property changes: here duration.
+    // If the TimerState changes, TimerText won't rebuild (same as BlocProvider.of)
     final sign = duration.sign;
     duration = duration * sign; // Keep duration positive
+
     final minutesStr =
         ((duration / 60) % 60).floor().toString().padLeft(2, '0');
     final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
     final signStr = sign == -1 ? "- " : "";
+
     final phaseDuration = context.select((TimerBloc bloc) => bloc.state
         .getConfig()
-        .getPomodoroMinuets()[bloc.state.getPomodoroMode()]);
+        .getPomodoroMinutes()[bloc.state.getPomodoroMode()]);
+
     final pomoState = getPomoStateText(context);
+
     bool showProgressBar =
         context.select((TimerBloc bloc) => bloc.state is! TimerRunComplete);
 
     return SizedBox(
-        width: 200,
-        height: 200,
-        child: Stack(fit: StackFit.expand, children: [
+      width: 200,
+      height: 200,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
           Visibility(
-              visible: showProgressBar,
-              child: CircularProgressIndicator(
-                value: duration / phaseDuration,
-                strokeWidth: 15,
-              )),
+            visible: showProgressBar,
+            child: CircularProgressIndicator(
+              value: duration / phaseDuration,
+              strokeWidth: 15,
+            ),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -120,7 +127,9 @@ class TimerWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline2),
             ],
           )
-        ]));
+        ],
+      ),
+    );
   }
 
   String getPomoStateText(BuildContext context) {
@@ -142,14 +151,15 @@ class PomodoroState extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state.toString());
     //timerState = timerState.substring(0,20);
     return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // This is just for Debugging
-          Text(
-            timerState,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ]);
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // This is just for Debugging
+        Text(
+          timerState,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+      ],
+    );
   }
 }

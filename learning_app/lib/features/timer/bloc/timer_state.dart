@@ -47,7 +47,7 @@ class TimerInitial extends TimerState {
   TimerInitial() {
     _countPhase = 0;
     _pomodoroMode = PomodoroMode.concentration;
-    _duration = _config.getPomodoroMinuets()[_pomodoroMode];
+    _duration = _config.getPomodoroMinutes()[_pomodoroMode];
   }
 
   @override
@@ -75,7 +75,7 @@ class TimerInitial extends TimerState {
 class TimerInitialInSession extends TimerState {
   TimerInitialInSession(PomodoroMode pomodoroMode, int countPhase) {
     _pomodoroMode = pomodoroMode;
-    _duration = _config.getPomodoroMinuets()[_pomodoroMode];
+    _duration = _config.getPomodoroMinutes()[_pomodoroMode];
     _countPhase = countPhase;
   }
   @override
