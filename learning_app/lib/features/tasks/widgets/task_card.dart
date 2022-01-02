@@ -2,15 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
+import 'package:learning_app/util/formatting.dart';
 
 const double iconSize = 18.0;
 
 class TaskCard extends StatelessWidget {
-  final Task _task;
+  final ListReadTaskDto _task;
+  final String _formattedDueDate;
+  final bool _isOverDue;
+  final String _formattedTimeEstimation;
+  final bool _isEstimated;
 
-  const TaskCard({Key? key, required Task task})
+  TaskCard({Key? key, required ListReadTaskDto task})
       : _task = task,
+        _formattedDueDate = Formatting.formatDateTimeForListView(
+            task.dueDate, 'Ohne Fälligkeit'),
+        _isOverDue = Formatting.isDateTimeInPast(task.dueDate),
+        _formattedTimeEstimation = Formatting.formatDurationForListView(
+            task.remainingTimeEstimation, 'Keine Zeitschätzung'),
+        _isEstimated = task.remainingTimeEstimation == null ? false : true,
         super(key: key);
 
   @override
@@ -26,12 +37,8 @@ class TaskCard extends StatelessWidget {
 
     //////////////////////////////////////////////////
     //----------For Testing multiple options----------
-    // TODO use real values from Task
-    var categoryColor =
-        _task.id % 2 == 1 ? Colors.red : Colors.lightBlue.shade600;
     var checkboxColor =
-        categoryColor; // Colors.green.shade400; // Colors.black54; //categoryColor;
-    // const categoryColor = Colors.lightBlue.shade600;
+        _task.categoryColor; // Colors.green.shade400; // Colors.black54;
     //////////////////////////////////////////////////
 
     return Dismissible(
@@ -57,7 +64,7 @@ class TaskCard extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 // TODO: Use color of category once added
-                left: BorderSide(width: 12.5, color: categoryColor),
+                left: BorderSide(width: 12.5, color: _task.categoryColor),
               ),
               color: Colors.white,
             ),
@@ -74,12 +81,13 @@ class TaskCard extends StatelessWidget {
                     child: Checkbox(
                       checkColor: Colors.white,
                       fillColor: MaterialStateProperty.all(
-                        _task.done ? checkboxColor : categoryColor,
+                        _task.done ? checkboxColor : _task.categoryColor,
                       ),
                       value: _task.done,
                       shape: const CircleBorder(),
                       onChanged: (bool? value) {
-                        BlocProvider.of<TasksCubit>(context).toggleDone(_task);
+                        BlocProvider.of<TasksCubit>(context)
+                            .toggleDone(_task.id);
                       },
                     ),
                   ),
@@ -135,21 +143,19 @@ class TaskCard extends StatelessWidget {
             flex: 30,
             child: Chip(
               label: Text(
-                // TODO: Use real date here
-                _task.id % 2 == 1 ? "Heute" : "1. Dez",
+                _formattedDueDate,
                 style: TextStyle(
-                  color: _task.id % 2 == 1 ? Colors.black : Colors.white,
+                  color: _isOverDue ? Colors.white : Colors.black,
                 ),
               ),
               avatar: Icon(
-                // TODO check if task is overdue for color selection
                 Icons.calendar_today_outlined,
                 size: 16,
-                color: _task.id % 2 == 1 ? Colors.black : Colors.white,
+                color: _isOverDue ? Colors.white : Colors.black,
               ),
-              backgroundColor: _task.id % 2 == 1
-                  ? Theme.of(context).scaffoldBackgroundColor
-                  : Colors.purpleAccent,
+              backgroundColor: _isOverDue
+                  ? Colors.purpleAccent
+                  : Theme.of(context).scaffoldBackgroundColor,
             ),
           )
         ],
@@ -164,28 +170,31 @@ class TaskCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            _task.id % 3 == 1 ? "Lernen, Nachhilfe" : "Hausaufgabe",
+            _task.keywords.join(', '),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Row(
-                children: const [
-                  Icon(Icons.hourglass_top, size: iconSize),
-                  // TODO use real time of Task
-                  Text("~ 1 h"),
-                ],
-              ),
+              (!_task.done && _isEstimated)
+                  ? Row(
+                      children: [
+                        Icon(Icons.hourglass_top, size: iconSize),
+                        Text(_formattedTimeEstimation),
+                      ],
+                    )
+                  : Row(),
               Container(
                 margin: const EdgeInsets.only(left: 7.5),
-                child: Row(
-                  children: const [
-                    Icon(Icons.dynamic_feed_outlined, size: iconSize),
-                    SizedBox(width: 5.0),
-                    // TODO use real completion of Task
-                    Text("5 / 8")
-                  ],
-                ),
+                child: (_task.subTaskCount > 0)
+                    ? Row(
+                        children: [
+                          Icon(Icons.dynamic_feed_outlined, size: iconSize),
+                          SizedBox(width: 5.0),
+                          Text(
+                              '${_task.finishedSubTaskCount} / ${_task.subTaskCount}'),
+                        ],
+                      )
+                    : Row(),
               ),
             ],
           ),

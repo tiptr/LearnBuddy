@@ -5,8 +5,13 @@ class Task extends Equatable {
   final String title;
   final bool done;
   final String? description;
-  // final Category category;
-  final int? estimatedTime; // minutes
+
+  // The category is not optional. There is a predefined category for all tasks
+  // that do not match any other category. (This will not be removable by the
+  // user, but the color is supposed to be interchangeable)
+  // final Category category; TODO
+
+  final Duration? estimatedTime; // minutes
 
   final DateTime dueDate;
   // dueDate is not optional, because there is no good way to integrate
@@ -19,14 +24,14 @@ class Task extends Equatable {
 
   final Task? parentTask;
 
-  final int? manualTimeEffortDelta;
+  final Duration? manualTimeEffortDelta;
 
   const Task({
     required this.id,
     required this.title,
     required this.done,
     this.description,
-    // required this.category,
+    // required this.category, TODO
     this.estimatedTime,
     required this.dueDate,
     required this.creationDateTime,

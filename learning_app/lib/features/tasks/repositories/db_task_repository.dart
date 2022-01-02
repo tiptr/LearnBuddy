@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
@@ -15,8 +16,17 @@ class DbTaskRepository implements TaskRepository {
   final TasksDao _dao = getIt<TasksDao>();
 
   @override
-  Future<List<Task>> loadTasks() async {
-    return _dao.getAll().get();
+  Future<List<ListReadTaskDto>> loadTasks() async {
+    // GetAllTasksResult tasksWithoutKeywords = await _dao.getAllTasks().get().map;
+    // return ListReadTaskDto(id: tasksWithoutKeywords.id,
+    //     title: tasksWithoutKeywords.title,
+    //     done: tasksWithoutKeywords.done,
+    //     categoryColor: tasksWithoutKeywords.categoryColor,
+    //     keywords: ['Hausaufgabe', 'Lernen'],
+    //     dueDate: tasksWithoutKeywords.dueDate,
+    //     subTaskCount: tasksWithoutKeywords.subTaskCount,
+    //     finishedSubTaskCount: tasksWithoutKeywords.finishedSubTaskCount)
+    return []; //TODO
   }
 
   @override

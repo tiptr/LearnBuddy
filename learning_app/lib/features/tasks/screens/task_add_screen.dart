@@ -31,8 +31,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   @override
   Widget build(BuildContext context) {
     // Set initial dueDate:
-    BlocProvider.of<AddTaskCubit>(context)
-        .addTaskAttribute(CreateTaskDto(
+    BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
       dueDate: selectedDueDate,
     ));
 
