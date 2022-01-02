@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/ausgleich/screens/ausgleich_screen.dart';
+import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
-import 'features/lernhilfen/screens/lernhilfen_screen.dart';
 import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
   TaskScreen(),
   DashboardScreen(),
-  AusgleichScreen(),
-  LernhilfenScreen(),
+  LeisureScreen(),
+  LearningAidsScreen(),
 ];
 
 void main() {
@@ -44,10 +44,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
+
     return MaterialApp(
       title: 'Lernbuddy',
-      theme: ThemeData(
-        primarySwatch: null,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          primary: const Color(0xFF3444CF),
+          secondary: const Color(0xFF9E5EE1),
+        ),
       ),
       home: const MyHomePage(),
     );
