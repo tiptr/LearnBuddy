@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/tags/models/tag.dart';
+import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
 
-class TagCard extends StatelessWidget {
-  final Tag _tag;
+class CategoryCard extends StatelessWidget {
+  final Category _category;
 
-  const TagCard({Key? key, required Tag task})
-      : _tag = task,
+  const CategoryCard({Key? key, required Category category})
+      : _category = category,
         super(key: key);
 
   @override
@@ -34,15 +34,22 @@ class TagCard extends StatelessWidget {
           children: [
             Expanded(
               flex: 40,
-              child: Chip(
-                backgroundColor: Color(_tag.color).withOpacity(0.3),
-                label: Row(
-                  children: [const Spacer(), Text(_tag.name), const Spacer()],
-                ),
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(_tag.color),
-                ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 10.0,
+                    height: 30.0,
+                    margin: const EdgeInsets.only(right: 15.0),
+                    decoration: BoxDecoration(
+                      color: Color(_category.color),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  Text(
+                    _category.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -78,7 +85,7 @@ class TagCard extends StatelessWidget {
                     },
                     icon: Icon(
                       Icons.palette_outlined,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   IconButton(
@@ -87,7 +94,7 @@ class TagCard extends StatelessWidget {
                     },
                     icon: Icon(
                       Icons.delete_outlined,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   )
                 ],
