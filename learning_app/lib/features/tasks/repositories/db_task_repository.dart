@@ -1,13 +1,15 @@
+import 'dart:ui';
+
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
-import 'package:learning_app/database/database.dart';
+import 'package:learning_app/database/type_converters/color_converter.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
+import 'package:learning_app/database/database.dart' as db;
 
 /// Concrete repository implementation using the database with drift
 @Injectable(as: TaskRepository)
@@ -17,23 +19,26 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<List<ListReadTaskDto>> loadTasks() async {
-    // GetAllTasksResult tasksWithoutKeywords = await _dao.getAllTasks().get().map;
-    // return ListReadTaskDto(id: tasksWithoutKeywords.id,
-    //     title: tasksWithoutKeywords.title,
-    //     done: tasksWithoutKeywords.done,
-    //     categoryColor: tasksWithoutKeywords.categoryColor,
-    //     keywords: ['Hausaufgabe', 'Lernen'],
-    //     dueDate: tasksWithoutKeywords.dueDate,
-    //     subTaskCount: tasksWithoutKeywords.subTaskCount,
-    //     finishedSubTaskCount: tasksWithoutKeywords.finishedSubTaskCount)
-    return []; //TODO
+    return _dao.getAllTasks().map((task) {
+      return ListReadTaskDto(
+        id: task.id,
+        title: task.title,
+        done: task.done,
+        categoryColor: Color(task.categoryColor),
+        keywords: ['Hausaufgabe', 'Lernen'], // TODO: implement
+        remainingTimeEstimation: task.remainingTimeEstimation,
+        dueDate: task.dueDate,
+        subTaskCount: task.subTaskCount,
+        finishedSubTaskCount: task.finishedSubTaskCount,
+      );
+    }).get();
   }
 
   @override
 
   /// Creates a new task and returns it with its newly generated id
-  Future<Task> createTask(CreateTaskDto newTask) async {
-    return _dao.createTask(TasksCompanion(
+  Future<int> createTask(CreateTaskDto newTask) async {
+    return _dao.createTask(db.TasksCompanion(
       // For NOT NULL attributes, ofNullable() is used
       // For nullable attributes, use Value() instead
       // Reason: it could not be determined, if a null value in the DTO would

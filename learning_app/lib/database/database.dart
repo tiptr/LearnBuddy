@@ -9,6 +9,9 @@ import 'package:learning_app/constants/database_constants.dart';
 // DAOs used to structure the database queries access
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 
+// Converters
+import 'package:learning_app/database/type_converters/duration_converter.dart';
+
 // Also import all used models, as they are required in the generated extension file
 import 'package:learning_app/features/tasks/models/task.dart';
 

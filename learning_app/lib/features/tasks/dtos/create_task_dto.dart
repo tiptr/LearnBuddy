@@ -2,7 +2,7 @@ class CreateTaskDto {
   // Only attributes of task, that are userdefined at task creation:
   String? title;
   String? description;
-  int? estimatedTime;
+  Duration? estimatedTime;
   DateTime? dueDate;
 
   //Task? parentTask; TODO

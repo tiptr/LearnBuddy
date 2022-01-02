@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
-import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
@@ -63,7 +62,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                   });
                   BlocProvider.of<AddTaskCubit>(context)
                       .addTaskAttribute(CreateTaskDto(
-                    estimatedTime: duration.inMinutes,
+                    estimatedTime: duration,
                   ));
                 },
               ),

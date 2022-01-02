@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/logger.dart';
@@ -46,10 +45,17 @@ class AddTaskCubit extends Cubit<AddTaskState> {
       // Save the task, if all required attributes are given
       ConstructingTask constructingState = currentState;
       if (constructingState.createTaskDto.isReadyToStore()) {
-        Task newTask =
+        int newTaskId =
             await _taskRepository.createTask(constructingState.createTaskDto);
-        await _tasksCubit.refreshTaskListAddTask(newTask);
-        logger.d("[Task Cubit] New task was saved: $newTask");
+        // Reload the task list with the new entry:
+        // This is triggered now rather than adding the single new task to the
+        // already loaded list, because:
+        // A: It would be a new DB-request anyways due to the ListReadTaskDto
+        //    that is required now.
+        // B: With the upcoming sorting, filtering, dynamic loading functionality,
+        //    this would hardly work anyway.
+        await _tasksCubit.loadTasks();
+        logger.d("[Task Cubit] New task was saved. Id: $newTaskId");
         emit(TaskAdded());
       } else {
         // Not all requirements given

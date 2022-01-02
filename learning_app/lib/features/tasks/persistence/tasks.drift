@@ -27,7 +27,7 @@ CREATE TABLE tasks (
     manual_time_effort_delta INT MAPPED BY `const DurationConverter()`
 ) WITH Task;
 
--- TODO: implement Table for many to many keywords here
+-- TODO: implement Table for many to many keywords here (or in separate file imported here)
 
 -- TODO: view for all top level tasks without subtasks
 

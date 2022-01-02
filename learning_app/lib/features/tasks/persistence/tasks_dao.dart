@@ -29,9 +29,12 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   /// Takes a TasksCompanion rather than a task. This is auto-generated and
   /// here allows to define only required values that are not auto-generated
   /// like the ID.
-  Future<Task> createTask(TasksCompanion tasksCompanion) {
+  Future<int> createTask(TasksCompanion tasksCompanion) {
     // insertReturning() already provides the whole created entity instead of
     // the single ID provided by insert()
-    return into(tasks).insertReturning(tasksCompanion);
+    // this was changed back to insert(), because now, we do not need the 'task'
+    // anymore for displaying the list, but rather a 'ListReadTaskDto'
+
+    return into(tasks).insert(tasksCompanion);
   }
 }

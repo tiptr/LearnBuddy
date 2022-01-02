@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -17,39 +17,29 @@ class TasksCubit extends Cubit<TaskState> {
     emit(TasksLoaded(tasks: tasks));
   }
 
-  /// Updates the currently cached list by adding the new task.
-  ///
-  /// Note that persisting the change is handled by "add_task_cubit.dart"
-  Future<void> refreshTaskListAddTask(Task newTask) async {
-    final currentState = state;
-    if (currentState is TasksLoaded) {
-      // Create a deep copy so the actual state isn't mutated
-      var tasks = List<Task>.from(currentState.tasks);
-      emit(TasksLoaded(tasks: tasks + [newTask]));
-    }
-  }
-
   // Toggles the done flag in a task in the cubit state
-  Future<void> toggleDone(Task task) async {
+  Future<void> toggleDone(int taskId) async {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var success = await _taskRepository.toggleDone(task.id);
+      var success = await _taskRepository.toggleDone(taskId);
       if (!success) return;
 
+      // Here, since only one flag is changed, the list does not have to be
+      // reloaded:
       // Create a deep copy so the actual state isn't mutated
-      var tasks = List<Task>.from(currentState.tasks);
-      int index = tasks.indexWhere((Task t) => t.id == task.id);
-      tasks[index] = Task(
-        id: task.id,
-        title: task.title,
-        done: !task.done,
-        creationDateTime: task.creationDateTime,
-        dueDate: task.dueDate,
-        estimatedTime: task.estimatedTime,
-        description: task.description,
-        manualTimeEffortDelta: task.manualTimeEffortDelta,
-        parentTask: task.parentTask,
+      var tasks = List<ListReadTaskDto>.from(currentState.tasks);
+      int index = tasks.indexWhere((ListReadTaskDto t) => t.id == taskId);
+      tasks[index] = ListReadTaskDto(
+        id: tasks[index].id,
+        title: tasks[index].title,
+        done: !tasks[index].done, // toggle
+        categoryColor: tasks[index].categoryColor,
+        keywords: tasks[index].keywords,
+        remainingTimeEstimation: tasks[index].remainingTimeEstimation,
+        dueDate: tasks[index].dueDate,
+        subTaskCount: tasks[index].subTaskCount,
+        finishedSubTaskCount: tasks[index].finishedSubTaskCount,
       );
 
       emit(TasksLoaded(tasks: tasks));
@@ -62,12 +52,12 @@ class TasksCubit extends Cubit<TaskState> {
     if (currentState is TasksLoaded) {
       var success = await _taskRepository.deleteById(id);
       if (!success) return;
+      // TODO: notify user? Maybe not required, since this can never fail?
 
-      // Create a deep copy so the actual state isn't mutated
-      var tasks = List<Task>.from(currentState.tasks);
+      // TODO: if the task has subtasks, notify the user about this
 
-      tasks = tasks.where((element) => element.id != id).toList();
-      emit(TasksLoaded(tasks: tasks));
+      // Refresh the list to remove the task
+      loadTasks();
     }
   }
 }

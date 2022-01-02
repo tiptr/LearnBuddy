@@ -178,7 +178,7 @@ class TaskCard extends StatelessWidget {
               (!_task.done && _isEstimated)
                   ? Row(
                       children: [
-                        Icon(Icons.hourglass_top, size: iconSize),
+                        const Icon(Icons.hourglass_top, size: iconSize),
                         Text(_formattedTimeEstimation),
                       ],
                     )
@@ -188,8 +188,9 @@ class TaskCard extends StatelessWidget {
                 child: (_task.subTaskCount > 0)
                     ? Row(
                         children: [
-                          Icon(Icons.dynamic_feed_outlined, size: iconSize),
-                          SizedBox(width: 5.0),
+                          const Icon(Icons.dynamic_feed_outlined,
+                              size: iconSize),
+                          const SizedBox(width: 5.0),
                           Text(
                               '${_task.finishedSubTaskCount} / ${_task.subTaskCount}'),
                         ],
