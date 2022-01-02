@@ -11,45 +11,35 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AddTaskCubit>(
-          lazy: true,
-          create: (context) {
-            return AddTaskCubit(BlocProvider.of<TasksCubit>(context));
-          },
-        ),
-      ],
-      child: Scaffold(
-        body: BlocBuilder<TasksCubit, TaskState>(
-          builder: (context, state) {
-            // This only checks for the success state, we might want to check for
-            // errors in the future here.
-            if (state is! TasksLoaded) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    return Scaffold(
+      body: BlocBuilder<TasksCubit, TaskState>(
+        builder: (context, state) {
+          // This only checks for the success state, we might want to check for
+          // errors in the future here.
+          if (state is! TasksLoaded) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            return ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: state.tasks.length,
-              itemBuilder: (BuildContext ctx, int idx) =>
-                  TaskCard(task: state.tasks[idx]),
-            );
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          heroTag: "NavigateToTaskAddScreen",
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const TaskAddScreen(),
-            ),
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.tasks.length,
+            itemBuilder: (BuildContext ctx, int idx) =>
+                TaskCard(task: state.tasks[idx]),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "NavigateToTaskAddScreen",
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TaskAddScreen(),
           ),
-          child: const Icon(Icons.add),
-          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
+        child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }

@@ -1,4 +1,3 @@
-
 class CreateTaskDto {
   // Only attributes of task, that are userdefined at task creation:
   String? title;
@@ -30,6 +29,6 @@ class CreateTaskDto {
 
   /// Checks, if the DTO is fulfilling all attribute requirements
   bool isReadyToStore() {
-    return title != null && description != null && dueDate != null;
+    return title != null && dueDate != null;
   }
 }

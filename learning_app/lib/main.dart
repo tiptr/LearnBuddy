@@ -7,6 +7,7 @@ import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
+import 'features/tasks/bloc/add_task_cubit.dart';
 import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
@@ -37,6 +38,12 @@ void main() {
             // dynamic loading (only the first X tasks are being loaded)
             cubit.loadTasks();
             return cubit;
+          },
+        ),
+        BlocProvider<AddTaskCubit>(
+          lazy: true,
+          create: (context) {
+            return AddTaskCubit(BlocProvider.of<TasksCubit>(context));
           },
         ),
       ],

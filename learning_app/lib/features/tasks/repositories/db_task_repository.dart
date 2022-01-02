@@ -24,10 +24,15 @@ class DbTaskRepository implements TaskRepository {
   /// Creates a new task and returns it with its newly generated id
   Future<Task> createTask(CreateTaskDto newTask) async {
     return _dao.createTask(TasksCompanion(
+      // For NOT NULL attributes, ofNullable() is used
+      // For nullable attributes, use Value() instead
+      // Reason: it could not be determined, if a null value in the DTO would
+      // mean a Value.absent() or a Value(null)
       title: Value.ofNullable(newTask.title),
-      description: Value.ofNullable(newTask.description),
-      estimatedTime: Value.ofNullable(newTask.estimatedTime),
+      description: Value(newTask.description),
+      estimatedTime: Value(newTask.estimatedTime),
       dueDate: Value.ofNullable(newTask.dueDate),
+      creationDateTime: Value(DateTime.now()),
     ));
   }
 

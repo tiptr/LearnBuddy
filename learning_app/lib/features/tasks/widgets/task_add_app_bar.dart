@@ -36,8 +36,9 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     controller: textController,
                     onChanged: (text) async {
-                      BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
-                      title: text,
+                      BlocProvider.of<AddTaskCubit>(context)
+                          .addTaskAttribute(CreateTaskDto(
+                        title: text,
                       ));
                     },
                   ),

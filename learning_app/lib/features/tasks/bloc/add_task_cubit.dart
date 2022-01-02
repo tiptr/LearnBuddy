@@ -53,12 +53,14 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         emit(TaskAdded());
       } else {
         // Not all requirements given
-        logger.d("[Task Cubit] Save task triggered, but not every required attribute was set");
+        logger.d(
+            "[Task Cubit] Save task triggered, but not every required attribute was set");
         emit(AddTaskError());
       }
     } else if (currentState is InitialAddTaskState) {
       // The task has to be constructed first with 'addTaskAttribute'
-      logger.d("[Task Cubit] Save task triggered without adding attributes first");
+      logger.d(
+          "[Task Cubit] Save task triggered without adding attributes first");
       emit(AddTaskError());
     }
   }
