@@ -17,7 +17,8 @@ class CategoryColorCirlce extends StatelessWidget {
     double shadowFactor = radius / 20;
 
     return InkWell(
-      child: Container(
+      borderRadius: BorderRadius.circular(radius),
+      child: Ink(
         height: radius * 2,
         width: radius * 2,
         decoration: BoxDecoration(
