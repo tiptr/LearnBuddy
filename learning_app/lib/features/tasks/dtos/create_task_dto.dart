@@ -29,6 +29,6 @@ class CreateTaskDto {
 
   /// Checks, if the DTO is fulfilling all attribute requirements
   bool isReadyToStore() {
-    return title != null && dueDate != null;
+    return title != null;
   }
 }

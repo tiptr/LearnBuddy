@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
-import 'package:learning_app/database/type_converters/color_converter.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
@@ -25,7 +23,7 @@ class DbTaskRepository implements TaskRepository {
         title: task.title,
         done: task.done,
         categoryColor: Color(task.categoryColor),
-        keywords: ['Hausaufgabe', 'Lernen'], // TODO: implement
+        keywords: const ['Hausaufgabe', 'Lernen'], // TODO: implement
         remainingTimeEstimation: task.remainingTimeEstimation,
         dueDate: task.dueDate,
         subTaskCount: task.subTaskCount,

@@ -21,7 +21,7 @@ CREATE TABLE tasks (
     done BOOLEAN NOT NULL DEFAULT false,
     description TEXT,
     estimated_time INT MAPPED BY `const DurationConverter()`,
-    due_date DATETIME NOT NULL,
+    due_date DATETIME,
     creation_date_time DATETIME NOT NULL,
     -- parrent_task_id TODO
     manual_time_effort_delta INT MAPPED BY `const DurationConverter()`

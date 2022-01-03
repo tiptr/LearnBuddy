@@ -13,7 +13,7 @@ class Task extends Equatable {
 
   final Duration? estimatedTime; // minutes
 
-  final DateTime dueDate;
+  final DateTime? dueDate;
   // dueDate is not optional, because there is no good way to integrate
   // tasks without one into the sorted list of the UI.
   // Instead, 'Today' is the predefined due_date
@@ -33,7 +33,7 @@ class Task extends Equatable {
     this.description,
     // required this.category, TODO
     this.estimatedTime,
-    required this.dueDate,
+    this.dueDate,
     required this.creationDateTime,
     this.parentTask,
     this.manualTimeEffortDelta,
@@ -49,5 +49,15 @@ class Task extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, title, done];
+  List<Object?> get props => [
+        id,
+        title,
+        done,
+        description,
+        estimatedTime,
+        dueDate,
+        creationDateTime,
+        parentTask,
+        manualTimeEffortDelta,
+      ];
 }
