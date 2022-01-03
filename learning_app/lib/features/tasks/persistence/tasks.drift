@@ -53,8 +53,8 @@ SELECT  id,
 FROM tasks; -- TODO: use top level tasks view instead;
 
 -- parameters are added to named queries like this:
-getById: SELECT * FROM tasks WHERE id = :id;
+getTaskById: SELECT * FROM tasks WHERE id = :id;
 
-deleteById: DELETE FROM tasks WHERE id = :id;
+deleteTaskById: DELETE FROM tasks WHERE id = :id;
 
-toggleDoneById: UPDATE tasks SET done = (not done) WHERE id = :id;
+toggleTaskDoneById: UPDATE tasks SET done = (not done) WHERE id = :id;

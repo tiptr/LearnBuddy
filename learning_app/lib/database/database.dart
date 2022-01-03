@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/database/type_converters/color_converter.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:drift/native.dart';
@@ -8,12 +11,14 @@ import 'package:learning_app/constants/database_constants.dart';
 
 // DAOs used to structure the database queries access
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
+import 'package:learning_app/features/categories/persistence/categories_dao.dart';
 
 // Converters
 import 'package:learning_app/database/type_converters/duration_converter.dart';
 
 // Also import all used models, as they are required in the generated extension file
 import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/categories/models/category.dart';
 
 // Initialization scripts:
 import 'initializations/initialization_01_category_colors.dart';
@@ -41,9 +46,12 @@ LazyDatabase _openConnection() {
 
 @singleton // Injectable via dependency injection
 @DriftDatabase(
-  daos: [TasksDao],
+  daos: [TasksDao, CategoriesDao],
   // Include all drift files containing the entity definitions and queries
-  include: {'package:learning_app/features/tasks/persistence/tasks.drift'},
+  include: {
+    'package:learning_app/features/tasks/persistence/tasks.drift',
+    'package:learning_app/features/categories/persistence/categories.drift'
+  },
 )
 class Database extends _$Database {
   Database() : super(_openConnection());

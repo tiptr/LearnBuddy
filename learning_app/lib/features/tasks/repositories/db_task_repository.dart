@@ -60,12 +60,12 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<bool> deleteById(int id) async {
-    final affected = await _dao.deleteById(id);
+    final affected = await _dao.deleteTaskById(id);
     return affected > 0;
   }
 
   @override
   Future<bool> toggleDone(int id) async {
-    return _dao.toggleDoneById(id).then((value) => value > 0);
+    return _dao.toggleTaskDoneById(id).then((value) => value > 0);
   }
 }
