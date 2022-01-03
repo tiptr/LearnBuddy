@@ -20,6 +20,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text("Neue Kategorie"),
+      scrollable: true,
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,12 +81,11 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                 })
               ],
             ),
-          )
+          ),
         ],
       ),
       actions: <Widget>[
         MaterialButton(
-          elevation: 5.0,
           child: const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
           onPressed: () {
             logger.d("Abbruch beim Erstellen einer Kategorie");
@@ -93,7 +93,6 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
           },
         ),
         MaterialButton(
-          elevation: 5.0,
           child: Text(
             "Kategorie hinzufügen",
             style: TextStyle(color: Theme.of(context).primaryColor),
