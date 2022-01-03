@@ -20,6 +20,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text("Neue Kategorie"),
+      scrollable: true,
       content: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,15 +51,15 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
             ],
           ),
 
-          const SizedBox(height: 50.0),
+          const SizedBox(height: 25.0),
 
           // Available colors
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.75,
-            height: 250,
             // TODO: Try to use a scrollable container like a ListView here
             //       Problem was the flex wrap until now, but there has to be a way.
             child: Wrap(
+              alignment: WrapAlignment.center,
               children: [
                 ...availableColors.map((Color color) {
                   return Container(
@@ -75,36 +76,43 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                     ),
                   );
                 }),
+                // Add New Color
                 ColorAddIcon(onPressed: () {
                   logger.d("On Add New Color For Category Pressed");
                 })
               ],
             ),
-          )
+          ),
+
+          const SizedBox(height: 25.0),
+
+          // Action Buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MaterialButton(
+                child: const Text("Abbrechen",
+                    style: TextStyle(color: Colors.grey)),
+                onPressed: () {
+                  logger.d("Abbruch beim Erstellen einer Kategorie");
+                  Navigator.of(context).pop();
+                },
+              ),
+              MaterialButton(
+                child: Text(
+                  "Kategorie hinzufügen",
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () {
+                  logger.d(
+                    "Kategorie hinzufügen mit ${_textController.value.text} und Farbe ${selectedColor.toString()}",
+                  );
+                },
+              )
+            ],
+          ),
         ],
       ),
-      actions: <Widget>[
-        MaterialButton(
-          elevation: 5.0,
-          child: const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
-          onPressed: () {
-            logger.d("Abbruch beim Erstellen einer Kategorie");
-            Navigator.of(context).pop();
-          },
-        ),
-        MaterialButton(
-          elevation: 5.0,
-          child: Text(
-            "Kategorie hinzufügen",
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-          onPressed: () {
-            logger.d(
-              "Kategorie hinzufügen mit ${_textController.value.text} und Farbe ${selectedColor.toString()}",
-            );
-          },
-        )
-      ],
     );
   }
 }
