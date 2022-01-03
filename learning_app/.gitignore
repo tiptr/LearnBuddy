@@ -31,6 +31,10 @@
 .pub/
 /build/
 
+# Flutter generated code
+*.g.dart
+**/injection.config.dart
+
 # Web related
 lib/generated_plugin_registrant.dart
 

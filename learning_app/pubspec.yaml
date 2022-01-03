@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   bloc: ^8.0.0
   flutter_bloc: ^8.0.0
-  sqflite: ^2.0.0+4
   path: ^1.8.0
   provider: ^6.0.1
   equatable: ^2.0.3
@@ -47,6 +46,13 @@ dependencies:
   step_progress_indicator: ^1.0.1
   logger: ^1.1.0
   quiver: ^3.0.1+1 #Used for the Metronome
+  # Persistence:
+  drift: ^1.1.1
+  sqlite3_flutter_libs: ^0.5.2
+  path_provider: ^2.0.8
+  # Dependency injection:
+  injectable: ^1.5.0
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +64,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
+  # Code generation (used e.g. for drift)
+  build_runner: ^2.1.7
+
+  # Persistence:
+  drift_dev: ^1.1.1
+
+  # Dependency injection:
+  injectable_generator: ^1.5.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
