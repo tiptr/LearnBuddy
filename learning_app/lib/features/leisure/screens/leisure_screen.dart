@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/model/leisure_category.dart';
@@ -52,8 +53,8 @@ class LeisureCategoryCard extends StatelessWidget {
               Expanded(
                 flex: 60,
                 child: LeisureCategoryDescription(
-                  title: leisureCategory.title,
-                  countExercises: leisureCategory.countAids,
+                  title: leisureCategory.name,
+                  countExercises: leisureCategory.leisureActivityCount,
                 ),
               ),
               Expanded(
@@ -65,7 +66,8 @@ class LeisureCategoryCard extends StatelessWidget {
                       count: leisureCategory.starCount,
                     ),
                     Image(
-                      image: AssetImage(leisureCategory.assetString),
+                      image: AssetImage(leisureCategory.pathToImage ??
+                          defaultLeisureCategoryImagePath),
                       width: 85.0,
                       height: 85.0,
                     ),
