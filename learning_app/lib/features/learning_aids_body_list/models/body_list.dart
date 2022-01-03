@@ -10,7 +10,6 @@ class BodyList extends LearnList {
     List<BodyListLearnListWord> words,
     Category? category,
     bool isArchived,
-    int referencingTasksCount,
   ) : super(
           id: id,
           name: name,
@@ -18,7 +17,6 @@ class BodyList extends LearnList {
           words: words,
           category: category,
           isArchived: isArchived,
-          referencingTasksCount: referencingTasksCount,
         );
 
   @override
