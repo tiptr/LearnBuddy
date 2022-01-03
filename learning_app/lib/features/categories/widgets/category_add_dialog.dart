@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/categories/constants/available_colors.dart';
+import 'package:learning_app/features/categories/constants/colors.dart';
+import 'package:learning_app/features/categories/widgets/color_add_icon.dart';
 import 'package:learning_app/util/logger.dart';
 
 import 'category_color_circle.dart';
@@ -12,7 +13,7 @@ class CategoryAddDialog extends StatefulWidget {
 }
 
 class _CategoryAddDialogState extends State<CategoryAddDialog> {
-  Color selectedColor = Colors.grey;
+  Color selectedColor = defaultColor;
   final _textController = TextEditingController();
 
   @override
@@ -26,6 +27,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
           // Title Entry
           Row(
             children: [
+              const Spacer(),
               Container(
                 width: 10.0,
                 height: 30.0,
@@ -34,10 +36,9 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                   borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              Expanded(
+              Container(
+                margin: const EdgeInsets.only(left: 10.0),
+                width: 150.0,
                 child: TextField(
                   decoration: const InputDecoration(
                     hintText: "Bezeichnung eingeben",
@@ -45,12 +46,15 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                   controller: _textController,
                 ),
               ),
+              const Spacer()
             ],
           ),
 
+          const SizedBox(height: 50.0),
+
           // Available colors
           SizedBox(
-            width: 250,
+            width: MediaQuery.of(context).size.width * 0.75,
             height: 250,
             // TODO: Try to use a scrollable container like a ListView here
             //       Problem was the flex wrap until now, but there has to be a way.
@@ -62,6 +66,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                     child: CategoryColorCirlce(
                       radius: 20.0,
                       color: color,
+                      selected: selectedColor == color,
                       onTap: (Color color) {
                         setState(() {
                           selectedColor = color;
@@ -69,6 +74,9 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                       },
                     ),
                   );
+                }),
+                ColorAddIcon(onPressed: () {
+                  logger.d("On Add New Color For Category Pressed");
                 })
               ],
             ),

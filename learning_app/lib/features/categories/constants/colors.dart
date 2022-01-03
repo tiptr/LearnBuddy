@@ -10,8 +10,8 @@ const availableColors = <Color>[
   Colors.lightGreen,
   Colors.yellow,
   Colors.orange,
-  Colors.red,
   Colors.brown,
-  Colors.grey,
   Colors.black,
 ];
+
+const defaultColor = Colors.grey;
