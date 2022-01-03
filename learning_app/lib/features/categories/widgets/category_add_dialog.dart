@@ -78,7 +78,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
       actions: <Widget>[
         MaterialButton(
           elevation: 5.0,
-          child: const Text("Abbrechen"),
+          child: const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
           onPressed: () {
             logger.d("Abbruch beim Erstellen einer Kategorie");
             Navigator.of(context).pop();
@@ -86,7 +86,10 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
         ),
         MaterialButton(
           elevation: 5.0,
-          child: const Text("Kategorie hinzufügen"),
+          child: Text(
+            "Kategorie hinzufügen",
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
           onPressed: () {
             logger.d(
               "Kategorie hinzufügen mit ${_textController.value.text} und Farbe ${selectedColor.toString()}",
