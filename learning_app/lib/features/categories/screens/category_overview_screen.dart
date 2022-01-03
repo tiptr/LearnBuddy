@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/categories/widgets/category_add_dialog.dart';
 import 'package:learning_app/features/categories/widgets/category_app_bar.dart';
 import 'package:learning_app/features/categories/widgets/category_card.dart';
-import 'package:learning_app/util/logger.dart';
 
 class CategoryOverviewScreen extends StatelessWidget {
   final categories = <Category>[
@@ -31,7 +31,12 @@ class CategoryOverviewScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToCategoryAddScreen",
         onPressed: () {
-          logger.d("TODO: Open tag creation page");
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CategoryAddDialog();
+            },
+          );
         },
         child: const Icon(Icons.add),
         backgroundColor: Theme.of(context).colorScheme.primary,
