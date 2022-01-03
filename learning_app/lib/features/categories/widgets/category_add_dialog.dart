@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/categories/constants/colors.dart';
-import 'package:learning_app/features/categories/widgets/color_add_icon.dart';
+import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/util/logger.dart';
-
-import 'category_color_circle.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class CategoryAddDialog extends StatefulWidget {
   const CategoryAddDialog({Key? key}) : super(key: key);
@@ -55,34 +54,15 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
 
           // Available colors
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.75,
-            // TODO: Try to use a scrollable container like a ListView here
-            //       Problem was the flex wrap until now, but there has to be a way.
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              children: [
-                ...availableColors.map((Color color) {
-                  return Container(
-                    margin: const EdgeInsets.all(5.0),
-                    child: CategoryColorCirlce(
-                      radius: 20.0,
-                      color: color,
-                      selected: selectedColor == color,
-                      onTap: (Color color) {
-                        setState(() {
-                          selectedColor = color;
-                        });
-                      },
-                    ),
-                  );
-                }),
-                // Add New Color
-                ColorAddIcon(onPressed: () {
-                  logger.d("On Add New Color For Category Pressed");
-                })
-              ],
-            ),
-          ),
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: CategoryColorSelector(
+                onColorSelect: (Color color) {
+                  setState(() {
+                    selectedColor = color;
+                  });
+                },
+                selectedColor: selectedColor,
+              )),
 
           const SizedBox(height: 25.0),
 
