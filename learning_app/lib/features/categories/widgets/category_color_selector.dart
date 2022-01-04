@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:learning_app/features/categories/constants/colors.dart';
+import 'package:learning_app/util/logger.dart';
 
 class CategoryColorSelector extends StatelessWidget {
   final Function onColorSelect;
@@ -38,12 +39,22 @@ Widget pickerLayoutBuilder(
 ) {
   return SizedBox(
     width: 300,
-    height: 175,
+    height: 250,
     child: GridView.count(
       crossAxisCount: 5,
       crossAxisSpacing: 5,
       mainAxisSpacing: 5,
-      children: [for (Color color in colors) child(color)],
+      children: [
+        for (Color color in colors) child(color),
+        IconButton(
+          padding: const EdgeInsets.all(0),
+          onPressed: () {
+            logger.d("Open RGB Picker");
+          },
+          icon: const Icon(Icons.add, size: 40),
+          color: Theme.of(context).primaryColor,
+        )
+      ],
       physics: const NeverScrollableScrollPhysics(),
     ),
   );

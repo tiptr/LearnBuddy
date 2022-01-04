@@ -64,8 +64,6 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                 selectedColor: selectedColor,
               )),
 
-          const SizedBox(height: 25.0),
-
           // Action Buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
