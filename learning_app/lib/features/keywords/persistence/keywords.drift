@@ -2,7 +2,6 @@
 -- https://drift.simonbinder.eu/docs/using-sql/moor_files/#getting-started
 
 -- Import converters
-import 'package:learning_app/database/type_converters/color_converter.dart';
 
 -- Import other entities this one depends on:
 
@@ -10,8 +9,7 @@ import 'package:learning_app/database/type_converters/color_converter.dart';
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
 -- could be considered more elegant
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
-CREATE TABLE Categories (
+CREATE TABLE Keywords (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    color INT NOT NULL MAPPED BY `const ColorConverter()`
-) AS CategoryEntity;
+    name TEXT NOT NULL
+) AS KeywordEntity;

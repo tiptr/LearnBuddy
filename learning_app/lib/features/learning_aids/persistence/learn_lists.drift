@@ -2,7 +2,7 @@
 -- https://drift.simonbinder.eu/docs/using-sql/moor_files/#getting-started
 
 -- Import converters
-import 'package:learning_app/database/type_converters/duration_converter.dart';
+import 'package:learning_app/database/type_converters/learn_methods_converter.dart';
 
 -- Import other entities this one depends on:
 import 'package:learning_app/features/categories/persistence/categories.drift'
@@ -11,20 +11,11 @@ import 'package:learning_app/features/categories/persistence/categories.drift'
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
 -- could be considered more elegant
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
-CREATE TABLE Tasks (
+CREATE TABLE LearnLists (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    done BOOLEAN NOT NULL DEFAULT false,
-    description TEXT,
+    name TEXT NOT NULL,
+    learn_method INT NOT NULL MAPPED BY `const LearnMethodsConverter()`,
     category_id INT REFERENCES Categories(id),
-    estimated_time INT MAPPED BY `const DurationConverter()`,
-    due_date DATETIME,
     creation_date_time DATETIME NOT NULL,
-    parent_task_id INT REFERENCES Tasks(id),
-    manual_time_effort_delta INT MAPPED BY `const DurationConverter()`
-) AS TaskEntity;
-
--- Indices for faster querying
-CREATE INDEX tasks_due_date_index ON Tasks(due_date);
-CREATE INDEX tasks_creation_date_time_index ON Tasks(creation_date_time);
-CREATE INDEX tasks_category_index ON Tasks(category_id);
+    is_archived BOOL NOT NULL
+) AS LearnListEntity;
