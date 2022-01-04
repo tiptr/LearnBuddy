@@ -13,5 +13,5 @@ abstract class TaskRepository {
 
   Future<bool> deleteById(int id);
 
-  Future<bool> toggleDone(int id);
+  Future<bool> toggleDone(int taskId, bool done);
 }

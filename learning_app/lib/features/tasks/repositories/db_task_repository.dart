@@ -17,19 +17,7 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<List<ListReadTaskDto>> loadTasks() async {
-    return _dao.getAllTasks().map((task) {
-      return ListReadTaskDto(
-        id: task.id,
-        title: task.title,
-        done: task.done,
-        categoryColor: Color(task.categoryColor),
-        keywords: const ['Hausaufgabe', 'Lernen'], // TODO: implement
-        remainingTimeEstimation: task.remainingTimeEstimation,
-        dueDate: task.dueDate,
-        subTaskCount: task.subTaskCount,
-        finishedSubTaskCount: task.finishedSubTaskCount,
-      );
-    }).get();
+    return _dao.getAllTasks();
   }
 
   @override
@@ -65,7 +53,8 @@ class DbTaskRepository implements TaskRepository {
   }
 
   @override
-  Future<bool> toggleDone(int id) async {
-    return _dao.toggleTaskDoneById(id).then((value) => value > 0);
+  Future<bool> toggleDone(int taskId, bool done) async {
+    final affected = await _dao.toggleTaskDoneById(taskId, done);
+    return affected > 0;
   }
 }

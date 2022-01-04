@@ -3,7 +3,8 @@ import 'package:equatable/equatable.dart';
 
 /// Contains everything about a task, that is required to display it in a list
 ///
-/// Includes the ID for actions on it, although it is not being displayed
+/// Since this only combines the whole Task model with additional data from
+/// other models, Task is simply referenced here
 class ListReadTaskDto extends Equatable {
   final int id;
   final String title;
@@ -26,6 +27,8 @@ class ListReadTaskDto extends Equatable {
   final int subTaskCount;
   final int finishedSubTaskCount;
 
+  final bool isQueued;
+
   const ListReadTaskDto({
     required this.id,
     required this.title,
@@ -36,6 +39,7 @@ class ListReadTaskDto extends Equatable {
     this.dueDate,
     required this.subTaskCount,
     required this.finishedSubTaskCount,
+    required this.isQueued,
   });
 
   @override
@@ -49,5 +53,6 @@ class ListReadTaskDto extends Equatable {
         dueDate,
         subTaskCount,
         finishedSubTaskCount,
+        isQueued,
       ];
 }

@@ -2,7 +2,11 @@ import 'dart:ui';
 
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/database/type_converters/body_parts_converter.dart';
 import 'package:learning_app/database/type_converters/color_converter.dart';
+import 'package:learning_app/database/type_converters/learn_methods_converter.dart';
+import 'package:learning_app/features/learning_aids/models/learn_methods.dart';
+import 'package:learning_app/features/learning_aids_body_list/models/body_parts.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:drift/native.dart';

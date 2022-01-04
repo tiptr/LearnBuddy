@@ -18,11 +18,11 @@ class TasksCubit extends Cubit<TaskState> {
   }
 
   // Toggles the done flag in a task in the cubit state
-  Future<void> toggleDone(int taskId) async {
+  Future<void> toggleDone(int taskId, bool done) async {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var success = await _taskRepository.toggleDone(taskId);
+      var success = await _taskRepository.toggleDone(taskId, done);
       if (!success) return;
 
       // Here, since only one flag is changed, the list does not have to be
@@ -40,6 +40,7 @@ class TasksCubit extends Cubit<TaskState> {
         dueDate: tasks[index].dueDate,
         subTaskCount: tasks[index].subTaskCount,
         finishedSubTaskCount: tasks[index].finishedSubTaskCount,
+        isQueued: false,
       );
 
       emit(TasksLoaded(tasks: tasks));

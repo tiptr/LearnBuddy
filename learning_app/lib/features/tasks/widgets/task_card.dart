@@ -87,7 +87,7 @@ class TaskCard extends StatelessWidget {
                       shape: const CircleBorder(),
                       onChanged: (bool? value) {
                         BlocProvider.of<TasksCubit>(context)
-                            .toggleDone(_task.id);
+                            .toggleDone(_task.id, !_task.done);
                       },
                     ),
                   ),

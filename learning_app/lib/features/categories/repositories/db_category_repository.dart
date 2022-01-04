@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/categories/persistence/categories_dao.dart';
@@ -14,7 +16,10 @@ class DbCategoryRepository implements CategoryRepository {
 
   @override
   Future<int> createCategory(CreateCategoryDto newCategory) {
-    return _dao.createCategory(newCategory.name, newCategory.color);
+    return _dao.createCategory(CategoriesCompanion(
+      name: Value(newCategory.name),
+      color: Value(newCategory.color),
+    ));
   }
 
   @override
@@ -25,12 +30,6 @@ class DbCategoryRepository implements CategoryRepository {
 
   @override
   Future<List<ReadCategoryDto>> loadCategories() {
-    return _dao.getAllCategories().map((category) {
-      return ReadCategoryDto(
-        id: category.id,
-        name: category.name,
-        color: category.color,
-      );
-    }).get();
+    return _dao.getAllCategories();
   }
 }
