@@ -23,7 +23,8 @@ class DbTaskRepository implements TaskRepository {
         title: task.title,
         done: task.done,
         categoryColor: Color(task.categoryColor),
-        keywords: const ['Hausaufgabe', 'Lernen'], // TODO: implement
+        keywords: const ['Hausaufgabe', 'Lernen'],
+        // TODO: implement
         remainingTimeEstimation: task.remainingTimeEstimation,
         dueDate: task.dueDate,
         subTaskCount: task.subTaskCount,
@@ -46,6 +47,8 @@ class DbTaskRepository implements TaskRepository {
       estimatedTime: Value(newTask.estimatedTime),
       dueDate: Value.ofNullable(newTask.dueDate),
       creationDateTime: Value(DateTime.now()),
+      manualTimeEffortDelta:
+          const Value(Duration.zero), // only changeable later
     ));
   }
 

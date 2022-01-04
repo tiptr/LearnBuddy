@@ -32,7 +32,7 @@ void main() {
       dueDate: dueDate,
       creationDateTime: now,
       parentTask: null,
-      manualTimeEffortDelta: null);
+      manualTimeEffortDelta: Duration.zero);
 
   final mockListReadDto = ListReadTaskDto(
     id: mockTask.id,

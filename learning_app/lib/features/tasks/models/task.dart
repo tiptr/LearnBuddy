@@ -24,7 +24,7 @@ class Task extends Equatable {
 
   final Task? parentTask;
 
-  final Duration? manualTimeEffortDelta;
+  final Duration manualTimeEffortDelta;
 
   const Task({
     required this.id,
@@ -36,7 +36,7 @@ class Task extends Equatable {
     this.dueDate,
     required this.creationDateTime,
     this.parentTask,
-    this.manualTimeEffortDelta,
+    required this.manualTimeEffortDelta,
   });
 
   @override

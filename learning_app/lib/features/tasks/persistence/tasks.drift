@@ -24,7 +24,7 @@ CREATE TABLE tasks (
     due_date DATETIME,
     creation_date_time DATETIME NOT NULL,
     -- parrent_task_id TODO
-    manual_time_effort_delta INT MAPPED BY `const DurationConverter()`
+    manual_time_effort_delta INT NOT NULL MAPPED BY `const DurationConverter()`
 ) WITH Task;
 
 -- TODO: implement Table for many to many keywords here (or in separate file imported here)
