@@ -4,8 +4,8 @@
 -- Import converters
 
 -- Import other entities this one depends on:
-import 'package:learning_app/features/tasks/persistence/tasks.drift'
-import 'package:learning_app/features/keywords/persistence/keywords.drift'
+import 'package:learning_app/features/tasks/persistence/tasks.drift';
+import 'package:learning_app/features/keywords/persistence/keywords.drift';
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
@@ -13,7 +13,7 @@ import 'package:learning_app/features/keywords/persistence/keywords.drift'
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
 CREATE TABLE TaskKeywords (
     task_id INT NOT NULL REFERENCES Tasks(id),
-    keyword_id INT NOT NULL REFERENCES Keyword(id),
+    keyword_id INT NOT NULL REFERENCES Keywords(id),
 
     PRIMARY KEY (task_id, keyword_id)
 ) AS TaskKeywordEntity;

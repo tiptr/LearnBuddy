@@ -5,7 +5,7 @@
 import 'package:learning_app/database/type_converters/duration_converter.dart';
 
 -- Import other entities this one depends on:
-import 'package:learning_app/features/tasks/persistence/tasks.drift'
+import 'package:learning_app/features/tasks/persistence/tasks.drift';
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this

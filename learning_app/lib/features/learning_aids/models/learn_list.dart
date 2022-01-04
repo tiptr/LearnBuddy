@@ -23,6 +23,5 @@ abstract class LearnList extends Equatable {
   int get wordsCount => words.length;
 
   @override
-  List<Object?> get props =>
-      [id, name, creationDate, words, category];
+  List<Object?> get props => [id, name, creationDate, words, category];
 }

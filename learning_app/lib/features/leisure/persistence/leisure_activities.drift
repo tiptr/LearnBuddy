@@ -5,7 +5,7 @@
 import 'package:learning_app/database/type_converters/duration_converter.dart';
 
 -- Import other entities this one depends on:
-import 'package:learning_app/features/leisure/persistence/leisure_categories.drift'
+import 'package:learning_app/features/leisure/persistence/leisure_categories.drift';
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
@@ -13,7 +13,7 @@ import 'package:learning_app/features/leisure/persistence/leisure_categories.dri
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
 CREATE TABLE LeisureActivities (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    leisure_category_id INT NOT NULL REFERENCES LeisureCategory(id),
+    leisure_category_id INT NOT NULL REFERENCES LeisureCategories(id),
     name TEXT NOT NULL,
     path_to_image TEXT,
     duration INT NOT NULL MAPPED BY `const DurationConverter()`,

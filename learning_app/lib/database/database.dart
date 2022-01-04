@@ -17,12 +17,12 @@ import 'package:learning_app/features/categories/persistence/categories_dao.dart
 import 'package:learning_app/database/type_converters/duration_converter.dart';
 
 // Also import all used models, as they are required in the generated extension file
-import 'package:learning_app/features/tasks/models/task.dart';
-import 'package:learning_app/features/categories/models/category.dart';
+// import 'package:learning_app/features/tasks/models/task.dart';
+// import 'package:learning_app/features/categories/models/category.dart';
 
 // Initialization scripts:
-import 'initializations/initialization_01_category_colors.dart';
-import 'initializations/initialization_02_categories.dart';
+import 'initializations/initialization_01_categories.dart';
+import 'initializations/initialization_02_keywords.dart';
 
 // Migration scripts:
 import 'migrations/v01_to_v02_migration.dart';
@@ -50,7 +50,18 @@ LazyDatabase _openConnection() {
   // Include all drift files containing the entity definitions and queries
   include: {
     'package:learning_app/features/tasks/persistence/tasks.drift',
-    'package:learning_app/features/categories/persistence/categories.drift'
+    'package:learning_app/features/tasks/persistence/task_keywords.drift',
+    'package:learning_app/features/tasks/persistence/task_learn_lists.drift',
+    'package:learning_app/features/categories/persistence/categories.drift',
+    'package:learning_app/features/keywords/persistence/keywords.drift',
+    'package:learning_app/features/time_logs/persistence/time_logs.drift',
+    'package:learning_app/features/task_queue/persistence/task_queue_elements.drift',
+    'package:learning_app/features/learning_aids/persistence/learn_lists.drift',
+    'package:learning_app/features/learning_aids/persistence/learn_list_words.drift',
+    'package:learning_app/features/learning_aids_body_list/persistence/body_list_word_details.drift',
+    'package:learning_app/features/leisure/persistence/leisure_categories.drift',
+    'package:learning_app/features/leisure/persistence/leisure_activities.drift',
+    'package:learning_app/features/leisure/persistence/leisure_category_triggers.drift',
   },
 )
 class Database extends _$Database {
@@ -84,8 +95,8 @@ class Database extends _$Database {
           // present and after the schema has been created.
 
           // Call every initialization scripts that are implemented:
-          await initialization01CategoryColors();
-          await initialization02Categories();
+          await initialization01Categories();
+          await initialization02Keywords();
         }
       },
     );

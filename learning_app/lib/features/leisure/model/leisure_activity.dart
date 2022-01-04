@@ -28,15 +28,15 @@ class LeisureActivity extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    category,
-    duration,
-    descriptionShort,
-    descriptionLong,
-    suitableForAgesAbove,
-    suitableForAgesBelow,
-    isFavorite,
-    pathToImage,
-  ];
+        id,
+        name,
+        category,
+        duration,
+        descriptionShort,
+        descriptionLong,
+        suitableForAgesAbove,
+        suitableForAgesBelow,
+        isFavorite,
+        pathToImage,
+      ];
 }
