@@ -99,7 +99,10 @@ Widget pickerLayoutBuilder(BuildContext context, List<Color> colors,
 }
 
 Widget pickerItemBuilder(
-    Color color, bool isCurrentColor, void Function() changeColor) {
+  Color color,
+  bool isCurrentColor,
+  void Function() changeColor,
+) {
   return Container(
     margin: EdgeInsets.all(_circlePadding),
     decoration: BoxDecoration(

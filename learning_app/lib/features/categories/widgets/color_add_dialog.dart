@@ -26,7 +26,7 @@ class _ColorAddDialogState extends State<ColorAddDialog> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(500),
-          bottom: Radius.circular(100),
+          bottom: Radius.circular(15.0),
         ),
       ),
       content: SingleChildScrollView(
