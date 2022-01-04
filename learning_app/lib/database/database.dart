@@ -17,6 +17,7 @@ import 'initializations/initialization_01_category_colors.dart';
 import 'initializations/initialization_02_categories.dart';
 
 // Migration scripts:
+import 'initializations/initialization_03_test_tasks.dart';
 import 'migrations/v01_to_v02_migration.dart';
 import 'migrations/v02_to_v03_migration.dart';
 
@@ -39,6 +40,7 @@ LazyDatabase _openConnection() {
 @singleton // Injectable via dependency injection
 @DriftDatabase(
   daos: [TasksDao],
+  tables: [Tasks],
   // Include all drift files containing the entity definitions and queries
   include: {'package:learning_app/features/tasks/persistence/tasks.drift'},
 )
@@ -75,6 +77,8 @@ class Database extends _$Database {
           // Call every initialization scripts that are implemented:
           await initialization01CategoryColors();
           await initialization02Categories();
+          await initialization03TestTasks();
+          //     .insert(const CategoriesCompanion(description: Value('Work')));
         }
       },
     );

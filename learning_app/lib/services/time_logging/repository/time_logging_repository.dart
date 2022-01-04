@@ -7,7 +7,7 @@ import 'package:learning_app/services/time_logging/models/time_log.dart';
 abstract class TimeLoggingRepository {
   Future<List<TimeLog>> loadTimeLogs();
 
-  Future<TimeLog> craeteTimeLog(TimeLogDto dto);
+  Future<TimeLog> createTimeLog(TimeLogDto dto);
 
   Future<bool> update(int id, TimeLogDto dto);
 

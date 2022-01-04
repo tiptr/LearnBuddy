@@ -14,24 +14,27 @@ class InactiveState extends TimeLoggingState {
 
 // Object is added, timer is not yet started
 class InitializedState extends TimeLoggingState {
-  final int  id;
+  final Task task; //This task can be shown in the UI
   
   InitializedState({
-    required this.id,
+    required this.task,
   });
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [task];
 
 }
 
 // Timer is active
 class ActiveState extends TimeLoggingState {
   final TimeLog timeLog;
-
+  // This is the task as it was loaded before the timer started. In the UI the
+  // shown task time has to be added with the timelog.
+  final Task task;
 
   ActiveState({
     required this.timeLog,
+    required this.task,
   });
 
   @override

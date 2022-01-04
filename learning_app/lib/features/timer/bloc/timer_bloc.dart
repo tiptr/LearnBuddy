@@ -2,17 +2,22 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/features/timer/models/config.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/models/ticker.dart';
+import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
+import 'package:learning_app/util/injection.dart';
 
 part 'timer_event.dart';
 
 part 'timer_state.dart';
 
+
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker = const Ticker();
+  //final TimeLoggingBloc _timeLoggingBloc = getIt<TimeLoggingBloc>();
 
   StreamSubscription<int>? _tickerSubscription;
 
@@ -46,6 +51,10 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
           : TimerRunComplete(
               event.duration, state._pomodoroMode, state._countPhase),
     );
+
+    // Notify the Time Logging Bloc that it has to update
+    //_timeLoggingBloc.add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {

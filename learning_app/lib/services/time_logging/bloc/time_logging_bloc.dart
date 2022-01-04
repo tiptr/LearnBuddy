@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
+import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/services/time_logging/dtos/time_log_dto.dart';
 import 'package:learning_app/services/time_logging/models/time_log.dart';
 import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
@@ -14,7 +17,7 @@ part 'time_logging_state.dart';
 class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   late final TimeLoggingRepository _repository;
 
-  TimeLoggingBloc(TimeLoggingRepository? timeLogRepo) : super(InactiveState()) {
+  TimeLoggingBloc({TimeLoggingRepository? timeLogRepo}) : super(InactiveState()) {
     _repository = timeLogRepo ?? getIt<TimeLoggingRepository>();
 
     on<AddTimeLoggingObjectEvent>(_onAdd);
@@ -23,9 +26,11 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     on<TimeNoticeEvent>(_onTimerNotice);
   }
 
-  void _onAdd(AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) {
+  Future<void> _onAdd(AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
     int id = event.id;
-    emit(InitializedState(id: id));
+    List<Task> taskList = await getIt<TaskRepository>().loadTasks();
+    Task task = taskList.where((element) => element.id == id).first;
+    emit(InitializedState(task: task));
   }
 
   void _onRemove(
@@ -38,14 +43,15 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     var currentState = state;
 
     if (currentState is InitializedState) {
-      TimeLog timeLog = await _repository.craeteTimeLog(TimeLogDto(
-        taskId: currentState.id,
+      TimeLog timeLog = await _repository.createTimeLog(TimeLogDto(
+        taskId: currentState.task.id,
         beginTime: DateTime.now(),
         duration: const Duration(),
       ));
 
       emit(ActiveState(
         timeLog: timeLog,
+        task: currentState.task,
       ));
     }
   }
@@ -64,6 +70,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
 
       emit(ActiveState(
         timeLog: newTimeLog,
+        task: currentState.task,
       ));
     }
   }

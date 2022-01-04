@@ -4,6 +4,8 @@ import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
+import 'package:learning_app/features/timer/widgets/active_task.dart';
+import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class TimerScreen extends StatelessWidget {
@@ -23,24 +25,21 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
-            // Just for Debugging
-            PomodoroState(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 50.0),
-              child: TimerWidget(),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
-                child: PomodoroPhaseCountWidget()),
-            TimerActions(),
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const <Widget>[
+        // Just for Debugging
+        ActiveTaskBar(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 50.0),
+          child: TimerWidget(),
         ),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+            child: PomodoroPhaseCountWidget()),
+        TimerActions(),
+        ToggleActiveTask(),
       ],
     );
   }

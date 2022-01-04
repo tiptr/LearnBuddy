@@ -4,6 +4,7 @@ import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
 import 'package:learning_app/util/injection.dart';
 import 'features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
@@ -39,6 +40,11 @@ void main() {
             return cubit;
           },
         ),
+        BlocProvider<TimeLoggingBloc>(
+          create: (context) {
+            return TimeLoggingBloc();
+          },
+        )
       ],
       child: const MyApp(),
     ),

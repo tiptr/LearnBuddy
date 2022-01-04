@@ -7,7 +7,7 @@ import 'package:learning_app/services/time_logging/repository/time_logging_repos
 @Injectable(as: TimeLoggingRepository)
 class TestTimeLogRepo implements TimeLoggingRepository {
   @override
-  Future<TimeLog> craeteTimeLog(TimeLogDto dto) {
+  Future<TimeLog> createTimeLog(TimeLogDto dto) {
     return Future.delayed(const Duration(milliseconds: 2),
         () => TimeLog(
         id: 1,
