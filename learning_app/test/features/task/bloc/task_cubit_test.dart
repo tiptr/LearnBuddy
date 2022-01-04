@@ -21,12 +21,12 @@ void main() {
   Task mockTask = const Task(id: 1, title: 'Do something', done: false);
   CreateTaskDto mockCreateDto =
       CreateTaskDto(title: mockTask.title, done: mockTask.done);
-  UpdateTaskDto mockUpdateDto =
-      UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
+  // UpdateTaskDto mockUpdateDto =
+  //     UpdateTaskDto(title: mockTask.title, done: !mockTask.done);
 
   setUp(() {
     mockTaskRepository = MockTaskRepository();
-    taskCubit = TaskCubit(mockTaskRepository);
+    taskCubit = TaskCubit(taskRepository: mockTaskRepository);
   });
 
   setUpAll(() {
@@ -106,7 +106,7 @@ void main() {
       blocTest<TaskCubit, TaskState>(
         'CounterCubit should update the task and store the result',
         build: () {
-          when(() => mockTaskRepository.update(mockTask.id, any()))
+          when(() => mockTaskRepository.toggleDone(mockTask.id))
               .thenAnswer((_) => Future.value(true));
           return taskCubit;
         },
@@ -120,8 +120,7 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => mockTaskRepository.update(mockTask.id, mockUpdateDto))
-              .called(1);
+          verify(() => mockTaskRepository.toggleDone(mockTask.id)).called(1);
         },
       );
     },
