@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/categories/constants/colors.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/util/logger.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class CategoryAddDialog extends StatefulWidget {
   const CategoryAddDialog({Key? key}) : super(key: key);
@@ -50,9 +49,10 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
             ],
           ),
 
+          // Spacer
           const SizedBox(height: 25.0),
 
-          // Available colors
+          // Color Selection
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.75,
               child: CategoryColorSelector(
