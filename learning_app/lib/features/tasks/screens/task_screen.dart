@@ -91,16 +91,17 @@ class TaskScreen extends StatelessWidget {
               return GroupedListView<ListReadTaskDto, DateTime?>(
                 // controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
+                sort: false, // sorting will be done via SQL
                 elements: activeTasks,
                 // TODO: this has to be generalized to work with other groups than the due date
                 groupBy: (task) => task.dueDate.getPreviousMidnight(),
-                groupComparator: (dueDate1, dueDate2) {
-                  // null is considered the smallest:
-                  return dueDate1.compareDayOnly(dueDate2);
-                },
+                // groupComparator: (dueDate1, dueDate2) {
+                //   // null is considered the smallest:
+                //   return dueDate1.compareDayOnly(dueDate2);
+                // },
                 // Sorting of the actual items is handled directly by SQL.
                 // Could be done here, otherwise
-                order: GroupedListOrder.ASC,
+                // order: GroupedListOrder.ASC,
                 useStickyGroupSeparators: true,
                 cacheExtent: 20,
                 // This would improve scrolling performance, but I did not get it to

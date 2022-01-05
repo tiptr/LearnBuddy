@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:learning_app/util/injection.dart';
 import '../database.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
@@ -41,7 +41,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
           (i % 3 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
       dueDate: (i % 9 == 0)
           ? const Value.absent()
-          : Value(now.subtract(Duration(days: i))),
+          : Value(now.subtract(Duration(days: Random().nextInt(80) + 40))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: const Value.absent(),
       manualTimeEffortDelta:

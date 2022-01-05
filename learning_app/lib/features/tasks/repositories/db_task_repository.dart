@@ -40,9 +40,15 @@ class DbTaskRepository implements TaskRepository {
       limit: limit,
       offset: offset,
       taskFilter: const TaskFilter(
+        // category: Value(null)
         // category: Value(Category(id: 3, name: 'asdsaf', color: Colors.tealAccent))
+        // overDue: Value(false),
       ),
-      taskOrder: taskOrder,
+      // taskOrder: taskOrder,
+      taskOrder : const TaskOrder(
+        attribute: TaskOrderAttributes.dueDate,
+        direction: OrderDirection.desc,
+      ),
     );
   }
 

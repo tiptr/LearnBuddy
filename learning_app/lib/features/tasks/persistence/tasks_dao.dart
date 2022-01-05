@@ -90,11 +90,9 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     final now = DateTime.now();
     final lastMidnight = DateTime(now.year, now.month, now.day);
 
-    // var expression =
-
     // start by watching all top level tasks
     // that match the filters in any way
-    final query = select(tasks)
+    final filteredTopLevelTasksQuery = select(tasks)
       ..where((tsk) => tsk.parentTaskId.isNull()) // top-level only
       ..where((tsk) {
         // done filter, if applied
@@ -104,9 +102,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           } else {
             // Task = not done <=> not set to done or set at this day
             return tsk.doneDateTime.isNull() |
-                (tsk.doneDateTime.year.isSmallerOrEqualValue(now.year) &
-                    tsk.doneDateTime.month.isSmallerOrEqualValue(now.month) &
-                    tsk.doneDateTime.day.isSmallerOrEqualValue(now.day));
+                // currentDate -> midnight, when the day began
+                tsk.doneDateTime.isBiggerOrEqual(currentDate);
           }
         } else {
           return const CustomExpression('TRUE');
@@ -115,7 +112,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       ..where((tsk) {
         // category filter, if applied
         if (taskFilter.category.present) {
-          return tsk.categoryId.equals(taskFilter.category.value.id);
+          return tsk.categoryId.equals(taskFilter.category.value?.id);
         } else {
           return const CustomExpression('TRUE');
         }
@@ -124,32 +121,79 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         // overDue filter, if applied
         if (taskFilter.overDue.present) {
           if (taskFilter.overDue.value == true) {
-            return tsk.dueDate.year.isSmallerOrEqualValue(now.year) &
-                tsk.dueDate.month.isSmallerOrEqualValue(now.month) &
-                tsk.dueDate.day.isSmallerOrEqualValue(now.day);
+            return // currentDate -> midnight, when the day began
+              tsk.dueDate.isSmallerThan(currentDate);
           } else {
-            return tsk.dueDate.year.isBiggerOrEqualValue(now.year) &
-                tsk.dueDate.month.isBiggerOrEqualValue(now.month) &
-                tsk.dueDate.day.isBiggerOrEqualValue(now.day);
+            return tsk.dueDate.isNull() |
+              // currentDate -> midnight, when the day began
+              tsk.dueDate.isBiggerOrEqual(currentDate);
           }
         } else {
           return const CustomExpression('TRUE');
         }
       });
 
-    final mappedQuery = query.map((row) => ListReadTaskDto(
-          id: row.id,
-          title: row.title,
-          done: row.doneDateTime != null,
-          // TODO
-          categoryColor: Colors.amber,
-          subTaskCount: 2,
-          finishedSubTaskCount: 1,
-          isQueued: false,
-          keywords: const ['Hausaufgabe', 'Lernen'],
-          dueDate: row.dueDate,
-          remainingTimeEstimation: row.estimatedTime, // TODO:
-        ));
+    final sortedFilteredTopLevelTasksQuery = filteredTopLevelTasksQuery
+      ..orderBy([
+        (tsk) {
+          Expression sortExpression;
+          OrderingMode orderingMode;
+          // Create the correct db-specific sort expression matching the
+          // given domain-layer TaskOrder
+          switch (taskOrder.attribute) {
+            case TaskOrderAttributes.dueDate:
+              sortExpression = tsk.dueDate;
+              break;
+            case TaskOrderAttributes.creationDate:
+              sortExpression = tsk.creationDateTime;
+              break;
+            case TaskOrderAttributes.doneDate:
+              sortExpression = tsk.doneDateTime;
+              break;
+            case TaskOrderAttributes.title:
+              sortExpression = tsk.title;
+              break;
+          }
+          switch (taskOrder.direction) {
+            case OrderDirection.asc:
+              orderingMode = OrderingMode.asc;
+              break;
+            case OrderDirection.desc:
+              orderingMode = OrderingMode.desc;
+              break;
+          }
+          return OrderingTerm(expression: sortExpression, mode: orderingMode);
+        },
+      ]);
+
+    // TODO: Keywords filter
+
+    // TODO: all sorting
+
+    // TODO: Map Keywords
+
+    // TODO: Map Timelogs
+
+    // TODO: Map children
+
+    // TODO: Map learnlists ??
+
+    // TODO: Map Queue
+
+    final mappedQuery =
+        sortedFilteredTopLevelTasksQuery.map((row) => ListReadTaskDto(
+              id: row.id,
+              title: row.title,
+              done: row.doneDateTime != null,
+              // TODO
+              categoryColor: Colors.amber,
+              subTaskCount: 2,
+              finishedSubTaskCount: 1,
+              isQueued: false,
+              keywords: const ['Hausaufgabe', 'Lernen'],
+              dueDate: row.dueDate,
+              remainingTimeEstimation: row.estimatedTime, // TODO:
+            ));
 
     Stream<List<ListReadTaskDto>> stream = mappedQuery.watch();
 

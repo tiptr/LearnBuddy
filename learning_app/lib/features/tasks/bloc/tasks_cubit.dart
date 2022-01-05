@@ -16,7 +16,7 @@ class TasksCubit extends Cubit<TaskState> {
     //  maybe not required anymore thanks to the streams
     // TODO: I guess the state will be the right place to store the currently selected filters and more
     emit(TaskLoading());
-    var tasks = await _taskRepository.watchTasks();
+    var tasks = _taskRepository.watchTasks();
     emit(TasksLoaded(selectedTasksStream: tasks));
   }
 
