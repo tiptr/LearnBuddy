@@ -2,11 +2,24 @@ import 'dart:ui';
 
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/database/initializations/initialization_003_leisure_categories.dart';
+import 'package:learning_app/database/initializations/initialization_004_leisure_activities.dart';
+import 'package:learning_app/database/initializations/initialization_100_huge_amount_of_tasks.dart';
 import 'package:learning_app/database/type_converters/body_parts_converter.dart';
 import 'package:learning_app/database/type_converters/color_converter.dart';
 import 'package:learning_app/database/type_converters/learn_methods_converter.dart';
+import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/features/learning_aids/models/learn_methods.dart';
+import 'package:learning_app/features/learning_aids/persistence/learn_list_words_dao.dart';
+import 'package:learning_app/features/learning_aids/persistence/learn_lists_dao.dart';
 import 'package:learning_app/features/learning_aids_body_list/models/body_parts.dart';
+import 'package:learning_app/features/learning_aids_body_list/persistence/body_list_word_details_dao.dart';
+import 'package:learning_app/features/leisure/persistence/leisure_activities_dao.dart';
+import 'package:learning_app/features/leisure/persistence/leisure_categories_dao.dart';
+import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
+import 'package:learning_app/features/tasks/persistence/task_keywords_dao.dart';
+import 'package:learning_app/features/tasks/persistence/task_learn_lists_dao.dart';
+import 'package:learning_app/features/time_logs/persistence/time_logs_dao.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:drift/native.dart';
@@ -25,10 +38,12 @@ import 'package:learning_app/database/type_converters/duration_converter.dart';
 // import 'package:learning_app/features/categories/models/category.dart';
 
 // Initialization scripts:
-import 'initializations/initialization_01_categories.dart';
-import 'initializations/initialization_02_keywords.dart';
+import 'initializations/initialization_001_categories.dart';
+import 'initializations/initialization_002_keywords.dart';
 
 // Migration scripts:
+import 'initializations/initialization_101_huge_amount_of_task_keywords.dart';
+import 'initializations/initialization_102_huge_amount_of_timelogs.dart';
 import 'migrations/v01_to_v02_migration.dart';
 import 'migrations/v02_to_v03_migration.dart';
 
@@ -36,6 +51,9 @@ import 'migrations/v02_to_v03_migration.dart';
 // This will give an error at first,
 // but it's needed for drift to know about the generated code
 part 'database.g.dart';
+
+// Toggle to activate / deactivate the demo-data generation at startup
+const insertDemoDataAtFirstStartup = true;
 
 LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.
@@ -50,7 +68,20 @@ LazyDatabase _openConnection() {
 
 @singleton // Injectable via dependency injection
 @DriftDatabase(
-  daos: [TasksDao, CategoriesDao],
+  daos: [
+    BodyListWordDetailsDao,
+    LearnListWordsDao,
+    LearnListsDao,
+    TaskLearnListsDao,
+    LeisureCategoriesDao,
+    LeisureActivitiesDao,
+    TasksDao,
+    TaskQueueElementsDao,
+    CategoriesDao,
+    TaskKeywordsDao,
+    KeyWordsDao,
+    TimeLogsDao,
+  ],
   // Include all drift files containing the entity definitions and queries
   include: {
     'package:learning_app/features/tasks/persistence/tasks.drift',
@@ -99,8 +130,16 @@ class Database extends _$Database {
           // present and after the schema has been created.
 
           // Call every initialization scripts that are implemented:
-          await initialization01Categories();
-          await initialization02Keywords();
+          await initialization001Categories();
+          await initialization002Keywords();
+          await initialization003LeisureActivities();
+          await initialization004LeisureActivities();
+
+          if (insertDemoDataAtFirstStartup) {
+            await initialization100HugeAmountOfTasks();
+            await initialization101HugeAmountOfTaskKeywords();
+            await initialization102HugeAmountOfTimeLogs();
+          }
         }
       },
     );
