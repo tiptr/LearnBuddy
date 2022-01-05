@@ -34,11 +34,13 @@ class DbTaskRepository implements TaskRepository {
       // For nullable attributes, use Value() instead
       // Reason: it could not be determined, if a null value in the DTO would
       // mean a Value.absent() or a Value(null)
-      title: Value.ofNullable(newTask.title),
+      title: Value(newTask.title ?? 'Aufgabe ohne Titel'),
       description: Value(newTask.description),
       estimatedTime: Value(newTask.estimatedTime),
       dueDate: Value.ofNullable(newTask.dueDate),
       creationDateTime: Value(DateTime.now()),
+      manualTimeEffortDelta:
+          const Value(Duration.zero), // only changeable later
     ));
   }
 

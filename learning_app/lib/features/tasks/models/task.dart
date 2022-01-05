@@ -31,7 +31,7 @@ class Task extends Equatable {
 
   final List<LearnList> learnLists;
 
-  final Duration? manualTimeEffortDelta;
+  final Duration manualTimeEffortDelta;
 
   const Task({
     required this.id,
@@ -46,7 +46,7 @@ class Task extends Equatable {
     required this.creationDateTime,
     required this.children,
     required this.learnLists,
-    this.manualTimeEffortDelta,
+    required this.manualTimeEffortDelta,
   });
 
   @override

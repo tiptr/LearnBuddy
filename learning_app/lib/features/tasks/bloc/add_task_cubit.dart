@@ -61,7 +61,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         // Not all requirements given
         logger.d(
             "[Task Cubit] Save task triggered, but not every required attribute was set");
-        emit(AddTaskError());
+        emit(ConstructingTask(createTaskDto: currentState.createTaskDto));
       }
     } else if (currentState is InitialAddTaskState) {
       // The task has to be constructed first with 'addTaskAttribute'
