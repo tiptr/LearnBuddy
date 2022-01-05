@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
-import 'package:learning_app/features/tasks/bloc/task_state.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
@@ -11,7 +11,7 @@ class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<TaskCubit, TaskState>(
+      body: BlocBuilder<TasksCubit, TaskState>(
         builder: (context, state) {
           // This only checks for the success state, we might want to check for
           // errors in the future here.

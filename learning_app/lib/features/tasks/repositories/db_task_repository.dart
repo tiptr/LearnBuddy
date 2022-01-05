@@ -1,10 +1,13 @@
+import 'dart:ui';
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
+import 'package:learning_app/database/database.dart' as db;
 
 /// Concrete repository implementation using the database with drift
 @Injectable(as: TaskRepository)
@@ -13,14 +16,40 @@ class DbTaskRepository implements TaskRepository {
   final TasksDao _dao = getIt<TasksDao>();
 
   @override
-  Future<List<Task>> loadTasks() async {
-    return _dao.getAll().get();
+  Future<List<ListReadTaskDto>> loadTasks() async {
+    return _dao.getAllTasks().map((task) {
+      return ListReadTaskDto(
+        id: task.id,
+        title: task.title,
+        done: task.done,
+        categoryColor: Color(task.categoryColor),
+        keywords: const ['Hausaufgabe', 'Lernen'],
+        // TODO: implement
+        remainingTimeEstimation: task.remainingTimeEstimation,
+        dueDate: task.dueDate,
+        subTaskCount: task.subTaskCount,
+        finishedSubTaskCount: task.finishedSubTaskCount,
+      );
+    }).get();
   }
 
   @override
-  Future<Task> createTask(CreateTaskDto taskDto) async {
-    final id = await _dao.createEntry(taskDto.title);
-    return Task(id: id, title: taskDto.title, done: taskDto.done);
+
+  /// Creates a new task and returns it with its newly generated id
+  Future<int> createTask(CreateTaskDto newTask) async {
+    return _dao.createTask(db.TasksCompanion(
+      // For NOT NULL attributes, ofNullable() is used
+      // For nullable attributes, use Value() instead
+      // Reason: it could not be determined, if a null value in the DTO would
+      // mean a Value.absent() or a Value(null)
+      title: Value(newTask.title ?? 'Aufgabe ohne Titel'),
+      description: Value(newTask.description),
+      estimatedTime: Value(newTask.estimatedTime),
+      dueDate: Value.ofNullable(newTask.dueDate),
+      creationDateTime: Value(DateTime.now()),
+      manualTimeEffortDelta:
+          const Value(Duration.zero), // only changeable later
+    ));
   }
 
   @override
@@ -29,18 +58,18 @@ class DbTaskRepository implements TaskRepository {
     // var db = await DbProvider().database;
     // var affected = await db.update('tasks', updateDto.toMap(), where: 'id = ?',whereArgs: [id],);
     // return affected > 0;
-
     return false;
   }
 
   @override
   Future<bool> deleteById(int id) async {
-    final affected = await _dao.deleteById(id);
+    final affected = await _dao.deleteTaskById(id);
     return affected > 0;
   }
 
   @override
   Future<bool> toggleDone(int id) async {
-    return _dao.toggleDoneById(id).then((value) => value > 0);
+    final affected = await _dao.toggleTaskDoneById(id);
+    return affected > 0;
   }
 }

@@ -1,11 +1,12 @@
+import 'dart:ui';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 
 // Also import the used model(s), as they are required in the generated extension file
-import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/categories/models/category.dart';
 
-part 'tasks_dao.g.dart';
+part 'categories_dao.g.dart';
 
 /// Data access object to structure all related queries
 ///
@@ -17,24 +18,13 @@ part 'tasks_dao.g.dart';
 @singleton // Injectable via dependency injection
 @DriftAccessor(
   // Include the drift file containing the entity definitions and queries
-  include: {'package:learning_app/features/tasks/persistence/tasks.drift'},
+  include: {
+    'package:learning_app/features/categories/persistence/categories.drift'
+  },
 )
-class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
+class CategoriesDao extends DatabaseAccessor<Database>
+    with _$CategoriesDaoMixin {
   // this constructor is required so that the main database can create an instance
   // of this object.
-  TasksDao(Database db) : super(db);
-
-  /// Creates a new task and returns its id.
-  ///
-  /// Takes a TasksCompanion rather than a task. This is auto-generated and
-  /// here allows to define only required values that are not auto-generated
-  /// like the ID.
-  Future<int> createTask(TasksCompanion tasksCompanion) {
-    // insertReturning() already provides the whole created entity instead of
-    // the single ID provided by insert()
-    // this was changed back to insert(), because now, we do not need the 'task'
-    // anymore for displaying the list, but rather a 'ListReadTaskDto'
-
-    return into(tasks).insert(tasksCompanion);
-  }
+  CategoriesDao(Database db) : super(db);
 }

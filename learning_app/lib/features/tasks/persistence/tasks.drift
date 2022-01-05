@@ -5,17 +5,31 @@
 -- This model could also be auto-generated.
 import 'package:learning_app/features/tasks/models/task.dart';
 
+-- Import converters
+import 'package:learning_app/database/type_converters/duration_converter.dart';
+
 -- Import other entities this one depends on:
 -- import 'package:learning_app/features/tasks/persistence/other.drift'
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
 -- could be considered more elegant
+-- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
 CREATE TABLE tasks (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    done BOOLEAN NOT NULL DEFAULT false
+    done BOOLEAN NOT NULL DEFAULT false,
+    description TEXT,
+    estimated_time INT MAPPED BY `const DurationConverter()`,
+    due_date DATETIME,
+    creation_date_time DATETIME NOT NULL,
+    -- parrent_task_id TODO
+    manual_time_effort_delta INT NOT NULL MAPPED BY `const DurationConverter()`
 ) WITH Task;
+
+-- TODO: implement Table for many to many keywords here (or in separate file imported here)
+
+-- TODO: view for all top level tasks without subtasks
 
 -- TODO: add columns and an index on the due-date
 
@@ -26,13 +40,21 @@ CREATE TABLE tasks (
 -- Otherwise, for a query "myQuery: ...", the resulting class is a generated "myQueryResult". It
 -- also could be manually named like "myQuery AS MyResultClassName: ..."
 
-getAll: SELECT * FROM tasks;
+getAllTasks:
+SELECT  id,
+        title,
+        done,
+        04278426597 as categoryColor, -- TODO: read from category
+        -- TODO: keyWords
+        estimated_time as remaining_time_estimation, -- TODO: implement real remaining logic
+        due_date,
+        8 as sub_task_count, -- TODO: implement
+        5 as finished_sub_task_count -- TODO: finishedSubTaskCount
+FROM tasks; -- TODO: use top level tasks view instead;
 
 -- parameters are added to named queries like this:
-getById: SELECT * FROM tasks WHERE id = :id;
+getTaskById: SELECT * FROM tasks WHERE id = :id;
 
-createEntry: INSERT INTO tasks (title) VALUES (:title);
+deleteTaskById: DELETE FROM tasks WHERE id = :id;
 
-deleteById: DELETE FROM tasks WHERE id = :id;
-
-toggleDoneById: UPDATE tasks SET done = (not done) WHERE id = :id;
+toggleTaskDoneById: UPDATE tasks SET done = (not done) WHERE id = :id;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
+import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
@@ -16,11 +18,22 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  DateTime? selectedDate;
-  Duration? selectedDuration;
+  // Preselect now, because our UIs task logic requires a date to be set
+  DateTime selectedDueDate = DateTime.now();
+  Duration? selectedTimeEstimate;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Set initial dueDate:
+    BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
+      dueDate: selectedDueDate,
+    ));
+
     return Scaffold(
       appBar: TaskAddAppBar(textController: _titleController),
       body: SingleChildScrollView(
@@ -29,20 +42,28 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           child: Column(
             children: [
               DateInputField(
-                selectedDate: selectedDate,
+                selectedDate: selectedDueDate,
                 onSelect: (DateTime datetime) {
                   setState(() {
-                    selectedDate = datetime;
+                    selectedDueDate = datetime;
                   });
+                  BlocProvider.of<AddTaskCubit>(context)
+                      .addTaskAttribute(CreateTaskDto(
+                    dueDate: datetime,
+                  ));
                 },
               ),
               const SizedBox(height: 20.0),
               DurationInputField(
-                selectedDuration: selectedDuration,
+                selectedDuration: selectedTimeEstimate,
                 onSelect: (Duration duration) {
                   setState(() {
-                    selectedDuration = duration;
+                    selectedTimeEstimate = duration;
                   });
+                  BlocProvider.of<AddTaskCubit>(context)
+                      .addTaskAttribute(CreateTaskDto(
+                    estimatedTime: duration,
+                  ));
                 },
               ),
               const SizedBox(height: 20.0),
@@ -51,31 +72,13 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 hintText: "Text eingeben",
                 iconData: Icons.book_outlined,
                 textController: _descriptionController,
+                onChanged: (text) async {
+                  BlocProvider.of<AddTaskCubit>(context)
+                      .addTaskAttribute(CreateTaskDto(
+                    description: text,
+                  ));
+                },
               ),
-              // Only for navigation to tags
-              const SizedBox(height: 40.0),
-              InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryOverviewScreen(),
-                  ),
-                ),
-                child: Ink(
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.purple,
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Tag Overview",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),
