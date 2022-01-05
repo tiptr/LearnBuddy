@@ -8,41 +8,40 @@ import 'package:learning_app/services/time_logging/repository/time_logging_repos
 class TestTimeLogRepo implements TimeLoggingRepository {
   @override
   Future<TimeLog> createTimeLog(TimeLogDto dto) {
-    return Future.delayed(const Duration(milliseconds: 2),
+    return Future.delayed(
+        const Duration(milliseconds: 2),
         () => TimeLog(
-        id: 1,
-        beginTime: dto.beginTime,
-        duration: dto.duration,
-        taskId: dto.taskId,
-        )
-    );
+              id: 1,
+              beginTime: dto.beginTime,
+              duration: dto.duration,
+              taskId: dto.taskId,
+            ));
   }
 
   @override
   Future<List<TimeLog>> loadTimeLogs() {
-    return Future.delayed(const Duration(milliseconds: 2),
+    return Future.delayed(
+        const Duration(milliseconds: 2),
         () => [
-          TimeLog(
-            id: 1,
-            beginTime: DateTime.now(),
-            duration: const Duration(hours: 2),
-            taskId: 1,
-          ),
-          TimeLog(
-            id: 2,
-            beginTime: DateTime.now(),
-            duration: const Duration(minutes: 3),
-            taskId: 1,
-          ),
-          TimeLog(
-            id: 3,
-            beginTime: DateTime.now(),
-            duration: const Duration(hours: 2),
-            taskId: 2,
-          ),
-        ]
-
-    );
+              TimeLog(
+                id: 1,
+                beginTime: DateTime.now(),
+                duration: const Duration(hours: 2),
+                taskId: 1,
+              ),
+              TimeLog(
+                id: 2,
+                beginTime: DateTime.now(),
+                duration: const Duration(minutes: 3),
+                taskId: 1,
+              ),
+              TimeLog(
+                id: 3,
+                beginTime: DateTime.now(),
+                duration: const Duration(hours: 2),
+                taskId: 2,
+              ),
+            ]);
   }
 
   @override
@@ -50,8 +49,5 @@ class TestTimeLogRepo implements TimeLoggingRepository {
     return Future.delayed(const Duration(milliseconds: 2), () => true);
   }
   // load the data access object (with generated entities and queries) via dependency inj.
-  
-
-
 
 }

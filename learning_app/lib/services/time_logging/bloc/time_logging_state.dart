@@ -1,10 +1,6 @@
 part of 'time_logging_bloc.dart';
 
-
-abstract class TimeLoggingState extends Equatable{
-  
-
-}
+abstract class TimeLoggingState extends Equatable {}
 
 // No object is registrated
 class InactiveState extends TimeLoggingState {
@@ -15,14 +11,13 @@ class InactiveState extends TimeLoggingState {
 // Object is added, timer is not yet started
 class InitializedState extends TimeLoggingState {
   final Task task; //This task can be shown in the UI
-  
+
   InitializedState({
     required this.task,
   });
 
   @override
   List<Object?> get props => [task];
-
 }
 
 // Timer is active

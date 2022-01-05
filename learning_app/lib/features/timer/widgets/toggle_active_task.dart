@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,31 +12,31 @@ class ToggleActiveTask extends StatefulWidget {
   State<StatefulWidget> createState() => _ToggleActiveTaskState();
 }
 
-
-
-
-
 class _ToggleActiveTaskState extends State<ToggleActiveTask> {
   bool _active = false;
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: _active? const Icon(Icons.toggle_on): const Icon(Icons.toggle_off),
-      onPressed: (){
+      icon:
+          _active ? const Icon(Icons.toggle_on) : const Icon(Icons.toggle_off),
+      onPressed: () {
         _toggle();
-        if(_active){
-          context.read<TimeLoggingBloc>().add(const AddTimeLoggingObjectEvent(2));
-        }
-        else {
-          context.read<TimeLoggingBloc>().add(const RemoveTimeLoggingObjectEvent());
+        if (_active) {
+          context
+              .read<TimeLoggingBloc>()
+              .add(const AddTimeLoggingObjectEvent(2));
+        } else {
+          context
+              .read<TimeLoggingBloc>()
+              .add(const RemoveTimeLoggingObjectEvent());
         }
       },
     );
   }
+
   void _toggle() {
     setState(() {
       _active = !_active;
     });
   }
 }
-

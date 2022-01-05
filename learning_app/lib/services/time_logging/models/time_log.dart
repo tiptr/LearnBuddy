@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class TimeLog extends Equatable{
+class TimeLog extends Equatable {
   final int id;
   final int taskId;
   final DateTime beginTime;
@@ -15,5 +15,4 @@ class TimeLog extends Equatable{
 
   @override
   List<Object> get props => [id, taskId, beginTime, duration];
-
 }

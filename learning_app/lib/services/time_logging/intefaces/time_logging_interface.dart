@@ -1,4 +1,3 @@
-
-abstract class  ITimeLogger {
-  Future<Duration> getLoggedTime(int id); 
+abstract class ITimeLogger {
+  Future<Duration> getLoggedTime(int id);
 }

@@ -11,13 +11,11 @@ class TimeLogDto {
     required this.duration,
   });
 
-
-  static TimeLogDto fromTimeLog(TimeLog timeLog){
+  static TimeLogDto fromTimeLog(TimeLog timeLog) {
     return TimeLogDto(
-      taskId: timeLog.taskId, 
-      beginTime: timeLog.beginTime, 
+      taskId: timeLog.taskId,
+      beginTime: timeLog.beginTime,
       duration: timeLog.duration,
-      );
+    );
   }
-
 }

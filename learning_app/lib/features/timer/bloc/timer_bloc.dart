@@ -15,7 +15,6 @@ part 'timer_event.dart';
 
 part 'timer_state.dart';
 
-
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker = const Ticker();
   //final TimeLoggingBloc _timeLoggingBloc = getIt<TimeLoggingBloc>();
@@ -57,10 +56,10 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     );
 
     // Notify the Time Logging Bloc that it has to update
-    if(state._pomodoroMode == PomodoroMode.concentration){
-      timeLoggingBloc.add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+    if (state._pomodoroMode == PomodoroMode.concentration) {
+      timeLoggingBloc
+          .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
     }
-
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
@@ -74,8 +73,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     if (state is TimerRunPause) {
       //state hat remaining duration
       _tickerSubscription = _ticker
-        .tick(secs: state._duration)
-        .listen((duration) => add(TimerTicked(duration: duration)));
+          .tick(secs: state._duration)
+          .listen((duration) => add(TimerTicked(duration: duration)));
       emit(state.onResumed());
     }
   }

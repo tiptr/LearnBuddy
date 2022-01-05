@@ -19,7 +19,8 @@ part 'time_logging_state.dart';
 class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   late final TimeLoggingRepository _repository;
 
-  TimeLoggingBloc({TimeLoggingRepository? timeLogRepo}) : super(InactiveState()) {
+  TimeLoggingBloc({TimeLoggingRepository? timeLogRepo})
+      : super(InactiveState()) {
     _repository = timeLogRepo ?? getIt<TimeLoggingRepository>();
 
     on<AddTimeLoggingObjectEvent>(_onAdd);
@@ -28,14 +29,14 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     on<TimeNoticeEvent>(_onTimerNotice);
   }
 
-  Future<void> _onAdd(AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
+  Future<void> _onAdd(
+      AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
     int id = event.id;
     List<Task> taskList = await getIt<TaskRepository>().loadTasks();
     try {
       Task task = taskList.where((element) => element.id == id).first;
       emit(InitializedState(task: task));
-    }
-    on StateError catch(e) {
+    } on StateError catch (e) {
       logger.d("This Task is not Found. This should not happen in production.");
       emit(InactiveState());
     }
@@ -64,7 +65,8 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     }
   }
 
-  Future<void> _onTimerNotice(TimeNoticeEvent event, Emitter<TimeLoggingState> emit) async{
+  Future<void> _onTimerNotice(
+      TimeNoticeEvent event, Emitter<TimeLoggingState> emit) async {
     var currentState = state;
     //Activates the state if Task is added while Timer is running
     add(StartTimeLoggingEvent(beginTime: DateTime.now()));
@@ -77,7 +79,8 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
           beginTime: oldTimeLog.beginTime,
           duration: oldTimeLog.duration + event.duration);
 
-      await _repository.update(newTimeLog.id, TimeLogDto.fromTimeLog(newTimeLog));
+      await _repository.update(
+          newTimeLog.id, TimeLogDto.fromTimeLog(newTimeLog));
 
       emit(ActiveState(
         timeLog: newTimeLog,

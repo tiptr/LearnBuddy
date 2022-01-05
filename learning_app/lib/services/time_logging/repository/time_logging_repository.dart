@@ -1,5 +1,3 @@
-
-
 import 'package:learning_app/services/time_logging/dtos/time_log_dto.dart';
 import 'package:learning_app/services/time_logging/models/time_log.dart';
 
@@ -10,5 +8,4 @@ abstract class TimeLoggingRepository {
   Future<TimeLog> createTimeLog(TimeLogDto dto);
 
   Future<bool> update(int id, TimeLogDto dto);
-
 }

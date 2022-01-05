@@ -6,8 +6,6 @@ import 'package:mocktail/mocktail.dart';
 
 class MockTimeLoggingRepository extends Mock implements TimeLoggingRepository {}
 
-
-
 /*
 void main() {
   late MockTimeLoggingRepository repo;

@@ -64,13 +64,14 @@ class ActiveTaskContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimeLoggingState state =
-        context.select((TimeLoggingBloc bloc) => bloc.state); // TODO this is unnecessary as this will rebuid every time the state changes
+    final TimeLoggingState state = context.select((TimeLoggingBloc bloc) => bloc
+        .state); // TODO this is unnecessary as this will rebuid every time the state changes
     late final Task task;
     late final String timeSpent;
     if (state is ActiveState) {
       task = state.task;
-      timeSpent = state.timeLog.duration.inSeconds.toString(); // TODO add other time TimeLogs to the currently active on. 
+      timeSpent = state.timeLog.duration.inSeconds
+          .toString(); // TODO add other time TimeLogs to the currently active on.
     } else if (state is InitializedState) {
       task = state.task;
       timeSpent = 0.toString();
@@ -98,12 +99,12 @@ class ActiveTaskContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Icon(Icons.hourglass_top),
-              Text("Ursp. Zeitschätzung: " + timeSpent), // TODO need real implementation of task here
+              Text("Ursp. Zeitschätzung: " +
+                  timeSpent), // TODO need real implementation of task here
               const Icon(Icons.hourglass_bottom),
               Text(
                 "Aufgewendet: " + timeSpent,
-                style: const TextStyle(
-                ),
+                style: const TextStyle(),
               ),
             ],
           )
