@@ -49,10 +49,11 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                     BlocProvider.of<AddTaskCubit>(context)
                         .saveTask()
                         .whenComplete(() {
-                          if(BlocProvider.of<AddTaskCubit>(context).state is TaskAdded){
-                            Navigator.pop(context);
-                          }
-                        });
+                      if (BlocProvider.of<AddTaskCubit>(context).state
+                          is TaskAdded) {
+                        Navigator.pop(context);
+                      }
+                    });
                   },
                   icon: const Icon(Icons.save),
                   iconSize: 30,
