@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/features/timer/models/config.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
-import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/models/ticker.dart';
 import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
-import 'package:learning_app/util/injection.dart';
 
 part 'timer_event.dart';
 
