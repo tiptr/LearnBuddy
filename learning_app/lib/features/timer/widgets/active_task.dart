@@ -17,7 +17,7 @@ class ActiveTaskBar extends StatelessWidget {
             width: double.infinity,
             height: 150,
             child: Center(
-              child: Text("Nothing active."),
+              child: Text("Keine Aufgabe ist aktiv."),
             ),
           );
         }
@@ -44,7 +44,7 @@ class ActiveTaskCard extends StatelessWidget {
           children: [
             Container(
               height: double.infinity,
-              width: 12.5,
+              width: 8,
               margin: const EdgeInsets.only(right: 10),
               decoration: const BoxDecoration(
                 color: Colors.red,
@@ -65,12 +65,12 @@ class ActiveTaskContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TimeLoggingState state =
-        context.select((TimeLoggingBloc bloc) => bloc.state);
+        context.select((TimeLoggingBloc bloc) => bloc.state); // TODO this is unnecessary as this will rebuid every time the state changes
     late final Task task;
     late final String timeSpent;
     if (state is ActiveState) {
       task = state.task;
-      timeSpent = state.timeLog.duration.inSeconds.toString();
+      timeSpent = state.timeLog.duration.inSeconds.toString(); // TODO add other time TimeLogs to the currently active on. 
     } else if (state is InitializedState) {
       task = state.task;
       timeSpent = 0.toString();
@@ -78,12 +78,13 @@ class ActiveTaskContent extends StatelessWidget {
       throw Error();
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 70,
-          child: Text(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
             task.title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -92,14 +93,22 @@ class ActiveTaskContent extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-        ),
-        Row(
-          children: [
-            const Icon(Icons.hourglass_bottom),
-            Text("Bereits aufgewendete Zeit: " + timeSpent),
-          ],
-        )
-      ],
+          // TODO Add other task properties here
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Icon(Icons.hourglass_top),
+              Text("Ursp. Zeitschätzung: " + timeSpent), // TODO need real implementation of task here
+              const Icon(Icons.hourglass_bottom),
+              Text(
+                "Aufgewendet: " + timeSpent,
+                style: const TextStyle(
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

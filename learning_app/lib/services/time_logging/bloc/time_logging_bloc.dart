@@ -66,6 +66,9 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
 
   Future<void> _onTimerNotice(TimeNoticeEvent event, Emitter<TimeLoggingState> emit) async{
     var currentState = state;
+    //Activates the state if Task is added while Timer is running
+    add(StartTimeLoggingEvent(beginTime: DateTime.now()));
+
     if (currentState is ActiveState) {
       TimeLog oldTimeLog = currentState.timeLog;
       TimeLog newTimeLog = TimeLog(

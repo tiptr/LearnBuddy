@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/features/timer/models/config.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
+import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/models/ticker.dart';
 import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
 import 'package:learning_app/util/injection.dart';
@@ -56,7 +57,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     );
 
     // Notify the Time Logging Bloc that it has to update
-    timeLoggingBloc.add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+    if(state._pomodoroMode == PomodoroMode.concentration){
+      timeLoggingBloc.add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+    }
 
   }
 
