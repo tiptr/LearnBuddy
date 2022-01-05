@@ -51,6 +51,22 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     return query.get();
   }
 
+  Stream<List<ListReadTaskDto>> watchAllTasks() {
+    final query = select(tasks).map((row) => ListReadTaskDto(
+          id: row.id,
+          title: row.title,
+          done: row.done,
+          categoryColor: Colors.amber,
+          subTaskCount: 2,
+          finishedSubTaskCount: 1,
+          isQueued: false,
+          keywords: const ['Hausaufgabe', 'Lernen'],
+          dueDate: row.dueDate,
+          remainingTimeEstimation: row.estimatedTime, // TODO:
+        ));
+    return query.watch();
+  }
+
   Future<int> deleteTaskById(int taskId) {
     return (delete(tasks)..where((t) => t.id.equals(taskId))).go();
   }

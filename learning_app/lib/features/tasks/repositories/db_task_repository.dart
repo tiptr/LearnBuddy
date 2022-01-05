@@ -21,6 +21,11 @@ class DbTaskRepository implements TaskRepository {
   }
 
   @override
+  Stream<List<ListReadTaskDto>> watchTasks() {
+    return _dao.watchAllTasks();
+  }
+
+  @override
 
   /// Creates a new task and returns it with its newly generated id
   Future<int> createTask(CreateTaskDto newTask) async {

@@ -46,6 +46,7 @@ dependencies:
   step_progress_indicator: ^1.0.1
   logger: ^1.1.0
   quiver: ^3.0.1+1 #Used for the Metronome
+  grouped_list: ^4.1.0 # List with group separators
   # Persistence:
   drift: ^1.1.1
   sqlite3_flutter_libs: ^0.5.2

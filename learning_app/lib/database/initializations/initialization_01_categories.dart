@@ -13,8 +13,8 @@ Future<void> initialization01Categories() async {
   await _dao.batch((batch) {
     batch.insertAll(_dao.categories, [
       CategoriesCompanion.insert(
-          name: 'Englisch',
-          color: const Color(0xFFBF5252),
+        name: 'Englisch',
+        color: const Color(0xFFBF5252),
       ),
       CategoriesCompanion.insert(
         name: 'Geschichte',

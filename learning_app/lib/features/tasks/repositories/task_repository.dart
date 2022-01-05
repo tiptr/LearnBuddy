@@ -6,6 +6,8 @@ import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 abstract class TaskRepository {
   Future<List<ListReadTaskDto>> loadTasks();
 
+  Stream<List<ListReadTaskDto>> watchTasks();
+
   /// Creates a new task and returns it with its newly generated id
   Future<int> createTask(CreateTaskDto newTask);
 
