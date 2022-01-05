@@ -39,7 +39,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     final query = select(tasks).map((row) => ListReadTaskDto(
           id: row.id,
           title: row.title,
-          done: row.done,
+          done: row.doneDateTime != null,
+          // TODO
           categoryColor: Colors.amber,
           subTaskCount: 2,
           finishedSubTaskCount: 1,
@@ -55,7 +56,30 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     final query = select(tasks).map((row) => ListReadTaskDto(
           id: row.id,
           title: row.title,
-          done: row.done,
+          done: row.doneDateTime != null,
+          // TODO
+          categoryColor: Colors.amber,
+          subTaskCount: 2,
+          finishedSubTaskCount: 1,
+          isQueued: false,
+          keywords: const ['Hausaufgabe', 'Lernen'],
+          dueDate: row.dueDate,
+          remainingTimeEstimation: row.estimatedTime, // TODO:
+        ));
+    return query.watch();
+  }
+
+  Stream<List<ListReadTaskDto>> watchTasks({
+        int? limit,
+        int? offset,
+        required DateTime onlyNotDoneOrDoneAfter,
+
+      }) {
+    final query = select(tasks).map((row) => ListReadTaskDto(
+          id: row.id,
+          title: row.title,
+          done: row.doneDateTime != null,
+          // TODO
           categoryColor: Colors.amber,
           subTaskCount: 2,
           finishedSubTaskCount: 1,
@@ -72,9 +96,15 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Future<int> toggleTaskDoneById(int taskId, bool done) {
+    Value<DateTime?> newDoneDateTime = const Value(null);
+
+    if (done) {
+      newDoneDateTime = Value(DateTime.now());
+    }
+
     return (update(tasks)..where((t) => t.id.equals(taskId))).write(
       TasksCompanion(
-        done: Value(done),
+        doneDateTime: newDoneDateTime,
       ),
     );
   }
