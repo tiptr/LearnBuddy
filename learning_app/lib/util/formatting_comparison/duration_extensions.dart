@@ -22,14 +22,15 @@ extension DurationFormatting on Duration? {
 
       final int hours = (duration.inMinutes / 60).floor();
       final int minutes = (duration.inMinutes % 60);
-      final int roundedMinutes = (minutes ~/ 15) * 15;
+      final int fiveMinRoundedMinutes = (minutes / 5).round() * 5;
+      final int halfHoursRounded = (duration.inMinutes / 30).round();
+      final int halfHoursRoundedBeforeComma = (halfHoursRounded / 2).floor();
+      final int halfHoursRoundedAfterComma = (halfHoursRounded % 2).floor() * 5;
 
       if (hours == 0) {
-        return '~ $roundedMinutes min';
-      } else if (hours <= 2) {
-        return '~ $hours h, $roundedMinutes min';
+        return '~ $fiveMinRoundedMinutes min';
       } else {
-        return '~ $hours h';
+        return '~ $halfHoursRoundedBeforeComma,$halfHoursRoundedAfterComma h';
       }
     }
   }
