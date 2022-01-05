@@ -11,10 +11,10 @@ class InitialTaskState extends TaskState {}
 class TaskLoading extends TaskState {}
 
 class TasksLoaded extends TaskState {
-  final List<ListReadTaskDto> tasks;
+  Stream<List<ListReadTaskDto>> selectedTasksStream;
 
-  TasksLoaded({required this.tasks});
+  TasksLoaded({required this.selectedTasksStream});
 
   @override
-  List<Object> get props => [tasks];
+  List<Object> get props => [selectedTasksStream];
 }

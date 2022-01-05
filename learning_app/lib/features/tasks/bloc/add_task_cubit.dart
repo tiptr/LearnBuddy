@@ -54,7 +54,8 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         //    that is required now.
         // B: With the upcoming sorting, filtering, dynamic loading functionality,
         //    this would hardly work anyway.
-        await _tasksCubit.loadTasks();
+        // TODO: remove this  as it is not required anymore thanks to streams and reactivity
+        // await _tasksCubit.loadTasks();
         logger.d("[Task Cubit] New task was saved. Id: $newTaskId");
         emit(TaskAdded());
       } else {

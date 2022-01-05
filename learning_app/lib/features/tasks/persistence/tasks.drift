@@ -14,7 +14,7 @@ import 'package:learning_app/features/categories/persistence/categories.drift';
 CREATE TABLE Tasks (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    done BOOLEAN NOT NULL DEFAULT false,
+    done_date_time DATETIME,
     description TEXT,
     category_id INT REFERENCES Categories(id),
     estimated_time INT MAPPED BY `const DurationConverter()`,
@@ -28,3 +28,4 @@ CREATE TABLE Tasks (
 CREATE INDEX tasks_due_date_index ON Tasks(due_date);
 CREATE INDEX tasks_creation_date_time_index ON Tasks(creation_date_time);
 CREATE INDEX tasks_category_index ON Tasks(category_id);
+CREATE INDEX tasks_done_date_index ON Tasks(done_date_time);

@@ -12,9 +12,12 @@ class TasksCubit extends Cubit<TaskState> {
   }
 
   Future<void> loadTasks() async {
+    // TODO: think about removing TaskLoading() since this state is
+    //  maybe not required anymore thanks to the streams
+    // TODO: I guess the state will be the right place to store the currently selected filters and more
     emit(TaskLoading());
-    var tasks = await _taskRepository.loadTasks();
-    emit(TasksLoaded(tasks: tasks));
+    var tasks = await _taskRepository.watchTasks();
+    emit(TasksLoaded(selectedTasksStream: tasks));
   }
 
   // Toggles the done flag in a task in the cubit state
@@ -28,22 +31,23 @@ class TasksCubit extends Cubit<TaskState> {
       // Here, since only one flag is changed, the list does not have to be
       // reloaded:
       // Create a deep copy so the actual state isn't mutated
-      var tasks = List<ListReadTaskDto>.from(currentState.tasks);
-      int index = tasks.indexWhere((ListReadTaskDto t) => t.id == taskId);
-      tasks[index] = ListReadTaskDto(
-        id: tasks[index].id,
-        title: tasks[index].title,
-        done: !tasks[index].done, // toggle
-        categoryColor: tasks[index].categoryColor,
-        keywords: tasks[index].keywords,
-        remainingTimeEstimation: tasks[index].remainingTimeEstimation,
-        dueDate: tasks[index].dueDate,
-        subTaskCount: tasks[index].subTaskCount,
-        finishedSubTaskCount: tasks[index].finishedSubTaskCount,
-        isQueued: false,
-      );
-
-      emit(TasksLoaded(tasks: tasks));
+      // var tasks = List<ListReadTaskDto>.from(currentState.tasks);
+      // int index = tasks.indexWhere((ListReadTaskDto t) => t.id == taskId);
+      // tasks[index] = ListReadTaskDto(
+      //   id: tasks[index].id,
+      //   title: tasks[index].title,
+      //   done: !tasks[index].done, // toggle
+      //   categoryColor: tasks[index].categoryColor,
+      //   keywords: tasks[index].keywords,
+      //   remainingTimeEstimation: tasks[index].remainingTimeEstimation,
+      //   dueDate: tasks[index].dueDate,
+      //   subTaskCount: tasks[index].subTaskCount,
+      //   finishedSubTaskCount: tasks[index].finishedSubTaskCount,
+      //   isQueued: false,
+      // );
+      //
+      // emit(TasksLoaded(tasks: tasks));
+      // TODO: remove
     }
   }
 
@@ -57,8 +61,9 @@ class TasksCubit extends Cubit<TaskState> {
 
       // TODO: if the task has subtasks, notify the user about this
 
+      // TODO: remove this, because it is not needed anymore thanks to reactivity through streams and listeners
       // Refresh the list to remove the task
-      loadTasks();
+      // loadTasks();
     }
   }
 }

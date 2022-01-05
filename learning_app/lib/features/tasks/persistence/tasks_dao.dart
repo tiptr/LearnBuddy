@@ -70,11 +70,10 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Stream<List<ListReadTaskDto>> watchTasks({
-        int? limit,
-        int? offset,
-        required DateTime onlyNotDoneOrDoneAfter,
-
-      }) {
+    int? limit,
+    int? offset,
+    required DateTime onlyNotDoneOrDoneAfter,
+  }) {
     final query = select(tasks).map((row) => ListReadTaskDto(
           id: row.id,
           title: row.title,
