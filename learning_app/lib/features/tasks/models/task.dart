@@ -7,36 +7,22 @@ import 'package:learning_app/features/time_logs/models/time_log.dart';
 class Task extends Equatable {
   final int id;
   final String title;
-  final bool done;
+  final DateTime doneDateTime;
   final String? description;
-
   final Category? category;
-
   final List<KeyWord> keywords;
-
   final List<TimeLog> timeLogs;
-
-  final Duration? estimatedTime; // minutes
-
-  // dueDate is not optional, because there is no good way to integrate
-  // tasks without one into the sorted list of the UI.
-  // Instead, 'Today' is the predefined due_date
-  // Currently, the time part of this DateTime is not really used, but this
-  // could change later
+  final Duration? estimatedTime;
   final DateTime? dueDate;
-
   final DateTime creationDateTime;
-
   final List<Task> children;
-
   final List<LearnList> learnLists;
-
   final Duration manualTimeEffortDelta;
 
   const Task({
     required this.id,
     required this.title,
-    required this.done,
+    required this.doneDateTime,
     this.description,
     this.category,
     required this.keywords,
@@ -53,7 +39,7 @@ class Task extends Equatable {
   List<Object?> get props => [
         id,
         title,
-        done,
+        doneDateTime,
         description,
         estimatedTime,
         dueDate,

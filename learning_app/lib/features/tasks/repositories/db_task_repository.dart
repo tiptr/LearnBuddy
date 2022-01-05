@@ -1,9 +1,13 @@
 import 'dart:ui';
 import 'package:drift/drift.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -20,13 +24,29 @@ class DbTaskRepository implements TaskRepository {
     return _dao.getAllTasks();
   }
 
+  // @override
+  // Stream<List<ListReadTaskDto>> watchTasks() {
+  //   return _dao.watchAllTasks();
+  // }
+
   @override
-  Stream<List<ListReadTaskDto>> watchTasks() {
-    return _dao.watchAllTasks();
+  Stream<List<ListReadTaskDto>> watchTasks({
+    int? limit,
+    int? offset,
+    TaskFilter taskFilter = const TaskFilter(),
+    TaskOrder taskOrder = const TaskOrder(),
+  }) {
+    return _dao.watchTasks(
+      limit: limit,
+      offset: offset,
+      taskFilter: const TaskFilter(
+        // category: Value(Category(id: 3, name: 'asdsaf', color: Colors.tealAccent))
+      ),
+      taskOrder: taskOrder,
+    );
   }
 
   @override
-
   /// Creates a new task and returns it with its newly generated id
   Future<int> createTask(CreateTaskDto newTask) async {
     return _dao.createTask(db.TasksCompanion(

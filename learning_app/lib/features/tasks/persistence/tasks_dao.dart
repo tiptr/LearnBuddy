@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 part 'tasks_dao.g.dart';
 
@@ -13,9 +16,17 @@ part 'tasks_dao.g.dart';
 /// related entity
 @singleton // Injectable via dependency injection
 @DriftAccessor(
-  // Include the drift file containing the entity definition
-  include: {'package:learning_app/features/tasks/persistence/tasks.drift'},
-)
+    // Include the drift file containing the entity definition
+    include: {
+      'package:learning_app/features/tasks/persistence/tasks.drift'
+    }, queries: {
+  'tasksWithQueueStatus': '''
+         SELECT *
+         FROM Tasks t
+         JOIN Categories c ON t.category_id = c.id
+         WHERE t.parent_task_id IS NULL;
+        '''
+})
 class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // this constructor is required so that the main database can create an instance
   // of this object.
@@ -69,12 +80,64 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     return query.watch();
   }
 
+  // Stream<List<TaskWithQueueStatus>> watchTasks({ TODO
   Stream<List<ListReadTaskDto>> watchTasks({
     int? limit,
     int? offset,
-    required DateTime onlyNotDoneOrDoneAfter,
+    TaskFilter taskFilter = const TaskFilter(),
+    TaskOrder taskOrder = const TaskOrder(),
   }) {
-    final query = select(tasks).map((row) => ListReadTaskDto(
+    final now = DateTime.now();
+    final lastMidnight = DateTime(now.year, now.month, now.day);
+
+    // var expression =
+
+    // start by watching all top level tasks
+    // that match the filters in any way
+    final query = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNull()) // top-level only
+      ..where((tsk) {
+        // done filter, if applied
+        if (taskFilter.done.present) {
+          if (taskFilter.done.value == true) {
+            return tsk.doneDateTime.isNotNull();
+          } else {
+            // Task = not done <=> not set to done or set at this day
+            return tsk.doneDateTime.isNull() |
+                (tsk.doneDateTime.year.isSmallerOrEqualValue(now.year) &
+                    tsk.doneDateTime.month.isSmallerOrEqualValue(now.month) &
+                    tsk.doneDateTime.day.isSmallerOrEqualValue(now.day));
+          }
+        } else {
+          return const CustomExpression('TRUE');
+        }
+      })
+      ..where((tsk) {
+        // category filter, if applied
+        if (taskFilter.category.present) {
+          return tsk.categoryId.equals(taskFilter.category.value.id);
+        } else {
+          return const CustomExpression('TRUE');
+        }
+      })
+      ..where((tsk) {
+        // overDue filter, if applied
+        if (taskFilter.overDue.present) {
+          if (taskFilter.overDue.value == true) {
+            return tsk.dueDate.year.isSmallerOrEqualValue(now.year) &
+                tsk.dueDate.month.isSmallerOrEqualValue(now.month) &
+                tsk.dueDate.day.isSmallerOrEqualValue(now.day);
+          } else {
+            return tsk.dueDate.year.isBiggerOrEqualValue(now.year) &
+                tsk.dueDate.month.isBiggerOrEqualValue(now.month) &
+                tsk.dueDate.day.isBiggerOrEqualValue(now.day);
+          }
+        } else {
+          return const CustomExpression('TRUE');
+        }
+      });
+
+    final mappedQuery = query.map((row) => ListReadTaskDto(
           id: row.id,
           title: row.title,
           done: row.doneDateTime != null,
@@ -87,7 +150,65 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           dueDate: row.dueDate,
           remainingTimeEstimation: row.estimatedTime, // TODO:
         ));
-    return query.watch();
+
+    Stream<List<ListReadTaskDto>> stream = mappedQuery.watch();
+
+    return stream;
+
+    // return cartStream.switchMap((carts) {
+    //   // this method is called whenever the list of carts changes. For each
+    //   // cart, now we want to load all the items in it.
+    //   // (we create a map from id to cart here just for performance reasons)
+    //   final idToCart = {for (var cart in carts) cart.id: cart};
+    //   final ids = idToCart.keys;
+    //
+    //   // select all entries that are included in any cart that we found
+    //   final entryQuery = select(shoppingCartEntries).join(
+    //     [
+    //       innerJoin(
+    //         buyableItems,
+    //         buyableItems.id.equalsExp(shoppingCartEntries.item),
+    //       )
+    //     ],
+    //   )..where(shoppingCartEntries.shoppingCart.isIn(ids));
+    //
+    //   return entryQuery.watch().map((rows) {
+    //     // Store the list of entries for each cart, again using maps for faster
+    //     // lookups.
+    //     final idToItems = <int, List<BuyableItem>>{};
+    //
+    //     // for each entry (row) that is included in a cart, put it in the map
+    //     // of items.
+    //     for (var row in rows) {
+    //       final item = row.readTable(buyableItems);
+    //       final id = row.readTable(shoppingCartEntries).shoppingCart;
+    //
+    //       idToItems.putIfAbsent(id, () => []).add(item);
+    //     }
+    //
+    //     // finally, all that's left is to merge the map of carts with the map of
+    //     // entries
+    //     return [
+    //       for (var id in ids)
+    //         CartWithItems(idToCart[id], idToItems[id] ?? []),
+    //     ];
+    //   });
+    // });
+
+    // final query = select(tasks).map((row) => ListReadTaskDto(
+    //       id: row.id,
+    //       title: row.title,
+    //       done: row.doneDateTime != null,
+    //       // TODO
+    //       categoryColor: Colors.amber,
+    //       subTaskCount: 2,
+    //       finishedSubTaskCount: 1,
+    //       isQueued: false,
+    //       keywords: const ['Hausaufgabe', 'Lernen'],
+    //       dueDate: row.dueDate,
+    //       remainingTimeEstimation: row.estimatedTime, // TODO:
+    //     ));
+    // return query.watch();
   }
 
   Future<int> deleteTaskById(int taskId) {
