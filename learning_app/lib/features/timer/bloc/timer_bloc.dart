@@ -17,7 +17,6 @@ part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker = const Ticker();
-  //final TimeLoggingBloc _timeLoggingBloc = getIt<TimeLoggingBloc>();
 
   StreamSubscription<int>? _tickerSubscription;
 
