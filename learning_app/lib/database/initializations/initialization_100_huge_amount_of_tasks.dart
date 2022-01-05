@@ -41,7 +41,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
           (i % 3 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
       dueDate: (i % 9 == 0)
           ? const Value.absent()
-          : Value(now.subtract(Duration(days: Random().nextInt(80) + 40))),
+          : Value(now.subtract(Duration(days: Random().nextInt(80) - 40))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: const Value.absent(),
       manualTimeEffortDelta:

@@ -18,12 +18,12 @@ extension DateTimeFormatting on DateTime? {
     if (this == null) {
       return ifNull ?? 'Ohne Datum';
     } else {
-      final dateTime = this as DateTime;
+      final treatedDay = getPreviousMidnight() as DateTime;
 
-      final now = DateTime.now();
-      final day = dateTime.day;
-      final currentDay = now.day;
-      final dayOffset = day - currentDay;
+      final today = DateTime.now().getPreviousMidnight() as DateTime;
+
+      final Duration offset = treatedDay.difference(today);
+      final dayOffset = offset.inDays;
 
       // Handle special cases for today, yesterday...
       switch (dayOffset) {
@@ -48,10 +48,10 @@ extension DateTimeFormatting on DateTime? {
       }
 
       // Don't show the year, if it is the current one:
-      if (dateTime.year == now.year) {
-        return DateFormat('dd. MMM').format(dateTime);
+      if (treatedDay.year == today.year) {
+        return DateFormat('dd. MMM').format(treatedDay);
       } else {
-        return DateFormat('dd. MMM y').format(dateTime);
+        return DateFormat('dd. MMM y').format(treatedDay);
       }
     }
   }
