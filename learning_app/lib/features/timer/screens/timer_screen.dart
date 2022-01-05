@@ -6,6 +6,7 @@ import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
 import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
+import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class TimerScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TimerBloc(),
+      create: (_) => TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
       child: const TimerView(),
     );
   }

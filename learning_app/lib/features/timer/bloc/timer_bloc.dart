@@ -21,7 +21,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   StreamSubscription<int>? _tickerSubscription;
 
-  TimerBloc() : super(TimerInitial()) {
+  late final TimeLoggingBloc timeLoggingBloc;
+
+  TimerBloc({required this.timeLoggingBloc}) : super(TimerInitial()) {
     on<TimerStarted>(_onStarted);
     on<TimerPaused>(_onPaused);
     on<TimerResumed>(_onResumed);
@@ -41,6 +43,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     _tickerSubscription = _ticker
         .tick(secs: state._duration)
         .listen((duration) => add(TimerTicked(duration: duration)));
+    timeLoggingBloc.add(StartTimeLoggingEvent(beginTime: DateTime.now()));
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
@@ -53,7 +56,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     );
 
     // Notify the Time Logging Bloc that it has to update
-    //_timeLoggingBloc.add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+    timeLoggingBloc.add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
 
   }
 

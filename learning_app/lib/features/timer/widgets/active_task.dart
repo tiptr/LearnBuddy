@@ -13,7 +13,13 @@ class ActiveTaskBar extends StatelessWidget {
       buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
       builder: (context, state) {
         if (state is InactiveState) {
-          return const Text("Nothing active.");
+          return const SizedBox(
+            width: double.infinity,
+            height: 150,
+            child: Center(
+              child: Text("Nothing active."),
+            ),
+          );
         }
         return ActiveTaskCard(state);
       },
@@ -53,28 +59,27 @@ class ActiveTaskCard extends StatelessWidget {
   }
 }
 
-
 class ActiveTaskContent extends StatelessWidget {
   const ActiveTaskContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-  final TimeLoggingState state =  context.select((TimeLoggingBloc bloc) => bloc.state);
-  late final Task task;
-  late final String timeSpent;
-  if (state is ActiveState){
-    task = state.task;
-    timeSpent = state.timeLog.duration.inSeconds.toString();
-  }
-  else if (state is InitializedState){
-    task = state.task;
-    timeSpent = 0.toString();
-  }
-  else {
-    throw Error();
-  }
+    final TimeLoggingState state =
+        context.select((TimeLoggingBloc bloc) => bloc.state);
+    late final Task task;
+    late final String timeSpent;
+    if (state is ActiveState) {
+      task = state.task;
+      timeSpent = state.timeLog.duration.inSeconds.toString();
+    } else if (state is InitializedState) {
+      task = state.task;
+      timeSpent = 0.toString();
+    } else {
+      throw Error();
+    }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 70,
@@ -92,11 +97,9 @@ class ActiveTaskContent extends StatelessWidget {
           children: [
             const Icon(Icons.hourglass_bottom),
             Text("Bereits aufgewendete Zeit: " + timeSpent),
-
           ],
         )
       ],
     );
   }
 }
-

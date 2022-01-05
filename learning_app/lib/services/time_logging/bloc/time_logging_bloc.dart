@@ -9,6 +9,8 @@ import 'package:learning_app/services/time_logging/dtos/time_log_dto.dart';
 import 'package:learning_app/services/time_logging/models/time_log.dart';
 import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
 import 'package:learning_app/util/injection.dart';
+import 'package:learning_app/util/logger.dart';
+import 'package:logger/logger.dart';
 
 part 'time_logging_events.dart';
 
@@ -29,8 +31,14 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   Future<void> _onAdd(AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
     int id = event.id;
     List<Task> taskList = await getIt<TaskRepository>().loadTasks();
-    Task task = taskList.where((element) => element.id == id).first;
-    emit(InitializedState(task: task));
+    try {
+      Task task = taskList.where((element) => element.id == id).first;
+      emit(InitializedState(task: task));
+    }
+    on StateError catch(e) {
+      logger.d("This Task is not Found. This should not happen in production.");
+      emit(InactiveState());
+    }
   }
 
   void _onRemove(
@@ -45,7 +53,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     if (currentState is InitializedState) {
       TimeLog timeLog = await _repository.createTimeLog(TimeLogDto(
         taskId: currentState.task.id,
-        beginTime: DateTime.now(),
+        beginTime: event.beginTime,
         duration: const Duration(),
       ));
 

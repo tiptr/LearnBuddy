@@ -26,7 +26,7 @@ class _ToggleActiveTaskState extends State<ToggleActiveTask> {
       onPressed: (){
         _toggle();
         if(_active){
-          context.read<TimeLoggingBloc>().add(const AddTimeLoggingObjectEvent(1));
+          context.read<TimeLoggingBloc>().add(const AddTimeLoggingObjectEvent(2));
         }
         else {
           context.read<TimeLoggingBloc>().add(const RemoveTimeLoggingObjectEvent());
