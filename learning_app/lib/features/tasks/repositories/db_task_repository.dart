@@ -42,7 +42,7 @@ class DbTaskRepository implements TaskRepository {
       // For nullable attributes, use Value() instead
       // Reason: it could not be determined, if a null value in the DTO would
       // mean a Value.absent() or a Value(null)
-      title: Value.ofNullable(newTask.title),
+      title: Value(newTask.title ?? 'Aufgabe ohne Titel'),
       description: Value(newTask.description),
       estimatedTime: Value(newTask.estimatedTime),
       dueDate: Value.ofNullable(newTask.dueDate),
@@ -69,6 +69,7 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<bool> toggleDone(int id) async {
-    return _dao.toggleTaskDoneById(id).then((value) => value > 0);
+    final affected = await _dao.toggleTaskDoneById(id);
+    return affected > 0;
   }
 }
