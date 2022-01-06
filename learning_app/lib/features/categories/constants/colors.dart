@@ -18,7 +18,7 @@ const availableColors = <Color>[
   Colors.orange,
   Colors.deepOrange,
   Colors.brown,
-  // Colors.grey,  // This will possibly be our default color
+  Colors.grey, // This will possibly be our default color
   Colors.blueGrey,
   Colors.black,
 ];

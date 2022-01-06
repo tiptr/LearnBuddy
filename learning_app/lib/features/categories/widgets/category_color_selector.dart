@@ -49,7 +49,10 @@ class _CategoryColorSelectorState extends State<CategoryColorSelector> {
             // Add the selected color
             selectableColors = [...selectableColors, color];
             // Preselect the new color:
-            widget.onColorSelect(color);
+            // this is deactivated, because it is not fully working
+            // (the check is not re-rendered to the newly selected color
+            // TODO: fix this issue and reactivate the auto-selection
+            // widget.onColorSelect(color);
           });
         },
       ),
