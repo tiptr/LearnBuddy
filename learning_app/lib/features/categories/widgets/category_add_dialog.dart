@@ -98,7 +98,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
             ),
             MaterialButton(
               child: Text(
-                "Kategorie hinzufügen",
+                "Hinzufügen",
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               onPressed: () {
