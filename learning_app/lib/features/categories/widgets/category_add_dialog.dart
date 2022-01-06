@@ -20,7 +20,9 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
       title: Column(
         children: [
           Row(
-            children: const [Text("Neue Kategorie"),],
+            children: const [
+              Text("Neue Kategorie"),
+            ],
           ),
           // Spacer
           const SizedBox(height: 20.0),
@@ -77,9 +79,6 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
           ),
         ),
       ),
-
-
-
       actions: [
         // Action Buttons
         Row(
@@ -87,8 +86,8 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             MaterialButton(
-              child: const Text("Abbrechen",
-                  style: TextStyle(color: Colors.grey)),
+              child:
+                  const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
               onPressed: () {
                 logger.d("Abbruch beim Erstellen einer Kategorie");
                 Navigator.of(context).pop();

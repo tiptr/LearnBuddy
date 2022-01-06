@@ -48,6 +48,8 @@ class _CategoryColorSelectorState extends State<CategoryColorSelector> {
           setState(() {
             // Add the selected color
             selectableColors = [...selectableColors, color];
+            // Preselect the new color:
+            widget.onColorSelect(color);
           });
         },
       ),
