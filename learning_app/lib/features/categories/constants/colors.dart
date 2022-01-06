@@ -23,4 +23,6 @@ const availableColors = <Color>[
   Colors.black,
 ];
 
-const defaultColor = Colors.grey;
+const preSelectedColorForSelection = Colors.lightGreen;
+
+const noCategoryDefaultColor = Colors.grey;

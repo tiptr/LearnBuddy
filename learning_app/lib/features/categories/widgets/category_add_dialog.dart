@@ -11,7 +11,7 @@ class CategoryAddDialog extends StatefulWidget {
 }
 
 class _CategoryAddDialogState extends State<CategoryAddDialog> {
-  Color selectedColor = defaultColor;
+  Color selectedColor = preSelectedColorForSelection;
   final _textController = TextEditingController();
 
   @override

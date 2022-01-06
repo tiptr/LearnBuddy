@@ -10,7 +10,7 @@ class ColorAddDialog extends StatefulWidget {
 }
 
 class _ColorAddDialogState extends State<ColorAddDialog> {
-  Color selectedColor = defaultColor;
+  Color selectedColor = preSelectedColorForSelection;
 
   void onColorChanged(Color color) {
     setState(() {
