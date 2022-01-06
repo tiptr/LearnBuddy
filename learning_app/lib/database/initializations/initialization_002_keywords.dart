@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:learning_app/database/database.dart';
-import 'package:learning_app/features/categories/persistence/categories_dao.dart';
 import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/util/injection.dart';
 

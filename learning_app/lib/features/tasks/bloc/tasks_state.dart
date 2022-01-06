@@ -11,6 +11,10 @@ class InitialTaskState extends TaskState {}
 
 class TaskLoading extends TaskState {}
 
+// TODO: refactor TaskState to hold the filters rather than the stream
+// TaskLoading also is not required anymore, since the stream itself has a state
+// which will be used by the UI (for loading indicator)
+// ignore: must_be_immutable
 class TasksLoaded extends TaskState {
   Stream<List<TaskWithQueueStatus>> selectedTasksStream;
   late Stream<List<ListReadTaskDto>> selectedListViewTasksStream;

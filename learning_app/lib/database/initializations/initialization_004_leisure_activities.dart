@@ -1,9 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
 import 'package:learning_app/features/leisure/persistence/leisure_activities_dao.dart';
 import 'package:learning_app/util/injection.dart';
 import '../database.dart';
-import 'package:learning_app/features/categories/persistence/categories_dao.dart';
 
 /// Initialization of database entries: leisure activities
 ///

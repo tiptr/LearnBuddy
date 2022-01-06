@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
-import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -8,13 +7,10 @@ import 'package:learning_app/util/logger.dart';
 
 class AddTaskCubit extends Cubit<AddTaskState> {
   late final TaskRepository _taskRepository;
-  late final TasksCubit _tasksCubit;
 
-  AddTaskCubit(
-    TasksCubit tasksCubit, {
+  AddTaskCubit({
     TaskRepository? taskRepository,
   }) : super(InitialAddTaskState()) {
-    _tasksCubit = tasksCubit;
     _taskRepository = taskRepository ?? getIt<TaskRepository>();
   }
 

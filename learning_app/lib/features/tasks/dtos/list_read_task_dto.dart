@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 /// Contains everything about a task, that is required to display it in a list

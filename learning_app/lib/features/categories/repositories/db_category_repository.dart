@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
-import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
+import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/categories/persistence/categories_dao.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -29,7 +29,7 @@ class DbCategoryRepository implements CategoryRepository {
   }
 
   @override
-  Future<List<ReadCategoryDto>> loadCategories() {
+  Stream<List<Category>> watchCategories() {
     return _dao.getAllCategories();
   }
 }

@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
-import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 
 // Also import the used model(s), as they are required in the generated extension file
 import 'package:learning_app/features/categories/models/category.dart';
@@ -38,10 +36,10 @@ class CategoriesDao extends DatabaseAccessor<Database>
     return into(categories).insert(categoriesCompanion);
   }
 
-  Future<List<ReadCategoryDto>> getAllCategories() {
-    final query = select(categories).map(
-        (row) => ReadCategoryDto(id: row.id, name: row.name, color: row.color));
-    return query.get();
+  Stream<List<Category>> getAllCategories() {
+    final query = select(categories)
+        .map((row) => Category(id: row.id, name: row.name, color: row.color));
+    return query.watch();
   }
 
   Future<int> deleteCatgoryById(int categoryId) {

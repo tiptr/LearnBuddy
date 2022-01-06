@@ -1,10 +1,6 @@
-import 'dart:ui';
 import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
@@ -19,16 +15,6 @@ import 'package:learning_app/database/database.dart' as db;
 class DbTaskRepository implements TaskRepository {
   // load the data access object (with generated entities and queries) via dependency inj.
   final TasksDao _dao = getIt<TasksDao>();
-
-  @override
-  Future<List<ListReadTaskDto>> loadTasks() async {
-    return _dao.getAllTasks();
-  }
-
-  // @override
-  // Stream<List<ListReadTaskDto>> watchTasks() {
-  //   return _dao.watchAllTasks();
-  // }
 
   @override
   Stream<List<TaskWithQueueStatus>> watchTasks({
@@ -47,8 +33,8 @@ class DbTaskRepository implements TaskRepository {
           ),
       // taskOrder: taskOrder,
       taskOrder: const TaskOrder(
-        attribute: TaskOrderAttributes.creationDate,
-        direction: OrderDirection.desc,
+        attribute: TaskOrderAttributes.dueDate,
+        direction: OrderDirection.asc,
       ),
     );
   }

@@ -39,9 +39,9 @@ Future<void> initialization100HugeAmountOfTasks() async {
       categoryId: (i % 17 == 0) ? const Value.absent() : Value(i % 4),
       estimatedTime:
           (i % 3 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
-      dueDate: (i % 9 == 0)
+      dueDate: (i % ((topLevelCount / 10).round()) == 0)
           ? const Value.absent()
-          : Value(now.subtract(Duration(days: Random().nextInt(80) - 40))),
+          : Value(now.subtract(Duration(days: Random().nextInt(80) - 75))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: const Value.absent(),
       manualTimeEffortDelta:
@@ -76,7 +76,8 @@ Future<void> initialization100HugeAmountOfTasks() async {
                   ?.subtract(const Duration(days: 1)))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: Value(parentId),
-      manualTimeEffortDelta: (i % 4 != 0) ? Duration(minutes: i) : Duration(),
+      manualTimeEffortDelta:
+          (i % 4 != 0) ? Duration(minutes: i) : const Duration(),
     ));
   }
 
@@ -94,7 +95,8 @@ Future<void> initialization100HugeAmountOfTasks() async {
       doneDateTime: (i % 3 == 0)
           ? const Value.absent()
           : Value(now.subtract(Duration(days: i))),
-      description: (i % 2 == 0) ? Value(testDescription) : const Value.absent(),
+      description:
+          (i % 2 == 0) ? const Value(testDescription) : const Value.absent(),
       categoryId: tasksList[parentId].categoryId,
       estimatedTime:
           (i % 3 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
@@ -108,7 +110,8 @@ Future<void> initialization100HugeAmountOfTasks() async {
                   ?.subtract(const Duration(days: 1)))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: Value(parentId),
-      manualTimeEffortDelta: (i % 4 != 0) ? Duration(minutes: i) : Duration(),
+      manualTimeEffortDelta:
+          (i % 4 != 0) ? Duration(minutes: i) : const Duration(),
     ));
   }
 

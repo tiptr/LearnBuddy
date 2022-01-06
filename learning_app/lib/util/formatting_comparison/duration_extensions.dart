@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 extension DurationFormatting on Duration? {
   String format({String? ifNull}) {
     if (this == null) {

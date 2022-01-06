@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/learning_aids/models/learn_list.dart';
