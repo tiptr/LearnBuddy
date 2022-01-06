@@ -66,6 +66,12 @@ class MyApp extends StatelessWidget {
           primary: const Color(0xFF3444CF),
           secondary: const Color(0xFF9E5EE1),
         ),
+        scrollbarTheme: ScrollbarThemeData(
+          isAlwaysShown: false,
+          thickness: MaterialStateProperty.all(10),
+          radius: const Radius.circular(10),
+          minThumbLength: 50,
+        ),
       ),
       home: const MyHomePage(),
     );

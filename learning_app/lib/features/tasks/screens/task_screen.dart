@@ -35,8 +35,15 @@ class ListGroupSeparator extends StatelessWidget {
   }
 }
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   const TaskScreen({Key? key}) : super(key: key);
+
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends State<TaskScreen> {
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,27 +76,33 @@ class TaskScreen extends StatelessWidget {
 
               final activeTasks = snapshot.data!;
 
-              return GroupedListView<ListReadTaskDto, DateTime?>(
-                physics: const AlwaysScrollableScrollPhysics(),
-                sort: false, // sorting will be done via SQL
-                elements: activeTasks,
-                // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
-                groupBy: (task) => task.dueDate.getPreviousMidnight(),
-                useStickyGroupSeparators: true,
-                cacheExtent: 20,
-                // This would improve scrolling performance, but I did not get it to
-                // work with the separators
-                // itemExtent: 110,
-                floatingHeader: true,
-                groupSeparatorBuilder: (DateTime? dateTime) {
-                  return ListGroupSeparator(
-                    content: dateTime.toListViewFormat(),
-                    highlight: dateTime.isInPast(),
-                  );
-                },
-                indexedItemBuilder: (context, task, index) {
-                  return TaskCard(task: task);
-                },
+              return Scrollbar(
+                controller: _scrollController,
+                interactive: true,
+                child: GroupedListView<ListReadTaskDto, DateTime?>(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  sort: false,
+                  // sorting will be done via SQL
+                  elements: activeTasks,
+                  // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
+                  groupBy: (task) => task.dueDate.getPreviousMidnight(),
+                  useStickyGroupSeparators: true,
+                  cacheExtent: 20,
+                  // This would improve scrolling performance, but I did not get it to
+                  // work with the separators
+                  // itemExtent: 110,
+                  floatingHeader: true,
+                  groupSeparatorBuilder: (DateTime? dateTime) {
+                    return ListGroupSeparator(
+                      content: dateTime.toListViewFormat(),
+                      highlight: dateTime.isInPast(),
+                    );
+                  },
+                  indexedItemBuilder: (context, task, index) {
+                    return TaskCard(task: task);
+                  },
+                ),
               );
             },
           );
