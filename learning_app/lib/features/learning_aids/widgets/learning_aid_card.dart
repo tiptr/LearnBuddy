@@ -44,9 +44,8 @@ class LearningAidCard extends StatelessWidget {
         child: ColorFiltered(
           // Grey out when done -> Overlay with semitransparent white; Else
           // overlay with fulltransparent "black" (no effect)
-          colorFilter: ColorFilter.mode(
-              const Color(0x00000000),
-              BlendMode.lighten),
+          colorFilter:
+              const ColorFilter.mode(Color(0x00000000), BlendMode.lighten),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
             decoration: BoxDecoration(
@@ -110,7 +109,7 @@ class LearningAidCard extends StatelessWidget {
               label: const Text(
                 // TODO: Use real date here
                 "Heute",
-                  style: TextStyle(
+                style: TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -133,13 +132,13 @@ class LearningAidCard extends StatelessWidget {
       flex: 50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+        children: const [
           Icon(Icons.accessibility_new_rounded, size: iconSize),
-          Spacer(flex:1),
+          Spacer(flex: 1),
           Text(
             "9 Begriffe",
           ),
-          Spacer(flex:40),
+          Spacer(flex: 40),
         ],
       ),
     );

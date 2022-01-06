@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/learning_aids/widgets/learning_aid_add_app_bar.dart';
 import 'package:learning_app/features/learning_aids/widgets/term_input_field.dart';
 
