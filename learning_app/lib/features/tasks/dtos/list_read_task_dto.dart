@@ -53,8 +53,8 @@ class ListReadTaskDto extends Equatable {
       done: task.doneDateTime != null,
       // TODO
       categoryColor: Colors.amber,
-      subTaskCount: 2,
-      finishedSubTaskCount: 1,
+      subTaskCount: task.subTaskCount,
+      finishedSubTaskCount: task.finishedSubTaskCount,
       isQueued: false,
       keywords: const ['Hausaufgabe', 'Lernen'],
       dueDate: task.dueDate,

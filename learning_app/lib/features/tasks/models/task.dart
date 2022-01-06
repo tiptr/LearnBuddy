@@ -4,22 +4,33 @@ import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/learning_aids/models/learn_list.dart';
 import 'package:learning_app/features/time_logs/models/time_log.dart';
 
-class Task extends Equatable {
-  final int id;
-  final String title;
-  final DateTime? doneDateTime;
-  final String? description;
-  final Category? category;
-  final List<KeyWord> keywords;
-  final List<TimeLog> timeLogs;
-  final Duration? estimatedTime;
-  final DateTime? dueDate;
-  final DateTime creationDateTime;
-  final List<Task> children;
-  final List<LearnList> learnLists;
-  final Duration manualTimeEffortDelta;
+class Task {
+  int id;
+  String title;
+  DateTime? doneDateTime;
+  String? description;
+  Category? category;
+  List<KeyWord> keywords;
+  List<TimeLog> timeLogs;
+  Duration? estimatedTime;
+  DateTime? dueDate;
+  DateTime creationDateTime;
+  List<Task> children;
+  List<LearnList> learnLists;
+  Duration manualTimeEffortDelta;
 
-  const Task({
+  int get subTaskCount {
+    // TODO: think about whether the count of sub-tasks should only return the
+    // sub-tasks, or also the amount of sub-sub-tasks and deeper
+    return children.length;
+  }
+
+  int get finishedSubTaskCount {
+    // TODO: implement this!
+    return children.length;
+  }
+
+  Task({
     required this.id,
     required this.title,
     this.doneDateTime,
@@ -34,17 +45,4 @@ class Task extends Equatable {
     required this.learnLists,
     required this.manualTimeEffortDelta,
   });
-
-  @override
-  List<Object?> get props => [
-        id,
-        title,
-        doneDateTime,
-        description,
-        estimatedTime,
-        dueDate,
-        creationDateTime,
-        children,
-        manualTimeEffortDelta,
-      ];
 }

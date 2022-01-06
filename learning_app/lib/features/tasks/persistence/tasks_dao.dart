@@ -19,7 +19,7 @@ part 'tasks_dao.g.dart';
 /// related entity
 @singleton // Injectable via dependency injection
 @DriftAccessor(
-    // Include the drift file containing the entity definition
+  // Include the drift file containing the entity definition
     include: {
       'package:learning_app/features/tasks/persistence/tasks.drift'
     }, queries: {
@@ -30,7 +30,8 @@ part 'tasks_dao.g.dart';
          WHERE t.parent_task_id IS NULL;
         '''
 })
-class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
+class TasksDao extends DatabaseAccessor<Database>
+    with _$TasksDaoMixin {
   // this constructor is required so that the main database can create an instance
   // of this object.
   TasksDao(Database db) : super(db);
@@ -50,7 +51,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Future<List<ListReadTaskDto>> getAllTasks() {
-    final query = select(tasks).map((row) => ListReadTaskDto(
+    final query = select(tasks).map((row) =>
+        ListReadTaskDto(
           id: row.id,
           title: row.title,
           done: row.doneDateTime != null,
@@ -67,7 +69,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Stream<List<ListReadTaskDto>> watchAllTasks() {
-    final query = select(tasks).map((row) => ListReadTaskDto(
+    final query = select(tasks).map((row) =>
+        ListReadTaskDto(
           id: row.id,
           title: row.title,
           done: row.doneDateTime != null,
@@ -102,31 +105,29 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           } else {
             // Task = not done <=> not set to done or set at this day
             return tsk.doneDateTime.isNull() |
-                // currentDate -> midnight, when the day began
-                tsk.doneDateTime.isBiggerOrEqual(currentDate);
+            // currentDate -> midnight, when the day began
+            tsk.doneDateTime.isBiggerOrEqual(currentDate);
           }
         } else {
           return const CustomExpression('TRUE');
         }
-      })
-      ..where((tsk) {
+      })..where((tsk) {
         // category filter, if applied
         if (taskFilter.category.present) {
           return tsk.categoryId.equals(taskFilter.category.value?.id);
         } else {
           return const CustomExpression('TRUE');
         }
-      })
-      ..where((tsk) {
+      })..where((tsk) {
         // overDue filter, if applied
         if (taskFilter.overDue.present) {
           if (taskFilter.overDue.value == true) {
             return // currentDate -> midnight, when the day began
-                tsk.dueDate.isSmallerThan(currentDate);
+              tsk.dueDate.isSmallerThan(currentDate);
           } else {
             return tsk.dueDate.isNull() |
-                // currentDate -> midnight, when the day began
-                tsk.dueDate.isBiggerOrEqual(currentDate);
+            // currentDate -> midnight, when the day began
+            tsk.dueDate.isBiggerOrEqual(currentDate);
           }
         } else {
           return const CustomExpression('TRUE');
@@ -135,7 +136,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
 
     final sortedFilteredTopLevelTasksQuery = filteredTopLevelTasksQuery
       ..orderBy([
-        (tsk) {
+            (tsk) {
           Expression sortExpression;
           OrderingMode orderingMode;
           // Create the correct db-specific sort expression matching the
@@ -168,18 +169,107 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
 
     return sortedFilteredTopLevelTasksQuery.watch().switchMap((topLevels) {
       final subLevelTasksQuery = select(tasks)
-        ..where((tsk) => tsk.parentTaskId.isNull()); // sub-levels only
+        ..where((tsk) => tsk.parentTaskId.isNotNull()); // sub-levels only
 
       return subLevelTasksQuery.watch().map((subLevels) {
-        // Create a map to efficiently get the subtasks
-        final parentIdToSubTaskMap = {
-          for (var subLevel in subLevels) subLevel.parentTaskId: subLevel
-        };
+        // // Create a map to efficiently get the subtasks
+        // final parentIdToSubTaskMap = {
+        //   for (var subLevel in subLevels) subLevel.parentTaskId: subLevel
+        // };
 
-        // Allocate the sub-sub (or deeper) tasks to the subtasks
-        // for (var currentSub in subLevels) {
-        //   currentSub
-        // }
+        print('Size of subtasks: ${subLevels.length}');
+
+        final subTaskModels = [];
+        final idToSubTasks = <int?, List<Task>>{};
+
+        // Create the models for subtasks and maps them to their parent-ID
+        for (var taskEntity in subLevels) {
+          final taskModel = Task(
+            id: taskEntity.id,
+            title: taskEntity.title,
+            doneDateTime: taskEntity.doneDateTime,
+            description: taskEntity.description,
+            category: const Category(
+              id: 0,
+              name: 'Testkategorie',
+              color: Colors.lightBlue,
+            ),
+            // TODO
+            keywords: const [
+              KeyWord(id: 0, name: 'Hausaufgabe'),
+              KeyWord(id: 1, name: 'Lernen'),
+            ],
+            // TODO
+            timeLogs: const [],
+            // TODO
+            estimatedTime: taskEntity.estimatedTime,
+            dueDate: taskEntity.dueDate,
+            creationDateTime: taskEntity.creationDateTime,
+            children: const [],
+            // TODO
+            learnLists: const [],
+            // TODO
+            manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
+          );
+          subTaskModels.add(taskModel);
+          idToSubTasks.putIfAbsent(taskEntity.parentTaskId, () => []).add(
+              taskModel);
+        }
+
+        print('Size of subtask-models: ${subTaskModels.length}');
+
+        // Add the sub-subtasks (tier 3 and deeper) to their parents (tier-2)
+        for (Task subtask in subTaskModels) {
+          subtask.children = (idToSubTasks[subtask.id] ?? []);
+        }
+
+        // Create the models for top-tier tasks
+
+        final tasksWithQueueStatus = [
+          for (var taskEntity in topLevels)
+            TaskWithQueueStatus(
+              task: Task(
+                id: taskEntity.id,
+                title: taskEntity.title,
+                doneDateTime: taskEntity.doneDateTime,
+                description: taskEntity.description,
+                category: const Category(
+                  id: 0,
+                  name: 'Testkategorie',
+                  color: Colors.lightBlue,
+                ),
+                // TODO
+                keywords: const [
+                  KeyWord(id: 0, name: 'Hausaufgabe'),
+                  KeyWord(id: 1, name: 'Lernen'),
+                ],
+                // TODO
+                timeLogs: const [],
+                // TODO
+                estimatedTime: taskEntity.estimatedTime,
+                dueDate: taskEntity.dueDate,
+                creationDateTime: taskEntity.creationDateTime,
+                children: const [],
+                // TODO
+                learnLists: const [],
+                // TODO
+                manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
+              ),
+              isQueued: false,
+            ),
+        ];
+
+        // Add the sub-tasks (tier 2) to their parents (top tier)
+        for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
+          taskWithQueue.task.children = (
+              idToSubTasks[taskWithQueue.task.id] ?? []);
+        }
+
+        print('Size of tasks: ${tasksWithQueueStatus.length}');
+
+        return tasksWithQueueStatus;
+
+
 
         // Allocate the subtasks to the top level tasks
 
@@ -195,17 +285,22 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
                   id: 0,
                   name: 'Testkategorie',
                   color: Colors.lightBlue,
-                ), // TODO
+                ),
+                // TODO
                 keywords: const [
                   KeyWord(id: 0, name: 'Hausaufgabe'),
                   KeyWord(id: 1, name: 'Lernen'),
-                ], // TODO
-                timeLogs: const [], // TODO
+                ],
+                // TODO
+                timeLogs: const [],
+                // TODO
                 estimatedTime: taskEntity.estimatedTime,
                 dueDate: taskEntity.dueDate,
                 creationDateTime: taskEntity.creationDateTime,
-                children: const [], // TODO
-                learnLists: const [], // TODO
+                children: const [],
+                // TODO
+                learnLists: const [],
+                // TODO
                 manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
               ),
               isQueued: false,
@@ -389,7 +484,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // return query.watch();
 
   Future<int> deleteTaskById(int taskId) {
-    return (delete(tasks)..where((t) => t.id.equals(taskId))).go();
+    return (delete(tasks)
+      ..where((t) => t.id.equals(taskId))).go();
   }
 
   Future<int> toggleTaskDoneById(int taskId, bool done) {
@@ -399,7 +495,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       newDoneDateTime = Value(DateTime.now());
     }
 
-    return (update(tasks)..where((t) => t.id.equals(taskId))).write(
+    return (update(tasks)
+      ..where((t) => t.id.equals(taskId))).write(
       TasksCompanion(
         doneDateTime: newDoneDateTime,
       ),

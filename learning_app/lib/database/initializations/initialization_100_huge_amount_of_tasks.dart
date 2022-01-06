@@ -84,8 +84,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
   for (i = subLevelCount + topLevelCount;
       i < subSubLevelCount + subLevelCount + topLevelCount;
       i++) {
-    final parentId =
-        (i % ((subLevelCount - topLevelCount) * 0.75)).floor() + topLevelCount;
+    final parentId = Random().nextInt(topLevelCount - 1);
 
     tasksList.add(TasksCompanion.insert(
       id: Value(i),
