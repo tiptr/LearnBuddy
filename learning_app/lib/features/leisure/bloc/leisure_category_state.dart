@@ -1,44 +1,49 @@
-import 'package:learning_app/features/leisure/model/leisure_category.dart';
+import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:equatable/equatable.dart';
 
 class LeasureCategoryState extends Equatable {
-  late final List<LeisureCategory> leisureCategories;
+  late final List<ReadLeisureCategoriesDto> leisureCategoriesDtos;
 
   LeasureCategoryState() {
-    leisureCategories = [
-      const LeisureCategory(
-        title: "Fun Challenges",
-        assetString: "assets/leisure/leisure-group-fun.png",
+    leisureCategoriesDtos = [
+      const ReadLeisureCategoriesDto(
+        id: 0,
+        name: "Fun Challenges",
+        pathToImage: "assets/leisure/leisure-group-fun.png",
         starCount: 3,
-        countAids: 9,
+        leisureActivityCount: 9,
       ),
-      const LeisureCategory(
-        title: "Fitness ohne Geräte",
-        assetString: "assets/leisure/leisure-group-fitness.png",
+      const ReadLeisureCategoriesDto(
+        id: 1,
+        name: "Fitness ohne Geräte",
+        pathToImage: "assets/leisure/leisure-group-fitness.png",
         starCount: 7,
-        countAids: 17,
+        leisureActivityCount: 17,
       ),
-      const LeisureCategory(
-        title: "Yoga & Meditation",
-        assetString: "assets/leisure/leisure-group-yoga.png",
+      const ReadLeisureCategoriesDto(
+        id: 2,
+        name: "Yoga & Meditation",
+        pathToImage: "assets/leisure/leisure-group-yoga.png",
         starCount: 4,
-        countAids: 11,
+        leisureActivityCount: 11,
       ),
-      const LeisureCategory(
-        title: "Outdoor & Bewegung",
-        assetString: "assets/leisure/leisure-group-outdoor.png",
+      const ReadLeisureCategoriesDto(
+        id: 3,
+        name: "Outdoor & Bewegung",
+        pathToImage: "assets/leisure/leisure-group-outdoor.png",
         starCount: 0,
-        countAids: 5,
+        leisureActivityCount: 5,
       ),
-      const LeisureCategory(
-        title: "Weitere Vorschäge",
-        assetString: "assets/leisure/leisure-group-further.png",
+      const ReadLeisureCategoriesDto(
+        id: 4,
+        name: "Weitere Vorschäge",
+        pathToImage: "assets/leisure/leisure-group-further.png",
         starCount: 1,
-        countAids: 7,
+        leisureActivityCount: 7,
       ),
     ];
   }
 
   @override
-  List<Object> get props => [leisureCategories];
+  List<Object> get props => [leisureCategoriesDtos];
 }

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
+import 'features/tasks/bloc/add_task_cubit.dart';
 import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
@@ -26,10 +27,10 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<TaskCubit>(
+        BlocProvider<TasksCubit>(
           lazy: true,
           create: (context) {
-            var cubit = TaskCubit();
+            var cubit = TasksCubit();
             // Loading tasks initially is probably a good idea
             // since many features depend on the tasks.
 
@@ -37,6 +38,12 @@ void main() {
             // dynamic loading (only the first X tasks are being loaded)
             cubit.loadTasks();
             return cubit;
+          },
+        ),
+        BlocProvider<AddTaskCubit>(
+          lazy: true,
+          create: (context) {
+            return AddTaskCubit();
           },
         ),
       ],

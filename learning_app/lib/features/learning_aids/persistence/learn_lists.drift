@@ -1,0 +1,21 @@
+-- More information about this file type:
+-- https://drift.simonbinder.eu/docs/using-sql/moor_files/#getting-started
+
+-- Import converters
+import 'package:learning_app/database/type_converters/learn_methods_converter.dart';
+
+-- Import other entities this one depends on:
+import 'package:learning_app/features/categories/persistence/categories.drift';
+
+-- entity definition
+-- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
+-- could be considered more elegant
+-- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
+CREATE TABLE LearnLists (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    learn_method INT NOT NULL MAPPED BY `const LearnMethodsConverter()`,
+    category_id INT REFERENCES Categories(id),
+    creation_date_time DATETIME NOT NULL,
+    is_archived BOOL NOT NULL
+) AS LearnListEntity;
