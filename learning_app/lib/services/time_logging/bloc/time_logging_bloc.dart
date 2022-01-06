@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/services/time_logging/dtos/time_log_dto.dart';
@@ -10,7 +9,6 @@ import 'package:learning_app/services/time_logging/models/time_log.dart';
 import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/logger.dart';
-import 'package:logger/logger.dart';
 
 part 'time_logging_events.dart';
 
@@ -36,7 +34,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     try {
       Task task = taskList.where((element) => element.id == id).first;
       emit(InitializedState(task: task));
-    } on StateError catch (e) {
+    } on StateError {
       logger.d("This Task is not Found. This should not happen in production.");
       emit(InactiveState());
     }
