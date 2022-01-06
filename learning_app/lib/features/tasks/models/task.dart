@@ -1,54 +1,53 @@
-import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
+import 'package:learning_app/features/learning_aids/models/learn_list.dart';
+import 'package:learning_app/features/time_logs/models/time_log.dart';
 
-class Task extends Equatable {
-  final int id;
-  final String title;
-  final bool done;
-  final String? description;
+class Task {
+  int id;
+  String title;
+  DateTime? doneDateTime;
+  String? description;
+  Category? category;
+  List<KeyWord> keywords;
+  List<TimeLog> timeLogs;
+  Duration? estimatedTime;
+  DateTime? dueDate;
+  DateTime creationDateTime;
+  List<Task> children;
+  List<LearnList> learnLists;
+  Duration manualTimeEffortDelta;
 
-  final Category? category;
+  int get subTaskCount {
+    // TODO: think about whether the count of sub-tasks should only return the
+    // sub-tasks, or also the amount of sub-sub-tasks and deeper
+    return children.length;
+  }
 
-  // TODO: keywords?
+  int get finishedSubTaskCount {
+    // TODO: implement this!
+    return children.length;
+  }
 
-  final Duration? estimatedTime; // minutes
+  Duration? get remainingTimeEstimation {
+    // TODO: implement this!
+    // calculate the remaining estimate by involving the list of children
+    return estimatedTime;
+  }
 
-  final DateTime? dueDate;
-  // dueDate is not optional, because there is no good way to integrate
-  // tasks without one into the sorted list of the UI.
-  // Instead, 'Today' is the predefined due_date
-  // Currently, the time part of this DateTime is not really used, but this
-  // could change later
-
-  final DateTime creationDateTime;
-
-  final Task? parentTask;
-
-  final Duration manualTimeEffortDelta;
-
-  const Task({
+  Task({
     required this.id,
     required this.title,
-    required this.done,
+    this.doneDateTime,
     this.description,
     this.category,
+    required this.keywords,
+    required this.timeLogs,
     this.estimatedTime,
     this.dueDate,
     required this.creationDateTime,
-    this.parentTask,
+    required this.children,
+    required this.learnLists,
     required this.manualTimeEffortDelta,
   });
-
-  @override
-  List<Object?> get props => [
-        id,
-        title,
-        done,
-        description,
-        estimatedTime,
-        dueDate,
-        creationDateTime,
-        parentTask,
-        manualTimeEffortDelta,
-      ];
 }

@@ -1,9 +1,10 @@
-import 'dart:ui';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -16,21 +17,26 @@ class DbTaskRepository implements TaskRepository {
   final TasksDao _dao = getIt<TasksDao>();
 
   @override
-  Future<List<ListReadTaskDto>> loadTasks() async {
-    return _dao.getAllTasks().map((task) {
-      return ListReadTaskDto(
-        id: task.id,
-        title: task.title,
-        done: task.done,
-        categoryColor: Color(task.categoryColor),
-        keywords: const ['Hausaufgabe', 'Lernen'],
-        // TODO: implement
-        remainingTimeEstimation: task.remainingTimeEstimation,
-        dueDate: task.dueDate,
-        subTaskCount: task.subTaskCount,
-        finishedSubTaskCount: task.finishedSubTaskCount,
-      );
-    }).get();
+  Stream<List<TaskWithQueueStatus>> watchTasks({
+    int? limit,
+    int? offset,
+    TaskFilter taskFilter = const TaskFilter(),
+    TaskOrder taskOrder = const TaskOrder(),
+  }) {
+    return _dao.watchTasks(
+      limit: limit,
+      offset: offset,
+      taskFilter: const TaskFilter(
+          // category: Value(null)
+          // category: Value(Category(id: 3, name: 'asdsaf', color: Colors.tealAccent))
+          // overDue: Value(false),
+          ),
+      // taskOrder: taskOrder,
+      taskOrder: const TaskOrder(
+        attribute: TaskOrderAttributes.dueDate,
+        direction: OrderDirection.asc,
+      ),
+    );
   }
 
   @override
@@ -68,8 +74,8 @@ class DbTaskRepository implements TaskRepository {
   }
 
   @override
-  Future<bool> toggleDone(int id) async {
-    final affected = await _dao.toggleTaskDoneById(id);
+  Future<bool> toggleDone(int taskId, bool done) async {
+    final affected = await _dao.toggleTaskDoneById(taskId, done);
     return affected > 0;
   }
 }

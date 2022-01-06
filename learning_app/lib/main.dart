@@ -43,7 +43,7 @@ void main() {
         BlocProvider<AddTaskCubit>(
           lazy: true,
           create: (context) {
-            return AddTaskCubit(BlocProvider.of<TasksCubit>(context));
+            return AddTaskCubit();
           },
         ),
       ],

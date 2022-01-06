@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
@@ -27,4 +26,23 @@ class CategoriesDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   CategoriesDao(Database db) : super(db);
+
+  Future<int> createCategory(CategoriesCompanion categoriesCompanion) {
+    // insertReturning() already provides the whole created entity instead of
+    // the single ID provided by insert()
+    // this was changed back to insert(), because now, we do not need the 'task'
+    // anymore for displaying the list, but rather a 'ListReadTaskDto'
+
+    return into(categories).insert(categoriesCompanion);
+  }
+
+  Stream<List<Category>> getAllCategories() {
+    final query = select(categories)
+        .map((row) => Category(id: row.id, name: row.name, color: row.color));
+    return query.watch();
+  }
+
+  Future<int> deleteCatgoryById(int categoryId) {
+    return (delete(categories)..where((t) => t.id.equals(categoryId))).go();
+  }
 }

@@ -1,18 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class LeisureCategory extends Equatable {
-  final String title;
-  final String assetString;
-  final int starCount;
-  final int countAids;
+  final int id;
+  final String name;
+  final String? pathToImage; // nullable (define base image for all without one)
 
   const LeisureCategory({
-    required this.title,
-    required this.assetString,
-    required this.starCount,
-    required this.countAids,
+    required this.id,
+    required this.name,
+    this.pathToImage,
   });
 
   @override
-  List<Object?> get props => [title, assetString];
+  List<Object?> get props => [
+        id,
+        name,
+        pathToImage,
+      ];
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
-import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -8,13 +7,10 @@ import 'package:learning_app/util/logger.dart';
 
 class AddTaskCubit extends Cubit<AddTaskState> {
   late final TaskRepository _taskRepository;
-  late final TasksCubit _tasksCubit;
 
-  AddTaskCubit(
-    TasksCubit tasksCubit, {
+  AddTaskCubit({
     TaskRepository? taskRepository,
   }) : super(InitialAddTaskState()) {
-    _tasksCubit = tasksCubit;
     _taskRepository = taskRepository ?? getIt<TaskRepository>();
   }
 
@@ -54,7 +50,8 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         //    that is required now.
         // B: With the upcoming sorting, filtering, dynamic loading functionality,
         //    this would hardly work anyway.
-        await _tasksCubit.loadTasks();
+        // TODO: remove this  as it is not required anymore thanks to streams and reactivity
+        // await _tasksCubit.loadTasks();
         logger.d("[Task Cubit] New task was saved. Id: $newTaskId");
         emit(TaskAdded());
       } else {

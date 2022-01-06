@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/util/formatting.dart';
+import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
+import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
 const double iconSize = 18.0;
 
@@ -16,11 +17,11 @@ class TaskCard extends StatelessWidget {
 
   TaskCard({Key? key, required ListReadTaskDto task})
       : _task = task,
-        _formattedDueDate = Formatting.formatDateTimeForListView(
-            task.dueDate, 'Ohne Fälligkeit'),
-        _isOverDue = Formatting.isDateTimeInPast(task.dueDate),
-        _formattedTimeEstimation = Formatting.formatDurationForListView(
-            task.remainingTimeEstimation, 'Keine Zeitschätzung'),
+        _formattedDueDate =
+            task.dueDate.toListViewFormat(ifNull: 'Ohne Fälligkeit'),
+        _isOverDue = task.dueDate.isInPast(),
+        _formattedTimeEstimation = task.remainingTimeEstimation
+            .toListViewFormat(ifNull: 'Keine Zeitschätzung'),
         _isEstimated = task.remainingTimeEstimation == null ? false : true,
         super(key: key);
 
@@ -87,7 +88,7 @@ class TaskCard extends StatelessWidget {
                       shape: const CircleBorder(),
                       onChanged: (bool? value) {
                         BlocProvider.of<TasksCubit>(context)
-                            .toggleDone(_task.id);
+                            .toggleDone(_task.id, !_task.done);
                       },
                     ),
                   ),
