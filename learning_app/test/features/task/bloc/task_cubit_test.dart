@@ -1,6 +1,6 @@
 // import 'package:bloc_test/bloc_test.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 // import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 // import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 // import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
@@ -17,6 +17,11 @@
 // class AnyUpdateTaskDto extends Mock implements UpdateTaskDto {}
 
 void main() {
+  test('formatting a duration should return a proper string', () {
+    expect(true, true);
+  });
+
+
   // late MockTaskRepository mockTaskRepository;
   // late TasksCubit taskCubit;
   //

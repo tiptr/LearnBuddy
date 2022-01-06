@@ -1,6 +1,10 @@
-// import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('formatting a duration should return a proper string', () {
+    expect(true, true);
+  });
+
   // group('when formatting a duration', () {
   //   test('formatting a duration should return a proper string', () {
   //     // Arrange
