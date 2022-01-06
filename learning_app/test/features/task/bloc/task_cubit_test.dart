@@ -1,27 +1,27 @@
 // import 'package:bloc_test/bloc_test.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
-import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+// import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 // import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
-import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+// import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 // import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
+// import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 // import 'package:learning_app/features/tasks/models/task.dart';
-import 'package:learning_app/features/tasks/repositories/task_repository.dart';
-import 'package:mocktail/mocktail.dart';
-
-class MockTaskRepository extends Mock implements TaskRepository {}
-
-class AnyCreateTaskDto extends Mock implements CreateTaskDto {}
-
-class AnyUpdateTaskDto extends Mock implements UpdateTaskDto {}
+// import 'package:learning_app/features/tasks/repositories/task_repository.dart';
+// import 'package:mocktail/mocktail.dart';
+//
+// class MockTaskRepository extends Mock implements TaskRepository {}
+//
+// class AnyCreateTaskDto extends Mock implements CreateTaskDto {}
+//
+// class AnyUpdateTaskDto extends Mock implements UpdateTaskDto {}
 
 void main() {
-  late MockTaskRepository mockTaskRepository;
-  late TasksCubit taskCubit;
-
-  final now = DateTime.now();
-  final dueDate = DateTime(2022, 01, 02, 14, 00);
+  // late MockTaskRepository mockTaskRepository;
+  // late TasksCubit taskCubit;
+  //
+  // final now = DateTime.now();
+  // final dueDate = DateTime(2022, 01, 02, 14, 00);
 
   // final mockTask = Task(
   //     id: 1,
