@@ -49,14 +49,13 @@ class ListReadTaskDto extends Equatable {
       id: task.id,
       title: task.title,
       done: task.doneDateTime != null,
-      // TODO
       categoryColor: Colors.amber,
       subTaskCount: task.subTaskCount,
       finishedSubTaskCount: task.finishedSubTaskCount,
       isQueued: false,
-      keywords: const ['Hausaufgabe', 'Lernen'],
+      keywords: task.keywords.map((keyword) => keyword.name).toList(),
       dueDate: task.dueDate,
-      remainingTimeEstimation: task.estimatedTime, // TODO:
+      remainingTimeEstimation: task.remainingTimeEstimation,
     );
   }
 

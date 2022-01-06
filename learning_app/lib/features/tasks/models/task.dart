@@ -29,6 +29,12 @@ class Task {
     return children.length;
   }
 
+  Duration? get remainingTimeEstimation {
+    // TODO: implement this!
+    // calculate the remaining estimate by involving the list of children
+    return estimatedTime;
+  }
+
   Task({
     required this.id,
     required this.title,
