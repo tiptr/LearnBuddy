@@ -17,12 +17,13 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Neue Kategorie"),
-      scrollable: true,
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      title: Column(
         children: [
+          Row(
+            children: const [Text("Neue Kategorie"),],
+          ),
+          // Spacer
+          const SizedBox(height: 20.0),
           // Title Entry
           Row(
             children: [
@@ -48,49 +49,65 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
               const Spacer()
             ],
           ),
-
-          // Spacer
-          const SizedBox(height: 25.0),
-
-          // Color Selection
-          SizedBox(
-              width: MediaQuery.of(context).size.width * 0.75,
-              child: CategoryColorSelector(
-                onColorSelect: (Color color) {
-                  setState(() {
-                    selectedColor = color;
-                  });
-                },
-                selectedColor: selectedColor,
-              )),
-
-          // Action Buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              MaterialButton(
-                child: const Text("Abbrechen",
-                    style: TextStyle(color: Colors.grey)),
-                onPressed: () {
-                  logger.d("Abbruch beim Erstellen einer Kategorie");
-                  Navigator.of(context).pop();
-                },
-              ),
-              MaterialButton(
-                child: Text(
-                  "Kategorie hinzufügen",
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-                onPressed: () {
-                  logger.d(
-                    "Kategorie hinzufügen mit ${_textController.value.text} und Farbe ${selectedColor.toString()}",
-                  );
-                },
-              )
-            ],
-          ),
         ],
       ),
+      scrollable: false,
+      content: Scrollbar(
+        isAlwaysShown: true,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Spacer
+              const SizedBox(height: 10.0),
+              // Color Selection
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  // height: 100,
+                  child: CategoryColorSelector(
+                    onColorSelect: (Color color) {
+                      setState(() {
+                        selectedColor = color;
+                      });
+                    },
+                    selectedColor: selectedColor,
+                  )),
+            ],
+          ),
+        ),
+      ),
+
+
+
+      actions: [
+        // Action Buttons
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            MaterialButton(
+              child: const Text("Abbrechen",
+                  style: TextStyle(color: Colors.grey)),
+              onPressed: () {
+                logger.d("Abbruch beim Erstellen einer Kategorie");
+                Navigator.of(context).pop();
+              },
+            ),
+            MaterialButton(
+              child: Text(
+                "Kategorie hinzufügen",
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+              onPressed: () {
+                logger.d(
+                  "Kategorie hinzufügen mit ${_textController.value.text} und Farbe ${selectedColor.toString()}",
+                );
+              },
+            )
+          ],
+        ),
+      ],
     );
   }
 }
