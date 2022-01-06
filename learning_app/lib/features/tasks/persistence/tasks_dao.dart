@@ -2,9 +2,12 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
+import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
@@ -81,15 +84,12 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   // Stream<List<TaskWithQueueStatus>> watchTasks({ TODO
-  Stream<List<ListReadTaskDto>> watchTasks({
+  Stream<List<TaskWithQueueStatus>> watchTasks({
     int? limit,
     int? offset,
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    final now = DateTime.now();
-    final lastMidnight = DateTime(now.year, now.month, now.day);
-
     // start by watching all top level tasks
     // that match the filters in any way
     final filteredTopLevelTasksQuery = select(tasks)
@@ -122,11 +122,11 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         if (taskFilter.overDue.present) {
           if (taskFilter.overDue.value == true) {
             return // currentDate -> midnight, when the day began
-              tsk.dueDate.isSmallerThan(currentDate);
+                tsk.dueDate.isSmallerThan(currentDate);
           } else {
             return tsk.dueDate.isNull() |
-              // currentDate -> midnight, when the day began
-              tsk.dueDate.isBiggerOrEqual(currentDate);
+                // currentDate -> midnight, when the day began
+                tsk.dueDate.isBiggerOrEqual(currentDate);
           }
         } else {
           return const CustomExpression('TRUE');
@@ -166,94 +166,227 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         },
       ]);
 
-    // TODO: Keywords filter
+    return sortedFilteredTopLevelTasksQuery.watch().switchMap((topLevels) {
+      final subLevelTasksQuery = select(tasks)
+        ..where((tsk) => tsk.parentTaskId.isNull()); // sub-levels only
 
-    // TODO: all sorting
+      return subLevelTasksQuery.watch().map((subLevels) {
+        // Create a map to efficiently get the subtasks
+        final parentIdToSubTaskMap = {
+          for (var subLevel in subLevels) subLevel.parentTaskId: subLevel
+        };
 
-    // TODO: Map Keywords
+        // Allocate the sub-sub (or deeper) tasks to the subtasks
+        // for (var currentSub in subLevels) {
+        //   currentSub
+        // }
 
-    // TODO: Map Timelogs
+        // Allocate the subtasks to the top level tasks
 
-    // TODO: Map children
-
-    // TODO: Map learnlists ??
-
-    // TODO: Map Queue
-
-    final mappedQuery =
-        sortedFilteredTopLevelTasksQuery.map((row) => ListReadTaskDto(
-              id: row.id,
-              title: row.title,
-              done: row.doneDateTime != null,
-              // TODO
-              categoryColor: Colors.amber,
-              subTaskCount: 2,
-              finishedSubTaskCount: 1,
+        return [
+          for (var taskEntity in topLevels)
+            TaskWithQueueStatus(
+              task: Task(
+                id: taskEntity.id,
+                title: taskEntity.title,
+                doneDateTime: taskEntity.doneDateTime,
+                description: taskEntity.description,
+                category: const Category(
+                  id: 0,
+                  name: 'Testkategorie',
+                  color: Colors.lightBlue,
+                ), // TODO
+                keywords: const [
+                  KeyWord(id: 0, name: 'Hausaufgabe'),
+                  KeyWord(id: 1, name: 'Lernen'),
+                ], // TODO
+                timeLogs: const [], // TODO
+                estimatedTime: taskEntity.estimatedTime,
+                dueDate: taskEntity.dueDate,
+                creationDateTime: taskEntity.creationDateTime,
+                children: const [], // TODO
+                learnLists: const [], // TODO
+                manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
+              ),
               isQueued: false,
-              keywords: const ['Hausaufgabe', 'Lernen'],
-              dueDate: row.dueDate,
-              remainingTimeEstimation: row.estimatedTime, // TODO:
-            ));
+            ),
+        ];
 
-    Stream<List<ListReadTaskDto>> stream = mappedQuery.watch();
-
-    return stream;
-
-    // return cartStream.switchMap((carts) {
-    //   // this method is called whenever the list of carts changes. For each
-    //   // cart, now we want to load all the items in it.
-    //   // (we create a map from id to cart here just for performance reasons)
-    //   final idToCart = {for (var cart in carts) cart.id: cart};
-    //   final ids = idToCart.keys;
-    //
-    //   // select all entries that are included in any cart that we found
-    //   final entryQuery = select(shoppingCartEntries).join(
-    //     [
-    //       innerJoin(
-    //         buyableItems,
-    //         buyableItems.id.equalsExp(shoppingCartEntries.item),
-    //       )
-    //     ],
-    //   )..where(shoppingCartEntries.shoppingCart.isIn(ids));
-    //
-    //   return entryQuery.watch().map((rows) {
-    //     // Store the list of entries for each cart, again using maps for faster
-    //     // lookups.
-    //     final idToItems = <int, List<BuyableItem>>{};
-    //
-    //     // for each entry (row) that is included in a cart, put it in the map
-    //     // of items.
-    //     for (var row in rows) {
-    //       final item = row.readTable(buyableItems);
-    //       final id = row.readTable(shoppingCartEntries).shoppingCart;
-    //
-    //       idToItems.putIfAbsent(id, () => []).add(item);
-    //     }
-    //
-    //     // finally, all that's left is to merge the map of carts with the map of
-    //     // entries
-    //     return [
-    //       for (var id in ids)
-    //         CartWithItems(idToCart[id], idToItems[id] ?? []),
-    //     ];
-    //   });
-    // });
-
-    // final query = select(tasks).map((row) => ListReadTaskDto(
-    //       id: row.id,
-    //       title: row.title,
-    //       done: row.doneDateTime != null,
-    //       // TODO
-    //       categoryColor: Colors.amber,
-    //       subTaskCount: 2,
-    //       finishedSubTaskCount: 1,
-    //       isQueued: false,
-    //       keywords: const ['Hausaufgabe', 'Lernen'],
-    //       dueDate: row.dueDate,
-    //       remainingTimeEstimation: row.estimatedTime, // TODO:
-    //     ));
-    // return query.watch();
+        // final mappedQuery =
+        // sortedFilteredTopLevelTasksQuery.map((row) =>
+        //     ListReadTaskDto(
+        //       id: row.id,
+        //       title: row.title,
+        //       done: row.doneDateTime != null,
+        //       // TODO
+        //       categoryColor: Colors.amber,
+        //       subTaskCount: 2,
+        //       finishedSubTaskCount: 1,
+        //       isQueued: false,
+        //       keywords: const ['Hausaufgabe', 'Lernen'],
+        //       dueDate: row.dueDate,
+        //       remainingTimeEstimation: row.estimatedTime, // TODO:
+        //     ));
+        //
+        // Stream<List<ListReadTaskDto>> stream = mappedQuery.watch();
+        //
+        // return stream;
+      });
+    });
   }
+
+  // Stream<List<ListReadTaskDto>> watchAllCarts() {
+  //   // start by watching all carts
+  //   final cartStream = select(shoppingCarts).watch();
+  //
+  //   return cartStream.switchMap((carts) {
+  //     // this method is called whenever the list of carts changes. For each
+  //     // cart, now we want to load all the items in it.
+  //     // (we create a map from id to cart here just for performance reasons)
+  //     final idToCart = {for (var cart in carts) cart.id: cart};
+  //     final ids = idToCart.keys;
+  //
+  //     // select all entries that are included in any cart that we found
+  //     final entryQuery = select(shoppingCartEntries).join(
+  //       [
+  //         innerJoin(
+  //           buyableItems,
+  //           buyableItems.id.equalsExp(shoppingCartEntries.item),
+  //         )
+  //       ],
+  //     )..where(shoppingCartEntries.shoppingCart.isIn(ids));
+  //
+  //     return entryQuery.watch().map((rows) {
+  //       // Store the list of entries for each cart, again using maps for faster
+  //       // lookups.
+  //       final idToItems = <int, List<BuyableItem>>{};
+  //
+  //       // for each entry (row) that is included in a cart, put it in the map
+  //       // of items.
+  //       for (var row in rows) {
+  //         final item = row.readTable(buyableItems);
+  //         final id = row.readTable(shoppingCartEntries).shoppingCart;
+  //
+  //         idToItems.putIfAbsent(id, () => []).add(item);
+  //       }
+  //
+  //       // finally, all that's left is to merge the map of carts with the map of
+  //       // entries
+  //       return [
+  //         for (var id in ids)
+  //           ListReadTaskDto(id: 0,
+  //             title: 'row.title',
+  //           done: false,
+  //           categoryColor: Colors.amber,
+  //           subTaskCount: 2,
+  //           finishedSubTaskCount: 1,
+  //           isQueued: false,
+  //           keywords: const ['Hausaufgabe', 'Lernen'],
+  //           dueDate: DateTime.now(),
+  //           remainingTimeEstimation: const Duration(minutes: 8)),
+  //       ];
+  //     });
+  //   });
+  // }
+
+  // final subLevelTasksQuery = select(tasks)
+  //   ..where((tsk) => tsk.parentTaskId.isNull()); // sub-levels only
+  //
+  // final currentSubTasks = subLevelTasksQuery.watch()
+  // .
+  //
+  // final parentIdToSubTaskMap = {for (var subtask in ) cart.id: cart};
+  //
+  // // TODO: Keywords filter
+  //
+  //
+  // // TODO: Map Keywords
+  //
+  // // TODO: Map Timelogs
+  //
+  // // TODO: Map children
+  //
+  // // TODO: Map learnlists ??
+  //
+  // // TODO: Map Queue
+  //
+  // final mappedQuery =
+  // sortedFilteredTopLevelTasksQuery.map((row) => ListReadTaskDto(
+  // id: row.id,
+  // title: row.title,
+  // done: row.doneDateTime != null,
+  // // TODO
+  // categoryColor: Colors.amber,
+  // subTaskCount: 2,
+  // finishedSubTaskCount: 1,
+  // isQueued: false,
+  // keywords: const ['Hausaufgabe', 'Lernen'],
+  // dueDate: row.dueDate,
+  // remainingTimeEstimation: row.estimatedTime, // TODO:
+  // ));
+  //
+  // Stream<List<ListReadTaskDto>> stream = mappedQuery.
+  // watch
+  // (
+  // );
+  //
+  // return
+  // stream;
+
+  // return cartStream.switchMap((carts) {
+  //   // this method is called whenever the list of carts changes. For each
+  //   // cart, now we want to load all the items in it.
+  //   // (we create a map from id to cart here just for performance reasons)
+  //   final idToCart = {for (var cart in carts) cart.id: cart};
+  //   final ids = idToCart.keys;
+  //
+  //   // select all entries that are included in any cart that we found
+  //   final entryQuery = select(shoppingCartEntries).join(
+  //     [
+  //       innerJoin(
+  //         buyableItems,
+  //         buyableItems.id.equalsExp(shoppingCartEntries.item),
+  //       )
+  //     ],
+  //   )..where(shoppingCartEntries.shoppingCart.isIn(ids));
+  //
+  //   return entryQuery.watch().map((rows) {
+  //     // Store the list of entries for each cart, again using maps for faster
+  //     // lookups.
+  //     final idToItems = <int, List<BuyableItem>>{};
+  //
+  //     // for each entry (row) that is included in a cart, put it in the map
+  //     // of items.
+  //     for (var row in rows) {
+  //       final item = row.readTable(buyableItems);
+  //       final id = row.readTable(shoppingCartEntries).shoppingCart;
+  //
+  //       idToItems.putIfAbsent(id, () => []).add(item);
+  //     }
+  //
+  //     // finally, all that's left is to merge the map of carts with the map of
+  //     // entries
+  //     return [
+  //       for (var id in ids)
+  //         CartWithItems(idToCart[id], idToItems[id] ?? []),
+  //     ];
+  //   });
+  // });
+
+  // final query = select(tasks).map((row) => ListReadTaskDto(
+  //       id: row.id,
+  //       title: row.title,
+  //       done: row.doneDateTime != null,
+  //       // TODO
+  //       categoryColor: Colors.amber,
+  //       subTaskCount: 2,
+  //       finishedSubTaskCount: 1,
+  //       isQueued: false,
+  //       keywords: const ['Hausaufgabe', 'Lernen'],
+  //       dueDate: row.dueDate,
+  //       remainingTimeEstimation: row.estimatedTime, // TODO:
+  //     ));
+  // return query.watch();
 
   Future<int> deleteTaskById(int taskId) {
     return (delete(tasks)..where((t) => t.id.equals(taskId))).go();

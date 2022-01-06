@@ -8,6 +8,7 @@ import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -30,7 +31,7 @@ class DbTaskRepository implements TaskRepository {
   // }
 
   @override
-  Stream<List<ListReadTaskDto>> watchTasks({
+  Stream<List<TaskWithQueueStatus>> watchTasks({
     int? limit,
     int? offset,
     TaskFilter taskFilter = const TaskFilter(),
@@ -40,19 +41,20 @@ class DbTaskRepository implements TaskRepository {
       limit: limit,
       offset: offset,
       taskFilter: const TaskFilter(
-        // category: Value(null)
-        // category: Value(Category(id: 3, name: 'asdsaf', color: Colors.tealAccent))
-        // overDue: Value(false),
-      ),
+          // category: Value(null)
+          // category: Value(Category(id: 3, name: 'asdsaf', color: Colors.tealAccent))
+          // overDue: Value(false),
+          ),
       // taskOrder: taskOrder,
-      taskOrder : const TaskOrder(
-        attribute: TaskOrderAttributes.dueDate,
+      taskOrder: const TaskOrder(
+        attribute: TaskOrderAttributes.creationDate,
         direction: OrderDirection.desc,
       ),
     );
   }
 
   @override
+
   /// Creates a new task and returns it with its newly generated id
   Future<int> createTask(CreateTaskDto newTask) async {
     return _dao.createTask(db.TasksCompanion(

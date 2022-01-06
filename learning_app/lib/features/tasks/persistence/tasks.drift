@@ -21,7 +21,7 @@ CREATE TABLE Tasks (
     due_date DATETIME,
     creation_date_time DATETIME NOT NULL,
     parent_task_id INT REFERENCES Tasks(id),
-    manual_time_effort_delta INT MAPPED BY `const DurationConverter()`
+    manual_time_effort_delta INT NOT NULL MAPPED BY `const DurationConverter()`
 ) AS TaskEntity;
 
 -- Indices for faster querying

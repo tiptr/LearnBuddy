@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 /// Contains everything about a task, that is required to display it in a list
 ///
@@ -41,6 +44,23 @@ class ListReadTaskDto extends Equatable {
     required this.finishedSubTaskCount,
     required this.isQueued,
   });
+
+  static ListReadTaskDto fromTask(TaskWithQueueStatus taskWithQueueStatus) {
+    final task = taskWithQueueStatus.task;
+    return ListReadTaskDto(
+      id: task.id,
+      title: task.title,
+      done: task.doneDateTime != null,
+      // TODO
+      categoryColor: Colors.amber,
+      subTaskCount: 2,
+      finishedSubTaskCount: 1,
+      isQueued: false,
+      keywords: const ['Hausaufgabe', 'Lernen'],
+      dueDate: task.dueDate,
+      remainingTimeEstimation: task.estimatedTime, // TODO:
+    );
+  }
 
   @override
   List<Object?> get props => [

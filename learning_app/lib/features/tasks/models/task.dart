@@ -7,7 +7,7 @@ import 'package:learning_app/features/time_logs/models/time_log.dart';
 class Task extends Equatable {
   final int id;
   final String title;
-  final DateTime doneDateTime;
+  final DateTime? doneDateTime;
   final String? description;
   final Category? category;
   final List<KeyWord> keywords;
@@ -22,7 +22,7 @@ class Task extends Equatable {
   const Task({
     required this.id,
     required this.title,
-    required this.doneDateTime,
+    this.doneDateTime,
     this.description,
     this.category,
     required this.keywords,

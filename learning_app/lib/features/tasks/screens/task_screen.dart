@@ -67,13 +67,11 @@ class TaskScreen extends StatelessWidget {
           // ));
 
           return StreamBuilder<List<ListReadTaskDto>>(
-            stream: state.selectedTasksStream,
+            stream: state.selectedListViewTasksStream,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-
-              print('Snapshot has data: ${snapshot.hasData}');
 
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(

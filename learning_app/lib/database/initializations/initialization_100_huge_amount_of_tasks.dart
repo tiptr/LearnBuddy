@@ -45,7 +45,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: const Value.absent(),
       manualTimeEffortDelta:
-          (i % 4 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
+          (i % 4 != 0) ? Duration(minutes: i) : const Duration(),
     ));
   }
 
@@ -61,7 +61,8 @@ Future<void> initialization100HugeAmountOfTasks() async {
       doneDateTime: (i % 3 == 0)
           ? const Value.absent()
           : Value(now.subtract(Duration(days: i))),
-      description: (i % 2 == 0) ? Value(testDescription) : const Value.absent(),
+      description:
+          (i % 2 == 0) ? const Value(testDescription) : const Value.absent(),
       categoryId: tasksList[parentId].categoryId,
       estimatedTime:
           (i % 3 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
@@ -75,8 +76,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
                   ?.subtract(const Duration(days: 1)))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: Value(parentId),
-      manualTimeEffortDelta:
-          (i % 4 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
+      manualTimeEffortDelta: (i % 4 != 0) ? Duration(minutes: i) : Duration(),
     ));
   }
 
@@ -109,8 +109,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
                   ?.subtract(const Duration(days: 1)))),
       creationDateTime: now.subtract(Duration(days: i)),
       parentTaskId: Value(parentId),
-      manualTimeEffortDelta:
-          (i % 4 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
+      manualTimeEffortDelta: (i % 4 != 0) ? Duration(minutes: i) : Duration(),
     ));
   }
 
