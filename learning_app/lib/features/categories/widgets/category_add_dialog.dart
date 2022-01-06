@@ -64,17 +64,20 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
               // Spacer
               const SizedBox(height: 10.0),
               // Color Selection
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  // height: 100,
-                  child: CategoryColorSelector(
-                    onColorSelect: (Color color) {
-                      setState(() {
-                        selectedColor = color;
-                      });
-                    },
-                    selectedColor: selectedColor,
-                  )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    // height: 100,
+                    child: CategoryColorSelector(
+                      onColorSelect: (Color color) {
+                        setState(() {
+                          selectedColor = color;
+                        });
+                      },
+                      selectedColor: selectedColor,
+                    )),
+              ),
             ],
           ),
         ),
