@@ -120,6 +120,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
                 subLevels: subLevels,
                 idToCategoryMap: idToCategoryMap,
                 taskIdToKeywordMap: taskIdToKeywordMap,
+                keywordsFilter: taskFilter.keywords,
               );
             });
           });
@@ -129,7 +130,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   // // TODO: Keywords filter
-  // // TODO: Map Keywords
   // // TODO: Map Timelogs
   // // TODO: Map learnlists ??
   // // TODO: Map Queue
@@ -179,12 +179,16 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   /// Create the list of tasks with their queue status by merging everything
-  List<TaskWithQueueStatus> mergeEntitiesTogether({
-    required List<TaskEntity> topLevels,
-    required List<TaskEntity> subLevels,
-    required Map<int, Category> idToCategoryMap,
-    required Map<int, List<KeyWord>> taskIdToKeywordMap,
-  }) {
+  ///
+  /// Since the keywords for the tasks are only known here, the keywords-filter
+  /// also is applied here, instead of as part of the tasks-query.
+  /// This will only delay this, if the filter is present, though.
+  List<TaskWithQueueStatus> mergeEntitiesTogether(
+      {required List<TaskEntity> topLevels,
+      required List<TaskEntity> subLevels,
+      required Map<int, Category> idToCategoryMap,
+      required Map<int, List<KeyWord>> taskIdToKeywordMap,
+      required Value<List<KeyWord>> keywordsFilter}) {
     final subTaskModels = [];
     final idToSubTasks = <int?, List<Task>>{};
 
@@ -252,7 +256,19 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       taskWithQueue.task.children = (idToSubTasks[taskWithQueue.task.id] ?? []);
     }
 
-    return tasksWithQueueStatus;
+    if (keywordsFilter.present) {
+      // Apply the keywords-filter
+      return tasksWithQueueStatus.where((taskWithQueue) {
+        final wantedKeywords = keywordsFilter.value;
+        final actualKeywords = taskWithQueue.task.keywords;
+        // accept, if at least one of the wanted is found
+        return wantedKeywords.any((wanted) {
+          return actualKeywords.contains(wanted);
+        });
+      }).toList();
+    } else {
+      return tasksWithQueueStatus;
+    }
   }
 
   /// Creates a stream that watches the top-level tasks matching the given filter
