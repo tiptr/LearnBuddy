@@ -14,16 +14,7 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  List<int> items = [];
-
-  @override
-  void initState() {
-    items = List.generate(3, (i) {
-      // add some dummy items on activity start
-      return i;
-    });
-    super.initState();
-  }
+  List<Widget> items = [];
 
   Widget listViewItem() {
     // widget layout for listview items
@@ -73,7 +64,8 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
                 onTap: () {
                   setState(() {
                     // add another item to the list
-                    items.add(items.length);
+                    //items.add(items.length);
+                    items.add(listViewItem());
                   });
                 },
                 child: Ink(
