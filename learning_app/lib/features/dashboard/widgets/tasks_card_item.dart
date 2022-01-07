@@ -48,9 +48,9 @@ class TasksCardItem extends StatelessWidget {
                     ),
                     maxLines: 2,
                   ),
-                  const Text(
+                  Text(
                     // TODO
-                    "Task Description missing in model",
+                    task.keywords.join(", "),
                     style: TextStyle(color: Colors.grey),
                   )
                 ],
