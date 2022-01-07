@@ -15,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CategoryOverviewScreen(),
+              builder: (context) => const CategoryOverviewScreen(),
             ),
           ),
           child: Ink(

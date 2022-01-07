@@ -66,7 +66,7 @@ class _TaskScreenState extends State<TaskScreen> {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(
                     child: Text(
-                        'Du hast aktuell keine anstehenden Aufgaben.\nDrücke auf Plus, um eine Aufgabe anzulegen',
+                        'Du hast aktuell keine anstehenden Aufgaben.\nDrücke auf das Plus, um eine Aufgabe anzulegen',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 11,
