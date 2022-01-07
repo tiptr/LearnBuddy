@@ -10,7 +10,7 @@ class ListReadTaskDto extends Equatable {
   final int id;
   final String title;
   final bool done;
-  final Color categoryColor;
+  final Color? categoryColor;
   final List<String> keywords;
 
   // This is not the same as estimatedTime of a task entity.
@@ -43,16 +43,17 @@ class ListReadTaskDto extends Equatable {
     required this.isQueued,
   });
 
-  static ListReadTaskDto fromTask(TaskWithQueueStatus taskWithQueueStatus) {
+  static ListReadTaskDto fromTaskWithQueueStatus(
+      TaskWithQueueStatus taskWithQueueStatus) {
     final task = taskWithQueueStatus.task;
     return ListReadTaskDto(
       id: task.id,
       title: task.title,
       done: task.doneDateTime != null,
-      categoryColor: Colors.amber,
+      categoryColor: task.category?.color,
       subTaskCount: task.subTaskCount,
       finishedSubTaskCount: task.finishedSubTaskCount,
-      isQueued: false,
+      isQueued: taskWithQueueStatus.isQueued,
       keywords: task.keywords.map((keyword) => keyword.name).toList(),
       dueDate: task.dueDate,
       remainingTimeEstimation: task.remainingTimeEstimation,
