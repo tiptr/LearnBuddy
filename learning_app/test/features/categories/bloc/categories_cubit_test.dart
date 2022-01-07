@@ -14,7 +14,7 @@ class AnyCreateCategoriesDto extends Mock implements CreateCategoryDto {}
 
 void main() {
   late MockCategoriesRepository mockCategoriesRepository;
-  late CategoriesCubit taskCubit;
+  late CategoriesCubit categoriesCubit;
 
   Category mockCategory =
       const Category(id: 1, name: "Mock Category", color: Colors.red);
@@ -24,7 +24,8 @@ void main() {
 
   setUp(() {
     mockCategoriesRepository = MockCategoriesRepository();
-    taskCubit = CategoriesCubit(categoryRepository: mockCategoriesRepository);
+    categoriesCubit =
+        CategoriesCubit(categoryRepository: mockCategoriesRepository);
   });
 
   setUpAll(() {
@@ -40,7 +41,7 @@ void main() {
           when(() => mockCategoriesRepository.watchCategories())
               .thenAnswer((_) => mockCategoryStream);
 
-          return taskCubit;
+          return categoriesCubit;
         },
         act: (cubit) async => await cubit.loadCategories(),
         expect: () => [
@@ -62,7 +63,7 @@ void main() {
         build: () {
           when(() => mockCategoriesRepository.createCategory(any()))
               .thenAnswer((_) => Future.value(1));
-          return taskCubit;
+          return categoriesCubit;
         },
         seed: () => CategoriesLoaded(categoriesStream: Stream.value([])),
         act: (cubit) async => await cubit.createCategory(mockCreateDto),
