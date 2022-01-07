@@ -69,6 +69,7 @@ class TasksCardItem extends StatelessWidget {
                     ),
                     onPressed: () {
                       logger.d(
+                        // TODO: Will be done in #57
                         "Handle click on Icon open_in_new for task ${task.title}",
                       );
                     },

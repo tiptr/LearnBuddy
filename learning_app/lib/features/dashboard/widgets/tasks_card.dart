@@ -81,6 +81,7 @@ class TasksCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text(
+                        // TODO: Will be done in #57
                         "Weitere anzeigen",
                         style: TextStyle(color: Colors.grey, fontSize: 16.0),
                       ),
