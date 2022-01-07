@@ -21,7 +21,9 @@ class TasksLoaded extends TaskState {
 
   TasksLoaded({required this.selectedTasksStream}) {
     selectedListViewTasksStream = selectedTasksStream.map((tasksList) {
-      return tasksList.map((task) => ListReadTaskDto.fromTask(task)).toList();
+      return tasksList
+          .map((task) => ListReadTaskDto.fromTaskWithQueueStatus(task))
+          .toList();
     });
   }
 

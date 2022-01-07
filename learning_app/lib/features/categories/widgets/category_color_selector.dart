@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:learning_app/features/categories/constants/colors.dart';
+import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/color_add_dialog.dart';
 import 'package:learning_app/util/logger.dart';
 
