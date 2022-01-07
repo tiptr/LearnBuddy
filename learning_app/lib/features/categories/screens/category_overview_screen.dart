@@ -30,7 +30,7 @@ class CategoryOverviewScreen extends StatelessWidget {
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(
                 child: Text(
-                  'Du hast aktuell keine Kategorien.\nDrücke auf Plus, um eine Kategorie anzulegen',
+                  'Du hast aktuell keine Kategorien.\nDrücke auf das Plus, um eine Kategorie anzulegen',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 11,
