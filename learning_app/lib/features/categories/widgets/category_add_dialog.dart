@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/constants/colors.dart';
+import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/util/logger.dart';
 
@@ -105,6 +108,17 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                 logger.d(
                   "Kategorie hinzufügen mit ${_textController.value.text} und Farbe ${selectedColor.toString()}",
                 );
+
+                var createCategoryDto = CreateCategoryDto(
+                  name: _textController.value.text,
+                  color: selectedColor,
+                );
+
+                BlocProvider.of<CategoriesCubit>(context)
+                    .createCategory(createCategoryDto);
+
+                // Close dialog
+                Navigator.of(context).pop();
               },
             )
           ],
