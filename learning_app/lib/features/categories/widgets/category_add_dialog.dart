@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
-import 'package:learning_app/features/categories/constants/colors.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
+import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/util/logger.dart';
 
@@ -14,7 +14,7 @@ class CategoryAddDialog extends StatefulWidget {
 }
 
 class _CategoryAddDialogState extends State<CategoryAddDialog> {
-  Color selectedColor = defaultColor;
+  Color selectedColor = preSelectedColorForSelection;
   final _textController = TextEditingController();
 
   @override

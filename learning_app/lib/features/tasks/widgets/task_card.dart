@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
+import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
@@ -65,7 +66,9 @@ class TaskCard extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 // TODO: Use color of category once added
-                left: BorderSide(width: 12.5, color: _task.categoryColor),
+                left: BorderSide(
+                    width: 12.5,
+                    color: _task.categoryColor ?? noCategoryDefaultColor),
               ),
               color: Colors.white,
             ),
