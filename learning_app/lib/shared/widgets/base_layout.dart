@@ -9,18 +9,21 @@ class BaseLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15.0,
-            vertical: 10.0,
+    return Container(
+      color: const Color(0xFFF9F9FE),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 10.0,
+            ),
+            child: titleBar,
           ),
-          child: titleBar,
-        ),
-        Expanded(child: content),
-      ],
+          Expanded(child: content),
+        ],
+      ),
     );
   }
 }
