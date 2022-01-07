@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
@@ -89,8 +92,32 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      logger.d("TODO: Handle delete click");
+                    onPressed: () async {
+                      var confirmed = await openConfirmDialog(
+                        context: context,
+                        title: "Kategorie löschen?",
+                        content: RichText(
+                          text: TextSpan(
+                            // Note: Styles for TextSpans must be explicitly defined.
+                            // Child text spans will inherit styles from parent
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Willst du die Kategorie '),
+                              TextSpan(
+                                text: _category.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const TextSpan(text: ' wirklich löschen?'),
+                            ],
+                          ),
+                        ),
+                      );
+
+                      if (confirmed) {
+                        BlocProvider.of<CategoriesCubit>(context)
+                            .deleteCategoryById(_category.id);
+                      }
                     },
                     icon: Icon(
                       Icons.delete_outlined,
