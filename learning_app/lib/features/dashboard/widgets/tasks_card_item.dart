@@ -44,8 +44,9 @@ class TasksCardItem extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       decorationThickness: 2.0,
                       fontSize: 16.0,
-                      overflow: TextOverflow.clip,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    maxLines: 2,
                   ),
                   const Text(
                     // TODO

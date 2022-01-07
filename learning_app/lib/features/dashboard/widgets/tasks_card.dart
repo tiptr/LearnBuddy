@@ -5,6 +5,7 @@ import 'package:learning_app/features/dashboard/widgets/tasks_card_progress.dart
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
+import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({Key? key}) : super(key: key);
@@ -39,9 +40,12 @@ class TasksCard extends StatelessWidget {
               );
             }
 
-            // Only consider tasks with a due date
-            final tasks =
-                snapshot.data!.where((task) => task.dueDate != null).toList();
+            final tasks = snapshot.data!.where((task) {
+              // Only consider tasks with a due date
+              return task.dueDate != null &&
+                  // And only those that have a due date today or earlier
+                  task.dueDate.compareDayOnly(DateTime.now()) <= 0;
+            }).toList();
 
             // Sort the task so the next due dates come first
             tasks.sort((a, b) => a.dueDate!.compareTo(b.dueDate!));
