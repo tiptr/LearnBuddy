@@ -225,8 +225,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     }
 
     // Create the models for top-tier tasks
-    final tasksWithQueueStatus =
-        topLevels.map((taskEntity) => TaskWithQueueStatus(
+    final tasksWithQueueStatus = topLevels
+        .map((taskEntity) => TaskWithQueueStatus(
               task: Task(
                 id: taskEntity.id,
                 title: taskEntity.title,
@@ -247,7 +247,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
                 manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
               ),
               isQueued: false,
-            )).toList();
+            ))
+        .toList();
 
     // Add the sub-tasks (tier 2) to their parents (top tier)
     for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
