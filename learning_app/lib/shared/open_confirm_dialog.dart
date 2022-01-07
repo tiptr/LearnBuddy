@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Opens a confirm dialog with variable title and content and
-/// true true if confirmed and false otherwise.
+/// returns true if confirmed and false otherwise.
 Future<bool> openConfirmDialog({
   required BuildContext context,
   required String title,
