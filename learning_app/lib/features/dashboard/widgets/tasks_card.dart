@@ -6,6 +6,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
+import 'package:learning_app/util/logger.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({Key? key}) : super(key: key);
@@ -81,16 +82,24 @@ class TasksCard extends StatelessWidget {
                 ),
                 // Only display "Weitere anzeigen ->" when there are more to display
                 if (hasMore)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        // TODO: Will be done in #57
-                        "Weitere anzeigen",
-                        style: TextStyle(color: Colors.grey, fontSize: 16.0),
+                  InkWell(
+                    onTap: () {
+                      // TODO: Will be done in #57
+                      logger.d("Navigate to Task Page");
+                    },
+                    child: Ink(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Weitere anzeigen",
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 16.0),
+                          ),
+                          Icon(Icons.arrow_forward, color: Colors.grey)
+                        ],
                       ),
-                      Icon(Icons.arrow_forward, color: Colors.grey)
-                    ],
+                    ),
                   )
               ],
             );

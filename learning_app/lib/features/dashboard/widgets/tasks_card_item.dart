@@ -49,9 +49,8 @@ class TasksCardItem extends StatelessWidget {
                     maxLines: 2,
                   ),
                   Text(
-                    // TODO
                     task.keywords.join(", "),
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   )
                 ],
               ),
