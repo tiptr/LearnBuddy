@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/categories/constants/colors.dart';
+import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/util/logger.dart';
 

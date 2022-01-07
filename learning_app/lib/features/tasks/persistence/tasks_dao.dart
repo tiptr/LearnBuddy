@@ -225,31 +225,29 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     }
 
     // Create the models for top-tier tasks
-    final tasksWithQueueStatus = [
-      for (var taskEntity in topLevels)
-        TaskWithQueueStatus(
-          task: Task(
-            id: taskEntity.id,
-            title: taskEntity.title,
-            doneDateTime: taskEntity.doneDateTime,
-            description: taskEntity.description,
-            category: idToCategoryMap[taskEntity.categoryId],
-            keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-            // TODO
-            timeLogs: const [],
-            // TODO
-            estimatedTime: taskEntity.estimatedTime,
-            dueDate: taskEntity.dueDate,
-            creationDateTime: taskEntity.creationDateTime,
-            children: const [],
-            // TODO
-            learnLists: const [],
-            // TODO
-            manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-          ),
-          isQueued: false,
-        ),
-    ];
+    final tasksWithQueueStatus =
+        topLevels.map((taskEntity) => TaskWithQueueStatus(
+              task: Task(
+                id: taskEntity.id,
+                title: taskEntity.title,
+                doneDateTime: taskEntity.doneDateTime,
+                description: taskEntity.description,
+                category: idToCategoryMap[taskEntity.categoryId],
+                keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
+                // TODO
+                timeLogs: const [],
+                // TODO
+                estimatedTime: taskEntity.estimatedTime,
+                dueDate: taskEntity.dueDate,
+                creationDateTime: taskEntity.creationDateTime,
+                children: const [],
+                // TODO
+                learnLists: const [],
+                // TODO
+                manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
+              ),
+              isQueued: false,
+            )).toList();
 
     // Add the sub-tasks (tier 2) to their parents (top tier)
     for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
