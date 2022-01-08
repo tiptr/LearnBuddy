@@ -24,9 +24,8 @@ class LearnListWordsDao extends DatabaseAccessor<Database>
   Stream<List<LearnListWordEntity>>? _learnListWordsEntitiesStream;
 
   Stream<List<LearnListWordEntity>> watchLearnListWordEntities() {
-    _learnListWordsEntitiesStream = _learnListWordsEntitiesStream ?? (
-        select(learnListWords).watch()
-    );
+    _learnListWordsEntitiesStream =
+        _learnListWordsEntitiesStream ?? (select(learnListWords).watch());
 
     return _learnListWordsEntitiesStream as Stream<List<LearnListWordEntity>>;
   }

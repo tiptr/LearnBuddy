@@ -24,10 +24,10 @@ class BodyListWordDetailsDao extends DatabaseAccessor<Database>
   Stream<List<BodyListWordDetailEntity>>? _bodyListWordDetailEntitiesStream;
 
   Stream<List<BodyListWordDetailEntity>> watchBodyListWordDetailEntities() {
-    _bodyListWordDetailEntitiesStream = _bodyListWordDetailEntitiesStream ?? (
-        select(bodyListWordDetails).watch()
-    );
+    _bodyListWordDetailEntitiesStream = _bodyListWordDetailEntitiesStream ??
+        (select(bodyListWordDetails).watch());
 
-    return _bodyListWordDetailEntitiesStream as Stream<List<BodyListWordDetailEntity>>;
+    return _bodyListWordDetailEntitiesStream
+        as Stream<List<BodyListWordDetailEntity>>;
   }
 }

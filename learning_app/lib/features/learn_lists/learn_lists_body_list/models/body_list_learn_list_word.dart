@@ -5,8 +5,8 @@ class BodyListLearnListWord extends LearnListWord {
   final BodyParts? bodyPart;
   final String? association;
 
-  const BodyListLearnListWord({required id, required String word,
-      this.bodyPart, this.association})
+  const BodyListLearnListWord(
+      {required id, required String word, this.bodyPart, this.association})
       : super(
           id: id,
           word: word,

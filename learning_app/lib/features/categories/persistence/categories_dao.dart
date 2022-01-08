@@ -39,6 +39,10 @@ class CategoriesDao extends DatabaseAccessor<Database>
     return into(categories).insert(categoriesCompanion);
   }
 
+  Future<int> deleteCatgoryById(int categoryId) {
+    return (delete(categories)..where((t) => t.id.equals(categoryId))).go();
+  }
+
   Stream<List<Category>> watchAllCategories() {
     _categoriesStream = _categoriesStream ??
         (select(categories)
@@ -53,14 +57,10 @@ class CategoriesDao extends DatabaseAccessor<Database>
   ///
   /// There only ever will exist one of this streams in parallel.
   Stream<Map<int, Category>> watchIdToCategoryMap() {
-    _idToCategoryMapStream = (_idToCategoryMapStream ??
-        (_createIdToCategoryMapStream()));
+    _idToCategoryMapStream =
+        (_idToCategoryMapStream ?? (_createIdToCategoryMapStream()));
 
     return _idToCategoryMapStream as Stream<Map<int, Category>>;
-  }
-
-  Future<int> deleteCatgoryById(int categoryId) {
-    return (delete(categories)..where((t) => t.id.equals(categoryId))).go();
   }
 
   /// Creates a stream of maps that associate the category id with the category

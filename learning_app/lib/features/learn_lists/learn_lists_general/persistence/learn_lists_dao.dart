@@ -24,11 +24,9 @@ class LearnListsDao extends DatabaseAccessor<Database>
   Stream<List<LearnListEntity>>? _learnListEntitiesStream;
 
   Stream<List<LearnListEntity>> watchLearnListEntities() {
-    _learnListEntitiesStream = _learnListEntitiesStream ?? (
-        select(learnLists).watch()
-    );
+    _learnListEntitiesStream =
+        _learnListEntitiesStream ?? (select(learnLists).watch());
 
     return _learnListEntitiesStream as Stream<List<LearnListEntity>>;
   }
-
 }
