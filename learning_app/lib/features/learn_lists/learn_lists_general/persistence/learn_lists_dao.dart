@@ -12,7 +12,7 @@ part 'learn_lists_dao.g.dart';
 @DriftAccessor(
   // Include the drift file containing the entity definitions and queries
   include: {
-    'package:learning_app/features/learning_aids/persistence/learn_lists.drift'
+    'package:learning_app/features/learn_lists/persistence/learn_lists.drift'
   },
 )
 class LearnListsDao extends DatabaseAccessor<Database>
@@ -20,4 +20,15 @@ class LearnListsDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   LearnListsDao(Database db) : super(db);
+
+  Stream<List<LearnListEntity>>? _learnListEntitiesStream;
+
+  Stream<List<LearnListEntity>> watchLearnListEntities() {
+    _learnListEntitiesStream = _learnListEntitiesStream ?? (
+        select(learnLists).watch()
+    );
+
+    return _learnListEntitiesStream as Stream<List<LearnListEntity>>;
+  }
+
 }

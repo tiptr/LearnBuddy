@@ -14,7 +14,7 @@ import '../features/categories/repositories/db_category_repository.dart' as _i4;
 import '../features/keywords/persistence/keywords_dao.dart' as _i6;
 import '../features/learning_aids/persistence/learn_list_words_dao.dart' as _i7;
 import '../features/learning_aids/persistence/learn_lists_dao.dart' as _i8;
-import '../features/learning_aids_body_list/persistence/body_list_word_details_dao.dart'
+import '../features/learn_lists_body_list/persistence/body_list_word_details_dao.dart'
     as _i18;
 import '../features/leisure/persistence/leisure_activities_dao.dart' as _i9;
 import '../features/leisure/persistence/leisure_categories_dao.dart' as _i10;

@@ -12,7 +12,7 @@ import 'package:learning_app/features/learning_aids/persistence/learn_lists.drif
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
 CREATE TABLE LearnListWords (
     id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    list_id INT REFERENCES LearnLists(id),
+    list_id INT NOT NULL REFERENCES LearnLists(id),
     order_placement INT NOT NULL,
     word TEXT NOT NULL,
 

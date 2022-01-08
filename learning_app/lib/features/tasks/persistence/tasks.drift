@@ -8,7 +8,9 @@ import 'package:learning_app/database/type_converters/duration_converter.dart';
 import 'package:learning_app/features/categories/persistence/categories.drift';
 import 'package:learning_app/features/keywords/persistence/keywords.drift';
 import 'package:learning_app/features/tasks/persistence/task_keywords.drift';
-
+import 'package:learning_app/features/time_logs/persistence/time_logs.drift';
+import 'package:learning_app/features/learning_aids/persistence/learn_lists.drift';
+import 'package:learning_app/features/tasks/persistence/task_learn_lists.drift';
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this

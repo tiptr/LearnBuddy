@@ -3,8 +3,10 @@ import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
+import 'package:learning_app/features/time_logs/models/time_log.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
@@ -57,10 +59,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     );
   }
 
-  // Stream<List<TaskWithQueueStatus>> watchTasks({ TODO
   Stream<List<TaskWithQueueStatus>> watchTasks({
-    int? limit,
-    int? offset,
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
@@ -73,9 +72,17 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     // The streams for other required entities
     final Stream<List<CategoryEntity>> categoriesStream =
         select(categories).watch();
+
     final Stream<List<KeywordEntity>> keywordsStream = select(keywords).watch();
     final Stream<List<TaskKeywordEntity>> taskKeywordsStream =
         select(taskKeywords).watch();
+
+    final Stream<List<TimeLogEntity>> timeLogStream = select(timeLogs).watch();
+
+    final Stream<List<LearnListEntity>> learnListsStream =
+        select(learnLists).watch();
+    final Stream<List<TaskLearnListEntity>> taskLearnListsStream =
+        select(taskLearnLists).watch();
 
     // switchMap is used to create a new sub-stream
     // (that uses the most recent values of the top-level stream),
@@ -107,21 +114,44 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           // Create a map to efficiently allocate the categories
           final idToCategoryMap = createIdToCategoryMapFromEntities(categories);
 
-          // This will be called whenever the tasks change:
-          return sortedFilteredTopLevelTasksStream.switchMap((topLevels) {
-            // We also need the sub-tasks:
-            final subLevelTasksQuery = select(tasks)
-              ..where((tsk) => tsk.parentTaskId.isNotNull()); // sub-levels only
+          // This will be called whenever the learn lists change:
+          return learnListsStream.switchMap((learnLists) {
+            // Create a map to efficiently allocate the learn lists by their id
+            final learnListIdToLearnListMap = createIdToKeywordMapFromEntities(
+                learnLists);
 
-            // Merge it all together and build a stream of task-models
-            return subLevelTasksQuery.watch().map((subLevels) {
-              return mergeEntitiesTogether(
-                topLevels: topLevels,
-                subLevels: subLevels,
-                idToCategoryMap: idToCategoryMap,
-                taskIdToKeywordMap: taskIdToKeywordMap,
-                keywordsFilter: taskFilter.keywords,
-              );
+            // This will be called whenever the task-learn-list-relationship changes:
+            return taskLearnListsStream.switchMap((taskLearnLists) {
+              // Create a map to efficiently allocate the learn lists by task-id
+              final taskIdToLearnListMap =
+              createTaskIdToKeywordsMap(taskLearnLists, learnListIdToLearnListMap);
+
+              // This will be called whenever the categories change:
+              return timeLogStream.switchMap((timeLogs) {
+                // Create a map to efficiently allocate the categories
+                final taskIdToTimeLogsMap = createTaskIdToTimeLogsMap(timeLogs);
+
+                // This will be called whenever the tasks change:
+                return sortedFilteredTopLevelTasksStream.switchMap((topLevels) {
+                  // We also need the sub-tasks:
+                  final subLevelTasksQuery = select(tasks)
+                    ..where(
+                            (tsk) =>
+                            tsk.parentTaskId.isNotNull()); // sub-levels only
+
+                  // Merge it all together and build a stream of task-models
+                  return subLevelTasksQuery.watch().map((subLevels) {
+                    return mergeEntitiesTogether(
+                      topLevels: topLevels,
+                      subLevels: subLevels,
+                      idToCategoryMap: idToCategoryMap,
+                      taskIdToKeywordMap: taskIdToKeywordMap,
+                      keywordsFilter: taskFilter.keywords,
+                      taskIdToTimeLogsMap: taskIdToTimeLogsMap,
+                    );
+                  });
+                });
+              });
             });
           });
         });
@@ -129,12 +159,27 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     });
   }
 
-  // // TODO: Keywords filter
-  // // TODO: Map Timelogs
   // // TODO: Map learnlists ??
   // // TODO: Map Queue
 
-  /// Creates a map that allocates all linked keywords for each task-id
+  /// Creates a map that allocates all linked timelogs for each task-id
+  Map<int, List<TimeLog>> createTaskIdToTimeLogsMap(
+    List<TimeLogEntity> timeLogs,
+  ) {
+    final idToModelList = <int, List<TimeLog>>{};
+
+    for (var entity in timeLogs) {
+      final model = TimeLog(
+        id: entity.id,
+        begin: entity.beginDateTime,
+        duration: entity.duration,
+      );
+      idToModelList.putIfAbsent(entity.taskId, () => []).add(model);
+    }
+    return idToModelList;
+  }
+
+  /// Creates a map that allocates all linked learn lists for each task-id
   Map<int, List<KeyWord>> createTaskIdToKeywordsMap(
       List<TaskKeywordEntity> taskKeywords,
       Map<int, KeyWord> keywordIdToKeywordMap) {
@@ -150,6 +195,36 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     }
     return idToModelList;
   }
+
+  // Map<int, LearnList> createIdToLearnListMapFromEntities(
+  //     List<LearnListEntity> entities) {
+  //   final idToModel = <int, LearnList>{};
+  //   for (var entity in entities) {
+  //     final model = LearnList(
+  //       id: entity.id,
+  //       name: entity.name,
+  //     );
+  //     idToModel.putIfAbsent(model.id, () => model);
+  //   }
+  //   return idToModel;
+  // }
+  //
+  // /// Creates a map that allocates all linked keywords for each task-id
+  // Map<int, List<KeyWord>> createTaskIdToKeywordsMap(
+  //     List<TaskKeywordEntity> taskKeywords,
+  //     Map<int, KeyWord> keywordIdToKeywordMap) {
+  //   final idToModelList = <int, List<KeyWord>>{};
+  //
+  //   for (var taskKeyword in taskKeywords) {
+  //     final nullableKeyword = keywordIdToKeywordMap[taskKeyword.keywordId];
+  //     // If our database is consistent, this will never be null!
+  //     assert(nullableKeyword != null);
+  //     final keyword = nullableKeyword as KeyWord;
+  //
+  //     idToModelList.putIfAbsent(taskKeyword.taskId, () => []).add(keyword);
+  //   }
+  //   return idToModelList;
+  // }
 
   Map<int, KeyWord> createIdToKeywordMapFromEntities(
       List<KeywordEntity> entities) {
@@ -188,7 +263,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       required List<TaskEntity> subLevels,
       required Map<int, Category> idToCategoryMap,
       required Map<int, List<KeyWord>> taskIdToKeywordMap,
-      required Value<List<KeyWord>> keywordsFilter}) {
+      required Value<List<KeyWord>> keywordsFilter,
+      required Map<int, List<TimeLog>> taskIdToTimeLogsMap}) {
     final subTaskModels = [];
     final idToSubTasks = <int?, List<Task>>{};
 
@@ -201,14 +277,13 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         description: taskEntity.description,
         category: idToCategoryMap[taskEntity.categoryId],
         keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-        // TODO
-        timeLogs: const [],
-        // TODO
+        timeLogs: taskIdToTimeLogsMap[taskEntity.id] ?? [],
         estimatedTime: taskEntity.estimatedTime,
         dueDate: taskEntity.dueDate,
         creationDateTime: taskEntity.creationDateTime,
-        children: const [],
-        // TODO
+        children: const [], // children is supposed to be empty here. It will
+        // be added below, since the "idToSubTasks" Map is required that does
+        // not exist right here
         learnLists: const [],
         // TODO
         manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
@@ -234,14 +309,13 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
                 description: taskEntity.description,
                 category: idToCategoryMap[taskEntity.categoryId],
                 keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-                // TODO
-                timeLogs: const [],
-                // TODO
+                timeLogs: taskIdToTimeLogsMap[taskEntity.id] ?? [],
                 estimatedTime: taskEntity.estimatedTime,
                 dueDate: taskEntity.dueDate,
                 creationDateTime: taskEntity.creationDateTime,
-                children: const [],
-                // TODO
+                children: const [], // children is supposed to be empty here. It will
+                // be added below, since the "idToSubTasks" Map is required that does
+                // not exist right here
                 learnLists: const [],
                 // TODO
                 manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,

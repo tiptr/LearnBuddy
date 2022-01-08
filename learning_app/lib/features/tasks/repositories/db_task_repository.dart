@@ -24,8 +24,6 @@ class DbTaskRepository implements TaskRepository {
     TaskOrder taskOrder = const TaskOrder(),
   }) {
     return _dao.watchTasks(
-      limit: limit,
-      offset: offset,
       taskFilter: const TaskFilter(
           // category: Value(null)
           // category: Value(Category(id: 3, name: 'asdsaf', color: Colors.tealAccent))

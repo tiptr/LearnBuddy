@@ -12,7 +12,7 @@ part 'body_list_word_details_dao.g.dart';
 @DriftAccessor(
   // Include the drift file containing the entity definitions and queries
   include: {
-    'package:learning_app/features/learning_aids_body_list/persistence/body_list_word_details.drift'
+    'package:learning_app/features/learn_lists_body_list/persistence/body_list_word_details.drift'
   },
 )
 class BodyListWordDetailsDao extends DatabaseAccessor<Database>
@@ -20,4 +20,14 @@ class BodyListWordDetailsDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   BodyListWordDetailsDao(Database db) : super(db);
+
+  Stream<List<BodyListWordDetailEntity>>? _bodyListWordDetailEntitiesStream;
+
+  Stream<List<BodyListWordDetailEntity>> watchBodyListWordDetailEntities() {
+    _bodyListWordDetailEntitiesStream = _bodyListWordDetailEntitiesStream ?? (
+        select(bodyListWordDetails).watch()
+    );
+
+    return _bodyListWordDetailEntitiesStream as Stream<List<BodyListWordDetailEntity>>;
+  }
 }
