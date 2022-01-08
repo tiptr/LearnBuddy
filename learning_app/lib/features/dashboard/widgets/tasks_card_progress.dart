@@ -107,8 +107,8 @@ class _ProgressBarCardShape extends ShapeBorder {
   final double flexPortion;
 
   const _ProgressBarCardShape({
-    required this.borderRadius,
     required this.circleRadius,
+    required this.borderRadius,
     required this.horizontalCardPadding,
     required this.flexPortion,
   });
