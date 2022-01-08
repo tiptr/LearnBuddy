@@ -16,8 +16,13 @@ class TermInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        filled: true,
+        filled: false,
         prefixIcon: iconData != null ? Icon(iconData) : null,
         hintText: hintText,
       ),
