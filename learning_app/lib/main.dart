@@ -106,17 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Lernbuddy"),
+    return SafeArea(
+      child: Scaffold(
+        // TODO: think about changing to something like lazy_load_indexed_stack
+        // (separate package), so that not every page has to be loaded at startup
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: _pages,
+        ),
+        bottomNavigationBar: _navBar(context),
       ),
-      // TODO: think about changing to something like lazy_load_indexed_stack
-      // (separate package), so that not every page has to be loaded at startup
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: _navBar(context),
     );
   }
 
