@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:learning_app/database/type_converters/learn_methods_converter.dart';
-import 'package:learning_app/features/learning_aids/models/learn_methods.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 
 void main() {
   group('when formatting from db to dart', () {
