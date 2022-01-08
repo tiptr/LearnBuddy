@@ -15,7 +15,7 @@ void main() {
       LearnMethods expected = LearnMethods.bodyList;
 
       // Act
-      var actual = learnMethodsConverter.mapToDart(1);
+      var actual = learnMethodsConverter.mapToDart(0);
 
       // Assert
       expect(expected, actual);
@@ -30,8 +30,8 @@ void main() {
     });
 
     test('body list order is intact', () {
-      expect(LearnMethods.bodyList, 1);
-      expect(LearnMethods.storyList, 2);
+      expect(LearnMethods.bodyList.index, 0);
+      expect(LearnMethods.storyList.index, 1);
     });
   });
 
@@ -44,7 +44,7 @@ void main() {
 
     test('the converter should return the correct int', () {
       // Arrange
-      const expected = 1;
+      const expected = 0;
 
       // Act
       var actual = learnMethodsConverter.mapToSql(LearnMethods.bodyList);

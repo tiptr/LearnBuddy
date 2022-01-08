@@ -15,7 +15,7 @@ void main() {
       var expected = BodyParts.head;
 
       // Act
-      var actual = learnMethodsConverter.mapToDart(1);
+      var actual = learnMethodsConverter.mapToDart(0);
 
       // Assert
       expect(expected, actual);
@@ -30,22 +30,22 @@ void main() {
     });
 
     test('body list order is intact', () {
-      expect(BodyParts.head, 1);
-      expect(BodyParts.breast, 2);
-      expect(BodyParts.shoulderLeft, 3);
-      expect(BodyParts.shoulderRight, 4);
-      expect(BodyParts.upperArmLeft, 5);
-      expect(BodyParts.upperArmRight, 6);
-      expect(BodyParts.lowerArmLeft, 7);
-      expect(BodyParts.lowerArmRight, 8);
-      expect(BodyParts.handLeft, 9);
-      expect(BodyParts.handRight, 10);
-      expect(BodyParts.waist, 11);
-      expect(BodyParts.hip, 12);
-      expect(BodyParts.upperLegLeft, 13);
-      expect(BodyParts.lowerLegRight, 14);
-      expect(BodyParts.footLeft, 15);
-      expect(BodyParts.footRight, 16);
+      expect(BodyParts.head.index, 0);
+      expect(BodyParts.breast.index, 1);
+      expect(BodyParts.shoulderLeft.index, 2);
+      expect(BodyParts.shoulderRight.index, 3);
+      expect(BodyParts.upperArmLeft.index, 4);
+      expect(BodyParts.upperArmRight.index, 5);
+      expect(BodyParts.lowerArmLeft.index, 6);
+      expect(BodyParts.lowerArmRight.index, 7);
+      expect(BodyParts.handLeft.index, 8);
+      expect(BodyParts.handRight.index, 9);
+      expect(BodyParts.waist.index, 10);
+      expect(BodyParts.hip.index, 11);
+      expect(BodyParts.upperLegLeft.index, 12);
+      expect(BodyParts.lowerLegRight.index, 13);
+      expect(BodyParts.footLeft.index, 14);
+      expect(BodyParts.footRight.index, 15);
     });
   });
 
@@ -58,7 +58,7 @@ void main() {
 
     test('the converter should return the correct int', () {
       // Arrange
-      const expected = 1;
+      const expected = 0;
 
       // Act
       var actual = learnMethodsConverter.mapToSql(BodyParts.head);
