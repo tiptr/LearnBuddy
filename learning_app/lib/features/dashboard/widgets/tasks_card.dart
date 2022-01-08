@@ -67,6 +67,7 @@ class TasksCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const SizedBox(height: 15.0),
                 const TasksCardProgress(
                   progress: 4 / 7,
                 ),

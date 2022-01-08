@@ -22,14 +22,22 @@ class TasksProcessIndicator extends StatelessWidget {
               width: size,
               height: size,
               child: CircularProgressIndicator(
-                strokeWidth: 10.0,
+                strokeWidth: 12.5,
                 color: Theme.of(context).primaryColor,
                 value: progress,
                 backgroundColor: Colors.grey,
               ),
             ),
           ),
-          Center(child: Text("${(100 * progress).round()} %")),
+          Center(
+            child: Text(
+              "${(100 * progress).round()} %",
+              style: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ],
       ),
     );
