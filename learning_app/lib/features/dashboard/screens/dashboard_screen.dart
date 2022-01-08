@@ -13,6 +13,7 @@ class DashboardScreen extends StatelessWidget {
         children: [
           const SizedBox(height: 15.0),
           const TasksCard(),
+          const SizedBox(height: 50.0),
           InkWell(
             onTap: () => Navigator.push(
               context,

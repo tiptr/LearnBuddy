@@ -41,7 +41,7 @@ class TasksCard extends StatelessWidget {
               );
             }
 
-            final tasks = snapshot.data!.where((task) {
+            final dueTasks = snapshot.data!.where((task) {
               // Only consider tasks with a due date
               return task.dueDate != null &&
                   // And only those that have a due date today or earlier
@@ -49,12 +49,13 @@ class TasksCard extends StatelessWidget {
             }).toList();
 
             // Sort the task so the next due dates come first
-            tasks.sort((a, b) => a.dueDate!.compareTo(b.dueDate!));
+            dueTasks.sort((a, b) => a.dueDate!.compareTo(b.dueDate!));
 
             const taskAmount = 2;
 
-            final hasMore = tasks.length > taskAmount;
-            final upcomingTasks = tasks.take(taskAmount).toList();
+            final hasMore = dueTasks.length > taskAmount;
+            final amountOfFurtherDueTasks = dueTasks.length - taskAmount;
+            final upcomingTasks = dueTasks.take(taskAmount).toList();
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,24 +82,30 @@ class TasksCard extends StatelessWidget {
                     task: upcomingTasks[idx],
                   ),
                 ),
-                // Only display "Weitere anzeigen ->" when there are more to display
+                // Only display further due tasks, if there are more to display
                 if (hasMore)
                   InkWell(
                     onTap: () {
                       // TODO: Will be done in #57
                       logger.d("Navigate to Task Page");
+                      // TODO: not only navigate to the task page, but automatically activate a filter that only shows the tasks of the current day (and overdue)
                     },
                     child: Ink(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Weitere anzeigen",
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 16.0),
-                          ),
-                          Icon(Icons.arrow_forward, color: Colors.grey)
-                        ],
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "$amountOfFurtherDueTasks weitere bis heute fällig",
+                              style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const Icon(Icons.arrow_forward, color: Colors.grey)
+                          ],
+                        ),
                       ),
                     ),
                   )
