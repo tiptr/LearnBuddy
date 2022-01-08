@@ -13,7 +13,7 @@ class LearningAidsScreen extends StatelessWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: 1, //state.tasks.length,
+        itemCount: 3, //state.tasks.length,
         itemBuilder: (BuildContext ctx, int idx) => const LearningAidCard(
             learningAid: LearningAid(id: 1, title: "Projektmanagement")),
       ),
