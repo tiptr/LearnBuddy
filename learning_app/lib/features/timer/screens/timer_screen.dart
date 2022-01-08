@@ -4,6 +4,8 @@ import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
+import 'package:learning_app/shared/widgets/base_layout.dart';
+import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class TimerScreen extends StatelessWidget {
@@ -13,7 +15,12 @@ class TimerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => TimerBloc(),
-      child: const TimerView(),
+      child: const BaseLayout(
+        titleBar: BaseTitleBar(
+          title: "Pomodoro Timer",
+        ),
+        content: TimerView(),
+      ),
     );
   }
 }

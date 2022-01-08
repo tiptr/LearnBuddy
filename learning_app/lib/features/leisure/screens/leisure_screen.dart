@@ -4,25 +4,32 @@ import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
+import 'package:learning_app/shared/widgets/base_layout.dart';
+import 'package:learning_app/shared/widgets/base_title_bar.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
-      bloc: LeasureCategoryCubit(),
-      builder: (context, state) {
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: state.leisureCategoriesDtos.length,
-          itemBuilder: (BuildContext ctx, int idx) => LeisureCategoryCard(
-            leisureCategory: state.leisureCategoriesDtos[idx],
-          ),
-        );
-      },
+    return BaseLayout(
+      titleBar: const BaseTitleBar(
+        title: "Abwechslung",
+      ),
+      content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+        bloc: LeasureCategoryCubit(),
+        builder: (context, state) {
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.leisureCategoriesDtos.length,
+            itemBuilder: (BuildContext ctx, int idx) => LeisureCategoryCard(
+              leisureCategory: state.leisureCategoriesDtos[idx],
+            ),
+          );
+        },
+      ),
     );
   }
 }
