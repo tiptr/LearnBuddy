@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
 import 'package:learning_app/features/time_logs/models/time_log.dart';

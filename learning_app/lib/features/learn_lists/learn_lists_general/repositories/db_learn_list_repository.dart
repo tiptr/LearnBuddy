@@ -6,7 +6,6 @@ import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/b
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list_learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_list_words_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists_dao.dart';
@@ -69,7 +68,7 @@ class DbLearnListRepository implements LearnListRepository {
             final wordIdToBodyDetailsMap =
             createWordIdToBodyDetailsMap(bodyWordDetails);
 
-            return mergeEntitiesTogether(
+            return _mergeEntitiesTogether(
               learnLists: learnLists,
               listIdToWordsMap: listIdToWordsMap,
               wordIdToBodyDetailsMap: wordIdToBodyDetailsMap,
@@ -101,7 +100,7 @@ class DbLearnListRepository implements LearnListRepository {
   }
 
   /// Create the list of learn lists by merging everything
-  List<LearnList> mergeEntitiesTogether(
+  List<LearnList> _mergeEntitiesTogether(
       {required List<LearnListEntity> learnLists,
         required Map<int, List<LearnListWordEntity>> listIdToWordsMap,
         required Map<int, BodyListWordDetailEntity> wordIdToBodyDetailsMap,

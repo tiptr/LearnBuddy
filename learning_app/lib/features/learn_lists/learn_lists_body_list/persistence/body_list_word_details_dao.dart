@@ -12,7 +12,7 @@ part 'body_list_word_details_dao.g.dart';
 @DriftAccessor(
   // Include the drift file containing the entity definitions and queries
   include: {
-    'package:learning_app/features/learn_lists_body_list/persistence/body_list_word_details.drift'
+    'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details.drift'
   },
 )
 class BodyListWordDetailsDao extends DatabaseAccessor<Database>

@@ -12,7 +12,7 @@ part 'learn_lists_dao.g.dart';
 @DriftAccessor(
   // Include the drift file containing the entity definitions and queries
   include: {
-    'package:learning_app/features/learn_lists/persistence/learn_lists.drift'
+    'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists.drift'
   },
 )
 class LearnListsDao extends DatabaseAccessor<Database>
