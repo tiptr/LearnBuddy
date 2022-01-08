@@ -67,11 +67,11 @@ class TasksCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 15.0),
+                const SizedBox(height: 35.0),
                 const TasksCardProgress(
                   progress: 4 / 7,
                 ),
-                const SizedBox(height: 15.0),
+                const SizedBox(height: 25.0),
                 ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,

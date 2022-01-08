@@ -11,7 +11,6 @@ class DashboardScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         children: [
-          // Only for navigation to tags
           const SizedBox(height: 15.0),
           const TasksCard(),
           InkWell(

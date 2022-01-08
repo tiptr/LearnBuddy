@@ -18,8 +18,8 @@ class TasksCardProgress extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       shape: _ProgressBarCardShape(
-        borderRadius: 12.5,
-        circleRadius: 72.5,
+        borderRadius: 25.0,
+        circleRadius: 60.0,
         // The Container that holds the cards content has a horizontal padding of 10
         horizontalCardPadding: horizontalCardPadding,
         // Check the flex amount of the Expanded, which the TaskProcessIndicator
@@ -32,7 +32,7 @@ class TasksCardProgress extends StatelessWidget {
           vertical: 10.0,
           horizontal: horizontalCardPadding,
         ),
-        height: 120.0,
+        height: 90.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -40,13 +40,13 @@ class TasksCardProgress extends StatelessWidget {
             Expanded(
               flex: processIndicatorFlexPortion,
               child: Center(
-                child: TasksProcessIndicator(progress: progress, size: 100.0),
+                child: TasksProcessIndicator(progress: progress, size: 92.5),
               ),
             ),
             Expanded(
-              flex: 60,
+              flex: 61,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Hourglass and Text
                   Row(
@@ -55,38 +55,47 @@ class TasksCardProgress extends StatelessWidget {
                       Icon(
                         Icons.hourglass_top_outlined,
                         size: 40.0,
-                        color: Colors.grey,
+                        // TODO: to be structured in the theme-issue:
+                        color: Color(0xFF636573),
                       ),
                       Text(
                         "Heutiger Restaufwand:\n2h 30min",
                         style: TextStyle(
-                          color: Colors.grey,
+                          // TODO: to be structured in the theme-issue:
+                            color: Color(0xFF949597),
                         ),
                         textAlign: TextAlign.center,
                       )
                     ],
                   ),
+                  // Spacing between the items, since "spaceEvenly" was not perfect
+                  const SizedBox(height: 10,),
                   // Color Indicators and Done / Open
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                    children: const [
                       ColorIndicator(
-                        color: Theme.of(context).primaryColor,
+                        // TODO: to be structured in the theme-issue:
+                        // color: Theme.of(context).primaryColor,
+                        color: Color(0xFF39BBD1),
                         height: 10.0,
                         width: 30.0,
                       ),
-                      const Text(
+                      Text(
                         "4 Erledigt",
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(// TODO: to be structured in the theme-issue:
+                          color: Color(0xFF949597),),
                       ),
-                      const ColorIndicator(
-                        color: Colors.grey,
+                      ColorIndicator(
+                        // TODO: to be structured in the theme-issue:
+                        color: Color(0xFFF2EAFB),
                         height: 10.0,
                         width: 30.0,
                       ),
-                      const Text(
+                      Text(
                         "3 Offen",
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(// TODO: to be structured in the theme-issue:
+                          color: Color(0xFF949597),),
                       ),
                     ],
                   ),
