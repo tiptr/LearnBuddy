@@ -50,10 +50,10 @@ void main() {
   });
 
   group('when formatting from dart to db', () {
-    late BodyPartsConverter learnMethodsConverter;
+    late BodyPartsConverter bodyPartsConverter;
 
     setUp(() {
-      learnMethodsConverter = const BodyPartsConverter();
+      bodyPartsConverter = const BodyPartsConverter();
     });
 
     test('the converter should return the correct int', () {
@@ -61,7 +61,7 @@ void main() {
       const expected = 0;
 
       // Act
-      var actual = learnMethodsConverter.mapToSql(BodyParts.head);
+      var actual = bodyPartsConverter.mapToSql(BodyParts.head);
 
       // Assert
       expect(expected, actual);
@@ -69,7 +69,7 @@ void main() {
 
     test('the converter should return null', () {
       // Act
-      var actual = learnMethodsConverter.mapToSql(null);
+      var actual = bodyPartsConverter.mapToSql(null);
 
       // Assert
       expect(null, actual);
