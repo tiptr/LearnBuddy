@@ -4,10 +4,10 @@ import 'package:learning_app/features/learning_aids_body_list/models/body_parts.
 
 void main() {
   group('when formatting from db to dart', () {
-    late BodyPartsConverter learnMethodsConverter;
+    late BodyPartsConverter bodyPartsConverter;
 
     setUp(() {
-      learnMethodsConverter = const BodyPartsConverter();
+      bodyPartsConverter = const BodyPartsConverter();
     });
 
     test('the converter should return the correct learn method', () {
@@ -15,7 +15,7 @@ void main() {
       var expected = BodyParts.head;
 
       // Act
-      var actual = learnMethodsConverter.mapToDart(0);
+      var actual = bodyPartsConverter.mapToDart(0);
 
       // Assert
       expect(expected, actual);
@@ -23,7 +23,7 @@ void main() {
 
     test('the converter should return null', () {
       // Act
-      var actual = learnMethodsConverter.mapToDart(null);
+      var actual = bodyPartsConverter.mapToDart(null);
 
       // Assert
       expect(null, actual);
