@@ -29,7 +29,7 @@ class LearningAidAddAppBar extends StatelessWidget
                 Expanded(
                   child: TextField(
                     decoration: const InputDecoration.collapsed(
-                      hintText: 'SI-Einheiten',
+                      hintText: 'Name der Lernhilfe',
                       border: InputBorder.none,
                     ),
                     controller: textController,
