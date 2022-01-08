@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/util/formatting.dart';
+import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 
 class DateInputField extends StatelessWidget {
   final Function onSelect;
@@ -31,18 +31,16 @@ class DateInputField extends StatelessWidget {
       child: AbsorbPointer(
         child: TextField(
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.primary),
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            filled: true,
-            prefixIcon: const Icon(Icons.calendar_today_outlined),
-            label: const Text("Fälligkeitsdatum"),
-            hintText:
-                Formatting.formatDateTime(selectedDate, "Datum auswählen"),
-          ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.primary),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              filled: true,
+              prefixIcon: const Icon(Icons.calendar_today_outlined),
+              label: const Text("Fälligkeitsdatum"),
+              hintText: selectedDate.format(ifNull: 'Datum auswählen')),
         ),
       ),
     );

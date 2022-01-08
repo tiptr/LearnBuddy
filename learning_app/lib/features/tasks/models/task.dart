@@ -1,25 +1,53 @@
-import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
+import 'package:learning_app/features/learning_aids/models/learn_list.dart';
+import 'package:learning_app/features/time_logs/models/time_log.dart';
 
-class Task extends Equatable {
-  final int id;
-  final String title;
-  final bool done;
+class Task {
+  int id;
+  String title;
+  DateTime? doneDateTime;
+  String? description;
+  Category? category;
+  List<KeyWord> keywords;
+  List<TimeLog> timeLogs;
+  Duration? estimatedTime;
+  DateTime? dueDate;
+  DateTime creationDateTime;
+  List<Task> children;
+  List<LearnList> learnLists;
+  Duration manualTimeEffortDelta;
 
-  const Task({
+  int get subTaskCount {
+    // TODO: think about whether the count of sub-tasks should only return the
+    // sub-tasks, or also the amount of sub-sub-tasks and deeper
+    return children.length;
+  }
+
+  int get finishedSubTaskCount {
+    // TODO: implement this!
+    return children.length;
+  }
+
+  Duration? get remainingTimeEstimation {
+    // TODO: implement this!
+    // calculate the remaining estimate by involving the list of children
+    return estimatedTime;
+  }
+
+  Task({
     required this.id,
     required this.title,
-    required this.done,
+    this.doneDateTime,
+    this.description,
+    this.category,
+    required this.keywords,
+    required this.timeLogs,
+    this.estimatedTime,
+    this.dueDate,
+    required this.creationDateTime,
+    required this.children,
+    required this.learnLists,
+    required this.manualTimeEffortDelta,
   });
-
-  @override
-  String toString() {
-    return "TODO: $id - $title - $done";
-  }
-
-  Map<String, dynamic> toMap() {
-    return {'id': id, 'title': title, 'done': done ? 1 : 0};
-  }
-
-  @override
-  List<Object> get props => [id, title, done];
 }

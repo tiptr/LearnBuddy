@@ -5,6 +5,7 @@ class TextInputField extends StatelessWidget {
   final String hintText;
   final IconData? iconData;
   final TextEditingController textController;
+  final Function(String)? onChanged;
 
   const TextInputField({
     Key? key,
@@ -12,6 +13,7 @@ class TextInputField extends StatelessWidget {
     required this.hintText,
     required this.iconData,
     required this.textController,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class TextInputField extends StatelessWidget {
         hintText: hintText,
       ),
       controller: textController,
+      onChanged: onChanged,
     );
   }
 }
