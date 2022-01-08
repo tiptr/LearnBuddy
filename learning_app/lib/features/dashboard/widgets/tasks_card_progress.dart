@@ -62,14 +62,16 @@ class TasksCardProgress extends StatelessWidget {
                         "Heutiger Restaufwand:\n2h 30min",
                         style: TextStyle(
                           // TODO: to be structured in the theme-issue:
-                            color: Color(0xFF949597),
+                          color: Color(0xFF949597),
                         ),
                         textAlign: TextAlign.center,
                       )
                     ],
                   ),
                   // Spacing between the items, since "spaceEvenly" was not perfect
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   // Color Indicators and Done / Open
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,8 +85,10 @@ class TasksCardProgress extends StatelessWidget {
                       ),
                       Text(
                         "4 Erledigt",
-                        style: TextStyle(// TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),),
+                        style: TextStyle(
+                          // TODO: to be structured in the theme-issue:
+                          color: Color(0xFF949597),
+                        ),
                       ),
                       ColorIndicator(
                         // TODO: to be structured in the theme-issue:
@@ -94,8 +98,10 @@ class TasksCardProgress extends StatelessWidget {
                       ),
                       Text(
                         "3 Offen",
-                        style: TextStyle(// TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),),
+                        style: TextStyle(
+                          // TODO: to be structured in the theme-issue:
+                          color: Color(0xFF949597),
+                        ),
                       ),
                     ],
                   ),

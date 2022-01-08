@@ -74,7 +74,6 @@ class MyApp extends StatelessWidget {
         colorScheme: theme.colorScheme.copyWith(
           primary: const Color(0xFF3444CF),
           secondary: const Color(0xFF9E5EE1),
-
         ),
         scrollbarTheme: ScrollbarThemeData(
           isAlwaysShown: false,

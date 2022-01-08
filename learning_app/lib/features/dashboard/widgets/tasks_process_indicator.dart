@@ -4,7 +4,7 @@ class TasksProcessIndicator extends StatelessWidget {
   final double progress;
   final double size;
 
-  TasksProcessIndicator({
+  const TasksProcessIndicator({
     Key? key,
     required this.progress,
     required this.size,
