@@ -11,18 +11,21 @@ class LearningAidAddScreen extends StatefulWidget {
 
 class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  final _descriptionControllers = [];
 
   List<Widget> items = [];
 
   Widget listViewItem() {
     // widget layout for listview items
+    var newDescriptionController = TextEditingController();
+    _descriptionControllers.add(newDescriptionController);
+
     return Column(
       children: [
-        TermInputField(
+          TermInputField(
           hintText: "Text eingeben",
           iconData: Icons.edit,
-          textController: _descriptionController,
+          textController: newDescriptionController,
         ),
         // Only for navigation to tags
         const SizedBox(height: 20.0),
