@@ -4,6 +4,9 @@ import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
+import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
+
+import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
@@ -18,9 +21,19 @@ class LeisureScreen extends StatelessWidget {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: state.leisureCategoriesDtos.length,
-          itemBuilder: (BuildContext ctx, int idx) => LeisureCategoryCard(
-            leisureCategory: state.leisureCategoriesDtos[idx],
-          ),
+          itemBuilder: (BuildContext ctx, int idx) {
+            return GestureDetector(
+              child: LeisureCategoryCard(
+                        leisureCategory: state.leisureCategoriesDtos[idx],
+                       ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LeisureActivityOverviewScreen(),
+                  ),
+              ),
+              );
+          },
         );
       },
     );
