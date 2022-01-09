@@ -15,24 +15,6 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
 
   List<Widget> items = [];
 
-  Widget listViewItem() {
-    // widget layout for listview items
-    var newDescriptionController = TextEditingController();
-    _descriptionControllers.add(newDescriptionController);
-
-    return Column(
-      children: [
-          TermInputField(
-          hintText: "Text eingeben",
-          iconData: Icons.edit,
-          textController: newDescriptionController,
-        ),
-        // Only for navigation to tags
-        const SizedBox(height: 20.0),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +39,9 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
                 shrinkWrap: true,
                 itemCount: items.length,
                 itemBuilder: (context, i) {
-                  return listViewItem(); // item layout
+                  var newDescriptionController = TextEditingController();
+                  _descriptionControllers.add(newDescriptionController);
+                  return ListViewItem(newDescriptionController: newDescriptionController); // item layout
                 },
               ),
               // Only for navigation to tags
@@ -65,9 +49,11 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
               InkWell(
                 onTap: () {
                   setState(() {
+                    var newDescriptionController = TextEditingController();
+                    _descriptionControllers.add(newDescriptionController);
                     // add another item to the list
                     //items.add(items.length);
-                    items.add(listViewItem());
+                    items.add(ListViewItem(newDescriptionController: newDescriptionController));
                   });
                 },
                 child: Ink(
@@ -96,6 +82,27 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ListViewItem extends StatelessWidget {
+  const ListViewItem({Key? key, required this.newDescriptionController}) : super(key: key);
+
+  final TextEditingController newDescriptionController;
+
+  @override
+  Widget build(BuildContext context) {
+     return Column(
+      children: [
+          TermInputField(
+          hintText: "Text eingeben",
+          iconData: Icons.edit,
+          textController: newDescriptionController,
+        ),
+        // Only for navigation to tags
+        const SizedBox(height: 20.0),
+      ],
     );
   }
 }
