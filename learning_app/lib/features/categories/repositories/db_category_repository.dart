@@ -30,6 +30,6 @@ class DbCategoryRepository implements CategoryRepository {
 
   @override
   Stream<List<Category>> watchCategories() {
-    return _dao.getAllCategories();
+    return _dao.watchAllCategories();
   }
 }

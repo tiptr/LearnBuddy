@@ -27,6 +27,9 @@ class CategoriesDao extends DatabaseAccessor<Database>
   // of this object.
   CategoriesDao(Database db) : super(db);
 
+  Stream<List<Category>>? _categoriesStream;
+  Stream<Map<int, Category>>? _idToCategoryMapStream;
+
   Future<int> createCategory(CategoriesCompanion categoriesCompanion) {
     // insertReturning() already provides the whole created entity instead of
     // the single ID provided by insert()
@@ -36,13 +39,39 @@ class CategoriesDao extends DatabaseAccessor<Database>
     return into(categories).insert(categoriesCompanion);
   }
 
-  Stream<List<Category>> getAllCategories() {
-    final query = select(categories)
-        .map((row) => Category(id: row.id, name: row.name, color: row.color));
-    return query.watch();
-  }
-
   Future<int> deleteCatgoryById(int categoryId) {
     return (delete(categories)..where((t) => t.id.equals(categoryId))).go();
+  }
+
+  Stream<List<Category>> watchAllCategories() {
+    _categoriesStream = _categoriesStream ??
+        (select(categories)
+            .map(
+                (row) => Category(id: row.id, name: row.name, color: row.color))
+            .watch());
+
+    return _categoriesStream as Stream<List<Category>>;
+  }
+
+  /// Returns a stream of maps that associate the category id with the category
+  ///
+  /// There only ever will exist one of this streams in parallel.
+  Stream<Map<int, Category>> watchIdToCategoryMap() {
+    _idToCategoryMapStream =
+        (_idToCategoryMapStream ?? (_createIdToCategoryMapStream()));
+
+    return _idToCategoryMapStream as Stream<Map<int, Category>>;
+  }
+
+  /// Creates a stream of maps that associate the category id with the category
+  Stream<Map<int, Category>> _createIdToCategoryMapStream() {
+    final Stream<List<Category>> categoriesStream = watchAllCategories();
+    return categoriesStream.map((models) {
+      final idToModel = <int, Category>{};
+      for (var model in models) {
+        idToModel.putIfAbsent(model.id, () => model);
+      }
+      return idToModel;
+    });
   }
 }

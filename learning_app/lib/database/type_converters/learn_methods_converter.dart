@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:learning_app/features/learning_aids/models/learn_methods.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 
 /// Allows storing the LearnMethods Enum as int
 class LearnMethodsConverter extends TypeConverter<LearnMethods, int> {

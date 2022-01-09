@@ -2,17 +2,19 @@
 -- https://drift.simonbinder.eu/docs/using-sql/moor_files/#getting-started
 
 -- Import converters
-import 'package:learning_app/database/type_converters/body_parts_converter.dart';
 
 -- Import other entities this one depends on:
-import 'package:learning_app/features/learning_aids/persistence/learn_list_words.drift';
+import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists.drift';
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
 -- could be considered more elegant
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
-CREATE TABLE BodyListWordDetails (
-    word_id INT NOT NULL PRIMARY KEY REFERENCES LearnListWords(id),
-    body_part INT MAPPED BY `const BodyPartsConverter()`,
-    association TEXT
-) AS BodyListWordDetailEntity;
+CREATE TABLE LearnListWords (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    list_id INT NOT NULL REFERENCES LearnLists(id),
+    order_placement INT NOT NULL,
+    word TEXT NOT NULL,
+
+    UNIQUE(list_id, order_placement)
+) AS LearnListWordEntity;

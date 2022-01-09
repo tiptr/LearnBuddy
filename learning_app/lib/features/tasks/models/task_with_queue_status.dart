@@ -3,16 +3,16 @@ import 'package:learning_app/features/tasks/models/task.dart';
 
 class TaskWithQueueStatus extends Equatable {
   final Task task;
-  final bool isQueued;
+  final int? queuePlacement; // null, if not queued
 
   const TaskWithQueueStatus({
     required this.task,
-    required this.isQueued,
+    this.queuePlacement,
   });
 
   @override
   List<Object?> get props => [
         task,
-        isQueued,
+        queuePlacement,
       ];
 }

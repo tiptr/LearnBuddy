@@ -53,7 +53,7 @@ class ListReadTaskDto extends Equatable {
       categoryColor: task.category?.color,
       subTaskCount: task.subTaskCount,
       finishedSubTaskCount: task.finishedSubTaskCount,
-      isQueued: taskWithQueueStatus.isQueued,
+      isQueued: taskWithQueueStatus.queuePlacement != null,
       keywords: task.keywords.map((keyword) => keyword.name).toList(),
       dueDate: task.dueDate,
       remainingTimeEstimation: task.remainingTimeEstimation,

@@ -16,6 +16,6 @@ class TaskOrder {
 
   const TaskOrder({
     this.attribute = TaskOrderAttributes.dueDate,
-    this.direction = OrderDirection.desc,
+    this.direction = OrderDirection.asc,
   });
 }

@@ -9,11 +9,11 @@ import 'package:learning_app/database/type_converters/body_parts_converter.dart'
 import 'package:learning_app/database/type_converters/color_converter.dart';
 import 'package:learning_app/database/type_converters/learn_methods_converter.dart';
 import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
-import 'package:learning_app/features/learning_aids/models/learn_methods.dart';
-import 'package:learning_app/features/learning_aids/persistence/learn_list_words_dao.dart';
-import 'package:learning_app/features/learning_aids/persistence/learn_lists_dao.dart';
-import 'package:learning_app/features/learning_aids_body_list/models/body_parts.dart';
-import 'package:learning_app/features/learning_aids_body_list/persistence/body_list_word_details_dao.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_list_words_dao.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists_dao.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_parts.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart';
 import 'package:learning_app/features/leisure/persistence/leisure_activities_dao.dart';
 import 'package:learning_app/features/leisure/persistence/leisure_categories_dao.dart';
 import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
@@ -91,9 +91,9 @@ LazyDatabase _openConnection() {
     'package:learning_app/features/keywords/persistence/keywords.drift',
     'package:learning_app/features/time_logs/persistence/time_logs.drift',
     'package:learning_app/features/task_queue/persistence/task_queue_elements.drift',
-    'package:learning_app/features/learning_aids/persistence/learn_lists.drift',
-    'package:learning_app/features/learning_aids/persistence/learn_list_words.drift',
-    'package:learning_app/features/learning_aids_body_list/persistence/body_list_word_details.drift',
+    'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists.drift',
+    'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_list_words.drift',
+    'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details.drift',
     'package:learning_app/features/leisure/persistence/leisure_categories.drift',
     'package:learning_app/features/leisure/persistence/leisure_activities.drift',
     'package:learning_app/features/leisure/persistence/leisure_category_triggers.drift',

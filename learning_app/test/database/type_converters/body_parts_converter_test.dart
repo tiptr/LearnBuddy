@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:learning_app/database/type_converters/body_parts_converter.dart';
-import 'package:learning_app/features/learning_aids_body_list/models/body_parts.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_parts.dart';
 
 void main() {
   group('when formatting from db to dart', () {

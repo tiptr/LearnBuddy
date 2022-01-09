@@ -1,13 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
-import 'package:learning_app/features/categories/models/category.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
-import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 part 'tasks_dao.g.dart';
 
@@ -24,6 +19,9 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // this constructor is required so that the main database can create an instance
   // of this object.
   TasksDao(Database db) : super(db);
+
+  Stream<List<TaskEntity>>? _filteredSortedTopLevelTaskEntitiesStream;
+  Stream<List<TaskEntity>>? _subLevelTaskEntitiesStream;
 
   /// Creates a new task and returns its id.
   ///
@@ -57,222 +55,39 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     );
   }
 
-  // Stream<List<TaskWithQueueStatus>> watchTasks({ TODO
-  Stream<List<TaskWithQueueStatus>> watchTasks({
-    int? limit,
-    int? offset,
+  Stream<List<TaskEntity>> watchSubLevelTaskEntities() {
+    _subLevelTaskEntitiesStream =
+        (_subLevelTaskEntitiesStream ?? _createSubLevelTaskEntitiesStream());
+
+    return _subLevelTaskEntitiesStream as Stream<List<TaskEntity>>;
+  }
+
+  Stream<List<TaskEntity>> watchFilteredAndSortedTopLevelTaskEntities({
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    // All top level tasks that match the filters
-    // The Keyword-Filter is not applied here, since it depends on a many to many join
-    // It will be handled below
-    final Stream<List<TaskEntity>> sortedFilteredTopLevelTasksStream =
-        _getFilteredAndSortedTopLevelTasksStream(taskFilter, taskOrder);
+    _filteredSortedTopLevelTaskEntitiesStream =
+        (_filteredSortedTopLevelTaskEntitiesStream ??
+            (_createFilteredAndSortedTopLevelTaskEntitiesStream(
+              taskFilter: taskFilter,
+              taskOrder: taskOrder,
+            )));
 
-    // The streams for other required entities
-    final Stream<List<CategoryEntity>> categoriesStream =
-        select(categories).watch();
-    final Stream<List<KeywordEntity>> keywordsStream = select(keywords).watch();
-    final Stream<List<TaskKeywordEntity>> taskKeywordsStream =
-        select(taskKeywords).watch();
-
-    // switchMap is used to create a new sub-stream
-    // (that uses the most recent values of the top-level stream),
-    // whenever the top-level stream emits a new item.
-    // The older stream will be automatically destroyed.
-
-    // ->  Start with the streams that will change less often, so that for the
-    // more recent changing streams, not everything has to be rebuild
-
-    // Sorry for the nesting! I do not know, if there is another way to
-    // implement this functionality, but I think it is still easy enough to
-    // be readable :)
-
-    // This will be called whenever the keywords change:
-    return keywordsStream.switchMap((keywords) {
-      // Create a map to efficiently allocate the keywords by keyword-id
-      // this maps are generated as low in the stream-chain as possible, so
-      // they will not have to be created at every update in the inner chain
-      final keywordIdToKeywordMap = createIdToKeywordMapFromEntities(keywords);
-
-      // This will be called whenever the task-keyword-relationship changes:
-      return taskKeywordsStream.switchMap((taskKeywords) {
-        // Create a map to efficiently allocate the keywords by task-id
-        final taskIdToKeywordMap =
-            createTaskIdToKeywordsMap(taskKeywords, keywordIdToKeywordMap);
-
-        // This will be called whenever the categories change:
-        return categoriesStream.switchMap((categories) {
-          // Create a map to efficiently allocate the categories
-          final idToCategoryMap = createIdToCategoryMapFromEntities(categories);
-
-          // This will be called whenever the tasks change:
-          return sortedFilteredTopLevelTasksStream.switchMap((topLevels) {
-            // We also need the sub-tasks:
-            final subLevelTasksQuery = select(tasks)
-              ..where((tsk) => tsk.parentTaskId.isNotNull()); // sub-levels only
-
-            // Merge it all together and build a stream of task-models
-            return subLevelTasksQuery.watch().map((subLevels) {
-              return mergeEntitiesTogether(
-                topLevels: topLevels,
-                subLevels: subLevels,
-                idToCategoryMap: idToCategoryMap,
-                taskIdToKeywordMap: taskIdToKeywordMap,
-                keywordsFilter: taskFilter.keywords,
-              );
-            });
-          });
-        });
-      });
-    });
+    return _filteredSortedTopLevelTaskEntitiesStream
+        as Stream<List<TaskEntity>>;
   }
 
-  // // TODO: Keywords filter
-  // // TODO: Map Timelogs
-  // // TODO: Map learnlists ??
-  // // TODO: Map Queue
-
-  /// Creates a map that allocates all linked keywords for each task-id
-  Map<int, List<KeyWord>> createTaskIdToKeywordsMap(
-      List<TaskKeywordEntity> taskKeywords,
-      Map<int, KeyWord> keywordIdToKeywordMap) {
-    final idToModelList = <int, List<KeyWord>>{};
-
-    for (var taskKeyword in taskKeywords) {
-      final nullableKeyword = keywordIdToKeywordMap[taskKeyword.keywordId];
-      // If our database is consistent, this will never be null!
-      assert(nullableKeyword != null);
-      final keyword = nullableKeyword as KeyWord;
-
-      idToModelList.putIfAbsent(taskKeyword.taskId, () => []).add(keyword);
-    }
-    return idToModelList;
-  }
-
-  Map<int, KeyWord> createIdToKeywordMapFromEntities(
-      List<KeywordEntity> entities) {
-    final idToModel = <int, KeyWord>{};
-    for (var entity in entities) {
-      final model = KeyWord(
-        id: entity.id,
-        name: entity.name,
-      );
-      idToModel.putIfAbsent(model.id, () => model);
-    }
-    return idToModel;
-  }
-
-  Map<int, Category> createIdToCategoryMapFromEntities(
-      List<CategoryEntity> entities) {
-    final idToModel = <int, Category>{};
-    for (var entity in entities) {
-      final model = Category(
-        id: entity.id,
-        name: entity.name,
-        color: entity.color,
-      );
-      idToModel.putIfAbsent(model.id, () => model);
-    }
-    return idToModel;
-  }
-
-  /// Create the list of tasks with their queue status by merging everything
-  ///
-  /// Since the keywords for the tasks are only known here, the keywords-filter
-  /// also is applied here, instead of as part of the tasks-query.
-  /// This will only delay this, if the filter is present, though.
-  List<TaskWithQueueStatus> mergeEntitiesTogether(
-      {required List<TaskEntity> topLevels,
-      required List<TaskEntity> subLevels,
-      required Map<int, Category> idToCategoryMap,
-      required Map<int, List<KeyWord>> taskIdToKeywordMap,
-      required Value<List<KeyWord>> keywordsFilter}) {
-    final subTaskModels = [];
-    final idToSubTasks = <int?, List<Task>>{};
-
-    // Create the models for subtasks and maps them to their parent-ID
-    for (var taskEntity in subLevels) {
-      final taskModel = Task(
-        id: taskEntity.id,
-        title: taskEntity.title,
-        doneDateTime: taskEntity.doneDateTime,
-        description: taskEntity.description,
-        category: idToCategoryMap[taskEntity.categoryId],
-        keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-        // TODO
-        timeLogs: const [],
-        // TODO
-        estimatedTime: taskEntity.estimatedTime,
-        dueDate: taskEntity.dueDate,
-        creationDateTime: taskEntity.creationDateTime,
-        children: const [],
-        // TODO
-        learnLists: const [],
-        // TODO
-        manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-      );
-      subTaskModels.add(taskModel);
-      idToSubTasks
-          .putIfAbsent(taskEntity.parentTaskId, () => [])
-          .add(taskModel);
-    }
-
-    // Add the sub-subtasks (tier 3 and deeper) to their parents (tier-2)
-    for (Task subtask in subTaskModels) {
-      subtask.children = (idToSubTasks[subtask.id] ?? []);
-    }
-
-    // Create the models for top-tier tasks
-    final tasksWithQueueStatus = topLevels
-        .map((taskEntity) => TaskWithQueueStatus(
-              task: Task(
-                id: taskEntity.id,
-                title: taskEntity.title,
-                doneDateTime: taskEntity.doneDateTime,
-                description: taskEntity.description,
-                category: idToCategoryMap[taskEntity.categoryId],
-                keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-                // TODO
-                timeLogs: const [],
-                // TODO
-                estimatedTime: taskEntity.estimatedTime,
-                dueDate: taskEntity.dueDate,
-                creationDateTime: taskEntity.creationDateTime,
-                children: const [],
-                // TODO
-                learnLists: const [],
-                // TODO
-                manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-              ),
-              isQueued: false,
-            ))
-        .toList();
-
-    // Add the sub-tasks (tier 2) to their parents (top tier)
-    for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
-      taskWithQueue.task.children = (idToSubTasks[taskWithQueue.task.id] ?? []);
-    }
-
-    if (keywordsFilter.present) {
-      // Apply the keywords-filter
-      return tasksWithQueueStatus.where((taskWithQueue) {
-        final wantedKeywords = keywordsFilter.value;
-        final actualKeywords = taskWithQueue.task.keywords;
-        // accept, if at least one of the wanted is found
-        return wantedKeywords.any((wanted) {
-          return actualKeywords.contains(wanted);
-        });
-      }).toList();
-    } else {
-      return tasksWithQueueStatus;
-    }
+  Stream<List<TaskEntity>> _createSubLevelTaskEntitiesStream() {
+    final subLevelTasksQuery = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNotNull()); // sub-levels only
+    return subLevelTasksQuery.watch();
   }
 
   /// Creates a stream that watches the top-level tasks matching the given filter
-  Stream<List<TaskEntity>> _getFilteredAndSortedTopLevelTasksStream(
-      TaskFilter taskFilter, TaskOrder taskOrder) {
+  Stream<List<TaskEntity>> _createFilteredAndSortedTopLevelTaskEntitiesStream({
+    TaskFilter taskFilter = const TaskFilter(),
+    TaskOrder taskOrder = const TaskOrder(),
+  }) {
     // Create the query to get filtered top level tasks:
     final filteredTopLevelTasksQuery = select(tasks)
       ..where((tsk) => tsk.parentTaskId.isNull()) // top-level only
@@ -314,7 +129,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           return const CustomExpression('TRUE');
         }
       });
-
     // Add ordering to the exixting query
     final sortedFilteredTopLevelTasksQuery = filteredTopLevelTasksQuery
       ..orderBy([

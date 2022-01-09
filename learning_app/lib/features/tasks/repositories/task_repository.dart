@@ -7,8 +7,6 @@ import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 /// Repository interface to separate business logic from the persistence layer
 abstract class TaskRepository {
   Stream<List<TaskWithQueueStatus>> watchTasks({
-    int? limit,
-    int? offset,
     TaskFilter taskFilter,
     TaskOrder taskOrder,
   });

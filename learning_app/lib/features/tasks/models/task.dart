@@ -1,6 +1,6 @@
 import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
-import 'package:learning_app/features/learning_aids/models/learn_list.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/time_logs/models/time_log.dart';
 
 class Task {
