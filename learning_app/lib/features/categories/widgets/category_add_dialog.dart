@@ -4,6 +4,7 @@ import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
+import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/util/logger.dart';
 
 class CategoryAddDialog extends StatefulWidget {
@@ -33,14 +34,7 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
           Row(
             children: [
               const Spacer(),
-              Container(
-                width: 10.0,
-                height: 30.0,
-                decoration: BoxDecoration(
-                  color: selectedColor,
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-              ),
+              ColorIndicator(color: selectedColor, height: 30.0, width: 10.0),
               Container(
                 margin: const EdgeInsets.only(left: 10.0),
                 width: 150.0,
@@ -70,16 +64,17 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    // height: 100,
-                    child: CategoryColorSelector(
-                      onColorSelect: (Color color) {
-                        setState(() {
-                          selectedColor = color;
-                        });
-                      },
-                      selectedColor: selectedColor,
-                    )),
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  // height: 100,
+                  child: CategoryColorSelector(
+                    onColorSelect: (Color color) {
+                      setState(() {
+                        selectedColor = color;
+                      });
+                    },
+                    selectedColor: selectedColor,
+                  ),
+                ),
               ),
             ],
           ),
