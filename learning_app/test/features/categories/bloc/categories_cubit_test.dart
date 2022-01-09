@@ -74,4 +74,24 @@ void main() {
       );
     },
   );
+
+  group(
+    'when calling deleteCategory',
+    () {
+      blocTest<CategoriesCubit, CategoriesState>(
+        'CategoriesCubit should delete the category',
+        build: () {
+          when(() => mockCategoriesRepository.deleteCategoryById(any()))
+              .thenAnswer((_) => Future.value(true));
+          return categoriesCubit;
+        },
+        seed: () => CategoriesLoaded(categoriesStream: Stream.value([])),
+        act: (cubit) async => await cubit.deleteCategoryById(1),
+        verify: (_) {
+          verify(() => mockCategoriesRepository.deleteCategoryById(1))
+              .called(1);
+        },
+      );
+    },
+  );
 }

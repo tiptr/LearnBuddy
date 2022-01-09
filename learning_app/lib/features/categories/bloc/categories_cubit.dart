@@ -24,4 +24,11 @@ class CategoriesCubit extends Cubit<CategoriesState> {
       await _categoryRepository.createCategory(newCategory);
     }
   }
+
+  Future<void> deleteCategoryById(int id) async {
+    final currentState = state;
+    if (currentState is CategoriesLoaded) {
+      await _categoryRepository.deleteCategoryById(id);
+    }
+  }
 }
