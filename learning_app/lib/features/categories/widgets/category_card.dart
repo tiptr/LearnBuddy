@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/util/logger.dart';
 
@@ -40,12 +41,11 @@ class CategoryCard extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    width: 10.0,
-                    height: 30.0,
                     margin: const EdgeInsets.only(right: 15.0),
-                    decoration: BoxDecoration(
+                    child: ColorIndicator(
                       color: _category.color,
-                      borderRadius: BorderRadius.circular(5.0),
+                      height: 30.0,
+                      width: 10.0,
                     ),
                   ),
                   Text(
