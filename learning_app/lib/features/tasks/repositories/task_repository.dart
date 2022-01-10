@@ -6,14 +6,14 @@ import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 /// Repository interface to separate business logic from the persistence layer
 abstract class TaskRepository {
-  Stream<List<TaskWithQueueStatus>> watchTasks({
+  Stream<List<TaskWithQueueStatus>> watchFilteredSortedTasks({
     TaskFilter taskFilter,
     TaskOrder taskOrder,
   });
 
-  // Stream<List<TaskWithQueueStatus>> watchQueuedTasks();
-  //
-  // Stream<TaskWithQueueStatus> watchQueuedTaskWithId({required int id});
+  Stream<List<TaskWithQueueStatus>> watchQueuedTasks();
+
+  Stream<TaskWithQueueStatus> watchQueuedTaskWithId({required int id});
 
   Future<int> createTask(CreateTaskDto newTask);
 

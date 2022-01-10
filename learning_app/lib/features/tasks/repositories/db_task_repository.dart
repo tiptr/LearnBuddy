@@ -41,30 +41,47 @@ class DbTaskRepository implements TaskRepository {
   final TimeLogsDao _timeLogsDao = getIt<TimeLogsDao>();
   final TaskQueueElementsDao _queueElementsDao = getIt<TaskQueueElementsDao>();
 
-  Stream<List<TaskWithQueueStatus>>? _taskWithQueueStatusStream;
+  Stream<List<TaskWithQueueStatus>>? _orderedFilteredTasksStream;
+  Stream<List<TaskWithQueueStatus>>? _queuedTasksStream;
+
   Stream<TaskAssociations>? _taskAssociationsStream;
   Stream<Map<int?, List<Task>>>? _idToSubTasksStream;
 
   @override
-  Stream<List<TaskWithQueueStatus>> watchTasks({
+  Stream<List<TaskWithQueueStatus>> watchFilteredSortedTasks({
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    _taskWithQueueStatusStream = _taskWithQueueStatusStream ??
+    _orderedFilteredTasksStream = _orderedFilteredTasksStream ??
         (_buildFilteredListStream(
           taskFilter: taskFilter,
           taskOrder: taskOrder,
         ));
-    return _taskWithQueueStatusStream as Stream<List<TaskWithQueueStatus>>;
+    return _orderedFilteredTasksStream as Stream<List<TaskWithQueueStatus>>;
   }
 
-  // Stream<List<TaskWithQueueStatus>> watchQueuedTasks(){
-  //   return watchTasks()
-  // }
-  //
-  // Stream<TaskWithQueueStatus> watchQueuedTaskWithId({required int id}){
-  //
-  // }
+  @override
+  Stream<List<TaskWithQueueStatus>> watchQueuedTasks() {
+    _queuedTasksStream =
+        _orderedFilteredTasksStream ?? _buildQueuedTasksStream();
+    return _queuedTasksStream as Stream<List<TaskWithQueueStatus>>;
+  }
+
+  /// This creates a stream watching the single task (with subtasks) with the
+  /// given ID. Only works with queued tasks, since this are the only ones
+  /// required and can be accessed even quicker.
+  ///
+  /// Do not forget to destroy this stream as soon as it is not required anymore.
+  /// Calling this multiple times creates new streams at each call without
+  /// destroying the other ones automatically (like with the list streams).
+  Stream<TaskWithQueueStatus?> watchQueuedTaskWithId({required int id}) {
+    final queuedTasksStream = watchQueuedTasks();
+    return queuedTasksStream.map((queuedTasks) {
+      final matchingList =
+          queuedTasks.where((taskWithStatus) => taskWithStatus.task.id == id);
+      return matchingList.isNotEmpty ? matchingList.first : null;
+    });
+  }
 
   @override
   Future<int> createTask(CreateTaskDto newTask) async {
@@ -102,6 +119,11 @@ class DbTaskRepository implements TaskRepository {
   Future<bool> toggleDone(int taskId, bool done) async {
     final affected = await _tasksDao.toggleTaskDoneById(taskId, done);
     return affected > 0;
+  }
+
+  Stream<List<TaskWithQueueStatus>> _buildQueuedTasksStream() {
+    final topLevelEntitiesStream = _tasksDao.watchQueuedTopLevelTaskEntities();
+    return _buildListStream(topLevelEntitiesStream: topLevelEntitiesStream);
   }
 
   Stream<TaskAssociations> _getAssociationsStream() {
