@@ -38,7 +38,7 @@ Future<void> initialization100HugeAmountOfTasks() async {
           (i % 2 == 0) ? const Value(testDescription) : const Value.absent(),
       categoryId: (i % 17 == 0) ? const Value.absent() : Value(i % 4),
       estimatedTime:
-          (i % 3 != 0) ? Value(Duration(minutes: i)) : const Value.absent(),
+          (i % 3 == 0) ? Value(Duration(minutes: i)) : const Value.absent(),
       dueDate: (i % ((topLevelCount / 10).round()) == 0)
           ? const Value.absent()
           : Value(now.subtract(Duration(days: Random().nextInt(80) - 75))),

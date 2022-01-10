@@ -42,7 +42,7 @@ class SubTasksList extends StatelessWidget {
               isSubTaskCard: true,
               task: ListReadTaskDto(
                 id: index,
-                title: 'jdhlsf',
+                title: 'Gemockte Sub-Aufgabe, noch ohne jegliche Funktion',
                 done: false,
                 categoryColor: Colors.lightBlue,
                 subTaskCount: 0,

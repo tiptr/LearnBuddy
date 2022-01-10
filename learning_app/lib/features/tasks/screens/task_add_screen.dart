@@ -21,7 +21,6 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
 
   final ScrollController _scrollController = ScrollController();
 
-
   // Preselect now, because our UIs task logic requires a date to be set
   DateTime selectedDueDate = DateTime.now();
   Duration? selectedTimeEstimate;
@@ -39,75 +38,75 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     ));
 
     return Scaffold(
-        appBar: TaskAddAppBar(textController: _titleController),
-        body: Scrollbar(
-          interactive: true,
-          controller: _scrollController,
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  DateInputField(
-                    selectedDate: selectedDueDate,
-                    onSelect: (DateTime datetime) {
-                      setState(() {
-                        selectedDueDate = datetime;
-                      });
-                      BlocProvider.of<AddTaskCubit>(context)
-                          .addTaskAttribute(CreateTaskDto(
-                        dueDate: datetime,
-                      ));
-                    },
-                  ),
-                  const SizedBox(height: 20.0),
-                  DurationInputField(
-                    selectedDuration: selectedTimeEstimate,
-                    onSelect: (Duration duration) {
-                      setState(() {
-                        selectedTimeEstimate = duration;
-                      });
-                      BlocProvider.of<AddTaskCubit>(context)
-                          .addTaskAttribute(CreateTaskDto(
-                        estimatedTime: duration,
-                      ));
-                    },
-                  ),
-                  const SizedBox(height: 20.0),
-                  TextInputField(
-                    label: "Beschreibung",
-                    hintText: "Text eingeben",
-                    iconData: Icons.book_outlined,
-                    textController: _descriptionController,
-                    onChanged: (text) async {
-                      BlocProvider.of<AddTaskCubit>(context)
-                          .addTaskAttribute(CreateTaskDto(
-                        description: text,
-                      ));
-                    },
-                  ),
-                  // Subtasks
-                  const SizedBox(height: 20.0),
-                  Row(
-                    children: const [
-                      Text(
-                        "Unteraufgaben",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Color(0xFF636573),
-                          fontWeight: FontWeight.w500,
-                        ),
+      appBar: TaskAddAppBar(textController: _titleController),
+      body: Scrollbar(
+        interactive: true,
+        controller: _scrollController,
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                DateInputField(
+                  selectedDate: selectedDueDate,
+                  onSelect: (DateTime datetime) {
+                    setState(() {
+                      selectedDueDate = datetime;
+                    });
+                    BlocProvider.of<AddTaskCubit>(context)
+                        .addTaskAttribute(CreateTaskDto(
+                      dueDate: datetime,
+                    ));
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                DurationInputField(
+                  selectedDuration: selectedTimeEstimate,
+                  onSelect: (Duration duration) {
+                    setState(() {
+                      selectedTimeEstimate = duration;
+                    });
+                    BlocProvider.of<AddTaskCubit>(context)
+                        .addTaskAttribute(CreateTaskDto(
+                      estimatedTime: duration,
+                    ));
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                TextInputField(
+                  label: "Beschreibung",
+                  hintText: "Text eingeben",
+                  iconData: Icons.book_outlined,
+                  textController: _descriptionController,
+                  onChanged: (text) async {
+                    BlocProvider.of<AddTaskCubit>(context)
+                        .addTaskAttribute(CreateTaskDto(
+                      description: text,
+                    ));
+                  },
+                ),
+                // Subtasks
+                const SizedBox(height: 20.0),
+                Row(
+                  children: const [
+                    Text(
+                      "Unteraufgaben",
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        color: Color(0xFF636573),
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20.0),
 
-                  SubTasksList(scrollController: _scrollController)
-                ],
-              ),
+                SubTasksList(scrollController: _scrollController)
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 }

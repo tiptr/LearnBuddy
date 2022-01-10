@@ -7,7 +7,7 @@ import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
-const double iconSize = 18.0;
+const double iconSize = 14.0;
 
 /// The card used inside the the main tasks list as well as for the subtasks (!)
 class TaskCard extends StatelessWidget {
@@ -141,33 +141,30 @@ class TaskCard extends StatelessWidget {
 
   Widget _buildTitleKeyWordsColumn(BuildContext context) {
     return Expanded(
-      flex: 80,
+      flex: 70,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Title
-          Expanded(
-            flex: 70,
-            child: Text(
-              _task.title,
-              maxLines: 2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: _task.done
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-                decorationThickness: 2.0,
-                fontSize: 18,
-                overflow: TextOverflow.ellipsis,
-              ),
+          Text(
+            _task.title,
+            maxLines: 2,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              decoration:
+                  _task.done ? TextDecoration.lineThrough : TextDecoration.none,
+              decorationThickness: 2.0,
+              fontSize: 18,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
 
           // Keywords
-          Expanded(
-            flex: 70,
-            child: Text(
+          if (_task.keywords.isNotEmpty)
+            Text(
               _task.keywords.join(', '),
               maxLines: 2,
               style: const TextStyle(
@@ -176,107 +173,109 @@ class TaskCard extends StatelessWidget {
                 decorationThickness: 2.0,
                 fontSize: 12,
                 overflow: TextOverflow.ellipsis,
-
               ),
             ),
-          ),
         ],
       ),
     );
   }
 
   Widget _buildDueDateStatsColumn(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Date Chip
-        Expanded(
-          flex: 30,
-          child: Chip(
+    return Expanded(
+      flex: 70,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // Date Chip
+          Chip(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity:  const VisualDensity(horizontal: 0.0,vertical: -4.0),
             label: Text(
               _formattedDueDate,
+              textAlign: TextAlign.end,
               style: TextStyle(
-                color: _isOverDue ? Colors.white : Colors.black,
+                color: _isOverDue ? Colors.white : const Color(0xFF636573),
+                fontWeight: FontWeight.normal,
+                decorationThickness: 2.0,
+                fontSize: 12,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            avatar: Icon(
-              Icons.calendar_today_outlined,
-              size: 16,
-              color: _isOverDue ? Colors.white : Colors.black,
+            labelPadding: EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: _isOverDue ? 8 : 0,
             ),
-            backgroundColor:
-                _isOverDue ? Colors.purpleAccent : Theme.of(context).cardColor,
+            avatar: Icon(
+              Icons.today_outlined,
+              size: 16,
+              color: _isOverDue ? Colors.white : const Color(0xFF636573),
+            ),
+            backgroundColor: _isOverDue
+                ? const Color(0xFF9E5EE1)
+                : Theme.of(context).cardColor,
           ),
-        ),
 
-        // stats
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            (!_task.done && _isEstimated)
-                ? Row(
-                    children: [
-                      const Icon(Icons.hourglass_top, size: iconSize),
-                      Text(_formattedTimeEstimation),
-                    ],
-                  )
-                : Row(),
-            Container(
-              margin: const EdgeInsets.only(left: 7.5),
-              child: (_task.subTaskCount > 0)
+          // stats
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              (!_task.done && _isEstimated)
                   ? Row(
                       children: [
-                        const Icon(Icons.dynamic_feed_outlined, size: iconSize),
-                        const SizedBox(width: 5.0),
+                        const Icon(
+                            Icons.hourglass_top,
+                            size: iconSize,
+                            color: Color(0xFF636573),
+                        ),
                         Text(
-                            '${_task.finishedSubTaskCount} / ${_task.subTaskCount}'
+                          _formattedTimeEstimation,
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
+                            color: Color(0xFF636573),
+                            fontWeight: FontWeight.normal,
+                            decorationThickness: 2.0,
+                            fontSize: 12,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     )
                   : Row(),
-            ),
-          ],
-        ),
-      ],
+              Container(
+                margin: const EdgeInsets.only(left: 7.5),
+                child: (_task.subTaskCount > 0)
+                    ? Row(
+                        children: [
+                          const Icon(
+                              Icons.dynamic_feed_outlined,
+                              size: iconSize,
+                              color: Color(0xFF636573),
+                          ),
+                          const SizedBox(width: 5.0),
+                          Text(
+                            '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
+                            textAlign: TextAlign.end,
+                            style: const TextStyle(
+                              color: Color(0xFF636573),
+                              fontWeight: FontWeight.normal,
+                              decorationThickness: 2.0,
+                              fontSize: 12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
+                        ],
+                      )
+                    : Row(),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   Widget _buildUpperRow(BuildContext context) {
     return Expanded(

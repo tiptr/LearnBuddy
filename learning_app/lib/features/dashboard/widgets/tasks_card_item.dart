@@ -17,7 +17,7 @@ class TasksCardItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.5),
       ),
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: Theme.of(context).cardColor,
       elevation: CardElevation.high,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
@@ -28,7 +28,6 @@ class TasksCardItem extends StatelessWidget {
               color: task.categoryColor ?? noCategoryDefaultColor,
             ),
           ),
-          color: Colors.white,
         ),
         height: 75.0,
         child: Row(
