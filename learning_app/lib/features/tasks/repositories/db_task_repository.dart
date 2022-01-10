@@ -9,7 +9,8 @@ import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/repositories/learn_list_repository.dart';
-import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
+import 'package:learning_app/features/tasks/models/queue_status.dart';
+import 'package:learning_app/features/tasks/persistence/task_queue_elements_dao.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
@@ -54,9 +55,15 @@ class DbTaskRepository implements TaskRepository {
     return _taskWithQueueStatusStream as Stream<List<TaskWithQueueStatus>>;
   }
 
-  @override
+  // Stream<List<TaskWithQueueStatus>> watchQueuedTasks(){
+  //   return watchTasks()
+  // }
+  //
+  // Stream<TaskWithQueueStatus> watchQueuedTaskWithId({required int id}){
+  //
+  // }
 
-  /// Creates a new task and returns it with its newly generated id
+  @override
   Future<int> createTask(CreateTaskDto newTask) async {
     return _tasksDao.createTask(db.TasksCompanion(
       // For NOT NULL attributes, ofNullable() is used
@@ -123,8 +130,8 @@ class DbTaskRepository implements TaskRepository {
     final Stream<Map<int, List<TimeLog>>> taskIdToTimeLogsMapStream =
         _timeLogsDao.watchTaskIdToTimeLogsMap();
 
-    final Stream<Map<int, int>> taskIdToQueuePlacementMapStream =
-        _queueElementsDao.watchTaskIdToQueuePlacementMap();
+    final Stream<Map<int, QueueStatus>> taskIdToQueueStatusMapStream =
+        _queueElementsDao.watchTaskIdToQueueStatusMap();
 
     // switchMap is used to create a new sub-stream
     // (that uses the most recent values of the top-level stream),
@@ -157,11 +164,11 @@ class DbTaskRepository implements TaskRepository {
               final taskIdToLearnListMap = _createTaskIdToLearnListsMap(
                   taskLearnLists, learnListIdToLearnListMap);
 
-              // This will be called whenever the timelogs change:
+              // This will be called whenever the time-logs change:
               return taskIdToTimeLogsMapStream.switchMap((taskIdToTimeLogsMap) {
                 // This will be called whenever the task queue changes:
-                return taskIdToQueuePlacementMapStream
-                    .switchMap((taskIdToQueuePlacementMap) {
+                return taskIdToQueueStatusMapStream
+                    .switchMap((taskIdToQueueStatusMap) {
                   // This will be called whenever the tasks change:
                   return sortedFilteredTopLevelTasksStream
                       .switchMap((topLevels) {
@@ -178,7 +185,7 @@ class DbTaskRepository implements TaskRepository {
                         taskIdToKeywordMap: taskIdToKeywordMap,
                         keywordsFilter: taskFilter.keywords,
                         taskIdToTimeLogsMap: taskIdToTimeLogsMap,
-                        taskIdToQueuePlacementMap: taskIdToQueuePlacementMap,
+                        taskIdToQueueStatusMap: taskIdToQueueStatusMap,
                         taskIdToLearnListMap: taskIdToLearnListMap,
                       );
                     });
@@ -238,7 +245,7 @@ class DbTaskRepository implements TaskRepository {
     required Map<int, List<KeyWord>> taskIdToKeywordMap,
     required Value<List<KeyWord>> keywordsFilter,
     required Map<int, List<TimeLog>> taskIdToTimeLogsMap,
-    required Map<int, int> taskIdToQueuePlacementMap,
+    required Map<int, QueueStatus> taskIdToQueueStatusMap,
     required Map<int, List<LearnList>> taskIdToLearnListMap,
   }) {
     final subTaskModels = [];
@@ -294,7 +301,7 @@ class DbTaskRepository implements TaskRepository {
                 learnLists: taskIdToLearnListMap[taskEntity.id] ?? [],
                 manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
               ),
-              queuePlacement: taskIdToQueuePlacementMap[taskEntity.id],
+              queueStatus: taskIdToQueueStatusMap[taskEntity.id],
             ))
         .toList();
 

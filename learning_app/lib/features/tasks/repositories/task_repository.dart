@@ -11,7 +11,10 @@ abstract class TaskRepository {
     TaskOrder taskOrder,
   });
 
-  /// Creates a new task and returns it with its newly generated id
+  // Stream<List<TaskWithQueueStatus>> watchQueuedTasks();
+  //
+  // Stream<TaskWithQueueStatus> watchQueuedTaskWithId({required int id});
+
   Future<int> createTask(CreateTaskDto newTask);
 
   Future<bool> update(int id, UpdateTaskDto updateDto);
