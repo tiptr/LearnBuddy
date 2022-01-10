@@ -22,7 +22,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
 
   Stream<List<TaskEntity>>? _filteredSortedTopLevelTaskEntitiesStream;
   Stream<List<TaskEntity>>? _subLevelTaskEntitiesStream;
-  // Stream<Map<int?, List<TaskEntity>>>? _idToSubTaskEntitiesStream;
 
   /// Creates a new task and returns its id.
   ///
@@ -77,64 +76,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     return _filteredSortedTopLevelTaskEntitiesStream
         as Stream<List<TaskEntity>>;
   }
-
-  // /// Returns a stream of maps that associate the parent id with its children
-  // ///
-  // /// There only ever will exist one of this streams in parallel.
-  // Stream<Map<int?, List<TaskEntity>>> watchParentIdToSubTaskEntitiesMap() {
-  //   _idToSubTaskEntitiesStream =
-  //   (_idToSubTaskEntitiesStream ?? (_createParentIdToSubTasksMapStream()));
-  //
-  //   return _idToSubTaskEntitiesStream as Stream<Map<int?, List<TaskEntity>>>;
-  // }
-  //
-  // /// Creates a stream of maps that associate the parent id with its children
-  // Stream<Map<int?, List<TaskEntity>>> _createParentIdToSubTasksMapStream() {
-  //   final Stream<List<TaskEntity>> subTasksStream = watchSubLevelTaskEntities();
-  //
-  //   return subTasksStream.map((subLevels) {
-  //     final subTaskModels = [];
-  //     final idToSubTasks = <int?, List<Task>>{};
-  //
-  //     // Create the models for subtasks and maps them to their parent-ID
-  //     for (var taskEntity in subLevels) {
-  //       final taskModel = Task(
-  //         id: taskEntity.id,
-  //         title: taskEntity.title,
-  //         doneDateTime: taskEntity.doneDateTime,
-  //         description: taskEntity.description,
-  //         category: idToCategoryMap[taskEntity.categoryId],
-  //         keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-  //         timeLogs: taskIdToTimeLogsMap[taskEntity.id] ?? [],
-  //         estimatedTime: taskEntity.estimatedTime,
-  //         dueDate: taskEntity.dueDate,
-  //         creationDateTime: taskEntity.creationDateTime,
-  //         children: const [], // children is supposed to be empty here. It will
-  //         // be added below, since the "idToSubTasks" Map is required that does
-  //         // not exist right here
-  //         learnLists: taskIdToLearnListMap[taskEntity.id] ?? [],
-  //         manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-  //       );
-  //       subTaskModels.add(taskModel);
-  //       idToSubTasks
-  //           .putIfAbsent(taskEntity.parentTaskId, () => [])
-  //           .add(taskModel);
-  //     }
-  //
-  //     // Add the sub-subtasks (tier 3 and deeper) to their parents (tier-2)
-  //     for (Task subtask in subTaskModels) {
-  //       subtask.children = (idToSubTasks[subtask.id] ?? []);
-  //     }
-  //
-  //
-  //
-  //     final idToModel = <int, Category>{};
-  //     for (var model in models) {
-  //       idToModel.putIfAbsent(model.id, () => model);
-  //     }
-  //     return idToModel;
-  //   });
-  // }
 
   Stream<List<TaskEntity>> _createSubLevelTaskEntitiesStream() {
     final subLevelTasksQuery = select(tasks)

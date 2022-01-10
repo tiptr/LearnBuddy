@@ -43,6 +43,7 @@ class DbTaskRepository implements TaskRepository {
 
   Stream<List<TaskWithQueueStatus>>? _taskWithQueueStatusStream;
   Stream<TaskAssociations>? _taskAssociationsStream;
+  Stream<Map<int?, List<Task>>>? _idToSubTasksStream;
 
   @override
   Stream<List<TaskWithQueueStatus>> watchTasks({
@@ -50,7 +51,7 @@ class DbTaskRepository implements TaskRepository {
     TaskOrder taskOrder = const TaskOrder(),
   }) {
     _taskWithQueueStatusStream = _taskWithQueueStatusStream ??
-        (_buildListStream(
+        (_buildFilteredListStream(
           taskFilter: taskFilter,
           taskOrder: taskOrder,
         ));
@@ -103,10 +104,20 @@ class DbTaskRepository implements TaskRepository {
     return affected > 0;
   }
 
-  Stream<TaskAssociations> getAssociationsStream() {
+  Stream<TaskAssociations> _getAssociationsStream() {
     _taskAssociationsStream =
         _taskAssociationsStream ?? _buildTaskAssociationsStream();
     return _taskAssociationsStream as Stream<TaskAssociations>;
+  }
+
+  /// Returns a stream of maps that associate the parent id with its children
+  ///
+  /// There only ever will exist one of this streams in parallel.
+  Stream<Map<int?, List<Task>>> _getParentIdToSubTasksMapStream() {
+    _idToSubTasksStream =
+        (_idToSubTasksStream ?? (_createParentIdToSubTasksMapStream()));
+
+    return _idToSubTasksStream as Stream<Map<int?, List<Task>>>;
   }
 
   /// Creates a stream of all additional associations required to build the
@@ -185,8 +196,9 @@ class DbTaskRepository implements TaskRepository {
     });
   }
 
-  /// Actually creates the stream. To be called only once.
-  Stream<List<TaskWithQueueStatus>> _buildListStream({
+  /// Actually creates the main filtered task list stream.
+  /// To be called only once.
+  Stream<List<TaskWithQueueStatus>> _buildFilteredListStream({
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
@@ -197,30 +209,82 @@ class DbTaskRepository implements TaskRepository {
         _tasksDao.watchFilteredAndSortedTopLevelTaskEntities(
             taskFilter: taskFilter, taskOrder: taskOrder);
 
+    final stream = _buildListStream(
+        topLevelEntitiesStream: sortedFilteredTopLevelTasksStream);
+
+    // Apply the keywords-filter, if present
+    if (taskFilter.keywords.present) {
+      return stream.map(
+          (tasksWithQueueStatus) => tasksWithQueueStatus.where((taskWithQueue) {
+                final wantedKeywords = taskFilter.keywords.value;
+                final actualKeywords = taskWithQueue.task.keywords;
+                // accept, if at least one of the wanted is found
+                return wantedKeywords.any((wanted) {
+                  return actualKeywords.contains(wanted);
+                });
+              }).toList());
+    } else {
+      return stream;
+    }
+  }
+
+  /// Actually creates a task list stream.
+  /// Create the list of tasks with their queue status by merging everything
+  ///
+  /// Since the keywords for the tasks are only known here, the keywords-filter
+  /// also is applied here, instead of as part of the tasks-query.
+  /// This will only delay this, if the filter is present, though.
+  Stream<List<TaskWithQueueStatus>> _buildListStream(
+      {required Stream<List<TaskEntity>> topLevelEntitiesStream}) {
     // switchMap is used to create a new sub-stream
     // (that uses the most recent values of the top-level stream),
     // whenever the top-level stream emits a new item.
     // The older stream will be automatically destroyed.
 
     // This will be called whenever some of the associations change:
-    return getAssociationsStream().switchMap((associations) {
-      // This will be called whenever the tasks change:
-      return sortedFilteredTopLevelTasksStream.switchMap((topLevels) {
-        // We also need the sub-tasks:
-        final subLevelTasksStream = _tasksDao.watchSubLevelTaskEntities();
+    return _getAssociationsStream().switchMap((associations) {
+      // This will be called whenever some of the subtasks change:
+      return _getParentIdToSubTasksMapStream().switchMap((parentIdToSublevels) {
+        // This will be called whenever the tasks change:
+        return topLevelEntitiesStream.map((topLevels) {
+          // Create the models for top-tier tasks
+          final tasksWithQueueStatus = topLevels
+              .map((taskEntity) => TaskWithQueueStatus(
+                    task: Task(
+                      id: taskEntity.id,
+                      title: taskEntity.title,
+                      doneDateTime: taskEntity.doneDateTime,
+                      description: taskEntity.description,
+                      category:
+                          associations.idToCategoryMap[taskEntity.categoryId],
+                      keywords:
+                          associations.taskIdToKeywordsMap[taskEntity.id] ?? [],
+                      timeLogs:
+                          associations.taskIdToTimeLogsMap[taskEntity.id] ?? [],
+                      estimatedTime: taskEntity.estimatedTime,
+                      dueDate: taskEntity.dueDate,
+                      creationDateTime: taskEntity.creationDateTime,
+                      children: const [],
+                      // children is supposed to be empty here. It will
+                      // be added below, since the "idToSubTasks" Map is required that does
+                      // not exist right here
+                      learnLists:
+                          associations.taskIdToLearnListMap[taskEntity.id] ??
+                              [],
+                      manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
+                    ),
+                    queueStatus:
+                        associations.taskIdToQueueStatusMap[taskEntity.id],
+                  ))
+              .toList();
 
-        // Merge it all together and build a stream of task-models
-        return subLevelTasksStream.map((subLevels) {
-          return _mergeEntitiesTogether(
-            topLevels: topLevels,
-            subLevels: subLevels,
-            idToCategoryMap: associations.idToCategoryMap,
-            taskIdToKeywordMap: associations.taskIdToKeywordsMap,
-            keywordsFilter: taskFilter.keywords,
-            taskIdToTimeLogsMap: associations.taskIdToTimeLogsMap,
-            taskIdToQueueStatusMap: associations.taskIdToQueueStatusMap,
-            taskIdToLearnListMap: associations.taskIdToLearnListMap,
-          );
+          // Add the sub-tasks (tier 2) to their parents (top tier)
+          for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
+            taskWithQueue.task.children =
+                (parentIdToSublevels[taskWithQueue.task.id] ?? []);
+          }
+
+          return tasksWithQueueStatus;
         });
       });
     });
@@ -260,97 +324,48 @@ class DbTaskRepository implements TaskRepository {
     return idToModelList;
   }
 
-  /// Create the list of tasks with their queue status by merging everything
-  ///
-  /// Since the keywords for the tasks are only known here, the keywords-filter
-  /// also is applied here, instead of as part of the tasks-query.
-  /// This will only delay this, if the filter is present, though.
-  List<TaskWithQueueStatus> _mergeEntitiesTogether({
-    required List<TaskEntity> topLevels,
-    required List<TaskEntity> subLevels,
-    required Map<int, Category> idToCategoryMap,
-    required Map<int, List<KeyWord>> taskIdToKeywordMap,
-    required Value<List<KeyWord>> keywordsFilter,
-    required Map<int, List<TimeLog>> taskIdToTimeLogsMap,
-    required Map<int, QueueStatus> taskIdToQueueStatusMap,
-    required Map<int, List<LearnList>> taskIdToLearnListMap,
-  }) {
-    final subTaskModels = [];
-    final idToSubTasks = <int?, List<Task>>{};
+  /// Creates a stream of maps that associate the parent id with its children
+  Stream<Map<int?, List<Task>>> _createParentIdToSubTasksMapStream() {
+    final subTasksStream = _tasksDao.watchSubLevelTaskEntities();
 
-    // Create the models for subtasks and maps them to their parent-ID
-    for (var taskEntity in subLevels) {
-      final taskModel = Task(
-        id: taskEntity.id,
-        title: taskEntity.title,
-        doneDateTime: taskEntity.doneDateTime,
-        description: taskEntity.description,
-        category: idToCategoryMap[taskEntity.categoryId],
-        keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-        timeLogs: taskIdToTimeLogsMap[taskEntity.id] ?? [],
-        estimatedTime: taskEntity.estimatedTime,
-        dueDate: taskEntity.dueDate,
-        creationDateTime: taskEntity.creationDateTime,
-        children: const [],
-        // children is supposed to be empty here. It will
-        // be added below, since the "idToSubTasks" Map is required that does
-        // not exist right here
-        learnLists: taskIdToLearnListMap[taskEntity.id] ?? [],
-        manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-      );
-      subTaskModels.add(taskModel);
-      idToSubTasks
-          .putIfAbsent(taskEntity.parentTaskId, () => [])
-          .add(taskModel);
-    }
+    // This will be called whenever some of the associations change:
+    return _getAssociationsStream().switchMap((associations) {
+      return subTasksStream.map((subLevels) {
+        final subTaskModels = [];
+        final idToSubTasks = <int?, List<Task>>{};
 
-    // Add the sub-subtasks (tier 3 and deeper) to their parents (tier-2)
-    for (Task subtask in subTaskModels) {
-      subtask.children = (idToSubTasks[subtask.id] ?? []);
-    }
+        // Create the models for subtasks and maps them to their parent-ID
+        for (var taskEntity in subLevels) {
+          final taskModel = Task(
+            id: taskEntity.id,
+            title: taskEntity.title,
+            doneDateTime: taskEntity.doneDateTime,
+            description: taskEntity.description,
+            category: associations.idToCategoryMap[taskEntity.categoryId],
+            keywords: associations.taskIdToKeywordsMap[taskEntity.id] ?? [],
+            timeLogs: associations.taskIdToTimeLogsMap[taskEntity.id] ?? [],
+            estimatedTime: taskEntity.estimatedTime,
+            dueDate: taskEntity.dueDate,
+            creationDateTime: taskEntity.creationDateTime,
+            children: const [],
+            // children is supposed to be empty here. It will
+            // be added below, since the "idToSubTasks" Map is required that does
+            // not exist right here
+            learnLists: associations.taskIdToLearnListMap[taskEntity.id] ?? [],
+            manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
+          );
+          subTaskModels.add(taskModel);
+          idToSubTasks
+              .putIfAbsent(taskEntity.parentTaskId, () => [])
+              .add(taskModel);
+        }
 
-    // Create the models for top-tier tasks
-    final tasksWithQueueStatus = topLevels
-        .map((taskEntity) => TaskWithQueueStatus(
-              task: Task(
-                id: taskEntity.id,
-                title: taskEntity.title,
-                doneDateTime: taskEntity.doneDateTime,
-                description: taskEntity.description,
-                category: idToCategoryMap[taskEntity.categoryId],
-                keywords: taskIdToKeywordMap[taskEntity.id] ?? [],
-                timeLogs: taskIdToTimeLogsMap[taskEntity.id] ?? [],
-                estimatedTime: taskEntity.estimatedTime,
-                dueDate: taskEntity.dueDate,
-                creationDateTime: taskEntity.creationDateTime,
-                children: const [],
-                // children is supposed to be empty here. It will
-                // be added below, since the "idToSubTasks" Map is required that does
-                // not exist right here
-                learnLists: taskIdToLearnListMap[taskEntity.id] ?? [],
-                manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-              ),
-              queueStatus: taskIdToQueueStatusMap[taskEntity.id],
-            ))
-        .toList();
-
-    // Add the sub-tasks (tier 2) to their parents (top tier)
-    for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
-      taskWithQueue.task.children = (idToSubTasks[taskWithQueue.task.id] ?? []);
-    }
-
-    if (keywordsFilter.present) {
-      // Apply the keywords-filter
-      return tasksWithQueueStatus.where((taskWithQueue) {
-        final wantedKeywords = keywordsFilter.value;
-        final actualKeywords = taskWithQueue.task.keywords;
-        // accept, if at least one of the wanted is found
-        return wantedKeywords.any((wanted) {
-          return actualKeywords.contains(wanted);
-        });
-      }).toList();
-    } else {
-      return tasksWithQueueStatus;
-    }
+        // Add the sub-subtasks (tier 3 and deeper) to their parents (tier-2)
+        for (Task subtask in subTaskModels) {
+          subtask.children = (idToSubTasks[subtask.id] ?? []);
+        }
+        return idToSubTasks;
+      });
+    });
   }
 }
