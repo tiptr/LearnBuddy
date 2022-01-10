@@ -36,31 +36,33 @@ class SubTasksList extends StatelessWidget {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: 10,
-          itemExtent: 110,
+          // itemExtent: 110,
           itemBuilder: (BuildContext context, int index) {
             return TaskCard(
-                task: ListReadTaskDto(
-              id: index,
-              title: 'jdhlsf',
-              done: false,
-              categoryColor: Colors.lightBlue,
-              subTaskCount: 0,
-              finishedSubTaskCount: 0,
-              isQueued: false,
-              keywords: [],
-              dueDate: null,
-              remainingTimeEstimation: null,
-            ));
+              isSubTaskCard: true,
+              task: ListReadTaskDto(
+                id: index,
+                title: 'jdhlsf',
+                done: false,
+                categoryColor: Colors.lightBlue,
+                subTaskCount: 0,
+                finishedSubTaskCount: 0,
+                isQueued: false,
+                keywords: [],
+                dueDate: null,
+                remainingTimeEstimation: null,
+              ),
+            );
           },
         ),
         InkWell(
           onTap: () {
             //TODO
             Navigator.push(
-                context,
-                MaterialPageRoute(
+              context,
+              MaterialPageRoute(
                 builder: (context) => const TaskAddScreen(),
-                ),
+              ),
             );
           },
           child: Ink(
