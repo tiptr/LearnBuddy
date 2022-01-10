@@ -74,7 +74,7 @@ Use the [watch] flag to watch the files' system for edits and rebuild as necessa
 
 `flutter packages pub run build_runner watch --delete-conflicting-outputs`
 
-If you want the generator to run one time and exits use:
+If you want the generator to run one time and exit, then use:
 
 `flutter packages pub run build_runner build --delete-conflicting-outputs`
 

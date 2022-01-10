@@ -1,6 +1,6 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_app/util/formatting.dart';
+import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
 class DurationInputField extends StatelessWidget {
   final Function onSelect;
@@ -39,10 +39,7 @@ class DurationInputField extends StatelessWidget {
             filled: true,
             prefixIcon: const Icon(Icons.timer_outlined),
             label: const Text("Zeitschätzung"),
-            hintText: Formatting.formatDuration(
-              selectedDuration,
-              "Dauer auswählen",
-            ),
+            hintText: selectedDuration.format(ifNull: 'Dauer auswählen'),
           ),
         ),
       ),

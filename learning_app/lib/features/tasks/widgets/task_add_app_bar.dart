@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 
 class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -35,18 +36,24 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                       border: InputBorder.none,
                     ),
                     controller: textController,
+                    onChanged: (text) async {
+                      BlocProvider.of<AddTaskCubit>(context)
+                          .addTaskAttribute(CreateTaskDto(
+                        title: text,
+                      ));
+                    },
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    BlocProvider.of<TaskCubit>(context)
-                        .createTask(
-                          CreateTaskDto(
-                            title: textController.text,
-                            done: false,
-                          ),
-                        )
-                        .whenComplete(() => Navigator.pop(context));
+                    BlocProvider.of<AddTaskCubit>(context)
+                        .saveTask()
+                        .whenComplete(() {
+                      if (BlocProvider.of<AddTaskCubit>(context).state
+                          is TaskAdded) {
+                        Navigator.pop(context);
+                      }
+                    });
                   },
                   icon: const Icon(Icons.save),
                   iconSize: 30,

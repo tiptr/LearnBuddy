@@ -1,0 +1,28 @@
+-- More information about this file type:
+-- https://drift.simonbinder.eu/docs/using-sql/moor_files/#getting-started
+
+-- Import converters
+import 'package:learning_app/database/type_converters/duration_converter.dart';
+
+-- Import other entities this one depends on:
+import 'package:learning_app/features/leisure/persistence/leisure_categories.drift';
+
+-- entity definition
+-- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
+-- could be considered more elegant
+-- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
+CREATE TABLE LeisureActivities (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    leisure_category_id INT NOT NULL REFERENCES LeisureCategories(id),
+    name TEXT NOT NULL,
+    path_to_image TEXT,
+    duration INT NOT NULL MAPPED BY `const DurationConverter()`,
+    description_short TEXT NOT NULL,
+    description_long TEXT,
+    suitable_for_ages_above INT,
+    suitable_for_ages_below INT,
+    is_favorite BOOL NOT NULL
+) AS LeisureActivityEntity;
+
+-- Indices for faster querying
+CREATE INDEX leisure_activities_categories_index ON LeisureActivities(leisure_category_id);
