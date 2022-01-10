@@ -44,6 +44,7 @@ import 'initializations/initialization_002_keywords.dart';
 // Migration scripts:
 import 'initializations/initialization_101_huge_amount_of_task_keywords.dart';
 import 'initializations/initialization_102_huge_amount_of_timelogs.dart';
+import 'initializations/initialization_103_some_queue_elements.dart';
 import 'migrations/v01_to_v02_migration.dart';
 import 'migrations/v02_to_v03_migration.dart';
 
@@ -139,6 +140,7 @@ class Database extends _$Database {
             await initialization100HugeAmountOfTasks();
             await initialization101HugeAmountOfTaskKeywords();
             await initialization102HugeAmountOfTimeLogs();
+            await initialization103QueueElements();
           }
         }
       },

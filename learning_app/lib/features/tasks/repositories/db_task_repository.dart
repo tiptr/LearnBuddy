@@ -68,6 +68,7 @@ class DbTaskRepository implements TaskRepository {
   }
 
   @override
+
   /// This creates a stream watching the single task (with subtasks) with the
   /// given ID. Only works with queued tasks, since this are the only ones
   /// required and can be accessed even quicker.
