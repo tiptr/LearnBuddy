@@ -7,6 +7,7 @@ import 'package:learning_app/features/timer/widgets/actions.dart'
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -62,11 +63,18 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state.getCountPhase());
     final totalSteps = context
         .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCount());
+    final completedSessionColor = Theme.of(context)
+        .colorScheme
+        .timerProgressIndicatorCompletedSessionColor;
+    final unCompletedSessionColor = Theme.of(context)
+        .colorScheme
+        .timerProgressIndicatorUnCompletedSessionColor;
+    print("$completedSessionColor $unCompletedSessionColor");
     return StepProgressIndicator(
         totalSteps: totalSteps,
         currentStep: currentStep + 1,
         // index starts with 1 apparently :(
-        selectedColor: Colors.blue,
+        selectedColor: completedSessionColor,
         size: 30,
         padding: 10,
         customStep: (index, color, _) {
@@ -74,7 +82,9 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
             width: 30.0,
             height: 30.0,
             decoration: BoxDecoration(
-              color: color == Colors.blue ? Colors.blue : Colors.grey,
+              color: color == completedSessionColor
+                  ? completedSessionColor
+                  : unCompletedSessionColor,
               shape: BoxShape.circle,
             ),
           );

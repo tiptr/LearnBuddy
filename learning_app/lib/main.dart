@@ -10,6 +10,7 @@ import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart
 import 'package:logger/logger.dart';
 import 'features/tasks/bloc/add_task_cubit.dart';
 import 'features/timer/screens/timer_screen.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -67,14 +68,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
-
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          primary: const Color(0xFF3444CF),
-          secondary: const Color(0xFF9E5EE1),
-        ),
+        colorScheme: ColorSchemes.defaultColorScheme(),
         scrollbarTheme: ScrollbarThemeData(
           isAlwaysShown: false,
           thickness: MaterialStateProperty.all(10),
@@ -123,7 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor:
+          Theme.of(context).colorScheme.bottomNavigationBarUnselectedItemColor,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,

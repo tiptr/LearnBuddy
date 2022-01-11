@@ -6,6 +6,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 
 const double iconSize = 18.0;
 
@@ -59,7 +60,9 @@ class TaskCard extends StatelessWidget {
           // Grey out when done -> Overlay with semitransparent white; Else
           // overlay with fulltransparent "black" (no effect)
           colorFilter: ColorFilter.mode(
-              _task.done ? const Color(0xB8FFFFFF) : const Color(0x00000000),
+              _task.done
+                  ? Theme.of(context).colorScheme.greyOutOverlayColor
+                  : Colors.transparent,
               BlendMode.lighten),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
@@ -68,7 +71,8 @@ class TaskCard extends StatelessWidget {
                 // TODO: Use color of category once added
                 left: BorderSide(
                     width: 12.5,
-                    color: _task.categoryColor ?? noCategoryDefaultColor),
+                    color: _task.categoryColor ??
+                        Theme.of(context).colorScheme.noCategoryDefaultColor),
               ),
               color: Colors.white,
             ),

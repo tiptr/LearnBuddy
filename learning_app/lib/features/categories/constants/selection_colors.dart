@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 
 const availableColors = <Color>[
   Colors.red,
@@ -24,5 +25,3 @@ const availableColors = <Color>[
 ];
 
 const preSelectedColorForSelection = Colors.lightGreen;
-
-const noCategoryDefaultColor = Colors.grey;
