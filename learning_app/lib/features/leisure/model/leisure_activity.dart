@@ -4,7 +4,6 @@ import 'package:learning_app/features/leisure/model/leisure_category.dart';
 class LeisureActivity extends Equatable {
   final int id;
   final String name;
-  final LeisureCategory category;
   final Duration duration;
   final String descriptionShort;
   final String? descriptionLong; // nullable
@@ -16,7 +15,6 @@ class LeisureActivity extends Equatable {
   const LeisureActivity({
     required this.id,
     required this.name,
-    required this.category,
     required this.duration,
     required this.descriptionShort,
     this.descriptionLong,
@@ -30,7 +28,6 @@ class LeisureActivity extends Equatable {
   List<Object?> get props => [
         id,
         name,
-        category,
         duration,
         descriptionShort,
         descriptionLong,

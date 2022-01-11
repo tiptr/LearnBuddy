@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 
-class LeisureOverviewAppBar extends StatelessWidget implements PreferredSizeWidget {
+class LeisureOverviewAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final String categoryTitle;
 
   const LeisureOverviewAppBar({Key? key, required this.categoryTitle})
@@ -26,7 +27,9 @@ class LeisureOverviewAppBar extends StatelessWidget implements PreferredSizeWidg
                   iconSize: 30,
                 ),
                 Expanded(
-                  child: Text(categoryTitle, textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(categoryTitle,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 IconButton(
                   onPressed: () {

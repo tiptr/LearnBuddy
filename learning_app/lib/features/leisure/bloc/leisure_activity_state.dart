@@ -11,7 +11,7 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Dips am Stuhl",
-        category: LeisureCategory(id: 1, name: "Fitness ohne Geräte"), //TODO: Link the right category
+
         duration: Duration(minutes: 5),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",
@@ -23,7 +23,7 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Liegestütze",
-        category: LeisureCategory(id: 1, name: "Fitness ohne Geräte"), //TODO: Link the right category
+
         duration: Duration(minutes: 5),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",
@@ -35,7 +35,6 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Kniebeugen",
-        category: LeisureCategory(id: 1, name: "Fitness ohne Geräte"), //TODO: Link the right category
         duration: Duration(minutes: 5),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",
@@ -47,7 +46,6 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Im Stand joggen",
-        category: LeisureCategory(id: 1, name: "Fitness ohne Geräte"), //TODO: Link the right category
         duration: Duration(minutes: 5),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",
@@ -59,7 +57,6 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Ganzkörpertraining",
-        category: LeisureCategory(id: 1, name: "Fitness ohne Geräte"), //TODO: Link the right category
         duration: Duration(minutes: 15),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",

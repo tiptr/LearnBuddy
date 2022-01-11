@@ -6,8 +6,6 @@ import 'package:learning_app/features/leisure/bloc/leisure_activity_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 import 'package:learning_app/features/leisure/widgets/leisure_app_bar.dart';
 
-
-
 class LeisureActivityScreen extends StatelessWidget {
   final ReadLeisureActivitiesDto leisureActivity;
 
@@ -19,80 +17,76 @@ class LeisureActivityScreen extends StatelessWidget {
     return Scaffold(
       appBar: LeisureAppBar(categoryTitle: leisureActivity.name),
       body: BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
-      bloc: LeasureActivityCubit(),
-      builder: (context, state) {
-        return Scrollbar(
-          isAlwaysShown: true,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    child: Image(
-                      image: AssetImage(leisureActivity.pathToImage ??
-                          defaultLeisureCategoryImagePath),
-                      width: 85.0,
-                      height: 85.0,
-                    ),
-                  )
-                ),
-                // Spacer
-                const SizedBox(height: 20.0),
-                Center(
-                  child: Text(
-                    leisureActivity.duration.inMinutes.toString() + " Minuten",
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                // Spacer
-                const SizedBox(height: 5.0),
-                Center(
-                  child: Text(
-                    leisureActivity.descriptionShort,
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
+        bloc: LeasureActivityCubit(),
+        builder: (context, state) {
+          return Scrollbar(
+            isAlwaysShown: true,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: Image(
+                          image: AssetImage(leisureActivity.pathToImage ??
+                              defaultLeisureCategoryImagePath),
+                          width: 85.0,
+                          height: 85.0,
+                        ),
+                      )),
+                  // Spacer
+                  const SizedBox(height: 20.0),
+                  Center(
+                    child: Text(
+                      leisureActivity.duration.inMinutes.toString() +
+                          " Minuten",
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                // Spacer
-                const SizedBox(height: 20.0),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child:
-                    Text(
+                  // Spacer
+                  const SizedBox(height: 5.0),
+                  Center(
+                    child: Text(
+                      leisureActivity.descriptionShort,
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  // Spacer
+                  const SizedBox(height: 20.0),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Text(
                       "Details:",
                       style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                // Spacer
-                const SizedBox(height: 5.0),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child:
-                    Text(
+                  // Spacer
+                  const SizedBox(height: 5.0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Text(
                       leisureActivity.descriptionLong ?? '',
                       style: const TextStyle(
-                      fontSize: 12.0,
+                        fontSize: 12.0,
+                      ),
                     ),
                   ),
-                ),
-              ]
-            ),
+                ]),
           );
-
-      },
-    ),
+        },
+      ),
     );
   }
 }

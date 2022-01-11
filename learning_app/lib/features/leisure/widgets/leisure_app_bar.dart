@@ -26,7 +26,9 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                   iconSize: 30,
                 ),
                 Expanded(
-                  child: Text(categoryTitle, textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(categoryTitle,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 IconButton(
                   onPressed: () {

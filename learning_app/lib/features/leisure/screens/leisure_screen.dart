@@ -22,15 +22,15 @@ class LeisureScreen extends StatelessWidget {
           itemBuilder: (BuildContext ctx, int idx) {
             return GestureDetector(
               child: LeisureCategoryCard(
-                        leisureCategory: state.leisureCategoriesDtos[idx],
-                       ),
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LeisureActivityOverviewScreen(),
-                  ),
+                leisureCategory: state.leisureCategoriesDtos[idx],
               ),
-              );
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LeisureActivityOverviewScreen(),
+                ),
+              ),
+            );
           },
         );
       },

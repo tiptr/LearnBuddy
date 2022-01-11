@@ -7,39 +7,40 @@ import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.d
 import 'package:learning_app/features/leisure/widgets/leisure_overview_app_bar.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
 
-
 class LeisureActivityOverviewScreen extends StatelessWidget {
   const LeisureActivityOverviewScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const LeisureOverviewAppBar(categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
+      appBar: const LeisureOverviewAppBar(
+          categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
       body: BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
-      bloc: LeasureActivityCubit(),
-      builder: (context, state) {
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: state.leisureActivitiesDtos.length,
-          itemBuilder: (BuildContext ctx, int idx) {
-            return GestureDetector(
-              child: LeisureActivityCard(
-                        leisureActivity: state.leisureActivitiesDtos[idx],
-                       ),
-              onTap: () => {
-                Navigator.push(
-                  ctx,
-                  MaterialPageRoute(
-                    builder: (ctx) => LeisureActivityScreen(leisureActivity: state.leisureActivitiesDtos[idx]),
-                  ))
-              }
-            );
-          },
-        );
-      },
-    ),
+        bloc: LeasureActivityCubit(),
+        builder: (context, state) {
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.leisureActivitiesDtos.length,
+            itemBuilder: (BuildContext ctx, int idx) {
+              return GestureDetector(
+                  child: LeisureActivityCard(
+                    leisureActivity: state.leisureActivitiesDtos[idx],
+                  ),
+                  onTap: () => {
+                        Navigator.push(
+                            ctx,
+                            MaterialPageRoute(
+                              builder: (ctx) => LeisureActivityScreen(
+                                  leisureActivity:
+                                      state.leisureActivitiesDtos[idx]),
+                            ))
+                      });
+            },
+          );
+        },
+      ),
     );
   }
 }
