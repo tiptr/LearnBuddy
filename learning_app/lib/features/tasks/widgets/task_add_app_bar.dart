@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
@@ -41,6 +43,14 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                           .addTaskAttribute(CreateTaskDto(
                         title: text,
                       ));
+                    },
+                    autofocus: true,
+                    maxLines: 1,
+                    onTap: () {
+                      log('tapped');
+                    },
+                    onSubmitted: (text) {
+                      log('submitted: $text');
                     },
                   ),
                 ),

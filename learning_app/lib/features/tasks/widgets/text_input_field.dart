@@ -11,7 +11,7 @@ class TextInputField extends StatelessWidget {
     Key? key,
     required this.label,
     required this.hintText,
-    required this.iconData,
+    this.iconData,
     required this.textController,
     this.onChanged,
   }) : super(key: key);
@@ -19,17 +19,43 @@ class TextInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: const TextStyle(
+          color: Color(0xFF636573),
+          fontWeight: FontWeight.normal
+      ),
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF636573),
+            width: 2.0,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2.0,
+          ),
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        filled: true,
-        prefixIcon: iconData != null ? Icon(iconData) : null,
-        label: Text(label),
+        filled: false,
+        prefixIcon: iconData != null ? Icon(
+            iconData,
+          color: Color(0xFF636573),
+        ) : null,
+        label: Text(
+          label,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold
+          ),
+        ),
         hintText: hintText,
+        hintStyle: const TextStyle(
+            color: Color(0xFF949597)
+        ),
       ),
+      maxLines: null, // no limit
       controller: textController,
       onChanged: onChanged,
     );
