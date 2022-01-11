@@ -68,11 +68,11 @@ class ActiveTaskContent extends StatelessWidget {
     late final Task task;
     late final String timeSpent;
     if (state is ActiveState) {
-      task = state.task;
+      task = state.task.task;
       timeSpent = state.timeLog.duration.inSeconds
           .toString(); // TODO add other time TimeLogs to the currently active on.
     } else if (state is InitializedState) {
-      task = state.task;
+      task = state.task.task;
       timeSpent = 0.toString();
     } else {
       throw Error();

@@ -29,3 +29,11 @@ class TimeNoticeEvent extends TimeLoggingEvent {
     required this.duration,
   });
 }
+
+class TaskChangedEvent extends TimeLoggingEvent {
+  final TaskWithQueueStatus task;
+  const TaskChangedEvent({
+    required this.task,
+  });
+
+}
