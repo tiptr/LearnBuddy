@@ -8,12 +8,12 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../database/database.dart' as _i5;
-import '../features/categories/persistence/categories_dao.dart' as _i22;
+import '../features/categories/persistence/categories_dao.dart' as _i23;
 import '../features/categories/repositories/category_repository.dart' as _i3;
 import '../features/categories/repositories/db_category_repository.dart' as _i4;
 import '../features/keywords/persistence/keywords_dao.dart' as _i6;
 import '../features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart'
-    as _i21;
+    as _i22;
 import '../features/learn_lists/learn_lists_general/persistence/learn_list_words_dao.dart'
     as _i9;
 import '../features/learn_lists/learn_lists_general/persistence/learn_lists_dao.dart'
@@ -24,15 +24,16 @@ import '../features/learn_lists/learn_lists_general/repositories/learn_list_repo
     as _i7;
 import '../features/leisure/persistence/leisure_activities_dao.dart' as _i11;
 import '../features/leisure/persistence/leisure_categories_dao.dart' as _i12;
-import '../features/task_queue/persistence/task_queue_elements_dao.dart'
-    as _i15;
 import '../features/tasks/persistence/task_keywords_dao.dart' as _i13;
 import '../features/tasks/persistence/task_learn_lists_dao.dart' as _i14;
+import '../features/tasks/persistence/task_queue_elements_dao.dart' as _i15;
 import '../features/tasks/persistence/tasks_dao.dart' as _i18;
 import '../features/tasks/repositories/db_task_repository.dart' as _i17;
 import '../features/tasks/repositories/task_repository.dart' as _i16;
-import '../features/time_logs/persistence/time_logs_dao.dart' as _i20;
+import '../features/time_logs/persistence/time_logs_dao.dart' as _i21;
 import '../features/time_logs/repository/test_time_logging_repository.dart'
+    as _i20;
+import '../features/time_logs/repository/time_logging_repository.dart'
     as _i19; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
@@ -58,10 +59,10 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       _i15.TaskQueueElementsDao(get<_i5.Database>()));
   gh.factory<_i16.TaskRepository>(() => _i17.DbTaskRepository());
   gh.singleton<_i18.TasksDao>(_i18.TasksDao(get<_i5.Database>()));
-  gh.factory<_i19.TestTimeLogRepo>(() => _i19.TestTimeLogRepo());
-  gh.singleton<_i20.TimeLogsDao>(_i20.TimeLogsDao(get<_i5.Database>()));
-  gh.singleton<_i21.BodyListWordDetailsDao>(
-      _i21.BodyListWordDetailsDao(get<_i5.Database>()));
-  gh.singleton<_i22.CategoriesDao>(_i22.CategoriesDao(get<_i5.Database>()));
+  gh.factory<_i19.TimeLoggingRepository>(() => _i20.TestTimeLogRepo());
+  gh.singleton<_i21.TimeLogsDao>(_i21.TimeLogsDao(get<_i5.Database>()));
+  gh.singleton<_i22.BodyListWordDetailsDao>(
+      _i22.BodyListWordDetailsDao(get<_i5.Database>()));
+  gh.singleton<_i23.CategoriesDao>(_i23.CategoriesDao(get<_i5.Database>()));
   return get;
 }

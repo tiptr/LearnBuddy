@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
+import 'package:learning_app/features/time_logs/dtos/time_log_dto.dart';
 import 'package:learning_app/features/time_logs/models/time_log.dart';
-import 'package:learning_app/services/time_logging/dtos/time_log_dto.dart';
-import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
+import 'package:learning_app/features/time_logs/repository/time_logging_repository.dart';
 
 /// Concrete repository implementation using the database with drift
 @Injectable(as: TimeLoggingRepository)

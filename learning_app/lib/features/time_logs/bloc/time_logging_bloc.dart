@@ -2,16 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/time_logs/dtos/time_log_dto.dart';
 import 'package:learning_app/features/time_logs/models/time_log.dart';
 import 'package:learning_app/features/time_logs/repository/time_logging_repository.dart';
-import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/logger.dart';
-import 'package:mocktail/mocktail.dart';
 
 part 'time_logging_events.dart';
 
@@ -21,7 +18,6 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   late final TimeLoggingRepository _timeLoggingRepository;
   late final TaskRepository _taskRepository;
   StreamSubscription<TaskWithQueueStatus?>? _streamSubscriptionTask;
-  TaskWithQueueStatus? _activeTask;
 
   TimeLoggingBloc({TimeLoggingRepository? timeLogRepo, TaskRepository? taskRepository})
       : super(InactiveState()) {
@@ -39,7 +35,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
     int id = event.id;
     Stream<TaskWithQueueStatus?> stream = _taskRepository.watchQueuedTaskWithId(id: id);
-    TaskWithQueueStatus? task = await stream.last;
+    TaskWithQueueStatus? task = await stream.first;
     emit(InitializedState(task: task!));
     _streamSubscriptionTask = _taskRepository.watchQueuedTaskWithId(id: id).listen(
             (TaskWithQueueStatus? task) {

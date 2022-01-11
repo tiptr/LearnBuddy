@@ -5,6 +5,7 @@ import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/util/injection.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:logger/logger.dart';
@@ -47,6 +48,7 @@ void main() {
             return TimeLoggingBloc();
           },
         ),
+
         BlocProvider<AddTaskCubit>(
           lazy: true,
           create: (context) {
