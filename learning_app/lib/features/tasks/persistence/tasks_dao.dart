@@ -22,6 +22,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
 
   Stream<List<TaskEntity>>? _filteredSortedTopLevelTaskEntitiesStream;
   Stream<List<TaskEntity>>? _subLevelTaskEntitiesStream;
+  Stream<List<TaskEntity>>? _queuedTopLevelTaskEntitiesStream;
 
   /// Creates a new task and returns its id.
   ///
@@ -69,6 +70,13 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     return _subLevelTaskEntitiesStream as Stream<List<TaskEntity>>;
   }
 
+  Stream<List<TaskEntity>> watchQueuedTopLevelTaskEntities() {
+    _queuedTopLevelTaskEntitiesStream = (_queuedTopLevelTaskEntitiesStream ??
+        _createQueuedTopLevelTaskEntitiesStream());
+
+    return _queuedTopLevelTaskEntitiesStream as Stream<List<TaskEntity>>;
+  }
+
   Stream<List<TaskEntity>> watchFilteredAndSortedTopLevelTaskEntities({
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
@@ -82,6 +90,19 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
 
     return _filteredSortedTopLevelTaskEntitiesStream
         as Stream<List<TaskEntity>>;
+  }
+
+  Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
+    final queuedTopLevelTasksQuery = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNull()) // top-levels only
+      ..join([
+        innerJoin(
+            taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
+      ])
+      ..orderBy([
+        (tsk) => OrderingTerm.asc(taskQueueElements.orderPlacement),
+      ]);
+    return queuedTopLevelTasksQuery.watch();
   }
 
   Stream<List<TaskEntity>> _createSubLevelTaskEntitiesStream() {
@@ -136,7 +157,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           return const CustomExpression('TRUE');
         }
       });
-    // Add ordering to the exixting query
+    // Add ordering to the existing query
     final sortedFilteredTopLevelTasksQuery = filteredTopLevelTasksQuery
       ..orderBy([
         (tsk) {
