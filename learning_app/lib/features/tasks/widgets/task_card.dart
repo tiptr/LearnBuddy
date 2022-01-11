@@ -215,7 +215,7 @@ class TaskCard extends StatelessWidget {
             ),
             labelPadding: EdgeInsets.symmetric(
               vertical: 0,
-              horizontal: _isOverDue ? 8 : 0,
+              horizontal: _isOverDue ? 4 : 0,
             ),
             avatar: (_task.dueDate != null)
                 ? Icon(
@@ -230,59 +230,66 @@ class TaskCard extends StatelessWidget {
           ),
 
           // stats
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Remaining time estimation, only if provided
-              if (!_task.done && _isEstimated)
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.hourglass_top,
-                      size: iconSize,
-                      color: Color(0xFF949597),
-                    ),
-                    Text(
-                      _formattedTimeEstimation,
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 0.0,
+              bottom: 0.0,
+              right: 4.0, // match the margin of the date chip
+              left: 0.0
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Remaining time estimation, only if provided
+                if (!_task.done && _isEstimated)
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.hourglass_top,
+                        size: iconSize,
                         color: Color(0xFF949597),
-                        fontWeight: FontWeight.normal,
-                        decorationThickness: 2.0,
-                        fontSize: 12,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-              Container(
-                margin: const EdgeInsets.only(left: 7.5),
-                child: (_task.subTaskCount > 0)
-                    ? Row(
-                        children: [
-                          const Icon(
-                            Icons.dynamic_feed_outlined,
-                            size: iconSize,
+                      Text(
+                        _formattedTimeEstimation,
+                        textAlign: TextAlign.end,
+                        style: const TextStyle(
+                          color: Color(0xFF949597),
+                          fontWeight: FontWeight.normal,
+                          decorationThickness: 2.0,
+                          fontSize: 12,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                if (_task.subTaskCount > 0)
+                  Container(
+                    margin: const EdgeInsets.only(left: 7.5),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.dynamic_feed_outlined,
+                          size: iconSize,
+                          color: Color(0xFF949597),
+                        ),
+                        const SizedBox(width: 5.0),
+                        Text(
+                          '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(
                             color: Color(0xFF949597),
+                            fontWeight: FontWeight.normal,
+                            decorationThickness: 2.0,
+                            fontSize: 12,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(width: 5.0),
-                          Text(
-                            '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
-                            textAlign: TextAlign.end,
-                            style: const TextStyle(
-                              color: Color(0xFF949597),
-                              fontWeight: FontWeight.normal,
-                              decorationThickness: 2.0,
-                              fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      )
-                    : Row(),
-              ),
-            ],
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
