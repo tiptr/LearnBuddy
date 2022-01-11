@@ -37,8 +37,8 @@ class ActiveTaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimeLoggingState state = context.select((TimeLoggingBloc bloc) => bloc
-        .state);
+    final TimeLoggingState state =
+        context.select((TimeLoggingBloc bloc) => bloc.state);
     final Task task;
     final TaskWithQueueStatus parentTask;
     if (state is ActiveState) {
@@ -71,8 +71,8 @@ class ActiveTaskCard extends StatelessWidget {
             height: double.infinity,
             width: 8,
             margin: const EdgeInsets.only(right: 10),
-            decoration:  BoxDecoration(
-              color: task.category?.color ??  Colors.grey,
+            decoration: BoxDecoration(
+              color: task.category?.color ?? Colors.grey,
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             ),
           ),

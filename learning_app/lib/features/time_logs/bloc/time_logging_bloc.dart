@@ -119,8 +119,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
         parentTask: event.parentTask,
         task: event.task,
       ));
-    }
-    else if (currentState is InitializedState) {
+    } else if (currentState is InitializedState) {
       emit(InitializedState(
         parentTask: event.parentTask,
         task: event.task,

@@ -12,20 +12,22 @@ class DbTimeLoggingRepository implements TimeLoggingRepository {
   final TimeLogsDao _timeLogsDao = getIt<TimeLogsDao>();
 
   @override
-  Future<TimeLog> createTimeLog(TimeLogDto dto) async{
+  Future<TimeLog> createTimeLog(TimeLogDto dto) async {
     int id = await _timeLogsDao.createTimeLog(db.TimeLogsCompanion(
       beginDateTime: Value(dto.beginTime),
       duration: Value(dto.duration),
       taskId: Value(dto.taskId),
     ));
-    return TimeLog(id: id, taskId: dto.taskId, beginTime: dto.beginTime, duration: dto.duration);
+    return TimeLog(
+        id: id,
+        taskId: dto.taskId,
+        beginTime: dto.beginTime,
+        duration: dto.duration);
   }
-
 
   @override
   Future<bool> update(int id, TimeLogDto dto) async {
     int updated = await _timeLogsDao.updateTimeLog(id, dto.duration);
     return updated != 0;
   }
-
 }

@@ -17,7 +17,8 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
+      create: (_) =>
+          TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
       child: const BaseLayout(
         titleBar: BaseTitleBar(
           title: "Pomodoro Timer",

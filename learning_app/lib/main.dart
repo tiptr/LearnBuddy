@@ -47,7 +47,6 @@ void main() {
             return TimeLoggingBloc();
           },
         ),
-
         BlocProvider<AddTaskCubit>(
           lazy: true,
           create: (context) {

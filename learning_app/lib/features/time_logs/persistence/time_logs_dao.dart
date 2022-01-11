@@ -67,13 +67,9 @@ class TimeLogsDao extends DatabaseAccessor<Database> with _$TimeLogsDaoMixin {
   }
 
   Future<int> updateTimeLog(int id, Duration duration) {
-    return (update(timeLogs)..where((tuple) => tuple.id.equals(id))).write(
-      TimeLogsCompanion(
-        duration: Value(duration),
-      )
-    );
+    return (update(timeLogs)..where((tuple) => tuple.id.equals(id)))
+        .write(TimeLogsCompanion(
+      duration: Value(duration),
+    ));
   }
-
-
-
 }

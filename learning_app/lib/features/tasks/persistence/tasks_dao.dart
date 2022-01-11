@@ -56,12 +56,10 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     );
   }
 
-  Stream<TaskEntity?> watchTaskById(int taskId){
+  Stream<TaskEntity?> watchTaskById(int taskId) {
     final query = select(tasks)..where((tsk) => tsk.id.equals(taskId));
     return query.watchSingleOrNull();
   }
-
-
 
   Stream<List<TaskEntity>> watchSubLevelTaskEntities() {
     _subLevelTaskEntitiesStream =
@@ -95,13 +93,12 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
     final topLevelTasksQuery = select(tasks)
       ..where((tsk) => tsk.parentTaskId.isNull()); // top-levels only
-    final queuedTopLevelTasksQuery = topLevelTasksQuery
-      .join([
-        innerJoin(
-            taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
-      ]);
+    final queuedTopLevelTasksQuery = topLevelTasksQuery.join([
+      innerJoin(taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
+    ]);
     final queuedTopLevelTasksQueryFiltered = queuedTopLevelTasksQuery
-      ..orderBy([OrderingTerm.asc(taskQueueElements.orderPlacement),
+      ..orderBy([
+        OrderingTerm.asc(taskQueueElements.orderPlacement),
       ]);
     return queuedTopLevelTasksQueryFiltered.watch().map((rows) {
       return rows.map((typedResult) {

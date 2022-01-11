@@ -35,7 +35,6 @@ Future<void> initialization103QueueElements() async {
   }
   const taskId = 2;
   if (!usedTaskIds.contains(taskId)) {
-
     usedTaskIds.add(taskId);
 
     queueElements.add(TaskQueueElementsCompanion.insert(
@@ -44,9 +43,6 @@ Future<void> initialization103QueueElements() async {
       orderPlacement: numberOfQueueElements + 1,
     ));
   }
-
-
-
 
   await _dao.batch((batch) {
     batch.insertAll(_dao.taskQueueElements, queueElements);
