@@ -4,12 +4,7 @@ import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_activity_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
-import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
-import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
-import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
-import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
+import 'package:learning_app/features/leisure/widgets/leisure_add_app_bar.dart';
 
 
 
@@ -22,7 +17,6 @@ class LeisureActivityOverviewScreen extends StatefulWidget {
 
 class _LeisureActivityOverviewScreenState extends State<LeisureActivityOverviewScreen> {
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
 
   // Preselect now, because our UIs task logic requires a date to be set
   DateTime selectedDueDate = DateTime.now();
@@ -41,7 +35,7 @@ class _LeisureActivityOverviewScreenState extends State<LeisureActivityOverviewS
     ));*/
 
     return Scaffold(
-      appBar: TaskAddAppBar(textController: _titleController), //TODO: change!!!
+      appBar: LeisureAddAppBar(textController: _titleController), //TODO: change!!!
       body: BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
       bloc: LeasureActivityCubit(),
       builder: (context, state) {
