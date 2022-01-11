@@ -36,7 +36,7 @@ class SubTasksList extends StatelessWidget {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: 10,
-          // itemExtent: 110,
+          // itemExtent: 95,
           itemBuilder: (BuildContext context, int index) {
             return TaskCard(
               isSubTaskCard: true,
@@ -45,12 +45,16 @@ class SubTasksList extends StatelessWidget {
                 title: 'Gemockte Sub-Aufgabe, noch ohne jegliche Funktion',
                 done: false,
                 categoryColor: Colors.lightBlue,
-                subTaskCount: 0,
+                subTaskCount: 5,
                 finishedSubTaskCount: 0,
                 isQueued: false,
-                keywords: [],
-                dueDate: null,
-                remainingTimeEstimation: null,
+                keywords: const ['Hausaufgabe'],
+                // keywords: const ['Hausaufgabe', 'Englisch', 'Klausurvorbereitung'],
+                // keywords: const [],
+                // dueDate: null
+                dueDate: DateTime.now(),
+                // remainingTimeEstimation: null,
+                remainingTimeEstimation: const Duration(minutes: 30),
               ),
             );
           },

@@ -9,6 +9,12 @@ import 'package:learning_app/util/formatting_comparison/duration_extensions.dart
 
 const double iconSize = 14.0;
 
+const double verticalPaddingCardContentTopLevel = 10;
+const double verticalPaddingCardContentSubTasks = 2;
+
+const double distanceBetweenCardsTopLevel = 10.0;
+const double distanceBetweenCardsSubTasks = 7.0;
+
 /// The card used inside the the main tasks list as well as for the subtasks (!)
 class TaskCard extends StatelessWidget {
   final ListReadTaskDto _task;
@@ -40,7 +46,7 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: _isSubTaskCard ? distanceBetweenCardsSubTasks : distanceBetweenCardsTopLevel),
       child: _card(context),
     );
   }
@@ -147,7 +153,11 @@ class TaskCard extends StatelessWidget {
     return Expanded(
       flex: 70,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+        padding: EdgeInsets.symmetric(
+            horizontal: 0,
+            vertical: _isSubTaskCard
+                ? verticalPaddingCardContentSubTasks
+                : verticalPaddingCardContentTopLevel),
         child: Column(
           mainAxisAlignment: _task.keywords.isNotEmpty
               ? MainAxisAlignment.spaceBetween
@@ -166,7 +176,7 @@ class TaskCard extends StatelessWidget {
                     ? TextDecoration.lineThrough
                     : TextDecoration.none,
                 decorationThickness: 2.0,
-                fontSize: 16,
+                fontSize: _isSubTaskCard ? 14 : 16,
                 overflow: TextOverflow.ellipsis,
                 color: const Color(0xFF40424A),
               ),
@@ -176,7 +186,7 @@ class TaskCard extends StatelessWidget {
             if (_task.keywords.isNotEmpty)
               Text(
                 _task.keywords.join(', '),
-                maxLines: 2,
+                maxLines: _isSubTaskCard ? 1 : 2,
                 style: const TextStyle(
                   color: Color(0xFF949597),
                   fontWeight: FontWeight.normal,
@@ -193,7 +203,11 @@ class TaskCard extends StatelessWidget {
 
   Widget _buildDueDateStatsColumn(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+      padding: EdgeInsets.symmetric(
+          horizontal: 0,
+          vertical: _isSubTaskCard
+              ? verticalPaddingCardContentSubTasks
+              : verticalPaddingCardContentTopLevel),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -232,11 +246,10 @@ class TaskCard extends StatelessWidget {
           // stats
           Padding(
             padding: const EdgeInsets.only(
-              top: 0.0,
-              bottom: 0.0,
-              right: 4.0, // match the margin of the date chip
-              left: 0.0
-            ),
+                top: 0.0,
+                bottom: 0.0,
+                right: 4.0, // match the margin of the date chip
+                left: 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
