@@ -10,6 +10,7 @@ class TaskFilter {
   final Value<bool> done;
   final Value<bool> overDue;
 
+
   const TaskFilter({
     this.category = const Value.absent(),
     this.keywords = const Value.absent(),

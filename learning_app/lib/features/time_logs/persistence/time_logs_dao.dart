@@ -52,7 +52,8 @@ class TimeLogsDao extends DatabaseAccessor<Database> with _$TimeLogsDaoMixin {
       for (var entity in timeLogs) {
         final model = TimeLog(
           id: entity.id,
-          begin: entity.beginDateTime,
+          taskId: entity.taskId,
+          beginTime: entity.beginDateTime,
           duration: entity.duration,
         );
         idToModelList.putIfAbsent(entity.taskId, () => []).add(model);

@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
-import 'package:learning_app/services/time_logging/dtos/time_log_dto.dart';
-import 'package:learning_app/services/time_logging/models/time_log.dart';
-import 'package:learning_app/services/time_logging/repository/time_logging_repository.dart';
+import 'package:learning_app/features/time_logs/dtos/time_log_dto.dart';
+import 'package:learning_app/features/time_logs/models/time_log.dart';
+import 'package:learning_app/features/time_logs/repository/time_logging_repository.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:mocktail/mocktail.dart';
 
 part 'time_logging_events.dart';
 
@@ -16,6 +18,7 @@ part 'time_logging_state.dart';
 
 class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   late final TimeLoggingRepository _repository;
+  Stream<Task>? taskStream;
 
   TimeLoggingBloc({TimeLoggingRepository? timeLogRepo})
       : super(InactiveState()) {
@@ -30,10 +33,9 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   Future<void> _onAdd(
       AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
     int id = event.id;
-    List<Task> taskList = await getIt<TaskRepository>().loadTasks();
+    taskStream = null;
     try {
-      Task task = taskList.where((element) => element.id == id).first;
-      emit(InitializedState(task: task));
+      emit(InitializedState(taskStream: taskStream!));
     } on StateError {
       logger.d("This Task is not Found. This should not happen in production.");
       emit(InactiveState());
@@ -42,23 +44,24 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
 
   void _onRemove(
       RemoveTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) {
+    taskStream?
     emit(InactiveState());
   }
 
   Future<void> _onStartTimeLogging(
       StartTimeLoggingEvent event, Emitter<TimeLoggingState> emit) async {
     var currentState = state;
-
     if (currentState is InitializedState) {
+      Task task = await currentState.taskStream.first;
       TimeLog timeLog = await _repository.createTimeLog(TimeLogDto(
-        taskId: currentState.task.id,
+        taskId: task.id,
         beginTime: event.beginTime,
         duration: const Duration(),
       ));
 
       emit(ActiveState(
         timeLog: timeLog,
-        task: currentState.task,
+        taskStream: currentState.taskStream,
       ));
     }
   }
@@ -82,7 +85,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
 
       emit(ActiveState(
         timeLog: newTimeLog,
-        task: currentState.task,
+        taskStream: currentState.taskStream,
       ));
     }
   }

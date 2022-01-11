@@ -1,4 +1,4 @@
-import 'package:learning_app/services/time_logging/models/time_log.dart';
+import 'package:learning_app/features/time_logs/models/time_log.dart';
 
 class TimeLogDto {
   final int taskId;

@@ -55,6 +55,13 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     );
   }
 
+  Stream<TaskEntity?> watchTaskById(int taskId){
+    final query = select(tasks)..where((tsk) => tsk.id.equals(taskId));
+    return query.watchSingleOrNull();
+  }
+
+
+
   Stream<List<TaskEntity>> watchSubLevelTaskEntities() {
     _subLevelTaskEntitiesStream =
         (_subLevelTaskEntitiesStream ?? _createSubLevelTaskEntitiesStream());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/services/time_logging/bloc/time_logging_bloc.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ToggleActiveTask extends StatefulWidget {
