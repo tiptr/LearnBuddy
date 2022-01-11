@@ -4,8 +4,8 @@ import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_activity_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
-import 'package:learning_app/features/leisure/widgets/leisure_add_app_bar.dart';
-
+import 'package:learning_app/features/leisure/widgets/leisure_overview_app_bar.dart';
+import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
 
 
 class LeisureActivityOverviewScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const LeisureAddAppBar(categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
+      appBar: const LeisureOverviewAppBar(categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
       body: BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
       bloc: LeasureActivityCubit(),
       builder: (context, state) {
@@ -28,11 +28,14 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
               child: LeisureActivityCard(
                         leisureActivity: state.leisureActivitiesDtos[idx],
                        ),
-              onTap: () => {}//Navigator.push(
-                //ctx,
-                //MaterialPageRoute(
-                  //builder: (ctx) => const LeisureActivityScreen(),
-              );
+              onTap: () => {
+                Navigator.push(
+                  ctx,
+                  MaterialPageRoute(
+                    builder: (ctx) => LeisureActivityScreen(leisureActivity: state.leisureActivitiesDtos[idx]),
+                  ))
+              }
+            );
           },
         );
       },

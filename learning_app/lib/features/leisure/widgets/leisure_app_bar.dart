@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
-import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 
-class LeisureAddAppBar extends StatelessWidget implements PreferredSizeWidget {
+class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String categoryTitle;
 
-  const LeisureAddAppBar({Key? key, required this.categoryTitle})
+  const LeisureAppBar({Key? key, required this.categoryTitle})
       : super(key: key);
 
   @override
@@ -34,9 +30,9 @@ class LeisureAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    //TODO: add search function
+                    //TODO: add star function
                   },
-                  icon: const Icon(Icons.search),
+                  icon: const Icon(Icons.star, color: Colors.purple),
                   iconSize: 30,
                 ),
                 IconButton(
