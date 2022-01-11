@@ -6,8 +6,6 @@ import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
 
-import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
-
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
 

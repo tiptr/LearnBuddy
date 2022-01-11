@@ -8,34 +8,13 @@ import 'package:learning_app/features/leisure/widgets/leisure_add_app_bar.dart';
 
 
 
-class LeisureActivityOverviewScreen extends StatefulWidget {
+class LeisureActivityOverviewScreen extends StatelessWidget {
   const LeisureActivityOverviewScreen({Key? key}) : super(key: key);
 
   @override
-  State<LeisureActivityOverviewScreen> createState() => _LeisureActivityOverviewScreenState();
-}
-
-class _LeisureActivityOverviewScreenState extends State<LeisureActivityOverviewScreen> {
-  final _titleController = TextEditingController();
-
-  // Preselect now, because our UIs task logic requires a date to be set
-  DateTime selectedDueDate = DateTime.now();
-  Duration? selectedTimeEstimate;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Set initial dueDate:
-    /*BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
-      dueDate: selectedDueDate,
-    ));*/
-
     return Scaffold(
-      appBar: LeisureAddAppBar(textController: _titleController), //TODO: change!!!
+      appBar: const LeisureAddAppBar(categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
       body: BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
       bloc: LeasureActivityCubit(),
       builder: (context, state) {
@@ -52,7 +31,7 @@ class _LeisureActivityOverviewScreenState extends State<LeisureActivityOverviewS
               onTap: () => {}//Navigator.push(
                 //ctx,
                 //MaterialPageRoute(
-                  //builder: (ctx) => const LeisureActivityOverviewScreen(),
+                  //builder: (ctx) => const LeisureActivityScreen(),
               );
           },
         );
@@ -61,34 +40,6 @@ class _LeisureActivityOverviewScreenState extends State<LeisureActivityOverviewS
     );
   }
 }
-
-/*
- @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
-      bloc: LeasureActivityCubit(),
-      builder: (context, state) {
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: state.leisureActivitiesDtos.length,
-          itemBuilder: (BuildContext ctx, int idx) {
-            return GestureDetector(
-              child: LeisureActivityCard(
-                        leisureActivity: state.leisureActivitiesDtos[idx],
-                       ),
-              onTap: () => {}//Navigator.push(
-                //ctx,
-                //MaterialPageRoute(
-                  //builder: (ctx) => const LeisureActivityOverviewScreen(),
-              );
-          },
-        );
-      },
-    );
-  }
-}*/
 
 class LeisureActivityCard extends StatelessWidget {
   final ReadLeisureActivitiesDto leisureActivity;
