@@ -20,4 +20,23 @@ class LeisureActivitiesDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   LeisureActivitiesDao(Database db) : super(db);
+
+  //TODO: watchCategoryIdToActivityMap
+  // ->  stream of map of <int, LeisureActivity>
+  // -> inspiration on how to do this in 'keywords_dao.dart' -> watchIdToKeywordMap
+
+  // TODO: toggleFavorite() like this:
+  // Future<int> toggleTaskDoneById(int taskId, bool done) {
+  //   Value<DateTime?> newDoneDateTime = const Value(null);
+  //
+  //   if (done) {
+  //     newDoneDateTime = Value(DateTime.now());
+  //   }
+  //
+  //   return (update(tasks)..where((t) => t.id.equals(taskId))).write(
+  //     TasksCompanion(
+  //       doneDateTime: newDoneDateTime,
+  //     ),
+  //   );
+  // }
 }

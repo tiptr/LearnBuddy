@@ -20,4 +20,9 @@ class LeisureCategoriesDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   LeisureCategoriesDao(Database db) : super(db);
+
+
+  //TODO: watchLeisureCategoryEntities
+  // -> list of entities (generated class 'LeisureCategoryEntity')
+
 }
