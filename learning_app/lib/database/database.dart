@@ -97,7 +97,6 @@ LazyDatabase _openConnection() {
     'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details.drift',
     'package:learning_app/features/leisure/persistence/leisure_categories.drift',
     'package:learning_app/features/leisure/persistence/leisure_activities.drift',
-    'package:learning_app/features/leisure/persistence/leisure_category_triggers.drift',
   },
 )
 class Database extends _$Database {

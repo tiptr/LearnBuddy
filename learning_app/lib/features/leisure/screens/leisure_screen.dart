@@ -14,33 +14,33 @@ class LeisureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseLayout(
-        titleBar: const BaseTitleBar(
+      titleBar: const BaseTitleBar(
         title: "Abwechslung",
-    ),
-    content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
-      bloc: LeasureCategoryCubit(),
-      builder: (context, state) {
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: state.leisureCategoriesDtos.length,
-          itemBuilder: (BuildContext ctx, int idx) {
-            return GestureDetector(
-              child: LeisureCategoryCard(
-                leisureCategory: state.leisureCategoriesDtos[idx],
-              ),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LeisureActivityOverviewScreen(),
+      ),
+      content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+        bloc: LeasureCategoryCubit(),
+        builder: (context, state) {
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.leisureCategoriesDtos.length,
+            itemBuilder: (BuildContext ctx, int idx) {
+              return GestureDetector(
+                child: LeisureCategoryCard(
+                  leisureCategory: state.leisureCategoriesDtos[idx],
                 ),
-              ),
-            );
-          },
-        );
-      },
-    ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LeisureActivityOverviewScreen(),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

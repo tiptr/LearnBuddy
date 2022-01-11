@@ -14,9 +14,6 @@ class ReadLeisureCategoriesDto extends Equatable {
   // activities, not the categories.
   // It does not make sense to have to load the whole finished Stream of
   // activities just to display the category overview.
-  //
-  // The values will be updated by the
-  // SQL Triggers in: leisure_category_triggers.drift TODO
   final int starCount;
   final int leisureActivityCount;
 

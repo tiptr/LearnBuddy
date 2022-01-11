@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
-import 'package:learning_app/features/leisure/model/leisure_category.dart';
 
 class LeasureActivityState extends Equatable {
   late final List<ReadLeisureActivitiesDto> leisureActivitiesDtos;
@@ -11,7 +9,6 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Dips am Stuhl",
-
         duration: Duration(minutes: 5),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",
@@ -23,7 +20,6 @@ class LeasureActivityState extends Equatable {
       const ReadLeisureActivitiesDto(
         id: 0,
         name: "Liegestütze",
-
         duration: Duration(minutes: 5),
         descriptionShort: "Jeweils 10 Dips, dann eine kurze Pause.",
         descriptionLong: "Die arme gerade halten.",

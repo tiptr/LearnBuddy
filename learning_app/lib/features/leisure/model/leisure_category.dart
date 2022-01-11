@@ -7,18 +7,12 @@ class LeisureCategory extends Equatable {
   final String? pathToImage; // nullable (define base image for all without one)
   final List<LeisureActivity> activities;
 
-  const LeisureCategory({
-    required this.id,
-    required this.name,
-    this.pathToImage,
-    required this.activities
-  });
+  const LeisureCategory(
+      {required this.id,
+      required this.name,
+      this.pathToImage,
+      required this.activities});
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        pathToImage,
-        activities
-      ];
+  List<Object?> get props => [id, name, pathToImage, activities];
 }

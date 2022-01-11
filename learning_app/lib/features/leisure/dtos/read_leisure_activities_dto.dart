@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:learning_app/features/leisure/model/leisure_category.dart';
 
 class ReadLeisureActivitiesDto extends Equatable {
   final int id;

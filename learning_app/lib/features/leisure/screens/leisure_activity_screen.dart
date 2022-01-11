@@ -21,7 +21,8 @@ class LeisureActivityScreen extends StatelessWidget {
         builder: (context, state) {
           return Scrollbar(
             isAlwaysShown: true,
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,6 +85,7 @@ class LeisureActivityScreen extends StatelessWidget {
                     ),
                   ),
                 ]),
+            ),
           );
         },
       ),
