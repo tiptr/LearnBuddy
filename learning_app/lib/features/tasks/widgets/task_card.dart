@@ -46,7 +46,11 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: _isSubTaskCard ? distanceBetweenCardsSubTasks : distanceBetweenCardsTopLevel),
+      padding: EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: _isSubTaskCard
+              ? distanceBetweenCardsSubTasks
+              : distanceBetweenCardsTopLevel),
       child: _card(context),
     );
   }
@@ -303,94 +307,6 @@ class TaskCard extends StatelessWidget {
                   ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildUpperRow(BuildContext context) {
-    return Expanded(
-      flex: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Title
-          Expanded(
-            flex: 70,
-            child: Text(
-              _task.title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: _task.done
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-                decorationThickness: 2.0,
-                fontSize: 20,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-          // Date Chip
-          Expanded(
-            flex: 30,
-            child: Chip(
-              label: Text(
-                _formattedDueDate,
-                style: TextStyle(
-                  color: _isOverDue ? Colors.white : Colors.black,
-                ),
-              ),
-              avatar: Icon(
-                Icons.calendar_today_outlined,
-                size: 16,
-                color: _isOverDue ? Colors.white : Colors.black,
-              ),
-              backgroundColor: _isOverDue
-                  ? Colors.purpleAccent
-                  : Theme.of(context).cardColor,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLowerRow() {
-    return Expanded(
-      flex: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _task.keywords.join(', '),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              (!_task.done && _isEstimated)
-                  ? Row(
-                      children: [
-                        const Icon(Icons.hourglass_top, size: iconSize),
-                        Text(_formattedTimeEstimation),
-                      ],
-                    )
-                  : Row(),
-              Container(
-                margin: const EdgeInsets.only(left: 7.5),
-                child: (_task.subTaskCount > 0)
-                    ? Row(
-                        children: [
-                          const Icon(Icons.dynamic_feed_outlined,
-                              size: iconSize),
-                          const SizedBox(width: 5.0),
-                          Text(
-                              '${_task.finishedSubTaskCount} / ${_task.subTaskCount}'),
-                        ],
-                      )
-                    : Row(),
-              ),
-            ],
           ),
         ],
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
