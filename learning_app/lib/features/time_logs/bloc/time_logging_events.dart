@@ -6,8 +6,9 @@ abstract class TimeLoggingEvent {
 
 class AddTimeLoggingObjectEvent extends TimeLoggingEvent {
   final int id;
+  final int parentId; // Top level tasks has id == parentId
 
-  const AddTimeLoggingObjectEvent(this.id);
+  const AddTimeLoggingObjectEvent(this.id, this.parentId);
 }
 
 class RemoveTimeLoggingObjectEvent extends TimeLoggingEvent {
@@ -31,9 +32,11 @@ class TimeNoticeEvent extends TimeLoggingEvent {
 }
 
 class TaskChangedEvent extends TimeLoggingEvent {
-  final TaskWithQueueStatus task;
+  final TaskWithQueueStatus parentTask;
+  final Task task;
   const TaskChangedEvent({
     required this.task,
+    required this.parentTask,
   });
 
 }

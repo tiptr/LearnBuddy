@@ -21,7 +21,7 @@ class _ToggleActiveTaskState extends State<ToggleActiveTask> {
         if (_active) {
           context
               .read<TimeLoggingBloc>()
-              .add(const AddTimeLoggingObjectEvent(2));
+              .add(const AddTimeLoggingObjectEvent(2, 2));
         } else {
           context
               .read<TimeLoggingBloc>()

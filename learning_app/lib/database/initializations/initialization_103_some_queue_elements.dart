@@ -33,6 +33,20 @@ Future<void> initialization103QueueElements() async {
       orderPlacement: i,
     ));
   }
+  const taskId = 2;
+  if (!usedTaskIds.contains(taskId)) {
+
+    usedTaskIds.add(taskId);
+
+    queueElements.add(TaskQueueElementsCompanion.insert(
+      taskId: const Value(taskId),
+      addedToQueueDateTime: now.subtract(Duration(days: Random().nextInt(80))),
+      orderPlacement: numberOfQueueElements + 1,
+    ));
+  }
+
+
+
 
   await _dao.batch((batch) {
     batch.insertAll(_dao.taskQueueElements, queueElements);

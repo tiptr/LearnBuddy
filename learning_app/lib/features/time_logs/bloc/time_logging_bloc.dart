@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/features/time_logs/dtos/time_log_dto.dart';
@@ -19,10 +20,11 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   late final TaskRepository _taskRepository;
   StreamSubscription<TaskWithQueueStatus?>? _streamSubscriptionTask;
 
-  TimeLoggingBloc({TimeLoggingRepository? timeLogRepo, TaskRepository? taskRepository})
+  TimeLoggingBloc(
+      {TimeLoggingRepository? timeLogRepo, TaskRepository? taskRepository})
       : super(InactiveState()) {
     _timeLoggingRepository = timeLogRepo ?? getIt<TimeLoggingRepository>();
-    _taskRepository =  taskRepository ?? getIt<TaskRepository>();
+    _taskRepository = taskRepository ?? getIt<TaskRepository>();
 
     on<AddTimeLoggingObjectEvent>(_onAdd);
     on<RemoveTimeLoggingObjectEvent>(_onRemove);
@@ -33,19 +35,29 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
 
   Future<void> _onAdd(
       AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
-    int id = event.id;
-    Stream<TaskWithQueueStatus?> stream = _taskRepository.watchQueuedTaskWithId(id: id);
-    TaskWithQueueStatus? task = await stream.first;
-    emit(InitializedState(task: task!));
-    _streamSubscriptionTask = _taskRepository.watchQueuedTaskWithId(id: id).listen(
-            (TaskWithQueueStatus? task) {
-              if (task == null) {
-                throw ArgumentError('Repo did not return any Task for id $id');
-              }
-              add(TaskChangedEvent(task: task));
-
-            }
-            );
+    Stream<TaskWithQueueStatus?> stream =
+        _taskRepository.watchQueuedTaskWithId(id: event.parentId);
+    TaskWithQueueStatus? parentTask = await stream.first;
+    if (parentTask == null) {
+      throw ArgumentError('Repo did not return any Task for id ${event.id}');
+    }
+    Task task = parentTask.task.allTasks
+        .firstWhere((element) => element.id == event.id);
+    emit(InitializedState(
+      parentTask: parentTask,
+      task: task,
+    ));
+    _streamSubscriptionTask = stream.listen((TaskWithQueueStatus? parentTask) {
+      if (parentTask == null) {
+        throw ArgumentError('Repo did not return any Task for id ${event.id}');
+      }
+      Task task = parentTask.task.allTasks
+          .firstWhere((element) => element.id == event.id);
+      add(TaskChangedEvent(
+        parentTask: parentTask,
+        task: task,
+      ));
+    });
   }
 
   void _onRemove(
@@ -58,15 +70,16 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       StartTimeLoggingEvent event, Emitter<TimeLoggingState> emit) async {
     var currentState = state;
     if (currentState is InitializedState) {
-      TaskWithQueueStatus task = currentState.task;
+      Task task = currentState.task;
       TimeLog timeLog = await _timeLoggingRepository.createTimeLog(TimeLogDto(
-        taskId: task.task.id,
+        taskId: task.id,
         beginTime: event.beginTime,
         duration: const Duration(),
       ));
 
       emit(ActiveState(
         timeLog: timeLog,
+        parentTask: currentState.parentTask,
         task: currentState.task,
       ));
     }
@@ -91,20 +104,29 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
 
       emit(ActiveState(
         timeLog: newTimeLog,
+        parentTask: currentState.parentTask,
         task: currentState.task,
       ));
     }
   }
 
-
-  Future<void> _onTaskChanged(TaskChangedEvent event, Emitter<TimeLoggingState> emit) async {
+  Future<void> _onTaskChanged(
+      TaskChangedEvent event, Emitter<TimeLoggingState> emit) async {
     var currentState = state;
-    if(currentState is ActiveState){
-      emit(ActiveState(timeLog: currentState.timeLog, task: event.task));
+    if (currentState is ActiveState) {
+      emit(ActiveState(
+        timeLog: currentState.timeLog,
+        parentTask: event.parentTask,
+        task: event.task,
+      ));
     }
-    if(currentState is InitializedState){
-      emit(InitializedState(task: event.task));
+    else if (currentState is InitializedState) {
+      emit(InitializedState(
+        parentTask: event.parentTask,
+        task: event.task,
+      ));
+    } else {
+      logger.d("Invalid state.");
     }
-    logger.d("Invalid state.");
   }
 }

@@ -35,6 +35,14 @@ class Task {
     return estimatedTime;
   }
 
+  List<Task> get allTasks {
+    List<Task> taskList = [this];
+    for(Task task in children){
+      taskList.addAll(task.allTasks);
+    }
+    return taskList;
+  }
+  
   Task({
     required this.id,
     required this.title,
