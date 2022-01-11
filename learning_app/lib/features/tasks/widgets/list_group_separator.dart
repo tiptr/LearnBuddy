@@ -16,7 +16,7 @@ class ListGroupSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity:  const VisualDensity(horizontal: 0.0,vertical: -4.0),
+      visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4.0),
       label: Text(
         _content,
         textAlign: TextAlign.center,

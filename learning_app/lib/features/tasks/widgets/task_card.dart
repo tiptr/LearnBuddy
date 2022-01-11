@@ -67,7 +67,12 @@ class TaskCard extends StatelessWidget {
               _task.done ? const Color(0xB8FFFFFF) : const Color(0x00000000),
               BlendMode.lighten),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+            padding: EdgeInsets.only(
+              top: 10.0,
+              bottom: 10.0,
+              right: 10.0,
+              left: _isSubTaskCard ? 10.0 : 3.0,
+            ),
             // category:
             decoration: _isSubTaskCard
                 ? null
@@ -101,8 +106,7 @@ class TaskCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 5.0), // min distance
-                const Spacer(),
+                const SizedBox(width: 5.0),
                 // Content
                 Expanded(
                   flex: 80,
@@ -142,47 +146,54 @@ class TaskCard extends StatelessWidget {
   Widget _buildTitleKeyWordsColumn(BuildContext context) {
     return Expanded(
       flex: 70,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Title
-          Text(
-            _task.title,
-            maxLines: 2,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              decoration:
-                  _task.done ? TextDecoration.lineThrough : TextDecoration.none,
-              decorationThickness: 2.0,
-              fontSize: 18,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-
-          // Keywords
-          if (_task.keywords.isNotEmpty)
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+        child: Column(
+          mainAxisAlignment: _task.keywords.isNotEmpty
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Title
             Text(
-              _task.keywords.join(', '),
+              _task.title,
               maxLines: 2,
-              style: const TextStyle(
-                color: Color(0xFF636573),
-                fontWeight: FontWeight.normal,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                decoration: _task.done
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
                 decorationThickness: 2.0,
-                fontSize: 12,
+                fontSize: 16,
                 overflow: TextOverflow.ellipsis,
+                color: const Color(0xFF40424A),
               ),
             ),
-        ],
+
+            // Keywords
+            if (_task.keywords.isNotEmpty)
+              Text(
+                _task.keywords.join(', '),
+                maxLines: 2,
+                style: const TextStyle(
+                  color: Color(0xFF949597),
+                  fontWeight: FontWeight.normal,
+                  decorationThickness: 2.0,
+                  fontSize: 12,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildDueDateStatsColumn(BuildContext context) {
-    return Expanded(
-      flex: 70,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -190,12 +201,12 @@ class TaskCard extends StatelessWidget {
           // Date Chip
           Chip(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity:  const VisualDensity(horizontal: 0.0,vertical: -4.0),
+            visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4.0),
             label: Text(
-              _formattedDueDate,
+              (_task.dueDate != null) ? _formattedDueDate : '',
               textAlign: TextAlign.end,
               style: TextStyle(
-                color: _isOverDue ? Colors.white : const Color(0xFF636573),
+                color: _isOverDue ? Colors.white : const Color(0xFF949597),
                 fontWeight: FontWeight.normal,
                 decorationThickness: 2.0,
                 fontSize: 12,
@@ -206,11 +217,13 @@ class TaskCard extends StatelessWidget {
               vertical: 0,
               horizontal: _isOverDue ? 8 : 0,
             ),
-            avatar: Icon(
-              Icons.today_outlined,
-              size: 16,
-              color: _isOverDue ? Colors.white : const Color(0xFF636573),
-            ),
+            avatar: (_task.dueDate != null)
+                ? Icon(
+                    Icons.today_outlined,
+                    size: 16,
+                    color: _isOverDue ? Colors.white : const Color(0xFF949597),
+                  )
+                : null,
             backgroundColor: _isOverDue
                 ? const Color(0xFF9E5EE1)
                 : Theme.of(context).cardColor,
@@ -221,51 +234,50 @@ class TaskCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              (!_task.done && _isEstimated)
-                  ? Row(
-                      children: [
-                        const Icon(
-                            Icons.hourglass_top,
-                            size: iconSize,
-                            color: Color(0xFF636573),
-                        ),
-                        Text(
-                          _formattedTimeEstimation,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                            color: Color(0xFF636573),
-                            fontWeight: FontWeight.normal,
-                            decorationThickness: 2.0,
-                            fontSize: 12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    )
-                  : Row(),
+              // Remaining time estimation, only if provided
+              if (!_task.done && _isEstimated)
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.hourglass_top,
+                      size: iconSize,
+                      color: Color(0xFF949597),
+                    ),
+                    Text(
+                      _formattedTimeEstimation,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        color: Color(0xFF949597),
+                        fontWeight: FontWeight.normal,
+                        decorationThickness: 2.0,
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               Container(
                 margin: const EdgeInsets.only(left: 7.5),
                 child: (_task.subTaskCount > 0)
                     ? Row(
                         children: [
                           const Icon(
-                              Icons.dynamic_feed_outlined,
-                              size: iconSize,
-                              color: Color(0xFF636573),
+                            Icons.dynamic_feed_outlined,
+                            size: iconSize,
+                            color: Color(0xFF949597),
                           ),
                           const SizedBox(width: 5.0),
                           Text(
                             '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
                             textAlign: TextAlign.end,
                             style: const TextStyle(
-                              color: Color(0xFF636573),
+                              color: Color(0xFF949597),
                               fontWeight: FontWeight.normal,
                               decorationThickness: 2.0,
                               fontSize: 12,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-
                         ],
                       )
                     : Row(),
