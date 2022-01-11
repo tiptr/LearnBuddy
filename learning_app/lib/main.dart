@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'features/learning_aids/screens/learning_aids_screen.dart';
+import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:logger/logger.dart';
 import 'features/tasks/bloc/add_task_cubit.dart';
 import 'features/timer/screens/timer_screen.dart';
@@ -44,6 +45,14 @@ void main() {
           lazy: true,
           create: (context) {
             return AddTaskCubit();
+          },
+        ),
+        BlocProvider<CategoriesCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = CategoriesCubit();
+            cubit.loadCategories();
+            return cubit;
           },
         ),
       ],
@@ -97,17 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Lernbuddy"),
+    return SafeArea(
+      child: Scaffold(
+        // TODO: think about changing to something like lazy_load_indexed_stack
+        // (separate package), so that not every page has to be loaded at startup
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: _pages,
+        ),
+        bottomNavigationBar: _navBar(context),
       ),
-      // TODO: think about changing to something like lazy_load_indexed_stack
-      // (separate package), so that not every page has to be loaded at startup
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: _navBar(context),
     );
   }
 

@@ -5,13 +5,19 @@ import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
+import 'package:learning_app/shared/widgets/base_layout.dart';
+import 'package:learning_app/shared/widgets/base_title_bar.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+    return BaseLayout(
+        titleBar: const BaseTitleBar(
+        title: "Abwechslung",
+    ),
+    content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
       bloc: LeasureCategoryCubit(),
       builder: (context, state) {
         return ListView.builder(
@@ -34,6 +40,7 @@ class LeisureScreen extends StatelessWidget {
           },
         );
       },
+    ),
     );
   }
 }

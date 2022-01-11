@@ -20,4 +20,13 @@ class TaskKeywordsDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   TaskKeywordsDao(Database db) : super(db);
+
+  Stream<List<TaskKeywordEntity>>? _taskKeyWordEntitiesStream;
+
+  Stream<List<TaskKeywordEntity>> watchTaskKeyWordEntities() {
+    _taskKeyWordEntitiesStream =
+        _taskKeyWordEntitiesStream ?? (select(taskKeywords).watch());
+
+    return _taskKeyWordEntitiesStream as Stream<List<TaskKeywordEntity>>;
+  }
 }

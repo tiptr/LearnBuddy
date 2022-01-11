@@ -6,6 +6,7 @@ import 'package:learning_app/database/type_converters/duration_converter.dart';
 
 -- Import other entities this one depends on:
 import 'package:learning_app/features/categories/persistence/categories.drift';
+import 'package:learning_app/features/tasks/persistence/task_queue_elements.drift';
 
 -- entity definition
 -- This could also be done in Dart, but for people that are familiar with SQL and DDL, this
@@ -16,7 +17,7 @@ CREATE TABLE Tasks (
     title TEXT NOT NULL,
     done_date_time DATETIME,
     description TEXT,
-    category_id INT REFERENCES Categories(id),
+    category_id INT REFERENCES Categories(id) ON DELETE SET NULL,
     estimated_time INT MAPPED BY `const DurationConverter()`,
     due_date DATETIME,
     creation_date_time DATETIME NOT NULL,

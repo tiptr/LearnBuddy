@@ -1,14 +1,8 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
-import 'package:learning_app/features/categories/models/category.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_ordering.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
-import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 part 'tasks_dao.g.dart';
 
@@ -25,6 +19,10 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // this constructor is required so that the main database can create an instance
   // of this object.
   TasksDao(Database db) : super(db);
+
+  Stream<List<TaskEntity>>? _filteredSortedTopLevelTaskEntitiesStream;
+  Stream<List<TaskEntity>>? _subLevelTaskEntitiesStream;
+  Stream<List<TaskEntity>>? _queuedTopLevelTaskEntitiesStream;
 
   /// Creates a new task and returns its id.
   ///
@@ -58,129 +56,59 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     );
   }
 
-  // Stream<List<TaskWithQueueStatus>> watchTasks({ TODO
-  Stream<List<TaskWithQueueStatus>> watchTasks({
-    int? limit,
-    int? offset,
+  Stream<List<TaskEntity>> watchSubLevelTaskEntities() {
+    _subLevelTaskEntitiesStream =
+        (_subLevelTaskEntitiesStream ?? _createSubLevelTaskEntitiesStream());
+
+    return _subLevelTaskEntitiesStream as Stream<List<TaskEntity>>;
+  }
+
+  Stream<List<TaskEntity>> watchQueuedTopLevelTaskEntities() {
+    _queuedTopLevelTaskEntitiesStream = (_queuedTopLevelTaskEntitiesStream ??
+        _createQueuedTopLevelTaskEntitiesStream());
+
+    return _queuedTopLevelTaskEntitiesStream as Stream<List<TaskEntity>>;
+  }
+
+  Stream<List<TaskEntity>> watchFilteredAndSortedTopLevelTaskEntities({
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    // start by watching all top level tasks
-    // that match the filters
-    // The Keyword-Filter is not applied here, since it depends on a many to many join
-    // It will be handled below
-    final sortedFilteredTopLevelTasksQuery =
-        _getFilteredAndSortedTopLevelTasksStream(taskFilter, taskOrder);
+    _filteredSortedTopLevelTaskEntitiesStream =
+        (_filteredSortedTopLevelTaskEntitiesStream ??
+            (_createFilteredAndSortedTopLevelTaskEntitiesStream(
+              taskFilter: taskFilter,
+              taskOrder: taskOrder,
+            )));
 
-    return sortedFilteredTopLevelTasksQuery.watch().switchMap((topLevels) {
-      final subLevelTasksQuery = select(tasks)
-        ..where((tsk) => tsk.parentTaskId.isNotNull()); // sub-levels only
-
-      return subLevelTasksQuery.watch().map((subLevels) {
-        // // Create a map to efficiently get the subtasks
-        // final parentIdToSubTaskMap = {
-        //   for (var subLevel in subLevels) subLevel.parentTaskId: subLevel
-        // };
-
-        final subTaskModels = [];
-        final idToSubTasks = <int?, List<Task>>{};
-
-        // Create the models for subtasks and maps them to their parent-ID
-        for (var taskEntity in subLevels) {
-          final taskModel = Task(
-            id: taskEntity.id,
-            title: taskEntity.title,
-            doneDateTime: taskEntity.doneDateTime,
-            description: taskEntity.description,
-            category: const Category(
-              id: 0,
-              name: 'Testkategorie',
-              color: Colors.lightBlue,
-            ),
-            // TODO
-            keywords: const [
-              KeyWord(id: 0, name: 'Hausaufgabe'),
-              KeyWord(id: 1, name: 'Lernen'),
-            ],
-            // TODO
-            timeLogs: const [],
-            // TODO
-            estimatedTime: taskEntity.estimatedTime,
-            dueDate: taskEntity.dueDate,
-            creationDateTime: taskEntity.creationDateTime,
-            children: const [],
-            // TODO
-            learnLists: const [],
-            // TODO
-            manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-          );
-          subTaskModels.add(taskModel);
-          idToSubTasks
-              .putIfAbsent(taskEntity.parentTaskId, () => [])
-              .add(taskModel);
-        }
-
-        // Add the sub-subtasks (tier 3 and deeper) to their parents (tier-2)
-        for (Task subtask in subTaskModels) {
-          subtask.children = (idToSubTasks[subtask.id] ?? []);
-        }
-
-        // Create the models for top-tier tasks
-        final tasksWithQueueStatus = [
-          for (var taskEntity in topLevels)
-            TaskWithQueueStatus(
-              task: Task(
-                id: taskEntity.id,
-                title: taskEntity.title,
-                doneDateTime: taskEntity.doneDateTime,
-                description: taskEntity.description,
-                category: const Category(
-                  id: 0,
-                  name: 'Testkategorie',
-                  color: Colors.lightBlue,
-                ),
-                // TODO
-                keywords: const [
-                  KeyWord(id: 0, name: 'Hausaufgabe'),
-                  KeyWord(id: 1, name: 'Lernen'),
-                ],
-                // TODO
-                timeLogs: const [],
-                // TODO
-                estimatedTime: taskEntity.estimatedTime,
-                dueDate: taskEntity.dueDate,
-                creationDateTime: taskEntity.creationDateTime,
-                children: const [],
-                // TODO
-                learnLists: const [],
-                // TODO
-                manualTimeEffortDelta: taskEntity.manualTimeEffortDelta,
-              ),
-              isQueued: false,
-            ),
-        ];
-
-        // Add the sub-tasks (tier 2) to their parents (top tier)
-        for (TaskWithQueueStatus taskWithQueue in tasksWithQueueStatus) {
-          taskWithQueue.task.children =
-              (idToSubTasks[taskWithQueue.task.id] ?? []);
-        }
-
-        return tasksWithQueueStatus;
-      });
-    });
+    return _filteredSortedTopLevelTaskEntitiesStream
+        as Stream<List<TaskEntity>>;
   }
 
-  // // TODO: Keywords filter
-  // // TODO: Map Keywords
-  // // TODO: Map Timelogs
-  // // TODO: Map learnlists ??
-  // // TODO: Map Queue
+  Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
+    final queuedTopLevelTasksQuery = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNull()) // top-levels only
+      ..join([
+        innerJoin(
+            taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
+      ])
+      ..orderBy([
+        (tsk) => OrderingTerm.asc(taskQueueElements.orderPlacement),
+      ]);
+    return queuedTopLevelTasksQuery.watch();
+  }
+
+  Stream<List<TaskEntity>> _createSubLevelTaskEntitiesStream() {
+    final subLevelTasksQuery = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNotNull()); // sub-levels only
+    return subLevelTasksQuery.watch();
+  }
 
   /// Creates a stream that watches the top-level tasks matching the given filter
-  SimpleSelectStatement<Tasks, TaskEntity>
-      _getFilteredAndSortedTopLevelTasksStream(
-          TaskFilter taskFilter, TaskOrder taskOrder) {
+  Stream<List<TaskEntity>> _createFilteredAndSortedTopLevelTaskEntitiesStream({
+    TaskFilter taskFilter = const TaskFilter(),
+    TaskOrder taskOrder = const TaskOrder(),
+  }) {
     // Create the query to get filtered top level tasks:
     final filteredTopLevelTasksQuery = select(tasks)
       ..where((tsk) => tsk.parentTaskId.isNull()) // top-level only
@@ -222,8 +150,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           return const CustomExpression('TRUE');
         }
       });
-
-    // Add ordering to the exixting query
+    // Add ordering to the existing query
     final sortedFilteredTopLevelTasksQuery = filteredTopLevelTasksQuery
       ..orderBy([
         (tsk) {
@@ -265,6 +192,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         },
       ]);
 
-    return sortedFilteredTopLevelTasksQuery..watch();
+    return sortedFilteredTopLevelTasksQuery.watch();
   }
 }

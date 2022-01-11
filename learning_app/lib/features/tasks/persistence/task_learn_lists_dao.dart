@@ -20,4 +20,13 @@ class TaskLearnListsDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   TaskLearnListsDao(Database db) : super(db);
+
+  Stream<List<TaskLearnListEntity>>? _taskLearnListEntitiesStream;
+
+  Stream<List<TaskLearnListEntity>> watchTaskLearnListEntities() {
+    _taskLearnListEntitiesStream =
+        _taskLearnListEntitiesStream ?? (select(taskLearnLists).watch());
+
+    return _taskLearnListEntitiesStream as Stream<List<TaskLearnListEntity>>;
+  }
 }
