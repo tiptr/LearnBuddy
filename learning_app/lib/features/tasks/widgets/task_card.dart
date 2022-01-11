@@ -38,9 +38,7 @@ class TaskCard extends StatelessWidget {
         _formattedTimeEstimation = task.remainingTimeEstimation
             .toListViewFormat(ifNull: 'Keine Zeitschätzung'),
         _isEstimated = task.remainingTimeEstimation == null ? false : true,
-        _categoryColor = isSubTaskCard
-            ? const Color(0xFF949597)
-            : (task.categoryColor ?? noCategoryDefaultColor),
+        _categoryColor = (task.categoryColor ?? noCategoryDefaultColor),
         super(key: key);
 
   @override
@@ -120,7 +118,6 @@ class TaskCard extends StatelessWidget {
                 // Content
                 Expanded(
                   flex: 80,
-
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -132,18 +129,6 @@ class TaskCard extends StatelessWidget {
                       _buildDueDateStatsColumn(context)
                     ],
                   ),
-
-                  // This column holds the title + datechip
-                  // and the description + further info row
-                  // child: Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     // Upper Row
-                  //     _buildUpperRow(context),
-                  //     // Lower Row
-                  //     _buildLowerRow()
-                  //   ],
-                  // ),
                 )
               ],
             ),
@@ -167,8 +152,6 @@ class TaskCard extends StatelessWidget {
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Title
             Text(
@@ -245,6 +228,9 @@ class TaskCard extends StatelessWidget {
             backgroundColor: _isOverDue
                 ? const Color(0xFF9E5EE1)
                 : Theme.of(context).cardColor,
+            // Required, because Colors.transparent does not work.
+            // The background is transparent through the card all
+            // the way to the screen background, then.
           ),
 
           // stats
