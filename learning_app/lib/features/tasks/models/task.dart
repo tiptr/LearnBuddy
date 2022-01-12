@@ -62,7 +62,7 @@ class Task {
 
   Duration get sumAllTimeLogs {
     Duration duration = const Duration();
-    for (TimeLog log in allTimeLogs){
+    for (TimeLog log in allTimeLogs) {
       duration += log.duration;
     }
     return duration;

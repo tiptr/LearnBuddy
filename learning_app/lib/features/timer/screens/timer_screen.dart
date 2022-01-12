@@ -143,9 +143,9 @@ class TimerWidget extends StatelessWidget {
   String getPomoStateText(BuildContext context) {
     PomodoroMode pomoState =
         context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
-    if (pomoState == PomodoroMode.concentration) return "Concentration";
-    if (pomoState == PomodoroMode.shortBreak) return "Short Break";
-    return "Long Break";
+    if (pomoState == PomodoroMode.concentration) return "Konzentration";
+    if (pomoState == PomodoroMode.shortBreak) return "Kurze Pause";
+    return "Lange Pause";
   }
 }
 
