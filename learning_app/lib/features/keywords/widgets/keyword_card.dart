@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
-import 'package:learning_app/features/categories/models/category.dart';
-import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
 
-class CategoryCard extends StatelessWidget {
-  final Category _category;
+class KeyWordCard extends StatelessWidget {
+  final KeyWord _keyword;
 
-  const CategoryCard({Key? key, required Category category})
-      : _category = category,
+  const KeyWordCard({Key? key, required KeyWord keyword})
+      : _keyword = keyword,
         super(key: key);
 
   @override
@@ -40,16 +39,8 @@ class CategoryCard extends StatelessWidget {
               flex: 50,
               child: Row(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 15.0),
-                    child: ColorIndicator(
-                      color: _category.color,
-                      height: 30.0,
-                      width: 10.0,
-                    ),
-                  ),
                   Text(
-                    _category.name,
+                    _keyword.name,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -84,28 +75,19 @@ class CategoryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: () {
-                      logger.d("TODO: Handle palette click");
-                    },
-                    icon: Icon(
-                      Icons.palette_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  IconButton(
                     onPressed: () async {
                       var confirmed = await openConfirmDialog(
                         context: context,
-                        title: "Kategorie löschen?",
+                        title: "Schlagwort löschen?",
                         content: RichText(
                           text: TextSpan(
                             // Note: Styles for TextSpans must be explicitly defined.
                             // Child text spans will inherit styles from parent
                             style: DefaultTextStyle.of(context).style,
                             children: <TextSpan>[
-                              const TextSpan(text: 'Willst du die Kategorie '),
+                              const TextSpan(text: 'Willst du das Schlagwort '),
                               TextSpan(
-                                text: _category.name,
+                                text: _keyword.name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -116,8 +98,10 @@ class CategoryCard extends StatelessWidget {
                       );
 
                       if (confirmed) {
-                        BlocProvider.of<CategoriesCubit>(context)
-                            .deleteCategoryById(_category.id);
+                        logger.d('Keyword ${_keyword.name} wird gelöscht.');
+
+                        BlocProvider.of<KeyWordsCubit>(context)
+                            .deleteKeyWordById(_keyword.id);
                       }
                     },
                     icon: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card.dart';
+import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -13,7 +14,8 @@ class DashboardScreen extends StatelessWidget {
         children: [
           const SizedBox(height: 15.0),
           const TasksCard(),
-          const SizedBox(height: 50.0),
+          const SizedBox(height: 30.0),
+          // TODO: The following two InkWells are dummy elements for testing
           InkWell(
             onTap: () => Navigator.push(
               context,
@@ -35,7 +37,32 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
+          const SizedBox(
+            height: 15.0,
+          ),
+          InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const KeyWordOverviewScreen(),
+              ),
+            ),
+            child: Ink(
+              width: 200,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.purple,
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: const Center(
+                child: Text(
+                  "Schlagwörter verwalten",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
