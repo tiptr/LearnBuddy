@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/util/injection.dart';
@@ -61,6 +62,9 @@ void main() {
             return cubit;
           },
         ),
+        BlocProvider(
+            create: (context) => TaskQueueBloc(),
+        )
       ],
       child: const MyApp(),
     ),
