@@ -29,10 +29,19 @@ class Task {
     return children.length;
   }
 
+  // Prefers higher definition of estimated time; I.e. if top level task has time estimate,
+  // other estimates are not included.
+  Duration get fullTimeEstimation {
+    Duration estimatedTimeChildren = const Duration();
+    for (Task task in children) {
+      estimatedTimeChildren += task.fullTimeEstimation;
+    }
+    return estimatedTime ?? estimatedTimeChildren;
+  }
+
+  // I'm not sure if this is the right implementation of this
   Duration? get remainingTimeEstimation {
-    // TODO: implement this!
-    // calculate the remaining estimate by involving the list of children
-    return estimatedTime;
+    return fullTimeEstimation - sumAllTimeLogs;
   }
 
   List<Task> get allTasks {
@@ -45,10 +54,16 @@ class Task {
 
   List<TimeLog> get allTimeLogs {
     List<TimeLog> timeLogsList = timeLogs;
-    for (Task task in children){
+    for (Task task in children) {
       timeLogsList.addAll(task.allTimeLogs);
     }
     return timeLogsList;
+  }
+
+  Duration get sumAllTimeLogs {
+    return allTimeLogs
+        .map((e) => e.duration)
+        .reduce((Duration value, Duration duration) => value + duration);
   }
 
   Task({

@@ -50,10 +50,8 @@ class ActiveTaskCard extends StatelessWidget {
     } else {
       throw InvalidStateException();
     }
-    final String estimatedTime = task.estimatedTime.formatVarLength();
-    final Duration sumDuration = task.allTimeLogs
-        .map((e) => e.duration)
-        .reduce((Duration value, Duration duration) => value + duration);
+    final String estimatedTime = task.fullTimeEstimation.formatVarLength();
+    final Duration sumDuration = task.sumAllTimeLogs;
     final String timeSpent = sumDuration.formatVarLength();
     final Widget topLevelTaskWidget = Text(
       parentTask.task.id == task.id
@@ -101,11 +99,14 @@ class ActiveTaskCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.hourglass_top, size: 20),
+                        const Icon(
+                          Icons.hourglass_top,
+                          size: 20,
+                        ),
                         Text(
                           "Ursprünglich: " + estimatedTime,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                           ),
                         ),
                       ],
@@ -116,7 +117,7 @@ class ActiveTaskCard extends StatelessWidget {
                         Text(
                           "Aufgewendet: " + timeSpent,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                           ),
                         ),
                       ],
