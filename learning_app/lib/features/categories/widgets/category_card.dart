@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
-import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
+import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
-import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
 
 class CategoryCard extends StatelessWidget {
-  final Category _category;
+  final ReadCategoryDto category;
 
-  const CategoryCard({Key? key, required Category category})
-      : _category = category,
-        super(key: key);
+  const CategoryCard({Key? key, required this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,36 +34,43 @@ class CategoryCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              flex: 50,
-              child: Row(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 15.0),
-                    child: ColorIndicator(
-                      color: _category.color,
-                      height: 30.0,
-                      width: 10.0,
-                    ),
-                  ),
-                  Text(
-                    _category.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+            Container(
+              margin: const EdgeInsets.only(right: 15.0),
+              child: ColorIndicator(
+                color: category.color,
+                height: 30.0,
+                width: 10.0,
               ),
             ),
             Expanded(
-              flex: 50,
+              flex: 65,
+              child: Text(
+                category.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Expanded(
+              flex: 35,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
                     onPressed: () {
-                      logger.d("TODO: Handle palette click");
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CategoryFormDialog(
+                            existingCategory: category,
+                          );
+                        },
+                      );
                     },
                     icon: Icon(
-                      Icons.palette_outlined,
+                      Icons.create_outlined,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
@@ -82,7 +87,7 @@ class CategoryCard extends StatelessWidget {
                             children: <TextSpan>[
                               const TextSpan(text: 'Willst du die Kategorie '),
                               TextSpan(
-                                text: _category.name,
+                                text: category.name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -94,7 +99,7 @@ class CategoryCard extends StatelessWidget {
 
                       if (confirmed) {
                         BlocProvider.of<CategoriesCubit>(context)
-                            .deleteCategoryById(_category.id);
+                            .deleteCategoryById(category.id);
                       }
                     },
                     icon: Icon(

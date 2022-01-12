@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
+import 'package:learning_app/features/categories/dtos/update_category_dto.dart';
 import 'package:learning_app/features/categories/repositories/category_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -18,10 +19,17 @@ class CategoriesCubit extends Cubit<CategoriesState> {
     emit(CategoriesLoaded(categoriesStream: stream));
   }
 
-  Future<void> createCategory(CreateCategoryDto newCategory) async {
+  Future<void> createCategory(CreateCategoryDto newCategoryDto) async {
     final currentState = state;
     if (currentState is CategoriesLoaded) {
-      await _categoryRepository.createCategory(newCategory);
+      await _categoryRepository.createCategory(newCategoryDto);
+    }
+  }
+
+  Future<void> updateCategory(UpdateCategoryDto updateCategoryDto) async {
+    final currentState = state;
+    if (currentState is CategoriesLoaded) {
+      await _categoryRepository.updateCategory(updateCategoryDto);
     }
   }
 
