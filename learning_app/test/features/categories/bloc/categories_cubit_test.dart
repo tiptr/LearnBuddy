@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
-import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/categories/repositories/category_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -16,11 +16,12 @@ void main() {
   late MockCategoriesRepository mockCategoriesRepository;
   late CategoriesCubit categoriesCubit;
 
-  Category mockCategory =
-      const Category(id: 1, name: "Mock Category", color: Colors.red);
+  ReadCategoryDto mockCategory =
+      const ReadCategoryDto(id: 1, name: "Mock Category", color: Colors.red);
   CreateCategoryDto mockCreateDto =
       const CreateCategoryDto(name: "New Category", color: Colors.yellow);
-  Stream<List<Category>> mockCategoryStream = Stream.value([mockCategory]);
+  Stream<List<ReadCategoryDto>> mockCategoryStream =
+      Stream.value([mockCategory]);
 
   setUp(() {
     mockCategoriesRepository = MockCategoriesRepository();
