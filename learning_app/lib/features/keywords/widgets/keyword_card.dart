@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
+import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
+import 'package:learning_app/features/keywords/widgets/keyword_form_dialog.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
 
 class KeyWordCard extends StatelessWidget {
-  final KeyWord _keyword;
+  final ReadKeyWordDto keyword;
 
-  const KeyWordCard({Key? key, required KeyWord keyword})
-      : _keyword = keyword,
-        super(key: key);
+  const KeyWordCard({Key? key, required this.keyword}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class KeyWordCard extends StatelessWidget {
             Expanded(
               flex: 70,
               child: Text(
-                _keyword.name,
+                keyword.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.ellipsis,
@@ -50,6 +49,22 @@ class KeyWordCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return KeyWordFormDialog(
+                            existingKeyword: keyword,
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.create_outlined,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
                   IconButton(
                     onPressed: () async {
                       var confirmed = await openConfirmDialog(
@@ -63,7 +78,7 @@ class KeyWordCard extends StatelessWidget {
                             children: <TextSpan>[
                               const TextSpan(text: 'Willst du das Schlagwort '),
                               TextSpan(
-                                text: _keyword.name,
+                                text: keyword.name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -75,10 +90,10 @@ class KeyWordCard extends StatelessWidget {
                       );
 
                       if (confirmed) {
-                        logger.d('Keyword ${_keyword.name} wird gelöscht.');
+                        logger.d('Keyword ${keyword.name} wird gelöscht.');
 
                         BlocProvider.of<KeyWordsCubit>(context)
-                            .deleteKeyWordById(_keyword.id);
+                            .deleteKeyWordById(keyword.id);
                       }
                     },
                     icon: Icon(

@@ -2,7 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/keywords/dtos/create_key_word_dto.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
+import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
+import 'package:learning_app/features/keywords/dtos/update_key_word_dto.dart';
 import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/features/keywords/repositories/keyword_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -14,9 +15,17 @@ class DbKeyWordRepository implements KeyWordsRepository {
   final KeyWordsDao _dao = getIt<KeyWordsDao>();
 
   @override
-  Future<int> createKeyWord(CreateKeyWordDto newKeyWord) {
+  Future<int> createKeyWord(CreateKeyWordDto newKeyWordDto) {
     return _dao.createKeyWord(KeywordsCompanion(
-      name: Value(newKeyWord.name),
+      name: Value(newKeyWordDto.name),
+    ));
+  }
+
+  @override
+  Future<int> updateKeyWord(UpdateKeyWordDto updateKeyWordDto) {
+    return _dao.updateKeyWord(KeywordsCompanion(
+      id: Value(updateKeyWordDto.id),
+      name: Value(updateKeyWordDto.name),
     ));
   }
 
@@ -27,7 +36,7 @@ class DbKeyWordRepository implements KeyWordsRepository {
   }
 
   @override
-  Stream<List<KeyWord>> watchKeyWords() {
+  Stream<List<ReadKeyWordDto>> watchKeyWords() {
     return _dao.watchAllKeyWords();
   }
 }
