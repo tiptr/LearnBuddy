@@ -36,14 +36,13 @@ class KeyWordCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex: 50,
-              child: Row(
-                children: [
-                  Text(
-                    _keyword.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+              flex: 70,
+              child: Text(
+                _keyword.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
             // Excluded in MVP
@@ -70,7 +69,7 @@ class KeyWordCard extends StatelessWidget {
             //   ),
             // ),
             Expanded(
-              flex: 50,
+              flex: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -89,7 +88,8 @@ class KeyWordCard extends StatelessWidget {
                               TextSpan(
                                 text: _keyword.name,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const TextSpan(text: ' wirklich löschen?'),
                             ],

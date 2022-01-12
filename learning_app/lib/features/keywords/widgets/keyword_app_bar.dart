@@ -24,7 +24,7 @@ class KeyWordAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 const Expanded(
                   child: Text(
-                    "Kategorien",
+                    "Schlagwörter",
                     style: TextStyle(
                       fontSize: 22.0,
                       fontWeight: FontWeight.bold,
