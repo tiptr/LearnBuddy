@@ -24,6 +24,14 @@ class KeyWordsDao extends DatabaseAccessor<Database> with _$KeyWordsDaoMixin {
   Stream<List<KeyWord>>? _keyWordsStream;
   Stream<Map<int, KeyWord>>? _idToKeyWordMapStream;
 
+  Future<int> createKeyWord(KeywordsCompanion keyWordsCompanion) {
+    return into(keywords).insert(keyWordsCompanion);
+  }
+
+  Future<int> deleteKeyWordById(int keyWordId) {
+    return (delete(keywords)..where((t) => t.id.equals(keyWordId))).go();
+  }
+
   Stream<List<KeyWord>> watchAllKeyWords() {
     _keyWordsStream = _keyWordsStream ??
         (select(keywords)
