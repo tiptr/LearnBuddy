@@ -55,7 +55,9 @@ class TasksCard extends StatelessWidget {
 
             final hasMore = dueTasks.length > taskAmount;
             final amountOfFurtherDueTasks = dueTasks.length - taskAmount;
-            final upcomingTasks = dueTasks.take(taskAmount).toList();
+            final upcomingTasks =
+                dueTasks.where((task) => !task.done).take(taskAmount).toList();
+            final doneTasksCount = dueTasks.where((task) => task.done).length;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,8 +71,9 @@ class TasksCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 35.0),
-                const TasksCardProgress(
-                  progress: 4 / 7,
+                TasksCardProgress(
+                  amountDone: doneTasksCount,
+                  amountTotal: dueTasks.length,
                 ),
                 const SizedBox(height: 25.0),
                 ListView.builder(
@@ -99,9 +102,10 @@ class TasksCard extends StatelessWidget {
                             Text(
                               "$amountOfFurtherDueTasks weitere bis heute fällig",
                               style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.grey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const Icon(Icons.arrow_forward, color: Colors.grey)
                           ],

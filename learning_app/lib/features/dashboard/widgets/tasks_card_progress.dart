@@ -6,12 +6,17 @@ import 'package:learning_app/features/dashboard/widgets/tasks_process_indicator.
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 
 class TasksCardProgress extends StatelessWidget {
-  final double progress;
+  final int amountDone;
+  final int amountTotal;
 
   final horizontalCardPadding = 10.0;
   final processIndicatorFlexPortion = 40;
 
-  const TasksCardProgress({Key? key, required this.progress}) : super(key: key);
+  const TasksCardProgress({
+    Key? key,
+    required this.amountDone,
+    required this.amountTotal,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,8 @@ class TasksCardProgress extends StatelessWidget {
             Expanded(
               flex: processIndicatorFlexPortion,
               child: Center(
-                child: TasksProcessIndicator(progress: progress, size: 92.5),
+                child: TasksProcessIndicator(
+                    progress: amountDone / amountTotal, size: 92.5),
               ),
             ),
             Expanded(
@@ -75,8 +81,8 @@ class TasksCardProgress extends StatelessWidget {
                   // Color Indicators and Done / Open
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      ColorIndicator(
+                    children: [
+                      const ColorIndicator(
                         // TODO: to be structured in the theme-issue:
                         // color: Theme.of(context).primaryColor,
                         color: Color(0xFF39BBD1),
@@ -84,21 +90,21 @@ class TasksCardProgress extends StatelessWidget {
                         width: 30.0,
                       ),
                       Text(
-                        "4 Erledigt",
-                        style: TextStyle(
+                        "$amountDone Erledigt",
+                        style: const TextStyle(
                           // TODO: to be structured in the theme-issue:
                           color: Color(0xFF949597),
                         ),
                       ),
-                      ColorIndicator(
+                      const ColorIndicator(
                         // TODO: to be structured in the theme-issue:
                         color: Color(0xFFF2EAFB),
                         height: 10.0,
                         width: 30.0,
                       ),
                       Text(
-                        "3 Offen",
-                        style: TextStyle(
+                        "${amountTotal - amountDone} Offen",
+                        style: const TextStyle(
                           // TODO: to be structured in the theme-issue:
                           color: Color(0xFF949597),
                         ),
