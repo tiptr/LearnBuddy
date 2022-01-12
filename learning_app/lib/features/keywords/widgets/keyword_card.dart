@@ -45,29 +45,6 @@ class KeyWordCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Excluded in MVP
-            // Expanded(
-            //   flex: 15,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     children: const [
-            //       SizedBox(width: 10.0),
-            //       Text(
-            //         "9",
-            //         style: TextStyle(
-            //           color: Colors.grey,
-            //           fontWeight: FontWeight.bold,
-            //           overflow: TextOverflow.ellipsis,
-            //         ),
-            //       ),
-            //       SizedBox(width: 5.0),
-            //       Icon(
-            //         Icons.task_outlined,
-            //         color: Colors.grey,
-            //       ),
-            //     ],
-            //   ),
-            // ),
             Expanded(
               flex: 30,
               child: Row(
