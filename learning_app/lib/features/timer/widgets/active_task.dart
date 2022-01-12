@@ -51,7 +51,7 @@ class ActiveTaskCard extends StatelessWidget {
       throw InvalidStateException();
     }
     final String estimatedTime = task.estimatedTime.formatVarLength();
-    final Duration sumDuration = task.timeLogs
+    final Duration sumDuration = task.allTimeLogs
         .map((e) => e.duration)
         .reduce((Duration value, Duration duration) => value + duration);
     final String timeSpent = sumDuration.formatVarLength();

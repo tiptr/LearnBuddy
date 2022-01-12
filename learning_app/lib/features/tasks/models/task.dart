@@ -43,6 +43,14 @@ class Task {
     return taskList;
   }
 
+  List<TimeLog> get allTimeLogs {
+    List<TimeLog> timeLogsList = timeLogs;
+    for (Task task in children){
+      timeLogsList.addAll(task.allTimeLogs);
+    }
+    return timeLogsList;
+  }
+
   Task({
     required this.id,
     required this.title,
