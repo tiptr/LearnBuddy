@@ -61,9 +61,11 @@ class Task {
   }
 
   Duration get sumAllTimeLogs {
-    return allTimeLogs
-        .map((e) => e.duration)
-        .reduce((Duration value, Duration duration) => value + duration);
+    Duration duration = const Duration();
+    for (TimeLog log in allTimeLogs){
+      duration += log.duration;
+    }
+    return duration;
   }
 
   Task({
