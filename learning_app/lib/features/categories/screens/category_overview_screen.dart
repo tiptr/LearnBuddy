@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
-import 'package:learning_app/features/categories/models/category.dart';
-import 'package:learning_app/features/categories/widgets/category_add_dialog.dart';
+import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
+import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
 import 'package:learning_app/features/categories/widgets/category_app_bar.dart';
 import 'package:learning_app/features/categories/widgets/category_card.dart';
 
@@ -20,7 +20,7 @@ class CategoryOverviewScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return StreamBuilder<List<Category>>(
+        return StreamBuilder<List<ReadCategoryDto>>(
           stream: state.categoriesStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -59,7 +59,9 @@ class CategoryOverviewScreen extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const CategoryAddDialog();
+                      return const CategoryFormDialog(
+                        existingCategory: null,
+                      );
                     },
                   );
                 },
