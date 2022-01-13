@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         // margin: const EdgeInsets.all(20.0),
         shrinkWrap: true,
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15.0),
         children: [
           _settingsGroup(
               context: context,
