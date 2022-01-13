@@ -22,7 +22,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   final ScrollController _scrollController = ScrollController();
 
   // This will be used, when this screen is expanded to the edit screen
-  DateTime selectedDueDate = DateTime.now();
+  DateTime? selectedDueDate = DateTime.now();
   Duration? selectedTimeEstimate;
 
   @override
@@ -49,7 +49,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
               children: [
                 DateInputField(
                   preselectedDate: selectedDueDate,
-                  onChange: (DateTime datetime) {
+                  onChange: (DateTime? datetime) {
                     // TODO: remove setState here?
                     setState(() {
                       selectedDueDate = datetime;
@@ -63,7 +63,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 const SizedBox(height: 20.0),
                 DurationInputField(
                   preselectedDuration: selectedTimeEstimate,
-                  onChange: (Duration duration) {
+                  onChange: (Duration? duration) {
                     // TODO: remove setState here?
                     setState(() {
                       selectedTimeEstimate = duration;
@@ -78,7 +78,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 TextInputField(
                   label: "Beschreibung",
                   hintText: "Text eingeben",
-                  // iconData: Icons.book_outlined,
+                  iconData: Icons.description_outlined,
                   textController: _descriptionController,
                   onChanged: (text) async {
                     BlocProvider.of<AddTaskCubit>(context)

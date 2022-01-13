@@ -20,9 +20,7 @@ class TextInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       style: const TextStyle(
-          color: Color(0xFF636573),
-          fontWeight: FontWeight.normal
-      ),
+          color: Color(0xFF636573), fontWeight: FontWeight.normal),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
@@ -40,20 +38,18 @@ class TextInputField extends StatelessWidget {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        prefixIcon: iconData != null ? Icon(
-            iconData,
-          color: Color(0xFF636573),
-        ) : null,
+        prefixIcon: iconData != null
+            ? Icon(
+                iconData,
+                color: const Color(0xFF636573),
+              )
+            : null,
         label: Text(
           label,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         hintText: hintText,
-        hintStyle: const TextStyle(
-            color: Color(0xFF949597)
-        ),
+        hintStyle: const TextStyle(color: Color(0xFF949597)),
       ),
       maxLines: null, // no limit
       controller: textController,

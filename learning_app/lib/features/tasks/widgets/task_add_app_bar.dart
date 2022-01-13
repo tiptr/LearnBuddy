@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,12 +45,6 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                     },
                     autofocus: true,
                     maxLines: 1,
-                    onTap: () {
-                      log('tapped');
-                    },
-                    onSubmitted: (text) {
-                      log('submitted: $text');
-                    },
                   ),
                 ),
                 IconButton(
@@ -65,7 +58,10 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }
                     });
                   },
-                  icon: const Icon(Icons.save),
+                  icon: const Icon(
+                    Icons.save_outlined,
+                    color: Color(0xFF636573),
+                  ),
                   iconSize: 30,
                 ),
               ],

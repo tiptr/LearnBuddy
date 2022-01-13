@@ -13,9 +13,7 @@ class DurationInputField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DurationInputField> createState() => _DurationInputFieldState(
-
-  );
+  State<DurationInputField> createState() => _DurationInputFieldState();
 }
 
 class _DurationInputFieldState extends State<DurationInputField> {
@@ -26,13 +24,21 @@ class _DurationInputFieldState extends State<DurationInputField> {
   void initState() {
     super.initState();
     duration = widget.preselectedDuration;
-
+    _textEditingController.text = duration.format(ifNull: '');
+    // This listener is used for disallowing text selection
+    _textEditingController.addListener(() {
+      _textEditingController.selection =
+          const TextSelection.collapsed(offset: 0);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TextField(
       onTap: () async {
+        // Unfocus, so that no keyboard will be opened for the textfield
+        FocusManager.instance.primaryFocus?.unfocus();
+
         var resultingDuration = await showDurationPicker(
           context: context,
           initialTime: const Duration(minutes: 30),
@@ -50,46 +56,60 @@ class _DurationInputFieldState extends State<DurationInputField> {
           widget.onChange(duration);
         }
       },
-      child: AbsorbPointer(
-        child: TextField(
-          controller: _textEditingController,
-          style: const TextStyle(
+      // The following attributes are used for disallowing text selection
+      mouseCursor: null,
+      showCursor: false,
+      toolbarOptions: const ToolbarOptions(), // empty -> no toolbar
+      readOnly: true,
+
+      controller: _textEditingController,
+      style: const TextStyle(
+          color: Color(0xFF636573), fontWeight: FontWeight.normal),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: const BorderSide(
             color: Color(0xFF636573),
-            fontWeight: FontWeight.normal
-          ),
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              borderSide: const BorderSide(
-                color: Color(0xFF636573),
-                width: 2.0,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
-                width: 2.0,
-              ),
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            filled: false,
-            prefixIcon: const Icon(
-                Icons.timer_outlined,
-                color: Color(0xFF636573),
-            ),
-            label: const Text(
-                "Zeitschätzung",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                ),
-            ),
-            hintText: 'Dauer auswählen',
-            hintStyle: const TextStyle(
-              color: Color(0xFF949597)
-            ),
+            width: 2.0,
           ),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2.0,
+          ),
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        filled: false,
+        prefixIcon: const Icon(
+          Icons.timer_outlined,
+          color: Color(0xFF636573),
+        ),
+        suffixIcon: duration != null
+            ? IconButton(
+                icon: const Icon(
+                  Icons.backspace_outlined,
+                  color: Color(0xFF636573),
+                ),
+                onPressed: () {
+                  // Change the text content
+                  _textEditingController.text = '';
+                  // Change the state, so the widget will re-render
+                  setState(() {
+                    duration = null;
+                  });
+                  // Notify Listener:
+                  widget.onChange(duration);
+                },
+              )
+            : null,
+        label: const Text(
+          "Zeitschätzung",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        hintText: 'Dauer auswählen',
+        hintStyle: const TextStyle(color: Color(0xFF949597)),
       ),
     );
   }
