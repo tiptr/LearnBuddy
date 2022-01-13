@@ -69,7 +69,6 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
     final unCompletedSessionColor = Theme.of(context)
         .colorScheme
         .timerProgressIndicatorUnCompletedSessionColor;
-    print("$completedSessionColor $unCompletedSessionColor");
     return StepProgressIndicator(
         totalSteps: totalSteps,
         currentStep: currentStep + 1,
