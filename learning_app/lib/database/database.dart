@@ -132,7 +132,7 @@ class Database extends _$Database {
           // Call every initialization scripts that are implemented:
           await initialization001Categories();
           await initialization002Keywords();
-          await initialization003LeisureActivities();
+          await initialization003LeisureCategories();
           await initialization004LeisureActivities();
 
           if (insertDemoDataAtFirstStartup) {

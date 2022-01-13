@@ -24,45 +24,39 @@ class LeisureActivitiesDao extends DatabaseAccessor<Database>
   // of this object.
   LeisureActivitiesDao(Database db) : super(db);
 
-  Stream<List<LeisureActivities>>? _activitiesStream;
-  Stream<Map<int, LeisureActivities>>? _idToActivityMapStream;
-
-  //TODO: watchCategoryIdToActivityMap
-  // ->  stream of map of <int, LeisureActivity>
-  // -> inspiration on how to do this in 'keywords_dao.dart' -> watchIdToKeywordMap
-
+  Stream<List<LeisureActivity>>? _activitiesStream;
+  Stream<Map<int, List<LeisureActivity>>>? _idToActivityMapStream;
 
   /// Returns a stream of maps that associate the category id with the category
   ///
   /// There only ever will exist one of this streams in parallel.
-  Stream<Map<int, LeisureActivities>> watchCategoryIdToActivityMap() {
+  Stream<Map<int, List<LeisureActivity>>> watchCategoryIdToActivityMap() {
     _idToActivityMapStream =
         (_idToActivityMapStream ?? (_createIdToActivityMapStream()));
 
-    return _idToActivityMapStream as Stream<Map<int, LeisureActivities>>;
+    return _idToActivityMapStream as Stream<Map<int, List<LeisureActivity>>>;
   }
 
   /// Creates a stream of maps that associate the category id with the category
-  Stream<Map<int, LeisureActivities>> _createIdToActivityMapStream() {
-    final Stream<List<LeisureActivities>> activitiesStream = watchAllActivities();
-    return activitiesStream.map((models) {
-      final idToModel = <int, LeisureActivities>{};
-      for (var model in models) {
-        idToModel.putIfAbsent(model.id, () => model);
+  Stream<Map<int, List<LeisureActivity>>> _createIdToActivityMapStream() {
+    final Stream<List<LeisureActivity>> activitiesStream = watchAllActivities();
+    return activitiesStream.map((activityList) {
+      final idToModel = <int, List<LeisureActivity>>{};
+      for (var activity in activityList) {
+        idToModel.putIfAbsent(activity.categoryId, () => []).add(activity);
       }
       return idToModel;
     });
   }
 
-  //TODO: Müsste das hier nicht leisure activity sein? Und oben auch? -> aber das gibt es nicht
-  Stream<List<LeisureActivities>> watchAllActivities() {
-    _activitiesStream = _activitiesStream ??
-        (select(leisureActivities)
+  Stream<List<LeisureActivity>> watchAllActivities() {
+    _activitiesStream = _activitiesStream ?? 
+      (select(leisureActivities)
             .map(
-                (row) => LeisureActivity(id: row.id, name: row.name, duration: row.duration, descriptionShort: row.descriptionShort, isFavorite: row.isFavorite))
+                (row) => LeisureActivity(id: row.id, categoryId: row.leisureCategoryId, name: row.name, duration: row.duration, descriptionShort: row.descriptionShort, isFavorite: row.isFavorite))
             .watch());
 
-    return _activitiesStream as Stream<List<LeisureActivities>>;
+    return _activitiesStream as Stream<List<LeisureActivity>>;
   }
 
 
