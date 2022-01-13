@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
-import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
-import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
-import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
+import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 18.0;
 
-class CategoryCard extends StatelessWidget {
-  final ReadCategoryDto category;
+class KeyWordCard extends StatelessWidget {
+  final KeyWord _keyword;
 
-  const CategoryCard({Key? key, required this.category}) : super(key: key);
+  const KeyWordCard({Key? key, required KeyWord keyword})
+      : _keyword = keyword,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,62 +35,38 @@ class CategoryCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              margin: const EdgeInsets.only(right: 15.0),
-              child: ColorIndicator(
-                color: category.color,
-                height: 30.0,
-                width: 10.0,
-              ),
-            ),
             Expanded(
-              flex: 65,
+              flex: 70,
               child: Text(
-                category.name,
+                _keyword.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.ellipsis,
                 ),
-                textAlign: TextAlign.start,
               ),
             ),
             Expanded(
-              flex: 35,
+              flex: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CategoryFormDialog(
-                            existingCategory: category,
-                          );
-                        },
-                      );
-                    },
-                    icon: Icon(
-                      Icons.create_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  IconButton(
                     onPressed: () async {
                       var confirmed = await openConfirmDialog(
                         context: context,
-                        title: "Kategorie löschen?",
+                        title: "Schlagwort löschen?",
                         content: RichText(
                           text: TextSpan(
                             // Note: Styles for TextSpans must be explicitly defined.
                             // Child text spans will inherit styles from parent
                             style: DefaultTextStyle.of(context).style,
                             children: <TextSpan>[
-                              const TextSpan(text: 'Willst du die Kategorie '),
+                              const TextSpan(text: 'Willst du das Schlagwort '),
                               TextSpan(
-                                text: category.name,
+                                text: _keyword.name,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const TextSpan(text: ' wirklich löschen?'),
                             ],
@@ -98,8 +75,10 @@ class CategoryCard extends StatelessWidget {
                       );
 
                       if (confirmed) {
-                        BlocProvider.of<CategoriesCubit>(context)
-                            .deleteCategoryById(category.id);
+                        logger.d('Keyword ${_keyword.name} wird gelöscht.');
+
+                        BlocProvider.of<KeyWordsCubit>(context)
+                            .deleteKeyWordById(_keyword.id);
                       }
                     },
                     icon: Icon(

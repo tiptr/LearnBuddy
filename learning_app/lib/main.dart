@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
+import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:logger/logger.dart';
-import 'features/tasks/bloc/add_task_cubit.dart';
-import 'features/timer/screens/timer_screen.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -52,6 +53,14 @@ void main() {
           create: (context) {
             var cubit = CategoriesCubit();
             cubit.loadCategories();
+            return cubit;
+          },
+        ),
+        BlocProvider<KeyWordsCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = KeyWordsCubit();
+            cubit.loadKeyWords();
             return cubit;
           },
         ),
