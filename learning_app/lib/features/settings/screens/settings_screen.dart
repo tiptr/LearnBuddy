@@ -39,8 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: const GoBackTitleBar(
-        title: "Persönliche Daten Langer Test",
-        backTo: "Einstellungen",
+        title: "Einstellungen",
       ),
       body: Scrollbar(
         interactive: true,
