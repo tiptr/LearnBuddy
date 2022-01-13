@@ -2,7 +2,7 @@ part of 'time_logging_bloc.dart';
 
 abstract class TimeLoggingState extends Equatable {}
 
-// No object is registrated
+// No object is registered
 class InactiveState extends TimeLoggingState {
   @override
   List<Object?> get props => [];

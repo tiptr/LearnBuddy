@@ -43,35 +43,37 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
-    emit(
-      event.duration > 0
-          ? TimerRunInProgress(
-              event.duration, state._pomodoroMode, state._countPhase)
-          : TimerRunComplete(
-              event.duration, state._pomodoroMode, state._countPhase),
-    );
+    if (event.duration > 0) {
+      emit(TimerRunInProgress(
+          event.duration, state._pomodoroMode, state._countPhase));
+    } else {
+      emit(TimerRunComplete(
+          event.duration, state._pomodoroMode, state._countPhase));
+    }
 
     // Notify the Time Logging Bloc that it has to update
     //TODO: Change this to more than one second?
-    if (state._pomodoroMode == PomodoroMode.concentration) {
-      timeLoggingBloc
-          .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
-    }
+    //if (state._pomodoroMode == PomodoroMode.concentration) {
+    //  timeLoggingBloc
+    //      .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+    //}
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
     if (state is TimerRunInProgress) {
       _tickerSubscription?.cancel();
+      timeLoggingBloc.add(StopTimeLoggingEvent());
       emit(state.onPaused());
     }
   }
 
   void _onResumed(TimerResumed resume, Emitter<TimerState> emit) {
     if (state is TimerRunPause) {
-      //state hat remaining duration
+      //state has remaining duration
       _tickerSubscription = _ticker
           .tick(secs: state._duration)
           .listen((duration) => add(TimerTicked(duration: duration)));
+      timeLoggingBloc.add(StartTimeLoggingEvent(beginTime: DateTime.now()));
       emit(state.onResumed());
     }
   }
@@ -79,5 +81,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
+    if(timeLoggingBloc.state is ActiveState){
+      timeLoggingBloc.add(StopTimeLoggingEvent());
+    }
   }
 }

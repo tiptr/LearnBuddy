@@ -38,7 +38,6 @@ class TimerView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
-        // Just for Debugging
         ActiveTaskBar(),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 50.0),
