@@ -69,7 +69,8 @@ class _TaskScreenState extends State<TaskScreen> {
                     // sorting will be done via SQL
                     elements: activeTasks,
                     // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
-                    groupBy: (task) => task.dueDate.getPreviousMidnight(),
+                    groupBy: (task) =>
+                        task.dueDate.getBeginOfDayConcatPastToYesterday(),
                     useStickyGroupSeparators: true,
                     cacheExtent: 20,
                     // This would improve scrolling performance, but I did not get it to
@@ -78,7 +79,11 @@ class _TaskScreenState extends State<TaskScreen> {
                     floatingHeader: true,
                     groupSeparatorBuilder: (DateTime? dateTime) {
                       return ListGroupSeparator(
-                        content: dateTime.toListViewFormat(),
+                        content: dateTime == null
+                            ? 'Ohne Fälligkeitsdatum'
+                            : (dateTime.isInPast()
+                                ? 'Überfällig'
+                                : '${dateTime.toListViewFormat()} fällig'),
                         highlight: dateTime.isInPast(),
                       );
                     },

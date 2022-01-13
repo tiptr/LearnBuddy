@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class ReadCategoryDto extends Equatable {
+class UpdateCategoryDto extends Equatable {
   final int id;
   final String name;
   final Color color;
 
-  const ReadCategoryDto({
+  const UpdateCategoryDto({
     required this.id,
     required this.name,
     required this.color,

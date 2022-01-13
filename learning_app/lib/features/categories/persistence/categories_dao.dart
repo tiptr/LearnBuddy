@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
+import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 
 // Also import the used model(s), as they are required in the generated extension file
 import 'package:learning_app/features/categories/models/category.dart';
@@ -27,7 +28,7 @@ class CategoriesDao extends DatabaseAccessor<Database>
   // of this object.
   CategoriesDao(Database db) : super(db);
 
-  Stream<List<Category>>? _categoriesStream;
+  Stream<List<ReadCategoryDto>>? _categoriesStream;
   Stream<Map<int, Category>>? _idToCategoryMapStream;
 
   Future<int> createCategory(CategoriesCompanion categoriesCompanion) {
@@ -39,18 +40,27 @@ class CategoriesDao extends DatabaseAccessor<Database>
     return into(categories).insert(categoriesCompanion);
   }
 
+  Future<int> updateCategory(CategoriesCompanion categoriesCompanion) {
+    var updateStmnt = (update(categories)
+      ..where(
+        (t) => t.id.equals(categoriesCompanion.id.value),
+      ));
+
+    return updateStmnt.write(categoriesCompanion);
+  }
+
   Future<int> deleteCatgoryById(int categoryId) {
     return (delete(categories)..where((t) => t.id.equals(categoryId))).go();
   }
 
-  Stream<List<Category>> watchAllCategories() {
+  Stream<List<ReadCategoryDto>> watchAllCategories() {
     _categoriesStream = _categoriesStream ??
         (select(categories)
-            .map(
-                (row) => Category(id: row.id, name: row.name, color: row.color))
+            .map((row) =>
+                ReadCategoryDto(id: row.id, name: row.name, color: row.color))
             .watch());
 
-    return _categoriesStream as Stream<List<Category>>;
+    return _categoriesStream as Stream<List<ReadCategoryDto>>;
   }
 
   /// Returns a stream of maps that associate the category id with the category
@@ -65,11 +75,18 @@ class CategoriesDao extends DatabaseAccessor<Database>
 
   /// Creates a stream of maps that associate the category id with the category
   Stream<Map<int, Category>> _createIdToCategoryMapStream() {
-    final Stream<List<Category>> categoriesStream = watchAllCategories();
+    final Stream<List<ReadCategoryDto>> categoriesStream = watchAllCategories();
     return categoriesStream.map((models) {
       final idToModel = <int, Category>{};
       for (var model in models) {
-        idToModel.putIfAbsent(model.id, () => model);
+        idToModel.putIfAbsent(
+          model.id,
+          () => Category(
+            id: model.id,
+            color: model.color,
+            name: model.name,
+          ),
+        );
       }
       return idToModel;
     });
