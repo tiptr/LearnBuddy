@@ -41,13 +41,13 @@ class DbLeisureRepository implements LeisureRepository {
     return leisureCategoryEntitiesStream.switchMap((categoryList) {
       return leisureCategoryIdToActivityMapStream.map((categoryIdToActivitiesMap) {
         final List<LeisureCategory> resultList = [];
-        categoryList.forEach((category) => {
+        for (var category in categoryList) {
           resultList.add(LeisureCategory(
             id: category.id, 
             name: category.name, 
             pathToImage: category.name, 
             activities: categoryIdToActivitiesMap[category.id] ?? []));
-        });
+        }
         return resultList;
       });
     });
