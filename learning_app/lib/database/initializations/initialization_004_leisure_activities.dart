@@ -19,6 +19,8 @@ Future<void> initialization004LeisureActivities() async {
         duration: const Duration(minutes: 10),
         descriptionShort:
             'Zeichne auf einem Papier fünf Katzen mit verschiedenen menschlichen Gesichtsausdrücken.\n Teilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.',
+        descriptionLong: 
+          const Value<String>(''),
         isFavorite: false,
       ),
     ]);

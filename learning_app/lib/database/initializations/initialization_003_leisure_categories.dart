@@ -7,7 +7,7 @@ import '../database.dart';
 ///
 /// This file is called from inside database.dart. Future initialization scripts
 /// have to be explicitly added there, too.
-Future<void> initialization003LeisureActivities() async {
+Future<void> initialization003LeisureCategories() async {
   final LeisureCategoriesDao _dao = getIt<LeisureCategoriesDao>();
   // Batch insert, no awaits required inside
   await _dao.batch((batch) {

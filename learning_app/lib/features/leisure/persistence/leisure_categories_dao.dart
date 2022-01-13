@@ -21,8 +21,13 @@ class LeisureCategoriesDao extends DatabaseAccessor<Database>
   // of this object.
   LeisureCategoriesDao(Database db) : super(db);
 
+  Stream<List<LeisureCategoryEntity>>? _leisureCategoryEntitiesStream;
 
-  //TODO: watchLeisureCategoryEntities
-  // -> list of entities (generated class 'LeisureCategoryEntity')
+  Stream<List<LeisureCategoryEntity>> watchLeisureCategoryEntities() {
+    _leisureCategoryEntitiesStream =
+        _leisureCategoryEntitiesStream ?? (select(leisureCategories).watch());
+
+    return _leisureCategoryEntitiesStream as Stream<List<LeisureCategoryEntity>>;
+  }
 
 }
