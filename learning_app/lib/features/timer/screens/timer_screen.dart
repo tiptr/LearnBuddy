@@ -6,6 +6,7 @@ import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
+import 'package:learning_app/features/timer/widgets/timer_sheet.dart';
 import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
@@ -29,30 +30,83 @@ class TimerScreen extends StatelessWidget {
   }
 }
 
-class TimerView extends StatelessWidget {
+class TimerView extends StatefulWidget {
   const TimerView({Key? key}) : super(key: key);
+
+  @override
+  _TimerViewState createState() => _TimerViewState();
+}
+
+class _TimerViewState extends State<TimerView>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  final Duration _duration = const Duration(milliseconds: 500);
+  final Tween<Offset> _tween =
+      Tween(begin: const Offset(0, 1), end: const Offset(0, 0));
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: _duration);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: GestureDetector(
+          child: FloatingActionButton(
+            child: AnimatedIcon(
+                icon: AnimatedIcons.menu_close, progress: _controller),
+            elevation: 5,
+
+            onPressed: () async {
+              if (_controller.isDismissed) {
+                _controller.forward();
+              } else if (_controller.isCompleted) {
+                _controller.reverse();
+              }
+            },
+          ),
+        ),
+        body: SizedBox.expand(
+          child: Stack(
+            children: <Widget>[
+              const TimerBackGround(),
+              TimerDraggableScrollableSheet(_tween, _controller),
+            ],
+          ),
+        ));
+  }
+}
+
+class TimerBackGround extends StatelessWidget {
+  const TimerBackGround({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const <Widget>[
-        // Just for Debugging
-        ActiveTaskBar(),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.0),
-          child: TimerWidget(),
-        ),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
-            child: PomodoroPhaseCountWidget()),
-        TimerActions(),
-        ToggleActiveTask(),
-      ],
-    );
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const <Widget>[
+          // Just for Debugging
+          ActiveTaskBar(),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 50.0),
+            child: TimerWidget(),
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: 20.0, horizontal: 70),
+              child: PomodoroPhaseCountWidget()),
+          TimerActions(),
+          ToggleActiveTask(),
+        ]);
   }
 }
+
+
+
 
 class PomodoroPhaseCountWidget extends StatelessWidget {
   const PomodoroPhaseCountWidget({Key? key}) : super(key: key);

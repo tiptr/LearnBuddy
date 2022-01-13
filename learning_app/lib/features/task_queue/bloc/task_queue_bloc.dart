@@ -23,7 +23,7 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
     });
 
     on<InitQueueEvent>((event, emit) {
-      TaskQueueReady(event.taskList);
+      emit(TaskQueueReady(event.taskList));
     });
   }
 }
