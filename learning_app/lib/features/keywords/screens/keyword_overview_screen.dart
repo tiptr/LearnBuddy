@@ -4,7 +4,7 @@ import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_add_dialog.dart';
-import 'package:learning_app/features/keywords/widgets/keyword_app_bar.dart';
+import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_card.dart';
 
 class KeyWordOverviewScreen extends StatelessWidget {
@@ -43,7 +43,7 @@ class KeyWordOverviewScreen extends StatelessWidget {
             final keywords = snapshot.data!;
 
             return Scaffold(
-              appBar: const KeyWordAddAppBar(),
+              appBar: const GoBackTitleBar(title: "Schlagwörter"),
               body: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,

@@ -4,8 +4,8 @@ import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
-import 'package:learning_app/features/categories/widgets/category_app_bar.dart';
 import 'package:learning_app/features/categories/widgets/category_card.dart';
+import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 
 class CategoryOverviewScreen extends StatelessWidget {
   const CategoryOverviewScreen({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class CategoryOverviewScreen extends StatelessWidget {
             final categories = snapshot.data!;
 
             return Scaffold(
-              appBar: const CategoryAddAppBar(),
+              appBar: const GoBackTitleBar(title: "Kategorien"),
               body: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
