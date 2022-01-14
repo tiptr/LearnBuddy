@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/routing_paths.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_item.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_progress.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
@@ -85,8 +86,13 @@ class TasksCard extends StatelessWidget {
                 if (hasMore)
                   InkWell(
                     onTap: () {
-                      // TODO: not only navigate to the task page, but automatically activate a filter that only shows the tasks of the current day (and overdue)
-                      Navigator.of(context).pushNamed('/tasks');
+                      // TODO: not only navigate to the task page,
+                      // but automatically activate a filter that only
+                      // shows the tasks of the current day (and overdue)
+
+                      // This is most likely best achieved by using blocs though,
+                      // the flutter routing does not feel very good to work with.
+                      Navigator.of(context).pushNamed(RoutingPaths.tasks);
                     },
                     child: Ink(
                       child: Container(

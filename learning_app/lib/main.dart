@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/routing_paths.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
@@ -20,12 +21,15 @@ class RouteWidget {
   const RouteWidget({required this.route, required this.widget});
 }
 
-const List<RouteWidget> _routeWidgets = [
-  RouteWidget(widget: TimerScreen(), route: '/timer'),
-  RouteWidget(widget: TaskScreen(), route: '/tasks'),
-  RouteWidget(widget: DashboardScreen(), route: '/'),
-  RouteWidget(widget: LeisureScreen(), route: '/leisure'),
-  RouteWidget(widget: LearningAidsScreen(), route: '/learningaids'),
+final List<RouteWidget> _routeWidgets = [
+  RouteWidget(widget: const TimerScreen(), route: RoutingPaths.timer),
+  RouteWidget(widget: const TaskScreen(), route: RoutingPaths.tasks),
+  RouteWidget(widget: const DashboardScreen(), route: RoutingPaths.dashboard),
+  RouteWidget(widget: const LeisureScreen(), route: RoutingPaths.leisure),
+  RouteWidget(
+    widget: const LearningAidsScreen(),
+    route: RoutingPaths.learningAids,
+  ),
 ];
 
 void main() {
