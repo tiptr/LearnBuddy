@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
+import 'package:learning_app/features/timer/widgets/active_task.dart';
+import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -15,7 +18,8 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TimerBloc(),
+      create: (_) =>
+          TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
       child: const BaseLayout(
         titleBar: BaseTitleBar(
           title: "Pomodoro Timer",
@@ -31,24 +35,20 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
-            // Just for Debugging
-            PomodoroState(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 50.0),
-              child: TimerWidget(),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
-                child: PomodoroPhaseCountWidget()),
-            TimerActions(),
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const <Widget>[
+        ActiveTaskBar(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 50.0),
+          child: TimerWidget(),
         ),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+            child: PomodoroPhaseCountWidget()),
+        TimerActions(),
+        ToggleActiveTask(),
       ],
     );
   }
@@ -151,9 +151,9 @@ class TimerWidget extends StatelessWidget {
   String getPomoStateText(BuildContext context) {
     PomodoroMode pomoState =
         context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
-    if (pomoState == PomodoroMode.concentration) return "Concentration";
-    if (pomoState == PomodoroMode.shortBreak) return "Short Break";
-    return "Long Break";
+    if (pomoState == PomodoroMode.concentration) return "Konzentration";
+    if (pomoState == PomodoroMode.shortBreak) return "Kurze Pause";
+    return "Lange Pause";
   }
 }
 

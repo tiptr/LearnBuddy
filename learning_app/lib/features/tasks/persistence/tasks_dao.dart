@@ -56,6 +56,11 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     );
   }
 
+  Stream<TaskEntity?> watchTaskById(int taskId) {
+    final query = select(tasks)..where((tsk) => tsk.id.equals(taskId));
+    return query.watchSingleOrNull();
+  }
+
   Stream<List<TaskEntity>> watchSubLevelTaskEntities() {
     _subLevelTaskEntitiesStream =
         (_subLevelTaskEntitiesStream ?? _createSubLevelTaskEntitiesStream());
@@ -86,16 +91,20 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
-    final queuedTopLevelTasksQuery = select(tasks)
-      ..where((tsk) => tsk.parentTaskId.isNull()) // top-levels only
-      ..join([
-        innerJoin(
-            taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
-      ])
+    final topLevelTasksQuery = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNull()); // top-levels only
+    final queuedTopLevelTasksQuery = topLevelTasksQuery.join([
+      innerJoin(taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
+    ]);
+    final queuedTopLevelTasksQueryFiltered = queuedTopLevelTasksQuery
       ..orderBy([
-        (tsk) => OrderingTerm.asc(taskQueueElements.orderPlacement),
+        OrderingTerm.asc(taskQueueElements.orderPlacement),
       ]);
-    return queuedTopLevelTasksQuery.watch();
+    return queuedTopLevelTasksQueryFiltered.watch().map((rows) {
+      return rows.map((typedResult) {
+        return typedResult.readTable(tasks);
+      }).toList();
+    });
   }
 
   Stream<List<TaskEntity>> _createSubLevelTaskEntitiesStream() {

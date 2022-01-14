@@ -11,6 +11,7 @@ import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:logger/logger.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 
 import 'constants/theme_constants.dart';
 
@@ -42,6 +43,11 @@ void main() {
             // dynamic loading (only the first X tasks are being loaded)
             cubit.loadTasks();
             return cubit;
+          },
+        ),
+        BlocProvider<TimeLoggingBloc>(
+          create: (context) {
+            return TimeLoggingBloc();
           },
         ),
         BlocProvider<AddTaskCubit>(
