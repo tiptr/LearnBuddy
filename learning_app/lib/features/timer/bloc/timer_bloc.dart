@@ -81,7 +81,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
-    if(timeLoggingBloc.state is ActiveState){
+    if (timeLoggingBloc.state is ActiveState) {
       timeLoggingBloc.add(StopTimeLoggingEvent());
     }
   }
