@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card.dart';
 import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
-import 'package:learning_app/features/settings/screens/settings_screen.dart';
+import 'package:learning_app/features/settings/screens/settings_overview_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -74,7 +74,7 @@ class DashboardScreen extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const SettingsScreen(),
+                builder: (context) => const SettingsOverviewScreen(),
               ),
             ),
             child: Ink(
