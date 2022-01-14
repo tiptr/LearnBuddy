@@ -32,8 +32,8 @@ class TaskCard extends StatelessWidget {
       : _task = task,
         _isSubTaskCard = isSubTaskCard,
         // calculated:
-        _formattedDueDate =
-            task.dueDate.toListViewFormat(ifNull: 'Ohne Fälligkeit'),
+        _formattedDueDate = task.dueDate
+            .formatDependingOnCurrentDate(ifNull: 'Ohne Fälligkeit'),
         _isOverDue = task.dueDate.isInPast(),
         _formattedTimeEstimation = task.remainingTimeEstimation
             .toListViewFormat(ifNull: 'Keine Zeitschätzung'),

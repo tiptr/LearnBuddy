@@ -14,7 +14,7 @@ extension DateTimeFormatting on DateTime? {
   ///
   /// Without the year, if equal to the current.
   /// E.g. 'Today', if the current day is matched.
-  String toListViewFormat({String? ifNull}) {
+  String formatDependingOnCurrentDate({String? ifNull}) {
     if (this == null) {
       return ifNull ?? 'Ohne Datum';
     } else {
