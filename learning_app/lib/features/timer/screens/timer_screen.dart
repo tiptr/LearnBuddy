@@ -6,6 +6,7 @@ import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
+import 'package:learning_app/features/timer/widgets/test.dart';
 import 'package:learning_app/features/timer/widgets/timer_sheet.dart';
 import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
@@ -62,7 +63,7 @@ class _TimerViewState extends State<TimerView>
       parallaxOffset: .0,
       minHeight: 20,
       maxHeight: 470,
-      panelBuilder: (ScrollController sc) => TaskQueueList(sc),
+      panelBuilder: (ScrollController sc) => TaskQueueListWrapper(sc),
       color: Colors.white,
       body: const Center(
         child: TimerBackGround(),
