@@ -42,6 +42,8 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                         title: text,
                       ));
                     },
+                    autofocus: true,
+                    maxLines: 1,
                   ),
                 ),
                 IconButton(
@@ -55,7 +57,10 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }
                     });
                   },
-                  icon: const Icon(Icons.save),
+                  icon: const Icon(
+                    Icons.save_outlined,
+                    color: Color(0xFF636573),
+                  ),
                   iconSize: 30,
                 ),
               ],
