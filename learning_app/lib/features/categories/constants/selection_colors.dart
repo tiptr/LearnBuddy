@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/theme_constants.dart';
 
 const availableColors = <Color>[
   Colors.red,

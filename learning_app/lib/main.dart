@@ -12,6 +12,8 @@ import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:logger/logger.dart';
 
+import 'constants/theme_constants.dart';
+
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
   TaskScreen(),
