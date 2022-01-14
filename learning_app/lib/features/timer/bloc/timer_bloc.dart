@@ -54,10 +54,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     // Notify the Time Logging Bloc that it has to update
     //TODO: Change this to more than one second?
     if (state._pomodoroMode == PomodoroMode.concentration) {
-      if (event.duration % 30 == 0) {
         timeLoggingBloc
-            .add(const TimeNoticeEvent(duration: Duration(seconds: 30)));
-      }
+            .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
     }
   }
 

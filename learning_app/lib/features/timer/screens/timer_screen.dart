@@ -86,24 +86,6 @@ class TimerBackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-<<<<<<< HEAD
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
-          // Just for Debugging
-          ActiveTaskBar(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 50.0),
-            child: TimerWidget(),
-          ),
-          Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: 20.0, horizontal: 70),
-              child: PomodoroPhaseCountWidget()),
-          TimerActions(),
-          ToggleActiveTask(),
-        ]);
-=======
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
@@ -119,7 +101,6 @@ class TimerBackGround extends StatelessWidget {
         ToggleActiveTask(),
       ],
     );
->>>>>>> feature/time-logging-35-new
   }
 }
 
