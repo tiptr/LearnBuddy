@@ -10,14 +10,22 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
+import 'package:learning_app/util/logger.dart';
 import 'package:logger/logger.dart';
 
-const List<Widget> _pages = <Widget>[
-  TimerScreen(),
-  TaskScreen(),
-  DashboardScreen(),
-  LeisureScreen(),
-  LearningAidsScreen(),
+class RouteWidget {
+  final String route;
+  final Widget widget;
+
+  const RouteWidget({required this.route, required this.widget});
+}
+
+const List<RouteWidget> _routeWidgets = [
+  RouteWidget(widget: TimerScreen(), route: '/timer'),
+  RouteWidget(widget: TaskScreen(), route: '/tasks'),
+  RouteWidget(widget: DashboardScreen(), route: '/'),
+  RouteWidget(widget: LeisureScreen(), route: '/leisure'),
+  RouteWidget(widget: LearningAidsScreen(), route: '/learningaids'),
 ];
 
 void main() {
@@ -91,66 +99,98 @@ class MyApp extends StatelessWidget {
           minThumbLength: 50,
         ),
       ),
-      home: const MyHomePage(),
+      initialRoute: '/',
+      home: const Content(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class Content extends StatefulWidget {
+  const Content({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _ContentState createState() => _ContentState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  // The Dashboard is at index 2 in the _pages-List
+class _ContentState extends State<Content> {
+  // The Dashboard is at index 2 in the _routeWidgets-List
   int _selectedIndex = 2;
+  final navigatorKey = GlobalKey<NavigatorState>();
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  void _onItemTapped(
+    int index,
+  ) {
+    navigatorKey.currentState?.pushNamed(_routeWidgets[index].route);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // TODO: think about changing to something like lazy_load_indexed_stack
-        // (separate package), so that not every page has to be loaded at startup
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: _pages,
+        body: Navigator(
+          key: navigatorKey,
+          initialRoute: '/',
+          onGenerateRoute: (RouteSettings settings) {
+            WidgetBuilder builder;
+            // Manage your route names here
+
+            var index = _routeWidgets.indexWhere(
+                (routeWidget) => routeWidget.route == settings.name);
+
+            if (index >= 0) {
+              builder = (BuildContext context) => _routeWidgets[index].widget;
+            } else {
+              throw Exception("Unknown route");
+            }
+
+            // Important if condition to prevent Flutter from infinite render cycles
+            if (_selectedIndex != index) {
+              setState(() {
+                logger.d("Page $index selected.");
+                _selectedIndex = index;
+              });
+            }
+
+            // You can also return a PageRouteBuilder and
+            // define custom transitions between pages
+            return MaterialPageRoute(
+              builder: builder,
+              settings: settings,
+            );
+          },
         ),
-        bottomNavigationBar: _navBar(context),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.timer),
+              label: "Timer",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.document_scanner_outlined),
+              label: "Aufgaben",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "Dashboard",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.beach_access_outlined),
+              label: "Ausgleich",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_outlined),
+              label: "Lernhilfen",
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  BottomNavigationBar _navBar(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      unselectedItemColor: Colors.grey,
-      selectedItemColor: Theme.of(context).colorScheme.primary,
-      showUnselectedLabels: true,
-      showSelectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        _navItem(Icons.timer, "Timer"),
-        _navItem(Icons.document_scanner_outlined, "Aufgaben"),
-        _navItem(Icons.home_outlined, "Dashboard"),
-        _navItem(Icons.beach_access_outlined, "Ausgleich"),
-        _navItem(Icons.book_outlined, "Lernhilfen"),
-      ],
-    );
-  }
-
-  BottomNavigationBarItem _navItem(IconData icon, String label) {
-    return BottomNavigationBarItem(
-      icon: Icon(icon),
-      label: label,
     );
   }
 }
