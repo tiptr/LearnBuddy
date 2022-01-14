@@ -13,32 +13,30 @@ class TaskQueueListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final TimeLoggingBloc bloc;
     bloc = context.read<TimeLoggingBloc>();
-    return Material(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          topLevelTask(bloc),
-          Container(
-            padding: const EdgeInsets.only(left: 12),
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  color: topLevelTaskWithQueueStatus.task.category?.color ?? Colors.grey,
-                  width: 8,
-                  style: BorderStyle.solid,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        topLevelTask(bloc),
+        Container(
+          padding: const EdgeInsets.only(left: 12),
+          margin: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: topLevelTaskWithQueueStatus.task.category?.color ?? Colors.grey,
+                width: 8,
+                style: BorderStyle.solid,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (Task child in topLevelTaskWithQueueStatus.task.children) Subtask(child, topLevelTaskWithQueueStatus.task, bloc, 1),
-              ],
-            ),
           ),
-        ],
-      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (Task child in topLevelTaskWithQueueStatus.task.children) Subtask(child, topLevelTaskWithQueueStatus.task, bloc, 1),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
