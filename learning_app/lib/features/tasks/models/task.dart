@@ -53,7 +53,7 @@ class Task {
   }
 
   List<TimeLog> get allTimeLogs {
-    List<TimeLog> timeLogsList = timeLogs;
+    List<TimeLog> timeLogsList = List.from(timeLogs);
     for (Task task in children) {
       timeLogsList.addAll(task.allTimeLogs);
     }
@@ -62,7 +62,7 @@ class Task {
 
   Duration get sumAllTimeLogs {
     Duration duration = const Duration();
-    for (TimeLog log in allTimeLogs){
+    for (TimeLog log in allTimeLogs) {
       duration += log.duration;
     }
     return duration;

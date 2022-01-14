@@ -86,6 +86,7 @@ class TimerBackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+<<<<<<< HEAD
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const <Widget>[
@@ -102,6 +103,23 @@ class TimerBackGround extends StatelessWidget {
           TimerActions(),
           ToggleActiveTask(),
         ]);
+=======
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const <Widget>[
+        ActiveTaskBar(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 50.0),
+          child: TimerWidget(),
+        ),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+            child: PomodoroPhaseCountWidget()),
+        TimerActions(),
+        ToggleActiveTask(),
+      ],
+    );
+>>>>>>> feature/time-logging-35-new
   }
 }
 
@@ -197,9 +215,9 @@ class TimerWidget extends StatelessWidget {
   String getPomoStateText(BuildContext context) {
     PomodoroMode pomoState =
         context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
-    if (pomoState == PomodoroMode.concentration) return "Concentration";
-    if (pomoState == PomodoroMode.shortBreak) return "Short Break";
-    return "Long Break";
+    if (pomoState == PomodoroMode.concentration) return "Konzentration";
+    if (pomoState == PomodoroMode.shortBreak) return "Kurze Pause";
+    return "Lange Pause";
   }
 }
 

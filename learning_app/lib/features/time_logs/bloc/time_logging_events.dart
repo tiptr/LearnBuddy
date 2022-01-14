@@ -39,3 +39,5 @@ class TaskChangedEvent extends TimeLoggingEvent {
     required this.parentTask,
   });
 }
+
+class StopTimeLoggingEvent extends TimeLoggingEvent {}

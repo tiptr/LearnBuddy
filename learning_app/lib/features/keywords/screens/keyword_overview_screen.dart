@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
-import 'package:learning_app/features/categories/bloc/categories_state.dart';
-import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
-import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
-import 'package:learning_app/features/categories/widgets/category_app_bar.dart';
-import 'package:learning_app/features/categories/widgets/category_card.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
+import 'package:learning_app/features/keywords/widgets/keyword_add_dialog.dart';
+import 'package:learning_app/features/keywords/widgets/keyword_app_bar.dart';
+import 'package:learning_app/features/keywords/widgets/keyword_card.dart';
 
-class CategoryOverviewScreen extends StatelessWidget {
-  const CategoryOverviewScreen({Key? key}) : super(key: key);
+class KeyWordOverviewScreen extends StatelessWidget {
+  const KeyWordOverviewScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoriesCubit, CategoriesState>(
+    return BlocBuilder<KeyWordsCubit, KeyWordsState>(
       builder: (context, state) {
         // This only checks for the success state, we might want to check for
         // errors in the future here.
-        if (state is! CategoriesLoaded) {
+        if (state is! KeyWordsLoaded) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return StreamBuilder<List<ReadCategoryDto>>(
-          stream: state.categoriesStream,
+        return StreamBuilder<List<KeyWord>>(
+          stream: state.keywordsStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -40,28 +40,26 @@ class CategoryOverviewScreen extends StatelessWidget {
               );
             }
 
-            final categories = snapshot.data!;
+            final keywords = snapshot.data!;
 
             return Scaffold(
-              appBar: const CategoryAddAppBar(),
+              appBar: const KeyWordAddAppBar(),
               body: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: categories.length,
-                itemBuilder: (BuildContext ctx, int idx) => CategoryCard(
-                  category: categories[idx],
+                itemCount: keywords.length,
+                itemBuilder: (BuildContext ctx, int idx) => KeyWordCard(
+                  keyword: keywords[idx],
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                heroTag: "NavigateToCategoryAddScreen",
+                heroTag: "NavigateToKeyWordAddScreen",
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const CategoryFormDialog(
-                        existingCategory: null,
-                      );
+                      return const KeyWordAddDialog();
                     },
                   );
                 },

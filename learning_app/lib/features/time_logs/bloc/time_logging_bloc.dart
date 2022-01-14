@@ -31,13 +31,28 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     on<StartTimeLoggingEvent>(_onStartTimeLogging);
     on<TimeNoticeEvent>(_onTimerNotice);
     on<TaskChangedEvent>(_onTaskChanged);
+    on<StopTimeLoggingEvent>(_onStopTimeLogging);
   }
 
-  Future<void> _onAdd(
-      AddTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) async {
+  Future<void> _onAdd(AddTimeLoggingObjectEvent event,
+      Emitter<TimeLoggingState> emit) async {
+    if (state is ActiveState) {
+      add(const RemoveTimeLoggingObjectEvent());
+      add(AddTimeLoggingObjectEvent(event.id, event.parentId));
+      //add(StartTimeLoggingEvent(beginTime: DateTime.now()));
+      return;
+    }
+    if (state is InitializedState) {
+      add(const RemoveTimeLoggingObjectEvent());
+      add(AddTimeLoggingObjectEvent(event.id, event.parentId));
+      return;
+    }
+    assert(state is InactiveState);
     Stream<TaskWithQueueStatus?> stream =
-        _taskRepository.watchQueuedTaskWithId(id: event.parentId);
+    _taskRepository.watchQueuedTaskWithId(id: event.parentId);
+
     TaskWithQueueStatus? parentTask = await stream.first;
+    // This is duplicated code, but I don't know how to fix it.
     if (parentTask == null) {
       throw ArgumentError('Repo did not return any Task for id ${event.id}');
     }
@@ -48,6 +63,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       task: task,
     ));
     _streamSubscriptionTask = stream.listen((TaskWithQueueStatus? parentTask) {
+      // Duplicate
       if (parentTask == null) {
         throw ArgumentError('Repo did not return any Task for id ${event.id}');
       }
@@ -57,50 +73,53 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
         parentTask: parentTask,
         task: task,
       ));
-    });
+    }
+    );
   }
 
-  void _onRemove(
-      RemoveTimeLoggingObjectEvent event, Emitter<TimeLoggingState> emit) {
+
+  void _onRemove(RemoveTimeLoggingObjectEvent event,
+      Emitter<TimeLoggingState> emit) {
+    var currentState = state;
+    if(currentState is ActiveState){
+      _writeTimeLog(currentState);
+    }
     _streamSubscriptionTask?.cancel();
     emit(InactiveState());
   }
 
-  Future<void> _onStartTimeLogging(
-      StartTimeLoggingEvent event, Emitter<TimeLoggingState> emit) async {
+  Future<void> _onStartTimeLogging(StartTimeLoggingEvent event,
+      Emitter<TimeLoggingState> emit) async {
     var currentState = state;
     if (currentState is InitializedState) {
       Task task = currentState.task;
-      TimeLog timeLog = await _timeLoggingRepository.createTimeLog(TimeLogDto(
+      TimeLogDto timeLog = TimeLogDto(
         taskId: task.id,
         beginTime: event.beginTime,
         duration: const Duration(),
-      ));
+      );
 
       emit(ActiveState(
         timeLog: timeLog,
         parentTask: currentState.parentTask,
         task: currentState.task,
       ));
+    } else {
+      logger.d('Timer Logging not in Initialized State and Start was called!');
     }
   }
 
-  Future<void> _onTimerNotice(
-      TimeNoticeEvent event, Emitter<TimeLoggingState> emit) async {
+  Future<void> _onTimerNotice(TimeNoticeEvent event,
+      Emitter<TimeLoggingState> emit) async {
     var currentState = state;
-    //Activates the state if Task is added while Timer is running
-    add(StartTimeLoggingEvent(beginTime: DateTime.now()));
 
     if (currentState is ActiveState) {
-      TimeLog oldTimeLog = currentState.timeLog;
-      TimeLog newTimeLog = TimeLog(
-          id: oldTimeLog.id,
+      TimeLogDto oldTimeLog = currentState.timeLog;
+      TimeLogDto newTimeLog = TimeLogDto(
           taskId: oldTimeLog.taskId,
           beginTime: oldTimeLog.beginTime,
           duration: oldTimeLog.duration + event.duration);
 
-      await _timeLoggingRepository.update(
-          newTimeLog.id, TimeLogDto.fromTimeLog(newTimeLog));
 
       emit(ActiveState(
         timeLog: newTimeLog,
@@ -108,13 +127,24 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
         task: currentState.task,
       ));
     }
+    // Notify that a loaded task that it has to activate time logging
+    if (currentState is InitializedState){
+      add(StartTimeLoggingEvent(beginTime: DateTime.now()));
+
+    }
+
   }
 
-  Future<void> _onTaskChanged(
-      TaskChangedEvent event, Emitter<TimeLoggingState> emit) async {
+  // This is not an exposed Event. This is just to updated the Task in the UI
+  // if the watched Stream changes.
+  Future<void> _onTaskChanged(TaskChangedEvent event,
+      Emitter<TimeLoggingState> emit) async {
     var currentState = state;
+
     if (currentState is ActiveState) {
       emit(ActiveState(
+        // Use the currently active timeLog, because it's the same Object
+        // only some properties e.g. the title have changed.
         timeLog: currentState.timeLog,
         parentTask: event.parentTask,
         task: event.task,
@@ -127,5 +157,37 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     } else {
       logger.d("Invalid state.");
     }
+  }
+
+  Future<void> _writeTimeLog(ActiveState currentState) async {
+    TimeLogDto timeLog = currentState.timeLog;
+    TimeLogDto finalTimeLog = TimeLogDto(
+      beginTime: timeLog.beginTime,
+      taskId: timeLog.taskId,
+      duration: DateTime.now().difference(timeLog.beginTime),
+    );
+
+    await _timeLoggingRepository.createTimeLog(finalTimeLog);
+  }
+
+
+
+  FutureOr<void> _onStopTimeLogging(StopTimeLoggingEvent event, Emitter<TimeLoggingState> emit)  async {
+    var currentState = state;
+    if( currentState is! ActiveState) {
+      logger.d('Stop TimeLogging on not active State');
+      return;
+    }
+    if(currentState is ActiveState){
+      TimeLogDto timeLog = currentState.timeLog;
+      TimeLogDto finalTimeLog = TimeLogDto(
+        beginTime: timeLog.beginTime,
+        taskId: timeLog.taskId,
+        duration: DateTime.now().difference(timeLog.beginTime),
+      );
+
+      await _timeLoggingRepository.createTimeLog(finalTimeLog);
+    }
+    emit(InitializedState(parentTask: currentState.parentTask, task: currentState.task));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
@@ -17,7 +18,7 @@ class ActiveTaskBar extends StatelessWidget {
         final Widget content;
         if (state is InactiveState) {
           content = const Center(
-            child: Text("Keine Aufgabe ist aktiv."),
+            child: Text("Keine Aufgabe zur Bearbeitung ausgewählt."),
           );
         } else {
           content = const ActiveTaskCard();
@@ -41,9 +42,11 @@ class ActiveTaskCard extends StatelessWidget {
         context.select((TimeLoggingBloc bloc) => bloc.state);
     final Task task;
     final TaskWithQueueStatus parentTask;
+    Duration? activeDuration;
     if (state is ActiveState) {
       task = state.task;
       parentTask = state.parentTask;
+      activeDuration = state.timeLog.duration;
     } else if (state is InitializedState) {
       task = state.task;
       parentTask = state.parentTask;
@@ -52,11 +55,9 @@ class ActiveTaskCard extends StatelessWidget {
     }
     final String estimatedTime = task.fullTimeEstimation.formatVarLength();
     final Duration sumDuration = task.sumAllTimeLogs;
-    final String timeSpent = sumDuration.formatVarLength();
+    final String timeSpent = (activeDuration == null ?  sumDuration : sumDuration + activeDuration).formatVarLength();
     final Widget topLevelTaskWidget = Text(
-      parentTask.task.id == task.id
-          ? "Top Level Aufgabe"
-          : "Unteraufgabe von: " + parentTask.task.title,
+      "Unteraufgabe von: " + parentTask.task.title,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
@@ -70,7 +71,7 @@ class ActiveTaskCard extends StatelessWidget {
             width: 8,
             margin: const EdgeInsets.only(right: 10),
             decoration: BoxDecoration(
-              color: task.category?.color ?? Colors.grey,
+              color: task.category?.color ?? noCategoryDefaultColor,
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             ),
           ),
@@ -79,21 +80,25 @@ class ActiveTaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                topLevelTaskWidget,
+                if (parentTask.task.id != task.id) topLevelTaskWidget,
                 Text(
                   task.title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decorationThickness: 2.0,
-                    fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      decorationThickness: 2.0,
+                      fontSize: 20,
+                      overflow: TextOverflow.ellipsis,
+                      color: Color(0xFF40424A)),
+                ),
+                if (task.description != null)
+                  Text(
+                    task.description.toString(),
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Color(0xFF40424A),
+                    ),
                   ),
-                ),
-                Text(
-                  task.description.toString(),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -102,22 +107,30 @@ class ActiveTaskCard extends StatelessWidget {
                         const Icon(
                           Icons.hourglass_top,
                           size: 20,
+                          color: Color(0xFF40424A),
                         ),
                         Text(
-                          "Ursprünglich: " + estimatedTime,
+                          "Urspr.: " + estimatedTime,
                           style: const TextStyle(
                             fontSize: 10,
+                            color: Color(0xFF40424A),
                           ),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.hourglass_bottom, size: 20),
+                        const Icon(
+                          Icons.hourglass_bottom,
+                          size: 20,
+                          color: Color(0xFF40424A),
+                        ),
                         Text(
                           "Aufgewendet: " + timeSpent,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 10,
+                            color: Color(0xFF40424A),
                           ),
                         ),
                       ],
