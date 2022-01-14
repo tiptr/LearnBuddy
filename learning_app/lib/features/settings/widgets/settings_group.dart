@@ -4,13 +4,13 @@ class SettingsGroup extends StatelessWidget {
   // calculated:
   final String title;
   final String subTitle;
-  final Icon icon;
+  final IconData iconData;
 
   const SettingsGroup({
     Key? key,
     required this.title,
     required this.subTitle,
-    required this.icon,
+    required this.iconData,
   }) : super(key: key);
 
   @override
@@ -25,8 +25,10 @@ class SettingsGroup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Icon
-          icon,
-          // const SizedBox(width: 5.0),
+          Icon(
+            iconData,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           // Title and Subtitle
           Expanded(
             child: Padding(
@@ -41,11 +43,11 @@ class SettingsGroup extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                       overflow: TextOverflow.ellipsis,
-                      color: Color(0xFF40424A),
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
 import 'package:learning_app/features/settings/widgets/settings_screen_base_template.dart';
 import 'package:learning_app/features/settings/widgets/settings_group.dart';
 import 'package:learning_app/features/settings/screens/not_implemented_screen.dart';
@@ -17,49 +18,49 @@ class SettingsOverviewScreen extends StatelessWidget {
             context: context,
             title: "Persönliche Informationen",
             subtitle: "Name, Alter",
-            icon: const Icon(Icons.person_outline_outlined),
-            nextScreen: const NotImplementedScreen()),
+            iconData: Icons.person_outline_outlined,
+            nextScreen: const PersonalSettingsScreen()),
         _settingsGroup(
             context: context,
             title: "Darstellung und Farbe",
             subtitle: "Dark / Light Mode, Highlightfarben, ...",
-            icon: const Icon(Icons.palette_outlined),
+            iconData: Icons.palette_outlined,
             nextScreen: const NotImplementedScreen()),
         _settingsGroup(
             context: context,
             title: "Dashboard",
             subtitle: "Anzahl Aufgaben, Ausgleichsvorschlag, ...",
-            icon: const Icon(Icons.house_outlined),
+            iconData: Icons.house_outlined,
             nextScreen: const NotImplementedScreen()),
         _settingsGroup(
             context: context,
             title: "Pomodoro-Timer",
             subtitle: "Nicht-stören-Modus, Dauer der Phasen, ...",
-            icon: const Icon(Icons.av_timer_outlined),
+            iconData: Icons.av_timer_outlined,
             nextScreen: const NotImplementedScreen()),
         _settingsGroup(
             context: context,
             title: "Aufgaben",
             subtitle: "Layout der Liste",
-            icon: const Icon(Icons.task_alt_outlined),
+            iconData: Icons.task_alt_outlined,
             nextScreen: const NotImplementedScreen()),
         _settingsGroup(
             context: context,
             title: "Ausgleichsvorschläge",
             subtitle: "",
-            icon: const Icon(Icons.local_florist_outlined),
+            iconData: Icons.local_florist_outlined,
             nextScreen: const NotImplementedScreen()),
         _settingsGroup(
             context: context,
             title: "Lernhilfen",
             subtitle: "Körpermethode: Standardansicht, ...",
-            icon: const Icon(Icons.library_books_outlined),
+            iconData: Icons.library_books_outlined,
             nextScreen: const NotImplementedScreen()),
         _settingsGroup(
             context: context,
             title: "Über die App",
             subtitle: "Urheber, Ziele, ...",
-            icon: const Icon(Icons.info_outline),
+            iconData: Icons.info_outline,
             nextScreen: const NotImplementedScreen()),
       ],
     );
@@ -69,7 +70,7 @@ class SettingsOverviewScreen extends StatelessWidget {
       {required BuildContext context,
       required String title,
       required String subtitle,
-      required Icon icon,
+      required IconData iconData,
       required Widget nextScreen}) {
     return InkWell(
       onTap: () => Navigator.push(
@@ -82,7 +83,7 @@ class SettingsOverviewScreen extends StatelessWidget {
         child: SettingsGroup(
           title: title,
           subTitle: subtitle,
-          icon: icon,
+          iconData: iconData,
         ),
       ),
     );
