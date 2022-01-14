@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class ReadLeisureActivitiesDto extends Equatable {
   final int id;
+  final int categoryId;
   final String name;
   final Duration duration;
   final String descriptionShort;
@@ -13,6 +14,7 @@ class ReadLeisureActivitiesDto extends Equatable {
 
   const ReadLeisureActivitiesDto({
     required this.id,
+    required this.categoryId,
     required this.name,
     required this.duration,
     required this.descriptionShort,
@@ -26,6 +28,7 @@ class ReadLeisureActivitiesDto extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        categoryId,
         name,
         duration,
         descriptionShort,

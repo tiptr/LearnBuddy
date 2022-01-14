@@ -17,25 +17,45 @@ class LeisureScreen extends StatelessWidget {
       titleBar: const BaseTitleBar(
         title: "Abwechslung",
       ),
-      content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+      content: BlocBuilder<LeasureCategoryCubit, LeisureCategoryState>(
         bloc: LeasureCategoryCubit(),
         builder: (context, state) {
-          return ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: state.leisureCategoriesDtos.length,
-            itemBuilder: (BuildContext ctx, int idx) {
-              return GestureDetector(
-                child: LeisureCategoryCard(
-                  leisureCategory: state.leisureCategoriesDtos[idx],
-                ),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LeisureActivityOverviewScreen(),
+          return StreamBuilder<List<ReadLeisureCategoriesDto>>(
+            stream: state.listViewLeisureCategoriesStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Es sind keine Ausgleichsübungen verfügbar.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFF636573),
+                    ),
                   ),
-                ),
+                );
+              }
+
+              final categories = snapshot.data!;
+
+              return ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: categories.length,
+                itemBuilder: (BuildContext ctx, int idx) {
+                  return GestureDetector(
+                    child: LeisureCategoryCard(
+                      leisureCategory: categories[idx],
+                    ),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LeisureActivityOverviewScreen(),
+                      ),
+                    ),
+                  );
+                },
               );
             },
           );
