@@ -9,7 +9,9 @@ import 'package:learning_app/features/timer/widgets/task_queue_list_tile.dart';
 class TaskQueueList extends StatefulWidget {
   final ScrollController _controller;
 
-  const TaskQueueList(this._controller, {Key? key})
+  final List<TaskWithQueueStatus>? taskList;
+
+  const TaskQueueList(this._controller, this.taskList, {Key? key})
       : super(key: key);
 
   @override
@@ -18,17 +20,11 @@ class TaskQueueList extends StatefulWidget {
 
 class _TaskQueueListState extends State<TaskQueueList> {
 
-   late final List<TaskWithQueueStatus>? taskList;
+   late final List<TaskWithQueueStatus>? taskList = widget.taskList;
 
-  _TaskQueueListState(){
-    taskList = context.select((TaskQueueBloc bloc) => bloc.state.getTasks);
-  }
+  _TaskQueueListState();
 
-  @override
-  void initState() {
-    super.initState();
 
-  }
 
   @override
   Widget build(BuildContext context) {

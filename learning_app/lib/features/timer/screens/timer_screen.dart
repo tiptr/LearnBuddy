@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
@@ -44,6 +46,7 @@ class _TimerViewState extends State<TimerView> {
 
   @override
   Widget build(BuildContext context) {
+    List<TaskWithQueueStatus>? taskList = context.select((TaskQueueBloc bloc) => bloc.state.getTasks);
     return SlidingUpPanel(
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(18.0),
@@ -54,7 +57,7 @@ class _TimerViewState extends State<TimerView> {
       panelSnapping: true,
       minHeight: 20,
       maxHeight: 470,
-      panelBuilder: (ScrollController sc) => TaskQueueList(sc),
+      panelBuilder: (ScrollController sc) => TaskQueueList(sc, taskList),
       color: Colors.white,
       body: const Center(
         child: TimerBackGround(),
