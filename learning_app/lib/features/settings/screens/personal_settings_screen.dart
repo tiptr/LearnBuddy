@@ -9,7 +9,7 @@ class PersonalSettingsScreen extends StatelessWidget {
     // Set initial dueDate:
 
     return const SettingsScreenBaseTemplate(
-      title: "Persönliche Daten",
+      title: "Persönliche Informationen",
       children: [],
     );
   }

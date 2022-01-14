@@ -27,7 +27,7 @@ class SettingsGroup extends StatelessWidget {
           // Icon
           Icon(
             iconData,
-            color: Theme.of(context).colorScheme.primary,
+            color: const Color(0xFF636573),
           ),
           // Title and Subtitle
           Expanded(
@@ -43,11 +43,11 @@ class SettingsGroup extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                       overflow: TextOverflow.ellipsis,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Color(0xFF636573),
                     ),
                   ),
 

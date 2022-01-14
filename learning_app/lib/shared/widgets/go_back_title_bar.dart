@@ -5,15 +5,16 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final TextStyle textStyle;
 
-  const GoBackTitleBar(
-      {Key? key,
-      required this.title,
-      this.textStyle = const TextStyle(
-        fontSize: 22.0,
-        fontWeight: FontWeight.bold,
-        overflow: TextOverflow.ellipsis,
-      )})
-      : super(key: key);
+  const GoBackTitleBar({
+    Key? key,
+    required this.title,
+    this.textStyle = const TextStyle(
+      fontSize: 22.0,
+      fontWeight: FontWeight.bold,
+      overflow: TextOverflow.ellipsis,
+      color: Color(0xFF636573),
+    ),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: const Icon(Icons.arrow_back),
                   iconSize: 30,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: const Color(0xFF636573),
                 ),
                 Expanded(
                   child: Text(
