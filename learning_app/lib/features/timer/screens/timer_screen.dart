@@ -39,18 +39,8 @@ class TimerView extends StatefulWidget {
   _TimerViewState createState() => _TimerViewState();
 }
 
-class _TimerViewState extends State<TimerView>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  final Duration _duration = const Duration(milliseconds: 500);
-  final Tween<Offset> _tween =
-  Tween(begin: const Offset(0, 1), end: const Offset(0, 0));
+class _TimerViewState extends State<TimerView> {
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: _duration);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +51,10 @@ class _TimerViewState extends State<TimerView>
       ),
       parallaxEnabled: true,
       parallaxOffset: .0,
+      panelSnapping: true,
       minHeight: 20,
       maxHeight: 470,
-      panelBuilder: (ScrollController sc) => TaskQueueListWrapper(sc),
+      panelBuilder: (ScrollController sc) => TaskQueueList(sc),
       color: Colors.white,
       body: const Center(
         child: TimerBackGround(),

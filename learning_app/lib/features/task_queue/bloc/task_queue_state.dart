@@ -1,13 +1,12 @@
 part of 'task_queue_bloc.dart';
 
-abstract class TaskQueueState {}
 
-class TaskQueueInitial extends TaskQueueState {
-}
 
-class TaskQueueReady extends TaskQueueState {
-  final List<TaskWithQueueStatus> tasks;
+class TaskQueueState{
+  final List<TaskWithQueueStatus>? tasks;
 
-  TaskQueueReady(this.tasks);
+  TaskQueueState({this.tasks});
+
+  List<TaskWithQueueStatus>? get getTasks => tasks;
 
 }

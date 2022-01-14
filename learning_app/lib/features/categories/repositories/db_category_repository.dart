@@ -9,7 +9,7 @@ import 'package:learning_app/util/injection.dart';
 
 import 'category_repository.dart';
 
-/// Concrete repository implementation using the database with drift
+/// Concrete repositories implementation using the database with drift
 @Injectable(as: CategoryRepository)
 class DbCategoryRepository implements CategoryRepository {
   // load the data access object (with generated entities and queries) via dependency inj.

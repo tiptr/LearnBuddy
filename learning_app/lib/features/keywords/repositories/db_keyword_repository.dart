@@ -7,7 +7,7 @@ import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/features/keywords/repositories/keyword_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
-/// Concrete repository implementation using the database with drift
+/// Concrete repositories implementation using the database with drift
 @Injectable(as: KeyWordsRepository)
 class DbKeyWordRepository implements KeyWordsRepository {
   // load the data access object (with generated entities and queries) via dependency inj.

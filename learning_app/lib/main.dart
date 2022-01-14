@@ -74,6 +74,14 @@ void main() {
             return cubit;
           },
         ),
+        BlocProvider<TaskQueueBloc>(
+          lazy: true,
+          create: (context) {
+            var bloc = TaskQueueBloc();
+            return bloc;
+          },
+        ),
+
       ],
       child: const MyApp(),
     ),
