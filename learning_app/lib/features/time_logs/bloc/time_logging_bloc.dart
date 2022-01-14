@@ -37,10 +37,9 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
   Future<void> _onAdd(AddTimeLoggingObjectEvent event,
       Emitter<TimeLoggingState> emit) async {
     if (state is ActiveState) {
-      add(StopTimeLoggingEvent());
       add(const RemoveTimeLoggingObjectEvent());
       add(AddTimeLoggingObjectEvent(event.id, event.parentId));
-      add(StartTimeLoggingEvent(beginTime: DateTime.now()));
+      //add(StartTimeLoggingEvent(beginTime: DateTime.now()));
       return;
     }
     if (state is InitializedState) {
@@ -63,24 +62,28 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       parentTask: parentTask,
       task: task,
     ));
-    //_streamSubscriptionTask = stream.listen((TaskWithQueueStatus? parentTask) {
-    //  // Duplicate
-    //  if (parentTask == null) {
-    //    throw ArgumentError('Repo did not return any Task for id ${event.id}');
-    //  }
-    //  Task task = parentTask.task.allTasks
-    //      .firstWhere((element) => element.id == event.id);
-    //  add(TaskChangedEvent(
-    //    parentTask: parentTask,
-    //    task: task,
-    //  ));
-    //}
-    //);
+    _streamSubscriptionTask = stream.listen((TaskWithQueueStatus? parentTask) {
+      // Duplicate
+      if (parentTask == null) {
+        throw ArgumentError('Repo did not return any Task for id ${event.id}');
+      }
+      Task task = parentTask.task.allTasks
+          .firstWhere((element) => element.id == event.id);
+      add(TaskChangedEvent(
+        parentTask: parentTask,
+        task: task,
+      ));
+    }
+    );
   }
 
 
   void _onRemove(RemoveTimeLoggingObjectEvent event,
       Emitter<TimeLoggingState> emit) {
+    var currentState = state;
+    if(currentState is ActiveState){
+      _writeTimeLog(currentState);
+    }
     _streamSubscriptionTask?.cancel();
     emit(InactiveState());
   }
@@ -90,11 +93,11 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     var currentState = state;
     if (currentState is InitializedState) {
       Task task = currentState.task;
-      TimeLog timeLog = await _timeLoggingRepository.createTimeLog(TimeLogDto(
+      TimeLogDto timeLog = TimeLogDto(
         taskId: task.id,
         beginTime: event.beginTime,
         duration: const Duration(),
-      ));
+      );
 
       emit(ActiveState(
         timeLog: timeLog,
@@ -111,9 +114,8 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     var currentState = state;
 
     if (currentState is ActiveState) {
-      TimeLog oldTimeLog = currentState.timeLog;
-      TimeLog newTimeLog = TimeLog(
-          id: oldTimeLog.id,
+      TimeLogDto oldTimeLog = currentState.timeLog;
+      TimeLogDto newTimeLog = TimeLogDto(
           taskId: oldTimeLog.taskId,
           beginTime: oldTimeLog.beginTime,
           duration: oldTimeLog.duration + event.duration);
@@ -125,9 +127,12 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
         task: currentState.task,
       ));
     }
-    else {
-      logger.d('Timer gave notice while not in active state');
+    // Notify that a loaded task that it has to activate time logging
+    if (currentState is InitializedState){
+      add(StartTimeLoggingEvent(beginTime: DateTime.now()));
+
     }
+
   }
 
   // This is not an exposed Event. This is just to updated the Task in the UI
@@ -154,18 +159,16 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     }
   }
 
-  Future<void> _writeTimeLog() async {
-    var currentState = state;
-    if (currentState is ActiveState) {
-      TimeLog timeLog = currentState.timeLog;
-      await _timeLoggingRepository.update(
-          timeLog.id, TimeLogDto.fromTimeLog(timeLog));
-    } else {
-      logger.d(
-          "Time Logging is in an inactive state and cannot write anything.");
-    }
-  }
+  Future<void> _writeTimeLog(ActiveState currentState) async {
+    TimeLogDto timeLog = currentState.timeLog;
+    TimeLogDto finalTimeLog = TimeLogDto(
+      beginTime: timeLog.beginTime,
+      taskId: timeLog.taskId,
+      duration: DateTime.now().difference(timeLog.beginTime),
+    );
 
+    await _timeLoggingRepository.createTimeLog(finalTimeLog);
+  }
 
 
 
@@ -176,18 +179,15 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       return;
     }
     if(currentState is ActiveState){
-      TimeLog timeLog = currentState.timeLog;
-      TimeLog finalTimeLog = TimeLog(
+      TimeLogDto timeLog = currentState.timeLog;
+      TimeLogDto finalTimeLog = TimeLogDto(
         beginTime: timeLog.beginTime,
         taskId: timeLog.taskId,
-        id: timeLog.id,
-        duration: timeLog.beginTime.difference(DateTime.now()),
+        duration: DateTime.now().difference(timeLog.beginTime),
       );
 
-      await _timeLoggingRepository.update(
-          finalTimeLog.id, TimeLogDto.fromTimeLog(finalTimeLog));
+      await _timeLoggingRepository.createTimeLog(finalTimeLog);
     }
-    await _writeTimeLog();
     emit(InitializedState(parentTask: currentState.parentTask, task: currentState.task));
   }
 }

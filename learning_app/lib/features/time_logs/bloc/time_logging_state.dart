@@ -24,7 +24,7 @@ class InitializedState extends TimeLoggingState {
 
 // Timer is active
 class ActiveState extends TimeLoggingState {
-  final TimeLog timeLog;
+  final TimeLogDto timeLog;
   final TaskWithQueueStatus parentTask;
   final Task task;
 
