@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 
 const double iconSize = 14.0;
 
@@ -25,20 +25,20 @@ class TaskCard extends StatelessWidget {
   final bool _isOverDue;
   final String _formattedTimeEstimation;
   final bool _isEstimated;
-  final Color _categoryColor;
+  final Color? _categoryColor;
 
   TaskCard(
       {Key? key, required ListReadTaskDto task, bool isSubTaskCard = false})
       : _task = task,
         _isSubTaskCard = isSubTaskCard,
         // calculated:
-        _formattedDueDate =
-            task.dueDate.toListViewFormat(ifNull: 'Ohne Fälligkeit'),
+        _formattedDueDate = task.dueDate
+            .formatDependingOnCurrentDate(ifNull: 'Ohne Fälligkeit'),
         _isOverDue = task.dueDate.isInPast(),
         _formattedTimeEstimation = task.remainingTimeEstimation
             .toListViewFormat(ifNull: 'Keine Zeitschätzung'),
         _isEstimated = task.remainingTimeEstimation == null ? false : true,
-        _categoryColor = (task.categoryColor ?? noCategoryDefaultColor),
+        _categoryColor = task.categoryColor,
         super(key: key);
 
   @override
@@ -72,7 +72,9 @@ class TaskCard extends StatelessWidget {
           // Grey out when done -> Overlay with semitransparent white; Else
           // overlay with fulltransparent "black" (no effect)
           colorFilter: ColorFilter.mode(
-              _task.done ? const Color(0xB8FFFFFF) : const Color(0x00000000),
+              _task.done
+                  ? Theme.of(context).colorScheme.greyOutOverlayColor
+                  : Colors.transparent,
               BlendMode.lighten),
           child: Container(
             padding: EdgeInsets.only(
@@ -86,8 +88,12 @@ class TaskCard extends StatelessWidget {
                 ? null
                 : BoxDecoration(
                     border: Border(
-                      // TODO: Use color of category once added
-                      left: BorderSide(width: 12.5, color: _categoryColor),
+                      left: BorderSide(
+                          width: 12.5,
+                          color: _categoryColor ??
+                              Theme.of(context)
+                                  .colorScheme
+                                  .noCategoryDefaultColor),
                     ),
                   ),
             height: _isSubTaskCard ? 75.0 : 110.0,
