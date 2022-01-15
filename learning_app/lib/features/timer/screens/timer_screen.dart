@@ -7,7 +7,6 @@ import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
-import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

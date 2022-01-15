@@ -17,7 +17,9 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
 
   //late final StreamSubscription _streamSubscription;
 
-  TaskQueueBloc({QueueRepository? queueRepository, TaskRepository? taskRepository}) : super(TaskQueueInit())  {
+  TaskQueueBloc(
+      {QueueRepository? queueRepository, TaskRepository? taskRepository})
+      : super(TaskQueueInit()) {
     _taskRepository = taskRepository ?? getIt<TaskRepository>();
     _queueRepository = queueRepository ?? getIt<QueueRepository>();
 
@@ -28,7 +30,7 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
     });
 
     on<UpdateQueueEvent>((event, emit) {
-      emit(TaskQueueReady(tasks:  event.taskList));
+      emit(TaskQueueReady(tasks: event.taskList));
     });
 
     on<InitQueueEvent>((event, emit) async {
@@ -37,13 +39,11 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
 
     on<UpdateQueueOrderEvent>((event, emit) {
       var currentState = state;
-      if(currentState is TaskQueueReady){
+      if (currentState is TaskQueueReady) {
         _queueRepository.writeQueueOrder(event.taskList);
-      }
-      else {
+      } else {
         logger.d("This state should not be accessible.");
       }
     });
   }
 }
-

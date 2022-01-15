@@ -21,8 +21,9 @@ class QueueDao extends DatabaseAccessor<Database> with _$QueueDaoMixin {
   QueueDao(Database db) : super(db);
 
   Future<int> updateQueuePosition(int id, int queuePosition) async {
-    return (update(taskQueueElements)..where((tuple) => tuple.taskId.equals(id)))
-      .write(TaskQueueElementsCompanion(
+    return (update(taskQueueElements)
+          ..where((tuple) => tuple.taskId.equals(id)))
+        .write(TaskQueueElementsCompanion(
       taskId: Value(id),
       orderPlacement: Value(queuePosition),
     ));
@@ -31,7 +32,4 @@ class QueueDao extends DatabaseAccessor<Database> with _$QueueDaoMixin {
     //  duration: Value(duration),
     //));
   }
-
-
 }
-

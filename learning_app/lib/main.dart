@@ -64,7 +64,7 @@ void main() {
           },
         ),
         BlocProvider(
-            create: (context) => TaskQueueBloc(),
+          create: (context) => TaskQueueBloc(),
         ),
         BlocProvider<KeyWordsCubit>(
           lazy: true,
@@ -82,7 +82,6 @@ void main() {
             return bloc;
           },
         ),
-
       ],
       child: const MyApp(),
     ),

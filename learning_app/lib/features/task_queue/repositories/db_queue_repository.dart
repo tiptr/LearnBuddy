@@ -6,7 +6,6 @@ import 'package:learning_app/util/injection.dart';
 
 @Injectable(as: QueueRepository)
 class DbQueueRepository implements QueueRepository {
-
   final QueueDao dao = getIt<QueueDao>();
 
   @override
@@ -19,13 +18,11 @@ class DbQueueRepository implements QueueRepository {
     int count = await dao.transaction(() async {
       int count = 0;
 
-      for(int i = 0; i < taskList.length; i++){
+      for (int i = 0; i < taskList.length; i++) {
         count += await dao.updateQueuePosition(taskList[i].task.id, i);
       }
       return count;
     });
     return count;
-
   }
-
 }

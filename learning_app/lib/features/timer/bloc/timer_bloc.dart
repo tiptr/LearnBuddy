@@ -54,8 +54,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     // Notify the Time Logging Bloc that it has to update
     //TODO: Change this to more than one second?
     if (state._pomodoroMode == PomodoroMode.concentration) {
-        timeLoggingBloc
-            .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+      timeLoggingBloc
+          .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
     }
   }
 
@@ -81,7 +81,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
-    if(timeLoggingBloc.state is ActiveState){
+    if (timeLoggingBloc.state is ActiveState) {
       timeLoggingBloc.add(StopTimeLoggingEvent());
     }
   }
