@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/dtos/create_key_word_dto.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class KeyWordAddDialog extends StatefulWidget {
   const KeyWordAddDialog({Key? key}) : super(key: key);
@@ -47,8 +48,11 @@ class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             MaterialButton(
-              child:
-                  const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
+              child: Text("Abbrechen",
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle3
+                      .withOnBackgroundSoft),
               onPressed: () {
                 logger.d("Abbruch beim Erstellen einer Kategorie");
                 Navigator.of(context).pop();
@@ -57,7 +61,7 @@ class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
             MaterialButton(
               child: Text(
                 "Hinzufügen",
-                style: TextStyle(color: Theme.of(context).primaryColor),
+                style: Theme.of(context).textTheme.textStyle3.withPrimary,
               ),
               onPressed: () {
                 logger.d(

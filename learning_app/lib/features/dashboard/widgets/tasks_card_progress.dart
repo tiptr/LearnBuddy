@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_process_indicator.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TasksCardProgress extends StatelessWidget {
   final double progress;
@@ -26,7 +28,7 @@ class TasksCardProgress extends StatelessWidget {
         // is contained in
         flexPortion: processIndicatorFlexPortion / 100,
       ),
-      elevation: CardElevation.high,
+      elevation: BasicCard.elevation.high,
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 10.0,
@@ -51,19 +53,19 @@ class TasksCardProgress extends StatelessWidget {
                   // Hourglass and Text
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.hourglass_top_outlined,
                         size: 40.0,
                         // TODO: to be structured in the theme-issue:
-                        color: Color(0xFF636573),
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                       Text(
                         "Heutiger Restaufwand:\n2h 30min",
-                        style: TextStyle(
-                          // TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                         textAlign: TextAlign.center,
                       )
                     ],
@@ -75,33 +77,32 @@ class TasksCardProgress extends StatelessWidget {
                   // Color Indicators and Done / Open
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       ColorIndicator(
-                        // TODO: to be structured in the theme-issue:
-                        // color: Theme.of(context).primaryColor,
-                        color: Color(0xFF39BBD1),
+                        color: Theme.of(context).colorScheme.tertiary,
                         height: 10.0,
                         width: 30.0,
                       ),
                       Text(
                         "4 Erledigt",
-                        style: TextStyle(
-                          // TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                       ),
                       ColorIndicator(
                         // TODO: to be structured in the theme-issue:
-                        color: Color(0xFFF2EAFB),
+                        color:
+                            Theme.of(context).colorScheme.subtleBackgroundGrey,
                         height: 10.0,
                         width: 30.0,
                       ),
                       Text(
                         "3 Offen",
-                        style: TextStyle(
-                          // TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                       ),
                     ],
                   ),

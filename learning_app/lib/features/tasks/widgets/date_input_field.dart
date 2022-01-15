@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class DateInputField extends StatefulWidget {
   final Function onChange;
@@ -67,13 +69,12 @@ class _DateInputFieldState extends State<DateInputField> {
       readOnly: true,
 
       controller: _textEditingController,
-      style: const TextStyle(
-          color: Color(0xFF636573), fontWeight: FontWeight.normal),
+      style: Theme.of(context).textTheme.textStyle2,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF636573),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
             width: 2.0,
           ),
         ),
@@ -86,15 +87,15 @@ class _DateInputFieldState extends State<DateInputField> {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        prefixIcon: const Icon(
+        prefixIcon: Icon(
           Icons.today_outlined,
-          color: Color(0xFF636573),
+          color: Theme.of(context).colorScheme.onBackground,
         ),
         suffixIcon: date != null
             ? IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.backspace_outlined,
-                  color: Color(0xFF636573),
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
                 onPressed: () {
                   // Change the text content
@@ -110,10 +111,15 @@ class _DateInputFieldState extends State<DateInputField> {
             : null,
         label: const Text(
           "Fälligkeitsdatum",
+          // Same TextStyle with bold text. Inherited from the textfield,
+          // so the TextStyle is not explicitly defined with a constant
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         hintText: 'Datum auswählen',
-        hintStyle: const TextStyle(color: Color(0xFF949597)),
+        hintStyle:
+            // Same TextStyle with softer color. Inherited from the textfield,
+            // so the TextStyle is not explicitly defined with a constant
+            TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TasksCardItem extends StatelessWidget {
   final ListReadTaskDto task;
@@ -18,13 +19,14 @@ class TasksCardItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.5),
       ),
       color: Theme.of(context).cardColor,
-      elevation: CardElevation.high,
+      elevation: BasicCard.elevation.high,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
-              width: 12.5,
+              // same width of category color bar as borderradius
+              width: BasicCard.borderRadius,
               color: task.categoryColor ??
                   Theme.of(context).colorScheme.noCategoryDefaultColor,
             ),
@@ -44,17 +46,19 @@ class TasksCardItem extends StatelessWidget {
                 children: [
                   Text(
                     task.title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decorationThickness: 2.0,
-                      fontSize: 16.0,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withBold
+                        .withOnBackgroundHard,
                     maxLines: 2,
                   ),
                   Text(
                     task.keywords.join(", "),
-                    style: const TextStyle(color: Color(0xFF949597)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle4
+                        .withOnBackgroundSoft,
                   )
                 ],
               ),

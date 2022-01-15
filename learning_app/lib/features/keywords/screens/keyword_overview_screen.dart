@@ -6,6 +6,7 @@ import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_add_dialog.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class KeyWordOverviewScreen extends StatelessWidget {
   const KeyWordOverviewScreen({Key? key}) : super(key: key);
@@ -28,14 +29,11 @@ class KeyWordOverviewScreen extends StatelessWidget {
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   'Du hast aktuell keine Kategorien.\nDrücke auf das Plus, um eine Kategorie anzulegen',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Color(0xFF636573),
-                  ),
+                  style: Theme.of(context).textTheme.textStyle4,
                 ),
               );
             }

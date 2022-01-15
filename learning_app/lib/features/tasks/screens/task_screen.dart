@@ -10,6 +10,7 @@ import 'package:learning_app/features/tasks/widgets/task_card.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key? key}) : super(key: key);
@@ -45,14 +46,11 @@ class _TaskScreenState extends State<TaskScreen> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Text(
                       'Du hast aktuell keine anstehenden Aufgaben.\nDrücke auf das Plus, um eine Aufgabe anzulegen',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Color(0xFF636573),
-                      ),
+                      style: Theme.of(context).textTheme.textStyle4,
                     ),
                   );
                 }

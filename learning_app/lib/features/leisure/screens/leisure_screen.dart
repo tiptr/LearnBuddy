@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
@@ -47,10 +49,10 @@ class LeisureCategoryCard extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(BasicCard.borderRadius),
         ),
         color: Colors.white,
-        elevation: 5,
+        elevation: BasicCard.elevation.high,
         child: Container(
           padding: const EdgeInsets.all(20.0),
           child: Row(
@@ -83,6 +85,7 @@ class LeisureCategoryCard extends StatelessWidget {
               ),
             ],
           ),
+          height: BasicCard.height,
         ),
       ),
     );
@@ -103,16 +106,19 @@ class LeisureCategoryDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+          style: Theme.of(context)
+              .textTheme
+              .textStyle2
+              .withBold
+              .withOnBackgroundHard,
         ),
-        const SizedBox(height: 10),
         Text(
           "$countExercises Übungen",
-          style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+          style: Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
         )
       ],
     );
@@ -132,7 +138,10 @@ class StarCount extends StatelessWidget {
     return Row(
       children: [
         const Icon(Icons.star, color: Colors.purple),
-        Text(count.toString())
+        Text(
+          count.toString(),
+          style: Theme.of(context).textTheme.textStyle3.withOnBackgroundHard,
+        )
       ],
     );
   }

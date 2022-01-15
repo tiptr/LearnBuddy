@@ -3,17 +3,21 @@ import 'package:learning_app/features/categories/screens/category_overview_scree
 import 'package:learning_app/features/dashboard/widgets/tasks_card.dart';
 import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
 import 'package:learning_app/features/settings/screens/settings_overview_screen.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/base_layout.dart';
+import 'package:learning_app/shared/widgets/base_title_bar.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Column(
+    return BaseLayout(
+      titleBar: const BaseTitleBar(title: "Heutige Aufgaben"),
+      content: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(15.0),
         children: [
-          const SizedBox(height: 15.0),
           const TasksCard(),
           const SizedBox(height: 30.0),
           // TODO: The following three InkWells are dummy elements for testing
@@ -32,10 +36,10 @@ class DashboardScreen extends StatelessWidget {
                 color: Colors.purple,
                 borderRadius: BorderRadius.circular(25.0),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   "Kategorien verwalten",
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
                 ),
               ),
             ),
@@ -58,10 +62,10 @@ class DashboardScreen extends StatelessWidget {
                 color: Colors.purple,
                 borderRadius: BorderRadius.circular(25.0),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   "Schlagwörter verwalten",
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
                 ),
               ),
             ),
@@ -84,10 +88,10 @@ class DashboardScreen extends StatelessWidget {
                 color: Colors.purple,
                 borderRadius: BorderRadius.circular(25.0),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   "Einstellungen",
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
                 ),
               ),
             ),

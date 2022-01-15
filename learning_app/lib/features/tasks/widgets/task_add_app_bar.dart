@@ -57,9 +57,9 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }
                     });
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.save_outlined,
-                    color: Color(0xFF636573),
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
                   iconSize: 30,
                 ),

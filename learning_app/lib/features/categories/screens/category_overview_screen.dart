@@ -6,6 +6,7 @@ import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
 import 'package:learning_app/features/categories/widgets/category_card.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class CategoryOverviewScreen extends StatelessWidget {
   const CategoryOverviewScreen({Key? key}) : super(key: key);
@@ -28,15 +29,11 @@ class CategoryOverviewScreen extends StatelessWidget {
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
-                  'Du hast aktuell keine Kategorien.\nDrücke auf das Plus, um eine Kategorie anzulegen',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Color(0xFF636573),
-                  ),
-                ),
+                    'Du hast aktuell keine Kategorien.\nDrücke auf das Plus, um eine Kategorie anzulegen',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.textStyle4),
               );
             }
 

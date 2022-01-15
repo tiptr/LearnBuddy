@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class BaseTitleBar extends StatelessWidget {
   final String title;
@@ -9,11 +10,7 @@ class BaseTitleBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(
-        fontSize: 26.0,
-        color: Theme.of(context).colorScheme.primary,
-        fontWeight: FontWeight.bold,
-      ),
+      style: Theme.of(context).textTheme.mainPageTitleStyle,
     );
   }
 }

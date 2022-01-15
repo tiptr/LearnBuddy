@@ -4,6 +4,7 @@ import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 const double iconSize = 18.0;
 
@@ -39,10 +40,11 @@ class KeyWordCard extends StatelessWidget {
               flex: 70,
               child: Text(
                 _keyword.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .textStyle4
+                    .withBold
+                    .withOnBackgroundHard,
               ),
             ),
             Expanded(
@@ -59,11 +61,15 @@ class KeyWordCard extends StatelessWidget {
                           text: TextSpan(
                             // Note: Styles for TextSpans must be explicitly defined.
                             // Child text spans will inherit styles from parent
-                            style: DefaultTextStyle.of(context).style,
+                            style: Theme.of(context)
+                                .textTheme
+                                .textStyle3
+                                .withOnBackgroundHard,
                             children: <TextSpan>[
                               const TextSpan(text: 'Willst du das Schlagwort '),
                               TextSpan(
                                 text: _keyword.name,
+                                // Inherits the style of the parent and just makes it bold
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),

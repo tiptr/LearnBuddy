@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 const double iconSize = 14.0;
 
@@ -54,7 +55,7 @@ class TaskCard extends StatelessWidget {
   }
 
   Widget _card(BuildContext context) {
-    const borderRadius = 12.5;
+    double borderRadius = BasicCard.borderRadius;
 
     return Dismissible(
       key: Key(_task.id.toString()),
@@ -67,7 +68,8 @@ class TaskCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         color: Theme.of(context).cardColor,
-        elevation: _task.done ? CardElevation.low : CardElevation.high,
+        elevation:
+            _task.done ? BasicCard.elevation.low : BasicCard.elevation.high,
         child: ColorFiltered(
           // Grey out when done -> Overlay with semitransparent white; Else
           // overlay with fulltransparent "black" (no effect)
@@ -96,7 +98,7 @@ class TaskCard extends StatelessWidget {
                                   .noCategoryDefaultColor),
                     ),
                   ),
-            height: _isSubTaskCard ? 75.0 : 110.0,
+            height: _isSubTaskCard ? 75.0 : BasicCard.height,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -145,6 +147,9 @@ class TaskCard extends StatelessWidget {
   }
 
   Widget _buildTitleKeyWordsColumn(BuildContext context) {
+    TextStyle titleStyle = _isSubTaskCard
+        ? Theme.of(context).textTheme.textStyle3.withOnBackgroundHard.withBold
+        : Theme.of(context).textTheme.textStyle2.withOnBackgroundHard.withBold;
     return Expanded(
       flex: 70,
       child: Padding(
@@ -160,33 +165,22 @@ class TaskCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            Text(
-              _task.title,
-              maxLines: 2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: _task.done
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-                decorationThickness: 2.0,
-                fontSize: _isSubTaskCard ? 14 : 16,
-                overflow: TextOverflow.ellipsis,
-                color: const Color(0xFF40424A),
-              ),
-            ),
+            Text(_task.title,
+                maxLines: 2,
+                style: _task.done
+                    ? titleStyle.copyWith(
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 2.0,
+                      )
+                    : titleStyle),
 
             // Keywords
             if (_task.keywords.isNotEmpty)
               Text(
                 _task.keywords.join(', '),
                 maxLines: _isSubTaskCard ? 1 : 2,
-                style: const TextStyle(
-                  color: Color(0xFF949597),
-                  fontWeight: FontWeight.normal,
-                  decorationThickness: 2.0,
-                  fontSize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                style:
+                    Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
               ),
           ],
         ),
@@ -195,6 +189,7 @@ class TaskCard extends StatelessWidget {
   }
 
   Widget _buildDueDateStatsColumn(BuildContext context) {
+    TextStyle dueDateStyle = Theme.of(context).textTheme.textStyle4;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: 0,
@@ -212,13 +207,9 @@ class TaskCard extends StatelessWidget {
             label: Text(
               (_task.dueDate != null) ? _formattedDueDate : '',
               textAlign: TextAlign.end,
-              style: TextStyle(
-                color: _isOverDue ? Colors.white : const Color(0xFF949597),
-                fontWeight: FontWeight.normal,
-                decorationThickness: 2.0,
-                fontSize: 12,
-                overflow: TextOverflow.ellipsis,
-              ),
+              style: _isOverDue
+                  ? dueDateStyle.withOnPrimary
+                  : dueDateStyle.withOnBackgroundHard,
             ),
             labelPadding: EdgeInsets.symmetric(
               vertical: 0,
@@ -228,11 +219,13 @@ class TaskCard extends StatelessWidget {
                 ? Icon(
                     Icons.today_outlined,
                     size: 16,
-                    color: _isOverDue ? Colors.white : const Color(0xFF949597),
+                    color: _isOverDue
+                        ? Theme.of(context).colorScheme.onSecondary
+                        : Theme.of(context).colorScheme.onBackgroundHard,
                   )
                 : null,
             backgroundColor: _isOverDue
-                ? const Color(0xFF9E5EE1)
+                ? Theme.of(context).colorScheme.secondary
                 : Theme.of(context).cardColor,
             // Required, because Colors.transparent does not work.
             // The background is transparent through the card all
@@ -254,22 +247,17 @@ class TaskCard extends StatelessWidget {
                 if (!_task.done && _isEstimated)
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.hourglass_top,
                         size: iconSize,
-                        color: Color(0xFF949597),
+                        color: Theme.of(context).colorScheme.onBackgroundSoft,
                       ),
-                      Text(
-                        _formattedTimeEstimation,
-                        textAlign: TextAlign.end,
-                        style: const TextStyle(
-                          color: Color(0xFF949597),
-                          fontWeight: FontWeight.normal,
-                          decorationThickness: 2.0,
-                          fontSize: 12,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      Text(_formattedTimeEstimation,
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundSoft),
                     ],
                   ),
                 if (_task.subTaskCount > 0)
@@ -277,22 +265,19 @@ class TaskCard extends StatelessWidget {
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.dynamic_feed_outlined,
                           size: iconSize,
-                          color: Color(0xFF949597),
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         const SizedBox(width: 5.0),
                         Text(
                           '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
                           textAlign: TextAlign.end,
-                          style: const TextStyle(
-                            color: Color(0xFF949597),
-                            fontWeight: FontWeight.normal,
-                            decorationThickness: 2.0,
-                            fontSize: 12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundSoft,
                         ),
                       ],
                     ),

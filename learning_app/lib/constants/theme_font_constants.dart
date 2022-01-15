@@ -23,50 +23,55 @@ extension CustomTextTheme on TextTheme {
   static late ColorScheme _colorScheme;
   setCustomColorScheme(ColorScheme colorScheme) {
     _colorScheme = colorScheme;
+    // I don't know why, but this doesn't work with a static methode, that's why
+    // a dummy TextStyle object is instantiated.
+    const TextStyle().setCustomColorScheme(colorScheme);
   }
 
   // Basic TextStyles
   TextStyle get textStyle1 => TextStyle(
       fontFamily: 'Open Sans',
-      inherit: false,
-      fontSize: 22,
+      inherit: true,
+      fontSize: 26,
       overflow: TextOverflow.ellipsis,
       color: _colorScheme.onBackground);
-  TextStyle get textStyle2 => textStyle1.merge(const TextStyle(fontSize: 16));
-  TextStyle get textStyle3 => textStyle1.merge(const TextStyle(fontSize: 14));
-  TextStyle get textStyle4 => textStyle1.merge(const TextStyle(fontSize: 12));
+  TextStyle get textStyle2 => textStyle1.copyWith(fontSize: 16);
+  TextStyle get textStyle3 => textStyle1.copyWith(fontSize: 14);
+  TextStyle get textStyle4 => textStyle1.copyWith(fontSize: 12);
 
   // Explicit TextStyles for concrete uses
-  TextStyle get mainPageTitleStyle => textStyle1.withBold.withOnBackgroundHard;
-  TextStyle get cardTitleStyle => const TextStyle();
-  TextStyle get cardSubTitleStyle => const TextStyle();
+  TextStyle get mainPageTitleStyle => textStyle1.withBold.withPrimary;
+  TextStyle get settingsInfoTextStyle => textStyle4.copyWith(
+      height: 1.6, overflow: TextOverflow.visible, letterSpacing: 0.2);
 }
 
 /// This extension allows easily changing different properties of a given
 /// TextStyle
 extension CustomStyle on TextStyle {
-  static ColorScheme colorScheme = ThemeData().colorScheme;
+  static late ColorScheme _colorScheme;
+
+  setCustomColorScheme(ColorScheme colorScheme) {
+    _colorScheme = colorScheme;
+  }
 
   // Same style but in different text colors
   TextStyle get withOnBackgroundHard =>
-      merge(TextStyle(color: colorScheme.onBackgroundHard));
+      copyWith(color: _colorScheme.onBackgroundHard);
   TextStyle get withOnBackgroundSoft =>
-      merge(TextStyle(color: colorScheme.onBackgroundSoft));
+      copyWith(color: _colorScheme.onBackgroundSoft);
 
   // Same style but in different theme colors
-  TextStyle get withPrimary => merge(TextStyle(color: colorScheme.primary));
-  TextStyle get withOnPrimary => merge(TextStyle(color: colorScheme.onPrimary));
-  TextStyle get withSecondary => merge(TextStyle(color: colorScheme.secondary));
-  TextStyle get withOnSecondary =>
-      merge(TextStyle(color: colorScheme.onSecondary));
-  TextStyle get withTertiary => merge(TextStyle(color: colorScheme.tertiary));
-  TextStyle get withOnTertiary =>
-      merge(TextStyle(color: colorScheme.onTertiary));
+  TextStyle get withPrimary => copyWith(color: _colorScheme.primary);
+  TextStyle get withOnPrimary => copyWith(color: _colorScheme.onPrimary);
+  TextStyle get withSecondary => copyWith(color: _colorScheme.secondary);
+  TextStyle get withOnSecondary => copyWith(color: _colorScheme.onSecondary);
+  TextStyle get withTertiary => copyWith(color: _colorScheme.tertiary);
+  TextStyle get withOnTertiary => copyWith(color: _colorScheme.onTertiary);
 
   // Same style but bold
-  TextStyle get withBold => merge(const TextStyle(fontWeight: FontWeight.bold));
+  TextStyle get withBold => copyWith(fontWeight: FontWeight.bold);
 
   TextStyle withOverflow(TextOverflow overflow) {
-    return merge(TextStyle(overflow: overflow));
+    return copyWith(overflow: overflow);
   }
 }

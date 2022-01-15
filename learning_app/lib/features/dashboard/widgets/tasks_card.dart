@@ -7,6 +7,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({Key? key}) : super(key: key);
@@ -29,14 +30,11 @@ class TasksCard extends StatelessWidget {
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   'Keine anstehenden Aufgaben.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Color(0xFF636573),
-                  ),
+                  style: Theme.of(context).textTheme.textStyle3,
                 ),
               );
             }
@@ -60,15 +58,6 @@ class TasksCard extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Heutige Aufgaben",
-                  style: TextStyle(
-                    fontSize: 26.0,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 35.0),
                 const TasksCardProgress(
                   progress: 4 / 7,
                 ),
@@ -98,10 +87,11 @@ class TasksCard extends StatelessWidget {
                           children: [
                             Text(
                               "$amountOfFurtherDueTasks weitere bis heute fällig",
-                              style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .textStyle2
+                                  .withBold
+                                  .withOnBackgroundSoft,
                             ),
                             const Icon(Icons.arrow_forward, color: Colors.grey)
                           ],

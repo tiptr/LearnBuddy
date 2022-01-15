@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class SettingsGroup extends StatelessWidget {
   // calculated:
@@ -44,12 +45,11 @@ class SettingsGroup extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      color: Theme.of(context).colorScheme.onBackgroundHard,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle3
+                        .withBold
+                        .withOnBackgroundHard,
                   ),
 
                   // SUbtitle
@@ -59,12 +59,10 @@ class SettingsGroup extends StatelessWidget {
                       Text(
                         subTitle,
                         maxLines: 2,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackgroundSoft,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                       ),
                     ])
                 ],

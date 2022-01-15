@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TextInputField extends StatelessWidget {
   final String label;
@@ -19,13 +21,12 @@ class TextInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(
-          color: Color(0xFF636573), fontWeight: FontWeight.normal),
+      style: Theme.of(context).textTheme.textStyle2,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF636573),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
             width: 2.0,
           ),
         ),
@@ -41,15 +42,20 @@ class TextInputField extends StatelessWidget {
         prefixIcon: iconData != null
             ? Icon(
                 iconData,
-                color: const Color(0xFF636573),
+                color: Theme.of(context).colorScheme.onBackground,
               )
             : null,
         label: Text(
           label,
+          // Same TextStyle with bold text. Inherited from the textfield,
+          // so the TextStyle is not explicitly defined with a constant
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Color(0xFF949597)),
+        hintStyle:
+            // Same TextStyle with a softer color. Inherited from the textfield,
+            // so the TextStyle is not explicitly defined with a constant
+            TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
       ),
       maxLines: null, // no limit
       controller: textController,

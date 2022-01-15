@@ -29,6 +29,7 @@ class ColorSchemes {
       onBackgroundSoft: const Color(0xFF949597),
       tertiary: const Color(0xFF39BBD1),
       onTertiary: const Color(0xFF40424A), // Same as onBackgroundHard
+      subtleBackgroundGrey: const Color(0xFFEAECFA),
     );
     return theme;
   }
@@ -38,6 +39,10 @@ class ColorSchemes {
 /// originally in the [ColorScheme] class. The attributes can be null. In that
 /// case, defaults are returned in the getters.
 extension CustomColorScheme on ColorScheme {
+  // A color for debugging when creating a new ColorScheme to see which custom
+  // color attributes were NOT set.
+  static const Color _customAttributeForgotToSetColor = Colors.red;
+
   static Color? _greyOutOverlayColor;
   static Color? _noCategoryDefaultColor;
 
@@ -47,6 +52,9 @@ extension CustomColorScheme on ColorScheme {
   static Color? _onBackgroundHard;
   static Color? _onBackgroundSoft;
 
+  // Circle Progress Indicator Grey Color
+  static Color? _subtleBackgroundGrey;
+
   /// Sets the custom attributes that are not contained in the ColorScheme class
   setCustomAttributes({
     Color? greyOutOverlayColor,
@@ -55,6 +63,7 @@ extension CustomColorScheme on ColorScheme {
     Color? onTertiary,
     Color? onBackgroundHard,
     Color? onBackgroundSoft,
+    Color? subtleBackgroundGrey,
   }) {
     //Using ??= to allow multiple calls of this method, without overriding set values
     _greyOutOverlayColor ??= greyOutOverlayColor;
@@ -65,16 +74,24 @@ extension CustomColorScheme on ColorScheme {
 
     _onBackgroundHard ??= onBackgroundHard;
     _onBackgroundSoft ??= onBackgroundSoft;
+    _subtleBackgroundGrey ??= subtleBackgroundGrey;
   }
 
   // Getters of all attributes with defaults if not set. Default red, to clearly
   // see which color was not set.
-  Color get greyOutOverlayColor => _greyOutOverlayColor ?? Colors.red;
-  Color get noCategoryDefaultColor => _noCategoryDefaultColor ?? Colors.red;
+  Color get greyOutOverlayColor =>
+      _greyOutOverlayColor ?? _customAttributeForgotToSetColor;
+  Color get noCategoryDefaultColor =>
+      _noCategoryDefaultColor ?? _customAttributeForgotToSetColor;
 
-  Color get tertiary => _tertiary ?? Colors.red;
-  Color get onTertiary => _onTertiary ?? Colors.red;
+  Color get tertiary => _tertiary ?? _customAttributeForgotToSetColor;
+  Color get onTertiary => _onTertiary ?? _customAttributeForgotToSetColor;
 
-  Color get onBackgroundHard => _onBackgroundHard ?? Colors.red;
-  Color get onBackgroundSoft => _onBackgroundSoft ?? Colors.red;
+  Color get onBackgroundHard =>
+      _onBackgroundHard ?? _customAttributeForgotToSetColor;
+  Color get onBackgroundSoft =>
+      _onBackgroundSoft ?? _customAttributeForgotToSetColor;
+
+  Color get subtleBackgroundGrey =>
+      _subtleBackgroundGrey ?? _customAttributeForgotToSetColor;
 }

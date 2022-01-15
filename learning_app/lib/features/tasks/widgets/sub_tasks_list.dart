@@ -2,19 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
-
-// class SubTasksList extends StatefulWidget {
-//   const SubTasksList({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SubTasksList> createState() => _SubTasksListState();
-// }
-//
-// class _SubTasksListState extends State<SubTasksList> {
-//   final ScrollController scrollController;
-//
-//   _SubTasksListState({required this.scrollController})
-//
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class SubTasksList extends StatelessWidget {
   final ScrollController scrollController;
@@ -78,10 +66,11 @@ class SubTasksList extends StatelessWidget {
                       size: 30.0, color: Theme.of(context).colorScheme.primary),
                   Text(
                     "Neue Unteraufgabe",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withPrimary
+                        .withBold,
                   ),
                 ],
               ),

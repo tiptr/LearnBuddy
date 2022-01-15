@@ -8,6 +8,7 @@ import 'package:learning_app/features/categories/dtos/update_category_dto.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class CategoryFormDialog extends StatefulWidget {
   final ReadCategoryDto? existingCategory;
@@ -113,8 +114,11 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             MaterialButton(
-              child:
-                  const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
+              child: Text("Abbrechen",
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle3
+                      .withOnBackgroundSoft),
               onPressed: () {
                 logger.d("Abbruch beim Speichern einer Kategorie");
                 Navigator.of(context).pop();
@@ -123,7 +127,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
             MaterialButton(
               child: Text(
                 "Speichern",
-                style: TextStyle(color: Theme.of(context).primaryColor),
+                style: Theme.of(context).textTheme.textStyle3.withPrimary,
               ),
               onPressed: () {
                 logger.d(

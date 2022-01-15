@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 /// Opens a confirm dialog with variable title and content and
 /// returns true if confirmed and false otherwise.
@@ -28,23 +29,19 @@ Future<bool> openConfirmDialog({
               Row(
                 children: [
                   MaterialButton(
-                    child: Text(
-                      "Abbrechen",
-                      style: TextStyle(
-                          color:
-                              Theme.of(context).colorScheme.onBackgroundSoft),
-                    ),
+                    child: Text("Abbrechen",
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle2
+                            .withOnBackgroundSoft),
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     },
                   ),
                   MaterialButton(
-                    child: Text(
-                      "Bestätigen",
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
+                    child: Text("Bestätigen",
+                        style:
+                            Theme.of(context).textTheme.textStyle2.withPrimary),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },

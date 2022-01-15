@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class ColorAddDialog extends StatefulWidget {
   const ColorAddDialog({Key? key}) : super(key: key);
@@ -43,9 +44,12 @@ class _ColorAddDialogState extends State<ColorAddDialog> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MaterialButton(
-                  child: const Text(
+                  child: Text(
                     "Abbrechen",
-                    style: TextStyle(color: Colors.grey),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle3
+                        .withOnBackgroundSoft,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(null);
@@ -54,9 +58,7 @@ class _ColorAddDialogState extends State<ColorAddDialog> {
                 MaterialButton(
                   child: Text(
                     "Hinzufügen",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    style: Theme.of(context).textTheme.textStyle3.withPrimary,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(selectedColor);

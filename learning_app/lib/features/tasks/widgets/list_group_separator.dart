@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class ListGroupSeparator extends StatelessWidget {
   final String _content;
@@ -14,19 +16,18 @@ class ListGroupSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle style = Theme.of(context).textTheme.textStyle4;
     return Chip(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4.0),
       label: Text(
         _content,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 12,
-          color: _highlight ? Colors.white : const Color(0xFF636573),
-        ),
+        style: _highlight ? style.withOnPrimary : style.withOnBackgroundSoft,
       ),
-      backgroundColor:
-          _highlight ? const Color(0xFF9E5EE1) : const Color(0xFFEAECFA),
+      backgroundColor: _highlight
+          ? Theme.of(context).colorScheme.secondary
+          : Theme.of(context).colorScheme.subtleBackgroundGrey,
     );
   }
 }
