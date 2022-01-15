@@ -52,12 +52,24 @@ class TimeLogsDao extends DatabaseAccessor<Database> with _$TimeLogsDaoMixin {
       for (var entity in timeLogs) {
         final model = TimeLog(
           id: entity.id,
-          begin: entity.beginDateTime,
+          taskId: entity.taskId,
+          beginTime: entity.beginDateTime,
           duration: entity.duration,
         );
         idToModelList.putIfAbsent(entity.taskId, () => []).add(model);
       }
       return idToModelList;
     });
+  }
+
+  Future<int> createTimeLog(TimeLogsCompanion timeLogsCompanion) {
+    return into(timeLogs).insert(timeLogsCompanion);
+  }
+
+  Future<int> updateTimeLog(int id, Duration duration) {
+    return (update(timeLogs)..where((tuple) => tuple.id.equals(id)))
+        .write(TimeLogsCompanion(
+      duration: Value(duration),
+    ));
   }
 }

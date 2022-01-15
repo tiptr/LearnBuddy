@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
+import 'package:learning_app/features/timer/widgets/active_task.dart';
+import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -14,7 +18,8 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TimerBloc(),
+      create: (_) =>
+          TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
       child: const BaseLayout(
         titleBar: BaseTitleBar(
           title: "Pomodoro Timer",
@@ -30,24 +35,20 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
-            // Just for Debugging
-            PomodoroState(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 50.0),
-              child: TimerWidget(),
-            ),
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
-                child: PomodoroPhaseCountWidget()),
-            TimerActions(),
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const <Widget>[
+        ActiveTaskBar(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 50.0),
+          child: TimerWidget(),
         ),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+            child: PomodoroPhaseCountWidget()),
+        TimerActions(),
+        ToggleActiveTask(),
       ],
     );
   }
@@ -62,11 +63,17 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state.getCountPhase());
     final totalSteps = context
         .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCount());
+    final completedSessionColor = Theme.of(context)
+        .colorScheme
+        .timerProgressIndicatorCompletedSessionColor;
+    final unCompletedSessionColor = Theme.of(context)
+        .colorScheme
+        .timerProgressIndicatorUnCompletedSessionColor;
     return StepProgressIndicator(
         totalSteps: totalSteps,
         currentStep: currentStep + 1,
         // index starts with 1 apparently :(
-        selectedColor: Colors.blue,
+        selectedColor: completedSessionColor,
         size: 30,
         padding: 10,
         customStep: (index, color, _) {
@@ -74,7 +81,9 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
             width: 30.0,
             height: 30.0,
             decoration: BoxDecoration(
-              color: color == Colors.blue ? Colors.blue : Colors.grey,
+              color: color == completedSessionColor
+                  ? completedSessionColor
+                  : unCompletedSessionColor,
               shape: BoxShape.circle,
             ),
           );
@@ -142,9 +151,9 @@ class TimerWidget extends StatelessWidget {
   String getPomoStateText(BuildContext context) {
     PomodoroMode pomoState =
         context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
-    if (pomoState == PomodoroMode.concentration) return "Concentration";
-    if (pomoState == PomodoroMode.shortBreak) return "Short Break";
-    return "Long Break";
+    if (pomoState == PomodoroMode.concentration) return "Konzentration";
+    if (pomoState == PomodoroMode.shortBreak) return "Kurze Pause";
+    return "Lange Pause";
   }
 }
 

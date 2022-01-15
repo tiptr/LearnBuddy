@@ -14,13 +14,13 @@ extension DateTimeFormatting on DateTime? {
   ///
   /// Without the year, if equal to the current.
   /// E.g. 'Today', if the current day is matched.
-  String toListViewFormat({String? ifNull}) {
+  String formatDependingOnCurrentDate({String? ifNull}) {
     if (this == null) {
       return ifNull ?? 'Ohne Datum';
     } else {
-      final treatedDay = getPreviousMidnight() as DateTime;
+      final treatedDay = getBeginOfDay() as DateTime;
 
-      final today = DateTime.now().getPreviousMidnight() as DateTime;
+      final today = DateTime.now().getBeginOfDay() as DateTime;
 
       final Duration offset = treatedDay.difference(today);
       final dayOffset = offset.inDays;
@@ -31,19 +31,15 @@ extension DateTimeFormatting on DateTime? {
           return 'Heute';
         case 1:
           return 'Morgen';
-        case 2:
-          return 'Übermorgen';
         case -1:
           return 'Gestern';
-        case -2:
-          return 'Vorgestern';
       }
 
-      if (dayOffset >= 3 && dayOffset <= 5) {
+      if (dayOffset >= 2 && dayOffset <= 5) {
         return 'In $dayOffset Tagen';
       }
 
-      if (dayOffset <= -3 && dayOffset >= -5) {
+      if (dayOffset <= -2 && dayOffset >= -5) {
         return 'Vor ${dayOffset.abs()} Tagen';
       }
 
@@ -77,13 +73,27 @@ extension DateTimeComparing on DateTime? {
     }
   }
 
-  DateTime? getPreviousMidnight() {
+  DateTime? getBeginOfDay() {
     if (this == null) {
       return null;
     } else {
       final thisDate = this as DateTime;
 
       return DateTime(thisDate.year, thisDate.month, thisDate.day);
+    }
+  }
+
+  /// Returns the date time of the begin of the day. If this day is in the past,
+  /// it will return the begin of yesterday instead.
+  ///
+  /// Used e.g. for building a group of all over-due date-times
+  DateTime? getBeginOfDayConcatPastToYesterday() {
+    if (isInPast()) {
+      final now = DateTime.now();
+      final lastMidnight = DateTime(now.year, now.month, now.day);
+      return lastMidnight.subtract(const Duration(days: 1));
+    } else {
+      return getBeginOfDay();
     }
   }
 
