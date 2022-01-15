@@ -79,17 +79,11 @@ class SingleSubtask extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Card(
-          child: ListTile(
-            title: Text(
-              task.title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            subtitle: Text(level.toString()),
-            onTap: () {
-              bloc.add(AddTimeLoggingObjectEvent(task.id, topLevelTask.id));
-            },
+        ListTile(
+          title: Text(
+            task.title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ),
         Container(
