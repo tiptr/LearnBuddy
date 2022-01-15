@@ -51,7 +51,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     }
 
     // Define initial values:
-    preSelectedDueDate = widget.existingTask != null ? widget.existingTask?.dueDate : DateTime.now();
+    preSelectedDueDate = widget.existingTask != null
+        ? widget.existingTask?.dueDate
+        : DateTime.now();
     preSelectedTimeEstimate = widget.existingTask?.estimatedTime;
     preSelectedDescription = widget.existingTask?.description ?? '';
   }
