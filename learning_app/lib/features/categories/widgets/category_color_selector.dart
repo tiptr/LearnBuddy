@@ -95,7 +95,7 @@ Widget pickerLayoutBuilder(BuildContext context, List<Color> colors,
             }
           },
           icon: const Icon(Icons.add, size: 40),
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
         )
       ],
       physics: const NeverScrollableScrollPhysics(),

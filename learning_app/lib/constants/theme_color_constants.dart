@@ -30,6 +30,7 @@ class ColorSchemes {
       tertiary: const Color(0xFF39BBD1),
       onTertiary: const Color(0xFF40424A), // Same as onBackgroundHard
       subtleBackgroundGrey: const Color(0xFFEAECFA),
+      cardColor: const Color(0xFFFFFFFF),
     );
     return theme;
   }
@@ -45,6 +46,7 @@ extension CustomColorScheme on ColorScheme {
 
   static Color? _greyOutOverlayColor;
   static Color? _noCategoryDefaultColor;
+  static Color? _cardColor;
 
   static Color? _tertiary;
   static Color? _onTertiary;
@@ -64,6 +66,7 @@ extension CustomColorScheme on ColorScheme {
     Color? onBackgroundHard,
     Color? onBackgroundSoft,
     Color? subtleBackgroundGrey,
+    Color? cardColor,
   }) {
     //Using ??= to allow multiple calls of this method, without overriding set values
     _greyOutOverlayColor ??= greyOutOverlayColor;
@@ -75,6 +78,7 @@ extension CustomColorScheme on ColorScheme {
     _onBackgroundHard ??= onBackgroundHard;
     _onBackgroundSoft ??= onBackgroundSoft;
     _subtleBackgroundGrey ??= subtleBackgroundGrey;
+    _cardColor ??= cardColor;
   }
 
   // Getters of all attributes with defaults if not set. Default red, to clearly
@@ -83,6 +87,7 @@ extension CustomColorScheme on ColorScheme {
       _greyOutOverlayColor ?? _customAttributeForgotToSetColor;
   Color get noCategoryDefaultColor =>
       _noCategoryDefaultColor ?? _customAttributeForgotToSetColor;
+  Color get cardColor => _cardColor ?? _customAttributeForgotToSetColor;
 
   Color get tertiary => _tertiary ?? _customAttributeForgotToSetColor;
   Color get onTertiary => _onTertiary ?? _customAttributeForgotToSetColor;

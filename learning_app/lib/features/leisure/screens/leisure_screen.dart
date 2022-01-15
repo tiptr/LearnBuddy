@@ -8,6 +8,7 @@ import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.d
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class LeisureCategoryCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(BasicCard.borderRadius),
         ),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.cardColor,
         elevation: BasicCard.elevation.high,
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -137,7 +138,7 @@ class StarCount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.star, color: Colors.purple),
+        Icon(Icons.star, color: Theme.of(context).colorScheme.secondary),
         Text(
           count.toString(),
           style: Theme.of(context).textTheme.textStyle3.withOnBackgroundHard,

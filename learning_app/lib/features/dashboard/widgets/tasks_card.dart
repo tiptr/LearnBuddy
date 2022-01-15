@@ -8,6 +8,7 @@ import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({Key? key}) : super(key: key);
@@ -93,7 +94,10 @@ class TasksCard extends StatelessWidget {
                                   .withBold
                                   .withOnBackgroundSoft,
                             ),
-                            const Icon(Icons.arrow_forward, color: Colors.grey)
+                            Icon(Icons.arrow_forward,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onBackgroundSoft)
                           ],
                         ),
                       ),

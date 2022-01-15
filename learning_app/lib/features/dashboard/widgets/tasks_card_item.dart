@@ -70,9 +70,9 @@ class TasksCardItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.open_in_new_outlined,
-                      color: Colors.purple,
+                      color: Theme.of(context).colorScheme.primary,
                       size: 24.0,
                     ),
                     onPressed: () {

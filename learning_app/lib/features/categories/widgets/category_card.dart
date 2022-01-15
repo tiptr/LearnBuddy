@@ -6,6 +6,7 @@ import 'package:learning_app/features/categories/widgets/category_form_dialog.da
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 const double iconSize = 18.0;
 
@@ -28,7 +29,7 @@ class CategoryCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.cardColor,
       elevation: 10,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 25),

@@ -67,7 +67,7 @@ class TaskCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).colorScheme.cardColor,
         elevation:
             _task.done ? BasicCard.elevation.low : BasicCard.elevation.high,
         child: ColorFiltered(
@@ -226,7 +226,7 @@ class TaskCard extends StatelessWidget {
                 : null,
             backgroundColor: _isOverDue
                 ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).cardColor,
+                : Theme.of(context).colorScheme.cardColor,
             // Required, because Colors.transparent does not work.
             // The background is transparent through the card all
             // the way to the screen background, then.

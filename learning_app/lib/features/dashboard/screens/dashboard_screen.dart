@@ -14,14 +14,10 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseLayout(
       titleBar: const BaseTitleBar(title: "Heutige Aufgaben"),
-      content: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(15.0),
+      content: Column(
         children: [
           const TasksCard(),
           const SizedBox(height: 30.0),
-          // TODO: The following three InkWells are dummy elements for testing
-          // Category Button
           InkWell(
             onTap: () => Navigator.push(
               context,
@@ -33,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
               width: 200,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.purple,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(25.0),
               ),
               child: Center(
@@ -59,7 +55,7 @@ class DashboardScreen extends StatelessWidget {
               width: 200,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.purple,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(25.0),
               ),
               child: Center(
@@ -85,7 +81,7 @@ class DashboardScreen extends StatelessWidget {
               width: 200,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.purple,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(25.0),
               ),
               child: Center(
@@ -95,7 +91,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
