@@ -1,5 +1,8 @@
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
+import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -63,6 +66,30 @@ class TasksCubit extends Cubit<TaskState> {
       // TODO: remove this, because it is not needed anymore thanks to reactivity through streams and listeners
       // Refresh the list to remove the task
       // loadTasks();
+    }
+  }
+
+  /// This returns the details-dto for a task
+  ///
+  /// The task has to be currently loaded for this, otherwise it will return null
+  Future<DetailsReadTaskDto?> getDetailsDtoForTopLevelTaskId(int taskId) async {
+    final currentState = state;
+    if (currentState is TasksLoaded) {
+      final List<TaskWithQueueStatus?> tasksWithQueueList =
+          await currentState.selectedTasksStream.first;
+      final TaskWithQueueStatus? selectedTaskWithQueueStatus =
+          tasksWithQueueList.firstWhereOrNull(
+              (taskWithQueue) => taskWithQueue?.task.id == taskId);
+      // Only create a details-dto, if the task was found
+      if (selectedTaskWithQueueStatus != null) {
+        return DetailsReadTaskDto.fromTaskWithQueueStatus(
+            selectedTaskWithQueueStatus);
+      } else {
+        return null;
+      }
+    } else {
+      // tasks not yet loaded
+      return null;
     }
   }
 }

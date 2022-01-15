@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
-import 'package:learning_app/features/tasks/models/task.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
@@ -14,7 +14,7 @@ import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
 ///
 /// To use this as create-screen, no existingTask is to be passed.
 class TaskDetailsScreen extends StatefulWidget {
-  final Task? existingTask;
+  final DetailsReadTaskDto? existingTask;
 
   const TaskDetailsScreen({
     Key? key,
@@ -26,7 +26,6 @@ class TaskDetailsScreen extends StatefulWidget {
 }
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
-  final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   final ScrollController _scrollController = ScrollController();
@@ -52,7 +51,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     ));
 
     return Scaffold(
-      appBar: TaskAddAppBar(textController: _titleController),
+      appBar: TaskAddAppBar(existingTask: widget.existingTask),
       body: Scrollbar(
         interactive: true,
         controller: _scrollController,

@@ -5,12 +5,32 @@ import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 
-class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final TextEditingController textController;
+class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final DetailsReadTaskDto? existingTask;
 
-  const TaskAddAppBar({Key? key, required this.textController})
-      : super(key: key);
+  const TaskAddAppBar({
+    Key? key,
+    this.existingTask,
+  }) : super(key: key);
+
+  @override
+  State<TaskAddAppBar> createState() => _TaskAddAppBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(appBarHeight);
+}
+
+class _TaskAddAppBarState extends State<TaskAddAppBar> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initial value, if present
+    _textEditingController.text = widget.existingTask?.title ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +56,7 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                       hintText: 'Name der Aufgabe',
                       border: InputBorder.none,
                     ),
-                    controller: textController,
+                    controller: _textEditingController,
                     onChanged: (text) async {
                       BlocProvider.of<AddTaskCubit>(context)
                           .addTaskAttribute(CreateTaskDto(
@@ -71,7 +91,4 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
 }
