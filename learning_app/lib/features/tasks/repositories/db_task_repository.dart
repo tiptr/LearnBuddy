@@ -89,31 +89,99 @@ class DbTaskRepository implements TaskRepository {
   Future<int> createTask(CreateTaskDto newTask) async {
     assert(newTask.isReadyToStore());
 
-    // TODO: category and more
+    // Do the complete update in a transaction, so that the streams will only
+    // update once, after the whole update is ready
 
-    return _tasksDao.createTask(db.TasksCompanion(
-      // For NOT NULL attributes, ofNullable() is used
-      // For nullable attributes, use Value() instead
-      // Reason: it could not be determined, if a null value in the DTO would
-      // mean a Value.absent() or a Value(null)
-      title: newTask.title,
-      description: newTask.description,
-      estimatedTime: newTask.estimatedTime,
-      dueDate: newTask.dueDate,
-      creationDateTime: Value(DateTime.now()),
-      manualTimeEffortDelta: newTask.manualTimeEffortDelta.present
-          ? newTask.manualTimeEffortDelta
-          : const Value(Duration.zero),
-    ));
+    // Important: whenever using transactions, every (!) query / update / insert
+    //            inside, has to be awaited -> data loss possible otherwise!
+    return _tasksDao.transaction(() async {
+      int newTaskId = await _tasksDao.createTask(db.TasksCompanion(
+        parentTaskId: newTask.parentId,
+        title: newTask.title,
+        description: newTask.description,
+        estimatedTime: newTask.estimatedTime,
+        dueDate: newTask.dueDate,
+        manualTimeEffortDelta: newTask.manualTimeEffortDelta.present
+            ? newTask.manualTimeEffortDelta
+            : const Value(Duration.zero),
+        categoryId: newTask.categoryId,
+        creationDateTime: Value(DateTime.now()),
+      ));
+
+      // Create the task-keyword relationships
+      if (newTask.keywordIds.present) {
+        for (int keyWordId in newTask.keywordIds.value) {
+          await _taskKeywordsDao
+              .createTaskKeyWordIfNotExists(TaskKeywordsCompanion.insert(
+            taskId: newTaskId,
+            keywordId: keyWordId,
+          ));
+        }
+      }
+
+      return newTaskId;
+    });
   }
 
   @override
-  Future<bool> update(int id, UpdateTaskDto updateDto) async {
-    //TODO
-    // var db = await DbProvider().database;
-    // var affected = await db.update('tasks', updateDto.toMap(), where: 'id = ?',whereArgs: [id],);
-    // return affected > 0;
-    return false;
+  Future<bool> update(UpdateTaskDto updateDto) async {
+    if (!updateDto.containsUpdates()) {
+      // No updates requested -> done
+      return true;
+    }
+
+    // Do the complete update in a transaction, so that the streams will only
+    // update once, after the whole update is ready
+
+    // Important: whenever using transactions, every (!) query / update / insert
+    //            inside, has to be awaited -> data loss possible otherwise!
+    return _tasksDao.transaction(() async {
+      int numberTasksChanged = await _tasksDao.updateTask(db.TasksCompanion(
+        parentTaskId: const Value.absent(),
+        // moving tasks is not implemented
+        title: updateDto.title,
+        description: updateDto.description,
+        estimatedTime: updateDto.estimatedTime,
+        dueDate: updateDto.dueDate,
+        manualTimeEffortDelta: updateDto.manualTimeEffortDelta,
+        categoryId: updateDto.categoryId,
+        creationDateTime: const Value.absent(),
+      ));
+
+      // Update the task-keyword relationship, if changed
+      if (updateDto.keywordIds.present) {
+        // Delete keyword-relationships that don't apply anymore
+        await _taskKeywordsDao.deleteTaskKeyWordsForTaskNotInList(
+            updateDto.id, updateDto.keywordIds.value);
+
+        // Insert missing keywords:
+        for (int keyWordId in updateDto.keywordIds.value) {
+          await _taskKeywordsDao
+              .createTaskKeyWordIfNotExists(TaskKeywordsCompanion(
+            taskId: Value(updateDto.id),
+            keywordId: Value(keyWordId),
+          ));
+        }
+      }
+
+      // Update the task - learn list relationship, if changed
+      if (updateDto.learnListsIds.present) {
+        // Delete learn list relationships that don't apply anymore
+        await _taskLearnListsDao.deleteTaskLearnListsForTaskNotInList(
+            updateDto.id, updateDto.learnListsIds.value);
+
+        // Insert missing learn lists:
+        for (int listId in updateDto.learnListsIds.value) {
+          await _taskLearnListsDao
+              .createTaskLearnListIfNotExists(TaskLearnListsCompanion(
+            taskId: Value(updateDto.id),
+            listId: Value(listId),
+          ));
+        }
+      }
+
+      return numberTasksChanged == 1;
+    });
   }
 
   @override

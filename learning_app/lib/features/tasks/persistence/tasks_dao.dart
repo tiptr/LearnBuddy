@@ -38,6 +38,15 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     return into(tasks).insert(tasksCompanion);
   }
 
+  Future<int> updateTask(TasksCompanion tasksCompanion) {
+    var updateStmnt = (update(tasks)
+      ..where(
+        (t) => t.id.equals(tasksCompanion.id.value),
+      ));
+
+    return updateStmnt.write(tasksCompanion);
+  }
+
   Future<int> deleteTaskById(int taskId) {
     return (delete(tasks)..where((t) => t.id.equals(taskId))).go();
   }
