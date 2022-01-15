@@ -83,7 +83,7 @@ class _TaskScreenState extends State<TaskScreen> {
                             ? 'Ohne Fälligkeitsdatum'
                             : (dateTime.isInPast()
                                 ? 'Überfällig'
-                                : '${dateTime.toListViewFormat()} fällig'),
+                                : '${dateTime.formatDependingOnCurrentDate()} fällig'),
                         highlight: dateTime.isInPast(),
                       );
                     },

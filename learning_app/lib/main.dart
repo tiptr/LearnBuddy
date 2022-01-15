@@ -14,6 +14,8 @@ import 'package:learning_app/util/injection.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 
+import 'constants/theme_constants.dart';
+
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
   TaskScreen(),
@@ -94,14 +96,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
-
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          primary: const Color(0xFF3444CF),
-          secondary: const Color(0xFF9E5EE1),
-        ),
+        colorScheme: ColorSchemes.defaultColorScheme(),
         scrollbarTheme: ScrollbarThemeData(
           isAlwaysShown: false,
           thickness: MaterialStateProperty.all(10),
@@ -150,7 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor:
+          Theme.of(context).colorScheme.bottomNavigationBarUnselectedItemColor,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,
