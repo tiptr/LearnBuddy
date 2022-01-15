@@ -18,7 +18,7 @@ class TasksCardItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.5),
       ),
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).colorScheme.cardColor,
       elevation: BasicCard.elevation.high,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),

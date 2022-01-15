@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 
 /// Opens a confirm dialog with variable title and content and
