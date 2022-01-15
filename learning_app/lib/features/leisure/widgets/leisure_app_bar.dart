@@ -36,6 +36,7 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 IconButton(
+                  //TODO: Make icon change color immediately, not just after going to the main page and back
                   onPressed: () {
                     cubit.toggleFavorite(leisureActivity.id, !leisureActivity.isFavorite);
                   },
