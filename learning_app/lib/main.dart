@@ -78,6 +78,7 @@ void main() {
           lazy: true,
           create: (context) {
             var bloc = TaskQueueBloc();
+            bloc.add(InitQueueEvent());
             return bloc;
           },
         ),

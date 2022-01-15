@@ -5,16 +5,21 @@ abstract class TaskQueueEvent {}
 
 
 
-class InitQueueEvent extends TaskQueueEvent {
+class UpdateQueueEvent extends TaskQueueEvent {
   final List<TaskWithQueueStatus> taskList;
-  InitQueueEvent(this.taskList);
+  UpdateQueueEvent(this.taskList);
 }
 
 
 
 class UpdateQueueOrderEvent extends TaskQueueEvent {
-  final List<TaskWithQueueStatus> taskList;
 
+  final List<TaskWithQueueStatus> taskList;
   UpdateQueueOrderEvent(this.taskList);
+
+}
+
+class InitQueueEvent extends TaskQueueEvent {
+  InitQueueEvent();
 
 }

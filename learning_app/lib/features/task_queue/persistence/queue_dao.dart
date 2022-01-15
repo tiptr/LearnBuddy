@@ -20,7 +20,7 @@ class QueueDao extends DatabaseAccessor<Database> with _$QueueDaoMixin {
   // of this object.
   QueueDao(Database db) : super(db);
 
-  Future<int> updateQueuePosition(int id, int queuePosition) {
+  Future<int> updateQueuePosition(int id, int queuePosition) async {
     return (update(taskQueueElements)..where((tuple) => tuple.taskId.equals(id)))
       .write(TaskQueueElementsCompanion(
       taskId: Value(id),

@@ -10,11 +10,21 @@ class DbQueueRepository implements QueueRepository {
   final QueueDao dao = getIt<QueueDao>();
 
   @override
-  Future<void> writeQueueOrder(List<TaskWithQueueStatus> taskList) async {
-    taskList.asMap().forEach((int index, TaskWithQueueStatus taskWithQueueStatus) {
-      dao.updateQueuePosition(taskWithQueueStatus.task.id, index);
+  Future<int> writeQueueOrder(List<TaskWithQueueStatus> taskList) async {
+    // Do the complete update in a transaction, so that the streams will only
+    // update once, after the whole update is ready
+
+    // Important: whenever using transactions, every (!) query / update / insert
+    //            inside, has to be awaited -> data loss possible otherwise!
+    int count = await dao.transaction(() async {
+      int count = 0;
+
+      for(int i = 0; i < taskList.length; i++){
+        count += await dao.updateQueuePosition(taskList[i].task.id, i);
+      }
+      return count;
     });
-    return;
+    return count;
 
   }
 
