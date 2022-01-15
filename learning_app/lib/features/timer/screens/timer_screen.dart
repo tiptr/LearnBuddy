@@ -8,6 +8,7 @@ import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -124,6 +125,9 @@ class TimerWidget extends StatelessWidget {
             child: CircularProgressIndicator(
               value: duration / phaseDuration,
               strokeWidth: 15,
+              color: Theme.of(context).colorScheme.tertiary,
+              backgroundColor:
+                  Theme.of(context).colorScheme.subtleBackgroundGrey,
             ),
           ),
           Column(
@@ -132,12 +136,16 @@ class TimerWidget extends StatelessWidget {
               Flexible(
                 child: Text(
                   pomoState,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle1
+                      .withOnBackgroundHard
+                      .withBold,
                 ),
               ),
               // This text should be in the middle of the circular progress bar
               Text('$signStr$minutesStr:$secondsStr',
-                  style: Theme.of(context).textTheme.headline2),
+                  style: Theme.of(context).textTheme.pomodoroTimeDisplayStyle),
             ],
           )
         ],
