@@ -4,3 +4,4 @@ learning_app/assets/leisure/* linguist-generated=true
 
 # Don't treat SVG as text.
 *.svg -diff
+*.svg    binary
