@@ -16,23 +16,21 @@ class LeisureActivityListLoadedState extends LeisureActivityState {
 
   LeisureActivityListLoadedState({required this.selectedLeisureActivities}) {
     listViewLeisureActivities = [];
-    for(LeisureActivity activity in selectedLeisureActivities) {
-      listViewLeisureActivities.add(
-        ReadLeisureActivitiesDto(
-            id: activity.id, 
-            categoryId: activity.categoryId,
-            name: activity.name,
-            duration: activity.duration,
-            descriptionShort: activity.descriptionShort,
-            descriptionLong: activity.descriptionLong,
-            suitableForAgesAbove: activity.suitableForAgesAbove,
-            suitableForAgesBelow: activity.suitableForAgesBelow,
-            isFavorite: activity.isFavorite,
-            pathToImage: activity.pathToImage)
-      );
+    for (LeisureActivity activity in selectedLeisureActivities) {
+      listViewLeisureActivities.add(ReadLeisureActivitiesDto(
+          id: activity.id,
+          categoryId: activity.categoryId,
+          name: activity.name,
+          duration: activity.duration,
+          descriptionShort: activity.descriptionShort,
+          descriptionLong: activity.descriptionLong,
+          suitableForAgesAbove: activity.suitableForAgesAbove,
+          suitableForAgesBelow: activity.suitableForAgesBelow,
+          isFavorite: activity.isFavorite,
+          pathToImage: activity.pathToImage));
     }
   }
-  
+
   @override
   List<Object> get props => [listViewLeisureActivities];
 }
