@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_activity_state.dart';
+import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 
 class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String categoryTitle;
+  final LeisureActivityCubit cubit;
+  final ReadLeisureActivitiesDto leisureActivity;
 
-  const LeisureAppBar({Key? key, required this.categoryTitle})
+  LeisureAppBar({Key? key, required this.categoryTitle, required this.cubit, required this.leisureActivity})
       : super(key: key);
 
   @override
@@ -32,9 +37,9 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    //TODO: add star function
+                    cubit.toggleFavorite(leisureActivity.id, !leisureActivity.isFavorite);
                   },
-                  icon: const Icon(Icons.star, color: Colors.purple),
+                  icon: Icon(Icons.star, color: leisureActivity.isFavorite ? Colors.purple : Colors.grey),
                   iconSize: 30,
                 ),
                 IconButton(

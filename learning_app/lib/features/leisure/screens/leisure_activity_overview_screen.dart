@@ -88,7 +88,7 @@ class LeisureActivityCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.star, color: Colors.purple),
+                    Icon(Icons.star, color: leisureActivity.isFavorite ? Colors.purple : Colors.grey),
                     SizedBox(
                         width: 85.0,
                         height: 85.0,

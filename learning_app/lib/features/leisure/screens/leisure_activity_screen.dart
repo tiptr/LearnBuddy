@@ -17,7 +17,7 @@ class LeisureActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: LeisureAppBar(categoryTitle: leisureActivity.name),
+      appBar: LeisureAppBar(categoryTitle: leisureActivity.name, cubit: cubit, leisureActivity: leisureActivity,),
       body: BlocBuilder<LeisureActivityCubit, LeisureActivityState>(
         bloc: cubit,
         builder: (context, state) {
