@@ -19,6 +19,7 @@ class TasksCardProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
+      color: Theme.of(context).colorScheme.cardColor,
       shape: _ProgressBarCardShape(
         borderRadius: 25.0,
         circleRadius: 60.0,

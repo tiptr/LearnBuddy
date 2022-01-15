@@ -40,6 +40,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
 
     return Scaffold(
       appBar: TaskAddAppBar(textController: _titleController),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Scrollbar(
         interactive: true,
         controller: _scrollController,

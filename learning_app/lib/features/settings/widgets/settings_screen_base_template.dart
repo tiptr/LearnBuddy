@@ -19,6 +19,7 @@ class SettingsScreenBaseTemplate extends StatelessWidget {
       appBar: GoBackTitleBar(
         title: title,
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(15.0),

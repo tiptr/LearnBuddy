@@ -42,6 +42,7 @@ class KeyWordOverviewScreen extends StatelessWidget {
 
             return Scaffold(
               appBar: const GoBackTitleBar(title: "Schlagwörter"),
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,

@@ -41,6 +41,7 @@ class CategoryOverviewScreen extends StatelessWidget {
 
             return Scaffold(
               appBar: const GoBackTitleBar(title: "Kategorien"),
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
