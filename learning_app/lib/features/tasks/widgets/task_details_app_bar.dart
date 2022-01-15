@@ -1,11 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
-import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
+import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
+import 'package:learning_app/util/logger.dart';
 
 class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   final DetailsReadTaskDto? existingTask;
@@ -58,25 +59,33 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                     ),
                     controller: _textEditingController,
                     onChanged: (text) async {
-                      BlocProvider.of<AddTaskCubit>(context)
-                          .addTaskAttribute(CreateTaskDto(
+                      BlocProvider.of<AlterTaskCubit>(context)
+                          .alterTaskAttribute(TaskManipulationDto(
                         title: drift.Value(text),
                       ));
                     },
-                    autofocus: true,
+                    autofocus: widget.existingTask == null,
                     maxLines: 1,
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    BlocProvider.of<AddTaskCubit>(context)
-                        .saveTask()
-                        .whenComplete(() {
-                      if (BlocProvider.of<AddTaskCubit>(context).state
-                          is TaskAdded) {
-                        Navigator.pop(context);
-                      }
-                    });
+                  onPressed: () async {
+                    final cubit = BlocProvider.of<AlterTaskCubit>(context);
+                    // validate required fields:
+                    if (!cubit.validateTaskConstruction()) {
+                      // Not ready to save! Inform the user and continue
+                      final missingFieldsDescr =
+                          cubit.getMissingFieldsDescription();
+                      logger.d(
+                          'The task is not ready to be saved! Description: $missingFieldsDescr');
+                      // TODO: inform the user with a SnackBar
+                      return;
+                    }
+
+                    await BlocProvider.of<AlterTaskCubit>(context).saveTask();
+
+                    // Exit task details screen
+                    Navigator.pop(context);
                   },
                   icon: const Icon(
                     Icons.save_outlined,

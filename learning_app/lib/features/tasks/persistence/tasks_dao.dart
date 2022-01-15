@@ -39,6 +39,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Future<int> updateTask(TasksCompanion tasksCompanion) {
+    assert(tasksCompanion.id.present);
     var updateStmnt = (update(tasks)
       ..where(
         (t) => t.id.equals(tasksCompanion.id.value),

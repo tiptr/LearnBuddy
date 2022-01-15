@@ -48,6 +48,7 @@ class DetailsReadTaskDto {
       id: task.id,
       title: task.title,
       done: task.doneDateTime != null,
+      description: task.description,
       category: ReadCategoryDto.fromCategory(task.category),
       keywords: task.keywords
           .map((keyWord) => ReadKeyWordDto.fromKeyWord(keyWord))

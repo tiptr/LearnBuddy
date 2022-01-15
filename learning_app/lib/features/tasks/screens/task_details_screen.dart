@@ -1,13 +1,13 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
-import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
+import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
-import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
+import 'package:learning_app/features/tasks/widgets/task_details_app_bar.dart';
 import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
 
 /// This screen is used for both creating and editing tasks
@@ -15,10 +15,12 @@ import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
 /// To use this as create-screen, no existingTask is to be passed.
 class TaskDetailsScreen extends StatefulWidget {
   final DetailsReadTaskDto? existingTask;
+  final int? parentId;
 
   const TaskDetailsScreen({
     Key? key,
     this.existingTask,
+    this.parentId, // if null -> top level task
   }) : super(key: key);
 
   @override
@@ -26,28 +28,40 @@ class TaskDetailsScreen extends StatefulWidget {
 }
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
-  final _descriptionController = TextEditingController();
-
   final ScrollController _scrollController = ScrollController();
 
   // This will be used, when this screen is expanded to the edit screen
-  DateTime? selectedDueDate = DateTime.now();
-  Duration? selectedTimeEstimate;
+  DateTime? preSelectedDueDate;
+  Duration? preSelectedTimeEstimate;
+  late String preSelectedDescription;
 
   @override
   void initState() {
     super.initState();
 
-    BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
-      parentId: const drift.Value(null),
-    ));
+    if (widget.existingTask == null) {
+      // Screen is used to create a new task
+      BlocProvider.of<AlterTaskCubit>(context)
+          .startNewTaskConstruction(widget.parentId);
+    } else {
+      // Screen is used to update an existing task
+      final existingTask = widget.existingTask as DetailsReadTaskDto;
+      BlocProvider.of<AlterTaskCubit>(context)
+          .startAlteringExistingTask(existingTask.id);
+    }
+
+    // Define initial values:
+    preSelectedDueDate = widget.existingTask != null ? widget.existingTask?.dueDate : DateTime.now();
+    preSelectedTimeEstimate = widget.existingTask?.estimatedTime;
+    preSelectedDescription = widget.existingTask?.description ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
     // Set initial dueDate:
-    BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
-      dueDate: drift.Value(selectedDueDate),
+    BlocProvider.of<AlterTaskCubit>(context)
+        .alterTaskAttribute(TaskManipulationDto(
+      dueDate: drift.Value(preSelectedDueDate),
     ));
 
     return Scaffold(
@@ -61,28 +75,28 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             child: Column(
               children: [
                 DateInputField(
-                  preselectedDate: selectedDueDate,
+                  preselectedDate: preSelectedDueDate,
                   onChange: (DateTime? datetime) {
                     // TODO: remove setState here?
-                    setState(() {
-                      selectedDueDate = datetime;
-                    });
-                    BlocProvider.of<AddTaskCubit>(context)
-                        .addTaskAttribute(CreateTaskDto(
+                    // setState(() {
+                    //   selectedDueDate = datetime;
+                    // });
+                    BlocProvider.of<AlterTaskCubit>(context)
+                        .alterTaskAttribute(TaskManipulationDto(
                       dueDate: drift.Value(datetime),
                     ));
                   },
                 ),
                 const SizedBox(height: 20.0),
                 DurationInputField(
-                  preselectedDuration: selectedTimeEstimate,
+                  preselectedDuration: preSelectedTimeEstimate,
                   onChange: (Duration? duration) {
                     // TODO: remove setState here?
                     setState(() {
-                      selectedTimeEstimate = duration;
+                      preSelectedTimeEstimate = duration;
                     });
-                    BlocProvider.of<AddTaskCubit>(context)
-                        .addTaskAttribute(CreateTaskDto(
+                    BlocProvider.of<AlterTaskCubit>(context)
+                        .alterTaskAttribute(TaskManipulationDto(
                       estimatedTime: drift.Value(duration),
                     ));
                   },
@@ -92,13 +106,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   label: "Beschreibung",
                   hintText: "Text eingeben",
                   iconData: Icons.description_outlined,
-                  textController: _descriptionController,
-                  onChanged: (text) async {
-                    BlocProvider.of<AddTaskCubit>(context)
-                        .addTaskAttribute(CreateTaskDto(
+                  onChange: (text) async {
+                    BlocProvider.of<AlterTaskCubit>(context)
+                        .alterTaskAttribute(TaskManipulationDto(
                       description: drift.Value(text),
                     ));
                   },
+                  preselectedText: preSelectedDescription,
                 ),
                 // Subtasks
                 const SizedBox(height: 20.0),

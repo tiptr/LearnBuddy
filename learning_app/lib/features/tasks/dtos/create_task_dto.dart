@@ -1,46 +1,39 @@
 import 'package:drift/drift.dart';
+import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 
-class CreateTaskDto {
-  Value<int?> parentId;
-  Value<String> title;
-  Value<String?> description;
-  Value<Duration?> estimatedTime;
-  Value<DateTime?> dueDate;
-  Value<Duration> manualTimeEffortDelta;
-  Value<int?> categoryId;
-  Value<List<int>> keywordIds;
-  Value<List<int>> learnListsIds;
+class CreateTaskDto extends TaskManipulationDto {
+  int? parentId;
 
   CreateTaskDto({
-    this.parentId = const Value.absent(),
-    this.title = const Value.absent(),
-    this.description = const Value.absent(),
-    this.categoryId = const Value.absent(),
-    this.keywordIds = const Value.absent(),
-    this.estimatedTime = const Value.absent(),
-    this.dueDate = const Value.absent(),
-    this.learnListsIds = const Value.absent(),
-    this.manualTimeEffortDelta = const Value.absent(),
-  });
+    required this.parentId,
+    Value<String> title = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+    Value<Duration?> estimatedTime = const Value.absent(),
+    Value<DateTime?> dueDate = const Value.absent(),
+    Value<Duration> manualTimeEffortDelta = const Value.absent(),
+    Value<int?> categoryId = const Value.absent(),
+    Value<List<int>> keywordIds = const Value.absent(),
+    Value<List<int>> learnListsIds = const Value.absent(),
+  }) : super(
+          title: title,
+          description: description,
+          estimatedTime: estimatedTime,
+          dueDate: dueDate,
+          manualTimeEffortDelta: manualTimeEffortDelta,
+          categoryId: categoryId,
+          keywordIds: keywordIds,
+          learnListsIds: learnListsIds,
+        );
 
   /// Changes the current instance by replacing all present values of the new DTO
-  void applyChangesFrom(CreateTaskDto newDto) {
-    title = newDto.title.present ? newDto.title : title;
-    description = newDto.description.present ? newDto.description : description;
-    estimatedTime =
-        newDto.estimatedTime.present ? newDto.estimatedTime : estimatedTime;
-    dueDate = newDto.dueDate.present ? newDto.dueDate : dueDate;
-    manualTimeEffortDelta = newDto.manualTimeEffortDelta.present
-        ? newDto.manualTimeEffortDelta
-        : manualTimeEffortDelta;
-    categoryId = newDto.categoryId.present ? newDto.categoryId : categoryId;
-    keywordIds = newDto.keywordIds.present ? newDto.keywordIds : keywordIds;
-    learnListsIds =
-        newDto.learnListsIds.present ? newDto.learnListsIds : learnListsIds;
+  @override
+  void applyChangesFrom(TaskManipulationDto newDto) {
+    super.applyChangesFrom(newDto);
   }
 
   /// Checks, if the DTO is fulfilling all attribute requirements
+  @override
   bool isReadyToStore() {
-    return parentId.present && title.present;
+    return title.present && title.value != '';
   }
 }

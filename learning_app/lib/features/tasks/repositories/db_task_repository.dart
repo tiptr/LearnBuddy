@@ -96,7 +96,7 @@ class DbTaskRepository implements TaskRepository {
     //            inside, has to be awaited -> data loss possible otherwise!
     return _tasksDao.transaction(() async {
       int newTaskId = await _tasksDao.createTask(db.TasksCompanion(
-        parentTaskId: newTask.parentId,
+        parentTaskId: Value(newTask.parentId),
         title: newTask.title,
         description: newTask.description,
         estimatedTime: newTask.estimatedTime,
@@ -137,6 +137,7 @@ class DbTaskRepository implements TaskRepository {
     //            inside, has to be awaited -> data loss possible otherwise!
     return _tasksDao.transaction(() async {
       int numberTasksChanged = await _tasksDao.updateTask(db.TasksCompanion(
+        id: Value(updateDto.id),
         parentTaskId: const Value.absent(),
         // moving tasks is not implemented
         title: updateDto.title,
