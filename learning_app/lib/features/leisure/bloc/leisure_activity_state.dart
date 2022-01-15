@@ -11,13 +11,14 @@ class InitialLeisureActivityState extends LeisureActivityState {}
 
 // ignore: must_be_immutable
 class LeisureActivityListLoadedState extends LeisureActivityState {
-  final Stream<List<LeisureActivity>> selectedLeisureActivitiesStream;
-  late Stream<List<ReadLeisureActivitiesDto>> listViewLeisureActivitiesStream;
+  final List<LeisureActivity> selectedLeisureActivities;
+  late List<ReadLeisureActivitiesDto> listViewLeisureActivities;
 
-  LeisureActivityListLoadedState({required this.selectedLeisureActivitiesStream}) {
-    listViewLeisureActivitiesStream = selectedLeisureActivitiesStream.map((activityList) {
-      return activityList
-          .map((activity) => ReadLeisureActivitiesDto(
+  LeisureActivityListLoadedState({required this.selectedLeisureActivities}) {
+    listViewLeisureActivities = [];
+    for(LeisureActivity activity in selectedLeisureActivities) {
+      listViewLeisureActivities.add(
+        ReadLeisureActivitiesDto(
             id: activity.id, 
             categoryId: activity.categoryId,
             name: activity.name,
@@ -27,11 +28,11 @@ class LeisureActivityListLoadedState extends LeisureActivityState {
             suitableForAgesAbove: activity.suitableForAgesAbove,
             suitableForAgesBelow: activity.suitableForAgesBelow,
             isFavorite: activity.isFavorite,
-            pathToImage: activity.pathToImage))
-          .toList();
-    });
+            pathToImage: activity.pathToImage)
+      );
+    }
   }
   
   @override
-  List<Object> get props => [];
+  List<Object> get props => [listViewLeisureActivities];
 }

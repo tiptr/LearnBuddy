@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
@@ -17,9 +18,12 @@ class LeisureScreen extends StatelessWidget {
       titleBar: const BaseTitleBar(
         title: "Abwechslung",
       ),
-      content: BlocBuilder<LeasureCategoryCubit, LeisureCategoryState>(
-        bloc: LeasureCategoryCubit(),
+      content: BlocBuilder<LeisureCategoryCubit, LeisureCategoryState>(
         builder: (context, state) {
+          if(state is! LeisureCategoryLoaded){
+            return const Center(child: CircularProgressIndicator(),);
+          }
+
           return StreamBuilder<List<ReadLeisureCategoriesDto>>(
             stream: state.listViewLeisureCategoriesStream,
             builder: (context, snapshot) {
@@ -51,8 +55,13 @@ class LeisureScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LeisureActivityOverviewScreen(),
-                      ),
+                        builder: (context) { 
+                          var cubit = LeisureActivityCubit();
+                          cubit.setActivityList(categories[idx].activities);
+                          return LeisureActivityOverviewScreen(
+                            correctCubit: cubit,
+                          );
+                      }),
                     ),
                   );
                 },

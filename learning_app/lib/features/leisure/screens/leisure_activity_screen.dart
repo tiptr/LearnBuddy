@@ -8,16 +8,17 @@ import 'package:learning_app/features/leisure/widgets/leisure_app_bar.dart';
 
 class LeisureActivityScreen extends StatelessWidget {
   final ReadLeisureActivitiesDto leisureActivity;
+  final LeisureActivityCubit cubit;
 
-  const LeisureActivityScreen({required this.leisureActivity, Key? key})
+  const LeisureActivityScreen({required this.leisureActivity, required this.cubit, Key? key})
       : super(key: key);
-
+      
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: LeisureAppBar(categoryTitle: leisureActivity.name),
-      body: BlocBuilder<LeasureActivityCubit, LeasureActivityState>(
-        bloc: LeasureActivityCubit(),
+      body: BlocBuilder<LeisureActivityCubit, LeisureActivityState>(
+        bloc: cubit,
         builder: (context, state) {
           return Scrollbar(
             isAlwaysShown: true,

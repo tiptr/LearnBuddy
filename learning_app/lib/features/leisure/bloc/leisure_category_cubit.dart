@@ -3,10 +3,10 @@ import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/repositories/leisure_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
-class LeasureCategoryCubit extends Cubit<LeisureCategoryState> {
+class LeisureCategoryCubit extends Cubit<LeisureCategoryState> {
   late final LeisureRepository _leisureRepository;
   
-  LeasureCategoryCubit({LeisureRepository? leisureRepository}) : super(InitialLeisureCategoryState()) {
+  LeisureCategoryCubit({LeisureRepository? leisureRepository}) : super(InitialLeisureCategoryState()) {
     _leisureRepository = leisureRepository ?? getIt<LeisureRepository>();
   }
 

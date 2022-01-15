@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
@@ -52,6 +54,14 @@ void main() {
           create: (context) {
             var cubit = CategoriesCubit();
             cubit.loadCategories();
+            return cubit;
+          },
+        ),
+        BlocProvider<LeisureCategoryCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = LeisureCategoryCubit();
+            cubit.loadLeisureCategories();
             return cubit;
           },
         ),
