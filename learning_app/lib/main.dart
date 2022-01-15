@@ -12,7 +12,8 @@ import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:logger/logger.dart';
 
-import 'constants/theme_constants.dart';
+import 'constants/theme_color_constants.dart';
+import 'constants/theme_font_constants.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -78,17 +79,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
+    // Must be declared explicitly to be passed on to the TextTheme, which relies
+    // on the colorScheme
+    final ColorScheme colorScheme = ColorSchemes.defaultColorScheme();
+    final TextTheme textTheme = TextThemes.defaultTextTheme(colorScheme);
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-        colorScheme: ColorSchemes.defaultColorScheme(),
-        scrollbarTheme: ScrollbarThemeData(
-          isAlwaysShown: false,
-          thickness: MaterialStateProperty.all(10),
-          radius: const Radius.circular(10),
-          minThumbLength: 50,
-        ),
-      ),
+          colorScheme: colorScheme,
+          scrollbarTheme: ScrollbarThemeData(
+            isAlwaysShown: false,
+            thickness: MaterialStateProperty.all(10),
+            radius: const Radius.circular(10),
+            minThumbLength: 50,
+          ),
+          textTheme: textTheme),
       home: const MyHomePage(),
     );
   }
@@ -130,8 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      unselectedItemColor:
-          Theme.of(context).colorScheme.bottomNavigationBarUnselectedItemColor,
+      unselectedItemColor: Theme.of(context).colorScheme.onBackgroundSoft,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,

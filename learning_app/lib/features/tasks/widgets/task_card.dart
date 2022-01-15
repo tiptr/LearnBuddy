@@ -5,7 +5,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 const double iconSize = 14.0;
 

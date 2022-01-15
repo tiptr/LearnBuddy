@@ -21,7 +21,7 @@ class ListGroupSeparator extends StatelessWidget {
         _content,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 11,
+          fontSize: 12,
           color: _highlight ? Colors.white : const Color(0xFF636573),
         ),
       ),

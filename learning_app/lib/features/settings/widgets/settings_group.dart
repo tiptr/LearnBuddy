@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class SettingsGroup extends StatelessWidget {
   // calculated:
@@ -27,7 +28,7 @@ class SettingsGroup extends StatelessWidget {
           // Icon
           Icon(
             iconData,
-            color: const Color(0xFF636573),
+            color: Theme.of(context).colorScheme.onBackgroundHard,
           ),
           // Title and Subtitle
           Expanded(
@@ -43,11 +44,11 @@ class SettingsGroup extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                       overflow: TextOverflow.ellipsis,
-                      color: Color(0xFF636573),
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
                     ),
                   ),
 
@@ -58,8 +59,8 @@ class SettingsGroup extends StatelessWidget {
                       Text(
                         subTitle,
                         maxLines: 2,
-                        style: const TextStyle(
-                          color: Color(0xFF949597),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackgroundSoft,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                           overflow: TextOverflow.ellipsis,

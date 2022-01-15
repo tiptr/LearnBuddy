@@ -80,7 +80,7 @@ class SubTasksList extends StatelessWidget {
                     "Neue Unteraufgabe",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                   ),
                 ],

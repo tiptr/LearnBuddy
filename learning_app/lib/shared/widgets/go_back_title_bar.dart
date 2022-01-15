@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   const GoBackTitleBar({
     Key? key,
     required this.title,
-    this.textStyle = const TextStyle(
-      fontSize: 22.0,
-      fontWeight: FontWeight.bold,
-      overflow: TextOverflow.ellipsis,
-      color: Color(0xFF636573),
-    ),
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -33,12 +30,16 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: const Icon(Icons.arrow_back),
                   iconSize: 30,
-                  color: const Color(0xFF636573),
+                  color: Theme.of(context).colorScheme.onBackgroundHard,
                 ),
                 Expanded(
                   child: Text(
                     title,
-                    style: textStyle,
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle1
+                        .withBold
+                        .withOnBackgroundHard,
                   ),
                 ),
               ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 /// Opens a confirm dialog with variable title and content and
 /// returns true if confirmed and false otherwise.
@@ -31,7 +31,8 @@ Future<bool> openConfirmDialog({
                     child: Text(
                       "Abbrechen",
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.cancelColor),
+                          color:
+                              Theme.of(context).colorScheme.onBackgroundSoft),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(false);

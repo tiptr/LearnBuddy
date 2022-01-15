@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/logger.dart';
 

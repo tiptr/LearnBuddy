@@ -7,7 +7,7 @@ import 'package:learning_app/features/timer/widgets/actions.dart'
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -63,12 +63,9 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state.getCountPhase());
     final totalSteps = context
         .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCount());
-    final completedSessionColor = Theme.of(context)
-        .colorScheme
-        .timerProgressIndicatorCompletedSessionColor;
-    final unCompletedSessionColor = Theme.of(context)
-        .colorScheme
-        .timerProgressIndicatorUnCompletedSessionColor;
+    final completedSessionColor = Theme.of(context).colorScheme.tertiary;
+    final unCompletedSessionColor =
+        Theme.of(context).colorScheme.onBackgroundSoft;
     return StepProgressIndicator(
         totalSteps: totalSteps,
         currentStep: currentStep + 1,
