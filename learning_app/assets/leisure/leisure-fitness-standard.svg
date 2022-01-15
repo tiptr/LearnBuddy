@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="282.22mm" height="65.2mm" version="1.1" viewBox="0 0 1000 231.02388" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-598.31 -259.35)">
+  <g transform="matrix(3.0386 0 0 3.0386 -1219.7 -999.66)">
+   <rect x="637.18" y="414.35" width="9.4078" height="76.031"/>
+   <rect x="625.06" y="422.22" width="9.4078" height="60.287"/>
+   <rect x="612.95" y="429.99" width="9.4078" height="44.735"/>
+   <path transform="translate(604.31 414.35)" d="m-6 33.887v8.2559h12.145v-8.2559h-12.145z"/>
+   <rect x="661.41" y="448.23" width="202.75" height="8.2559"/>
+   <rect transform="scale(-1,1)" x="-888.54" y="414.35" width="9.4078" height="76.031"/>
+   <rect transform="scale(-1,1)" x="-900.65" y="422.22" width="9.4078" height="60.287"/>
+   <rect transform="scale(-1,1)" x="-912.77" y="429.99" width="9.4078" height="44.735"/>
+   <path transform="translate(604.31 414.35)" d="m310.96 33.887v8.2559h12.143v-8.2559h-12.143z"/>
+   <rect transform="scale(-1,1)" x="-876.42" y="414.35" width="9.4078" height="76.031"/>
+   <rect x="649.29" y="414.35" width="9.4078" height="76.031"/>
+  </g>
+ </g>
+</svg>

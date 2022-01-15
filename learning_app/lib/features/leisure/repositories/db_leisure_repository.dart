@@ -45,7 +45,7 @@ class DbLeisureRepository implements LeisureRepository {
           resultList.add(LeisureCategory(
             id: category.id, 
             name: category.name, 
-            pathToImage: category.name, 
+            pathToImage: category.pathToImage, 
             activities: categoryIdToActivitiesMap[category.id] ?? []));
         }
         return resultList;

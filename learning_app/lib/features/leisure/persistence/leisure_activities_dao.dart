@@ -53,7 +53,7 @@ class LeisureActivitiesDao extends DatabaseAccessor<Database>
     _activitiesStream = _activitiesStream ?? 
       (select(leisureActivities)
             .map(
-                (row) => LeisureActivity(id: row.id, categoryId: row.leisureCategoryId, name: row.name, duration: row.duration, descriptionShort: row.descriptionShort, isFavorite: row.isFavorite))
+                (row) => LeisureActivity(id: row.id, categoryId: row.leisureCategoryId, name: row.name, duration: row.duration, descriptionShort: row.descriptionShort, descriptionLong: row.descriptionLong, isFavorite: row.isFavorite, pathToImage: row.pathToImage))
             .watch());
 
     return _activitiesStream as Stream<List<LeisureActivity>>;

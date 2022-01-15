@@ -6,6 +6,7 @@ import 'package:learning_app/features/leisure/bloc/leisure_activity_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 import 'package:learning_app/features/leisure/widgets/leisure_overview_app_bar.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LeisureActivityOverviewScreen extends StatelessWidget {
   final LeisureActivityCubit correctCubit;
@@ -88,12 +89,14 @@ class LeisureActivityCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Icon(Icons.star, color: Colors.purple),
-                    Image(
-                      image: AssetImage(leisureActivity.pathToImage ??
-                          defaultLeisureCategoryImagePath),
-                      width: 85.0,
-                      height: 85.0,
-                    ),
+                    SizedBox(
+                        width: 85.0,
+                        height: 85.0,
+                        child: SvgPicture.asset(
+                          leisureActivity.pathToImage ?? defaultLeisureCategoryImagePath,
+                          color: Colors.cyan,
+                        ), 
+                    )
                   ],
                 ),
               ),
