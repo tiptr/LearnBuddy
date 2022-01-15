@@ -26,10 +26,13 @@ class TaskCard extends StatelessWidget {
   final bool _isOverDue;
   final String _formattedTimeEstimation;
   final bool _isEstimated;
-  final Color? _categoryColor;
+  final Color _categoryColor;
 
   TaskCard(
-      {Key? key, required ListReadTaskDto task, bool isSubTaskCard = false})
+      {Key? key,
+      required ListReadTaskDto task,
+      required BuildContext context,
+      bool isSubTaskCard = false})
       : _task = task,
         _isSubTaskCard = isSubTaskCard,
         // calculated:
@@ -39,7 +42,8 @@ class TaskCard extends StatelessWidget {
         _formattedTimeEstimation = task.remainingTimeEstimation
             .toListViewFormat(ifNull: 'Keine Zeitschätzung'),
         _isEstimated = task.remainingTimeEstimation == null ? false : true,
-        _categoryColor = task.categoryColor,
+        _categoryColor = task.categoryColor ??
+            Theme.of(context).colorScheme.noCategoryDefaultColor,
         super(key: key);
 
   @override
@@ -68,6 +72,7 @@ class TaskCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         color: Theme.of(context).colorScheme.cardColor,
+        shadowColor: const Color(0x00000000),
         elevation:
             _task.done ? BasicCard.elevation.low : BasicCard.elevation.high,
         child: ColorFiltered(
@@ -77,7 +82,9 @@ class TaskCard extends StatelessWidget {
               _task.done
                   ? Theme.of(context).colorScheme.greyOutOverlayColor
                   : Colors.transparent,
-              BlendMode.lighten),
+              Theme.of(context).colorScheme.isDark
+                  ? BlendMode.darken
+                  : BlendMode.lighten),
           child: Container(
             padding: EdgeInsets.only(
               top: 10.0,
@@ -90,12 +97,7 @@ class TaskCard extends StatelessWidget {
                 ? null
                 : BoxDecoration(
                     border: Border(
-                      left: BorderSide(
-                          width: 12.5,
-                          color: _categoryColor ??
-                              Theme.of(context)
-                                  .colorScheme
-                                  .noCategoryDefaultColor),
+                      left: BorderSide(width: 12.5, color: _categoryColor),
                     ),
                   ),
             height: _isSubTaskCard ? 75.0 : BasicCard.height,
@@ -208,7 +210,7 @@ class TaskCard extends StatelessWidget {
               (_task.dueDate != null) ? _formattedDueDate : '',
               textAlign: TextAlign.end,
               style: _isOverDue
-                  ? dueDateStyle.withOnPrimary
+                  ? dueDateStyle.withOnSecondary
                   : dueDateStyle.withOnBackgroundHard,
             ),
             labelPadding: EdgeInsets.symmetric(
@@ -268,7 +270,7 @@ class TaskCard extends StatelessWidget {
                         Icon(
                           Icons.dynamic_feed_outlined,
                           size: iconSize,
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.onBackgroundSoft,
                         ),
                         const SizedBox(width: 5.0),
                         Text(

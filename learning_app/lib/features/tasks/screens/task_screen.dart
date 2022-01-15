@@ -86,7 +86,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       );
                     },
                     indexedItemBuilder: (context, task, index) {
-                      return TaskCard(task: task);
+                      return TaskCard(task: task, context: context);
                     },
                   ),
                 );
@@ -103,7 +103,10 @@ class _TaskScreenState extends State<TaskScreen> {
             builder: (context) => const TaskAddScreen(),
           ),
         ),
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );

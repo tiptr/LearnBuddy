@@ -23,7 +23,7 @@ class ListGroupSeparator extends StatelessWidget {
       label: Text(
         _content,
         textAlign: TextAlign.center,
-        style: _highlight ? style.withOnPrimary : style.withOnBackgroundSoft,
+        style: _highlight ? style.withOnSecondary : style.withOnBackgroundSoft,
       ),
       backgroundColor: _highlight
           ? Theme.of(context).colorScheme.secondary

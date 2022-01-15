@@ -27,6 +27,7 @@ class SubTasksList extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return TaskCard(
               isSubTaskCard: true,
+              context: context,
               task: ListReadTaskDto(
                 id: index,
                 title: 'Gemockte Sub-Aufgabe, noch ohne jegliche Funktion',

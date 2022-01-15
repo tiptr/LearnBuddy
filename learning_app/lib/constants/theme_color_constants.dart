@@ -7,8 +7,25 @@ import 'package:flutter/material.dart';
 class ColorSchemes {
   /// Feature Relase: dark mode
   static ColorScheme darkColorScheme() {
-    ColorScheme darkTheme = const ColorScheme.dark();
-    darkTheme.setCustomAttributes(/*...*/);
+    ColorScheme darkTheme = const ColorScheme.dark().copyWith(
+      primary: const Color(0xFFFF2222),
+      secondary: const Color(0xFFCCCC00),
+      background: const Color(0xFF121212),
+      onPrimary: const Color(0xFFFFFFFF),
+      onSecondary: const Color(0xFF000000),
+      onBackground: const Color(0xFF636573),
+    );
+    darkTheme.setCustomAttributes(
+      greyOutOverlayColor: const Color(0xB8060606),
+      noCategoryDefaultColor: darkTheme.onBackground,
+      onBackgroundHard: const Color(0xFFFFFFFF),
+      onBackgroundSoft: const Color(0xFF999999),
+      tertiary: const Color(0xFF78C6E2),
+      onTertiary: const Color(0xFF000000), // Same as onBackgroundHard
+      subtleBackgroundGrey: const Color(0xFF424242),
+      cardColor: const Color(0xFF212121),
+      isDark: true,
+    );
     return darkTheme;
   }
 
@@ -31,6 +48,7 @@ class ColorSchemes {
       onTertiary: const Color(0xFF40424A), // Same as onBackgroundHard
       subtleBackgroundGrey: const Color(0xFFEAECFA),
       cardColor: const Color(0xFFFFFFFF),
+      isDark: false,
     );
     return theme;
   }
@@ -57,6 +75,8 @@ extension CustomColorScheme on ColorScheme {
   // Circle Progress Indicator Grey Color
   static Color? _subtleBackgroundGrey;
 
+  static late bool _isDark;
+
   /// Sets the custom attributes that are not contained in the ColorScheme class
   setCustomAttributes({
     Color? greyOutOverlayColor,
@@ -67,6 +87,7 @@ extension CustomColorScheme on ColorScheme {
     Color? onBackgroundSoft,
     Color? subtleBackgroundGrey,
     Color? cardColor,
+    required isDark,
   }) {
     //Using ??= to allow multiple calls of this method, without overriding set values
     _greyOutOverlayColor ??= greyOutOverlayColor;
@@ -79,6 +100,7 @@ extension CustomColorScheme on ColorScheme {
     _onBackgroundSoft ??= onBackgroundSoft;
     _subtleBackgroundGrey ??= subtleBackgroundGrey;
     _cardColor ??= cardColor;
+    _isDark = isDark;
   }
 
   // Getters of all attributes with defaults if not set. Default red, to clearly
@@ -99,4 +121,6 @@ extension CustomColorScheme on ColorScheme {
 
   Color get subtleBackgroundGrey =>
       _subtleBackgroundGrey ?? _customAttributeForgotToSetColor;
+
+  bool get isDark => _isDark;
 }
