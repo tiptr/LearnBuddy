@@ -9,6 +9,7 @@ import 'package:learning_app/features/timer/widgets/active_task.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:learning_app/constants/theme_constants.dart';
@@ -39,10 +40,13 @@ class TimerView extends StatefulWidget {
 }
 
 class _TimerViewState extends State<TimerView> {
+  final _panelController = PanelController();
+
   @override
   Widget build(BuildContext context) {
     //List<TaskWithQueueStatus>? taskList = context.select((TaskQueueBloc bloc) => bloc.state.getTasks);
     return SlidingUpPanel(
+      controller: _panelController,
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(18.0),
         topRight: Radius.circular(18.0),
@@ -50,9 +54,14 @@ class _TimerViewState extends State<TimerView> {
       parallaxEnabled: true,
       parallaxOffset: .0,
       panelSnapping: true,
-      minHeight: 20,
-      maxHeight: 470,
-      panelBuilder: (ScrollController sc) => TaskQueueList(sc),
+      minHeight: 90,
+      maxHeight: MediaQuery.of(context).size.height * 0.6,
+      panelBuilder: (ScrollController sc) {
+        return TaskQueueList(
+          scrollController: sc,
+          panelController: _panelController,
+        );
+      },
       color: Colors.white,
       body: const Center(
         child: TimerBackGround(),
