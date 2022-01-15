@@ -399,7 +399,7 @@ Future<void> initialization004LeisureActivities() async {
         descriptionLong: 
           const Value<String>('Stelle Dich gerade hin. Du kannst den Baum in verschiedenen Varianten ausführen: Variante 1: Stelle die linke Ferse auf deinen rechten Fuß. Die Zehen des linken Fußes haben noch Bodenkontakt. Variante 2: Platziere Deine linke Fußsohle leicht unterhalb des rechten Knies. Du stehst jetzt komplett auf einem Bein. Drehe Dein linkes Knie nach außen und öffne Deine Hüfte. Variante 3: Platziere Deine linke Fußsohle auf der Innenseite Deines rechten Oberschenkels. Versuche nun, einen sicheren Stand zu finden. Dabei hilft es, die Muskulatur in den Beinen, Bauch und Rumpf zu aktivieren. Führe dann Deine Hände vor der Brunst ins Namaste zusammen. Als Steigerung kannst du die Hände anschließend über Deinen Köpf führen. Dann senkst du das Bein langsam wieder ab und setzt den Fuß auf dem Boden auf. Wiederhole die Übung mit dem anderen Bein.'),
         isFavorite: false,
-        pathToImage: const Value<String>('assets/leisure/leisure-yoga-tree.svg'),
+        pathToImage: const Value<String>('assets/leisure/leisure-yoga-standard.svg'),
       ),
       LeisureActivitiesCompanion.insert(
         id: const Value(32),
@@ -485,7 +485,7 @@ Future<void> initialization004LeisureActivities() async {
         descriptionLong: 
           const Value<String>('Manchmal tut es sehr gut, einfach zu schreien! Gehe dafür an einen abgelegenen Ort, an dem dich keiner hören kann. Nun schreie so laut du kannst und so oft du willst. Denke dabei an alles was dich belastet, aufregt oder runterzieht und lass es gehen! Befreiend oder?'),
         isFavorite: false,
-        pathToImage: const Value<String>('assets/leisure/leisure-outdoor-screaming.svg'),
+        pathToImage: const Value<String>('assets/leisure/leisure-outdoor-walk.svg'),
       ),
       LeisureActivitiesCompanion.insert(
         id: const Value(39),
