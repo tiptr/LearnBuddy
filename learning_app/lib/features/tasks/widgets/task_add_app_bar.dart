@@ -4,6 +4,7 @@ import 'package:learning_app/constants/app_bar_height.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:drift/drift.dart' as drift;
 
 class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController textController;
@@ -39,7 +40,7 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                     onChanged: (text) async {
                       BlocProvider.of<AddTaskCubit>(context)
                           .addTaskAttribute(CreateTaskDto(
-                        title: text,
+                        title: drift.Value(text),
                       ));
                     },
                     autofocus: true,

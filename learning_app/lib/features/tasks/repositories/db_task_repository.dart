@@ -87,18 +87,23 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<int> createTask(CreateTaskDto newTask) async {
+    assert(newTask.isReadyToStore());
+
+    // TODO: category and more
+
     return _tasksDao.createTask(db.TasksCompanion(
       // For NOT NULL attributes, ofNullable() is used
       // For nullable attributes, use Value() instead
       // Reason: it could not be determined, if a null value in the DTO would
       // mean a Value.absent() or a Value(null)
-      title: Value(newTask.title ?? 'Aufgabe ohne Titel'),
-      description: Value(newTask.description),
-      estimatedTime: Value(newTask.estimatedTime),
-      dueDate: Value.ofNullable(newTask.dueDate),
+      title: newTask.title,
+      description: newTask.description,
+      estimatedTime: newTask.estimatedTime,
+      dueDate: newTask.dueDate,
       creationDateTime: Value(DateTime.now()),
-      manualTimeEffortDelta:
-          const Value(Duration.zero), // only changeable later
+      manualTimeEffortDelta: newTask.manualTimeEffortDelta.present
+          ? newTask.manualTimeEffortDelta
+          : const Value(Duration.zero),
     ));
   }
 

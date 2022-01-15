@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/keywords/models/keyword.dart';
 
 class ReadKeyWordDto extends Equatable {
   final int id;
@@ -8,6 +9,13 @@ class ReadKeyWordDto extends Equatable {
     required this.id,
     required this.name,
   });
+
+  static ReadKeyWordDto fromKeyWord(KeyWord keyWord) {
+    return ReadKeyWordDto(
+      id: keyWord.id,
+      name: keyWord.name,
+    );
+  }
 
   @override
   List<Object> get props => [id, name];

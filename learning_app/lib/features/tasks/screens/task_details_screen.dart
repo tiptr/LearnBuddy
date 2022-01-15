@@ -1,21 +1,31 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
+import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
 import 'package:learning_app/features/tasks/widgets/task_add_app_bar.dart';
 import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
 
-class TaskAddScreen extends StatefulWidget {
-  const TaskAddScreen({Key? key}) : super(key: key);
+/// This screen is used for both creating and editing tasks
+///
+/// To use this as create-screen, no existingTask is to be passed.
+class TaskDetailsScreen extends StatefulWidget {
+  final Task? existingTask;
+
+  const TaskDetailsScreen({
+    Key? key,
+    this.existingTask,
+  }) : super(key: key);
 
   @override
-  State<TaskAddScreen> createState() => _TaskAddScreenState();
+  State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
 }
 
-class _TaskAddScreenState extends State<TaskAddScreen> {
+class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
 
@@ -28,13 +38,17 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   @override
   void initState() {
     super.initState();
+
+    BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
+      parentId: const drift.Value(null),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     // Set initial dueDate:
     BlocProvider.of<AddTaskCubit>(context).addTaskAttribute(CreateTaskDto(
-      dueDate: selectedDueDate,
+      dueDate: drift.Value(selectedDueDate),
     ));
 
     return Scaffold(
@@ -56,7 +70,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                     });
                     BlocProvider.of<AddTaskCubit>(context)
                         .addTaskAttribute(CreateTaskDto(
-                      dueDate: datetime,
+                      dueDate: drift.Value(datetime),
                     ));
                   },
                 ),
@@ -70,7 +84,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                     });
                     BlocProvider.of<AddTaskCubit>(context)
                         .addTaskAttribute(CreateTaskDto(
-                      estimatedTime: duration,
+                      estimatedTime: drift.Value(duration),
                     ));
                   },
                 ),
@@ -83,7 +97,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                   onChanged: (text) async {
                     BlocProvider.of<AddTaskCubit>(context)
                         .addTaskAttribute(CreateTaskDto(
-                      description: text,
+                      description: drift.Value(text),
                     ));
                   },
                 ),

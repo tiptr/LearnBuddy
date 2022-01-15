@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 /// Contains everything about a task, that is required to display it in a list
-///
-/// Since this only combines the whole Task model with additional data from
-/// other models, Task is simply referenced here
 class ListReadTaskDto extends Equatable {
   final int id;
   final String title;
@@ -18,11 +15,6 @@ class ListReadTaskDto extends Equatable {
   // estimations of finished subtasks are not added
   final Duration? remainingTimeEstimation; // minutes
 
-  // dueDate is not optional, because there is no good way to integrate
-  // tasks without one into the sorted list of the UI.
-  // Instead, 'Today' is the predefined due_date
-  // Currently, the time part of this DateTime is not really used, but this
-  // could change later
   final DateTime? dueDate;
 
   final int subTaskCount;
