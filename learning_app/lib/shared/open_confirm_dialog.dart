@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 

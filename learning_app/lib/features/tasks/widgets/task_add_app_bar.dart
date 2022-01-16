@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';

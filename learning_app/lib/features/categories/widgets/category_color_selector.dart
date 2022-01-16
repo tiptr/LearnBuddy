@@ -3,7 +3,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/color_add_dialog.dart';
 import 'package:learning_app/util/logger.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 
 class CategoryColorSelector extends StatefulWidget {
   final Function onColorSelect;
