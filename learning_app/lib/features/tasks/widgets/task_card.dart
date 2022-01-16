@@ -123,8 +123,7 @@ class TaskCard extends StatelessWidget {
                       border: Border(
                         left: BorderSide(
                             width: BasicCard.borderRadius,
-                            color: _categoryColor
-                        ),
+                            color: _categoryColor),
                       ),
                     ),
               height: _isSubTaskCard ? 75.0 : BasicCard.height,
