@@ -149,7 +149,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   ),
                   const SizedBox(height: 20.0),
 
-                  SubTasksList(scrollController: _scrollController)
+                  SubTasksList(
+                    scrollController: _scrollController,
+                    subTasksList: widget.existingTask?.children ?? [],
+                  ),
                 ],
               ),
             ),

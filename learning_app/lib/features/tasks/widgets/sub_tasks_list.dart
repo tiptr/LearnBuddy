@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
@@ -18,9 +19,13 @@ import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
 class SubTasksList extends StatelessWidget {
   final ScrollController scrollController;
+  final List<DetailsReadTaskDto> subTasksList;
 
-  const SubTasksList({Key? key, required this.scrollController})
-      : super(key: key);
+  const SubTasksList({
+    Key? key,
+    required this.scrollController,
+    this.subTasksList = const [],
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,27 +39,12 @@ class SubTasksList extends StatelessWidget {
           controller: scrollController,
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: 10,
+          itemCount: subTasksList.length,
           // itemExtent: 95,
           itemBuilder: (BuildContext context, int index) {
             return TaskCard(
               isSubTaskCard: true,
-              task: ListReadTaskDto(
-                id: index,
-                title: 'Gemockte Sub-Aufgabe, noch ohne jegliche Funktion',
-                done: false,
-                categoryColor: Colors.lightBlue,
-                subTaskCount: 5,
-                finishedSubTaskCount: 0,
-                isQueued: false,
-                keywords: const ['Hausaufgabe'],
-                // keywords: const ['Hausaufgabe', 'Englisch', 'Klausurvorbereitung'],
-                // keywords: const [],
-                // dueDate: null
-                dueDate: DateTime.now(),
-                // remainingTimeEstimation: null,
-                remainingTimeEstimation: const Duration(minutes: 30),
-              ),
+              task: ListReadTaskDto.fromDetailsReadTasksDto(subTasksList[index]),
             );
           },
         ),

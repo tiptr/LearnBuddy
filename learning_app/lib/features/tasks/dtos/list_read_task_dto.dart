@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 /// Contains everything about a task, that is required to display it in a list
@@ -49,6 +50,22 @@ class ListReadTaskDto extends Equatable {
       keywords: task.keywords.map((keyword) => keyword.name).toList(),
       dueDate: task.dueDate,
       remainingTimeEstimation: task.remainingTimeEstimation,
+    );
+  }
+
+  static ListReadTaskDto fromDetailsReadTasksDto(
+      DetailsReadTaskDto detailsDto) {
+    return ListReadTaskDto(
+      id: detailsDto.id,
+      title: detailsDto.title,
+      done: detailsDto.done,
+      categoryColor: detailsDto.category?.color,
+      subTaskCount: detailsDto.subTaskCount,
+      finishedSubTaskCount: detailsDto.finishedSubTaskCount,
+      isQueued: detailsDto.isQueued,
+      keywords: detailsDto.keywords.map((keywordDto) => keywordDto.name).toList(),
+      dueDate: detailsDto.dueDate,
+      remainingTimeEstimation: detailsDto.remainingTimeEstimation,
     );
   }
 
