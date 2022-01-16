@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/constants/routing_paths.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
@@ -11,25 +10,14 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'package:learning_app/util/logger.dart';
 import 'package:logger/logger.dart';
 
-class RouteWidget {
-  final String route;
-  final Widget widget;
-
-  const RouteWidget({required this.route, required this.widget});
-}
-
-final List<RouteWidget> _routeWidgets = [
-  RouteWidget(widget: const TimerScreen(), route: RoutingPaths.timer),
-  RouteWidget(widget: const TaskScreen(), route: RoutingPaths.tasks),
-  RouteWidget(widget: const DashboardScreen(), route: RoutingPaths.dashboard),
-  RouteWidget(widget: const LeisureScreen(), route: RoutingPaths.leisure),
-  RouteWidget(
-    widget: const LearningAidsScreen(),
-    route: RoutingPaths.learningAids,
-  ),
+const List<Widget> _pages = <Widget>[
+  TimerScreen(),
+  TaskScreen(),
+  DashboardScreen(),
+  LeisureScreen(),
+  LearningAidsScreen(),
 ];
 
 void main() {
@@ -103,98 +91,63 @@ class MyApp extends StatelessWidget {
           minThumbLength: 50,
         ),
       ),
-      initialRoute: '/',
-      home: const Content(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class Content extends StatefulWidget {
-  const Content({Key? key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _ContentState createState() => _ContentState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _ContentState extends State<Content> {
-  // The Dashboard is at index 2 in the _routeWidgets-List
+class _MyHomePageState extends State<MyHomePage> {
+  // The Dashboard is at index 2 in the _pages-List
   int _selectedIndex = 2;
-  final navigatorKey = GlobalKey<NavigatorState>();
 
-  void _onItemTapped(
-    int index,
-  ) {
-    navigatorKey.currentState?.pushNamed(_routeWidgets[index].route);
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Navigator(
-          key: navigatorKey,
-          initialRoute: '/',
-          onGenerateRoute: (RouteSettings settings) {
-            WidgetBuilder builder;
-            // Manage your route names here
-
-            var index = _routeWidgets.indexWhere(
-                (routeWidget) => routeWidget.route == settings.name);
-
-            if (index >= 0) {
-              builder = (BuildContext context) => _routeWidgets[index].widget;
-            } else {
-              throw Exception("Unknown route");
-            }
-
-            // Important if condition to prevent Flutter from infinite render cycles
-            if (_selectedIndex != index) {
-              setState(() {
-                logger.d("Page $index selected.");
-                _selectedIndex = index;
-              });
-            }
-
-            // You can also return a PageRouteBuilder and
-            // define custom transitions between pages
-            return MaterialPageRoute(
-              builder: builder,
-              settings: settings,
-            );
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          showUnselectedLabels: true,
-          showSelectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.timer),
-              label: "Timer",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.document_scanner_outlined),
-              label: "Aufgaben",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: "Dashboard",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.beach_access_outlined),
-              label: "Ausgleich",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book_outlined),
-              label: "Lernhilfen",
-            ),
-          ],
-        ),
+        // TODO: think about changing to something like lazy_load_indexed_stack
+        // (separate package), so that not every page has to be loaded at startup
+        body: _pages[_selectedIndex],
+        bottomNavigationBar: _navBar(context),
       ),
+    );
+  }
+
+  BottomNavigationBar _navBar(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      showUnselectedLabels: true,
+      showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        _navItem(Icons.timer, "Timer"),
+        _navItem(Icons.document_scanner_outlined, "Aufgaben"),
+        _navItem(Icons.home_outlined, "Dashboard"),
+        _navItem(Icons.beach_access_outlined, "Ausgleich"),
+        _navItem(Icons.book_outlined, "Lernhilfen"),
+      ],
+    );
+  }
+
+  BottomNavigationBarItem _navItem(IconData icon, String label) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      label: label,
     );
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/constants/routing_paths.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_item.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_progress.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
+import 'package:learning_app/util/logger.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({Key? key}) : super(key: key);
@@ -86,6 +86,8 @@ class TasksCard extends StatelessWidget {
                 if (hasMore)
                   InkWell(
                     onTap: () {
+<<<<<<< HEAD
+<<<<<<< HEAD
                       // TODO: not only navigate to the task page,
                       // but automatically activate a filter that only
                       // shows the tasks of the current day (and overdue)
@@ -93,6 +95,15 @@ class TasksCard extends StatelessWidget {
                       // This is most likely best achieved by using blocs though,
                       // the flutter routing does not feel very good to work with.
                       Navigator.of(context).pushNamed(RoutingPaths.tasks);
+=======
+                      // TODO: Will be done in #57
+                      logger.d("Navigate to Task Page");
+                      // TODO: not only navigate to the task page, but automatically activate a filter that only shows the tasks of the current day (and overdue)
+>>>>>>> parent of 887f083 (feature/navigation-refactoring: Refactoring bottomnavbar to use flutters navigator)
+=======
+                      // TODO: not only navigate to the task page, but automatically activate a filter that only shows the tasks of the current day (and overdue)
+                      Navigator.of(context).pushNamed('/tasks');
+>>>>>>> parent of 0c6c351 (feature/navigation-refactoring: Extracting constants)
                     },
                     child: Ink(
                       child: Container(
