@@ -18,11 +18,19 @@ void main() {
   late MockKeyWordsRepository mockKeyWordsRepository;
   late KeyWordsCubit keyWordsCubit;
 
-  ReadKeyWordDto mockKeyWord =
-      const ReadKeyWordDto(id: 1, name: "Mock KeyWord");
-  CreateKeyWordDto mockCreateDto = const CreateKeyWordDto(name: "New KeyWord");
-  UpdateKeyWordDto mockUpdateDto =
-      const UpdateKeyWordDto(id: 1, name: "New KeyWord");
+  ReadKeyWordDto mockKeyWord = const ReadKeyWordDto(
+    id: 1,
+    name: "Mock KeyWord",
+  );
+
+  CreateKeyWordDto mockCreateDto = const CreateKeyWordDto(
+    name: "New KeyWord",
+  );
+
+  UpdateKeyWordDto mockUpdateDto = const UpdateKeyWordDto(
+    id: 1,
+    name: "New KeyWord",
+  );
 
   Stream<List<ReadKeyWordDto>> mockKeyWordStream = Stream.value([mockKeyWord]);
 

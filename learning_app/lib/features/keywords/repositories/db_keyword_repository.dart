@@ -6,6 +6,7 @@ import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/keywords/dtos/update_key_word_dto.dart';
 import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/features/keywords/repositories/keyword_repository.dart';
+import 'package:learning_app/features/tasks/persistence/task_keywords_dao.dart';
 import 'package:learning_app/util/injection.dart';
 
 /// Concrete repositories implementation using the database with drift
@@ -13,6 +14,7 @@ import 'package:learning_app/util/injection.dart';
 class DbKeyWordRepository implements KeyWordsRepository {
   // load the data access object (with generated entities and queries) via dependency inj.
   final KeyWordsDao _dao = getIt<KeyWordsDao>();
+  final TaskKeywordsDao _taskKeywordsDao = getIt<TaskKeywordsDao>();
 
   @override
   Future<int> createKeyWord(CreateKeyWordDto newKeyWordDto) {
@@ -31,12 +33,20 @@ class DbKeyWordRepository implements KeyWordsRepository {
 
   @override
   Future<bool> deleteKeyWordById(int id) async {
-    final affected = await _dao.deleteKeyWordById(id);
-    return affected > 0;
+    return await _dao.transaction(() async {
+      await _taskKeywordsDao.deleteTaskKeyWordsByKeyWordId(id);
+
+      var affected = await _dao.deleteKeyWordById(id);
+      return affected > 0;
+    });
   }
 
   @override
   Stream<List<ReadKeyWordDto>> watchKeyWords() {
-    return _dao.watchAllKeyWords();
+    return _dao.watchAllKeyWords().map((keyWordEntities) {
+      return keyWordEntities
+          .map((e) => ReadKeyWordDto.fromKeywordEntity(e))
+          .toList();
+    });
   }
 }

@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
-import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
 
 part 'keywords_dao.g.dart';
@@ -22,7 +21,7 @@ class KeyWordsDao extends DatabaseAccessor<Database> with _$KeyWordsDaoMixin {
   // of this object.
   KeyWordsDao(Database db) : super(db);
 
-  Stream<List<ReadKeyWordDto>>? _keyWordsStream;
+  Stream<List<KeywordEntity>>? _keyWordsStream;
   Stream<Map<int, KeyWord>>? _idToKeyWordMapStream;
 
   Future<int> createKeyWord(KeywordsCompanion keyWordsCompanion) {
@@ -42,13 +41,10 @@ class KeyWordsDao extends DatabaseAccessor<Database> with _$KeyWordsDaoMixin {
     return (delete(keywords)..where((t) => t.id.equals(keyWordId))).go();
   }
 
-  Stream<List<ReadKeyWordDto>> watchAllKeyWords() {
-    _keyWordsStream = _keyWordsStream ??
-        (select(keywords)
-            .map((row) => ReadKeyWordDto(id: row.id, name: row.name))
-            .watch());
+  Stream<List<KeywordEntity>> watchAllKeyWords() {
+    _keyWordsStream = _keyWordsStream ?? (select(keywords).watch());
 
-    return _keyWordsStream as Stream<List<ReadKeyWordDto>>;
+    return _keyWordsStream as Stream<List<KeywordEntity>>;
   }
 
   /// Returns a stream of maps that associate the keyword id with the keyword
@@ -63,7 +59,7 @@ class KeyWordsDao extends DatabaseAccessor<Database> with _$KeyWordsDaoMixin {
 
   /// Creates a stream of maps that associate the keyword id with the keyword
   Stream<Map<int, KeyWord>> _createIdToKeyWordMapStream() {
-    final Stream<List<ReadKeyWordDto>> keyWordsStream = watchAllKeyWords();
+    final Stream<List<KeywordEntity>> keyWordsStream = watchAllKeyWords();
     return keyWordsStream.map((models) {
       final idToModel = <int, KeyWord>{};
       for (var model in models) {
