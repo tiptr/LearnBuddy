@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list_tile.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class TaskQueueList extends StatefulWidget {
@@ -30,9 +32,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
 
   @override
   Widget build(BuildContext context) {
-    // widget._controller.jumpTo(20.0);
     return BlocBuilder<TaskQueueBloc, TaskQueueState>(
-        buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
+        // buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
         builder: (context, state) {
           if (state is TaskQueueReady) {
             return Column(
@@ -118,6 +119,16 @@ class _TaskQueueListState extends State<TaskQueueList> {
   }
 
   Widget customExpansionTile(TaskWithQueueStatus task, int index) {
+    final TimeLoggingBloc timeLogBloc = context.read<TimeLoggingBloc>();
+    final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
+    int? selectedTaskId;
+    if (taskQueueBloc.state is TaskQueueReady) {
+      final state = taskQueueBloc.state as TaskQueueReady;
+      selectedTaskId = state.selectedTask;
+    } else {
+      logger.d("This state should not be accessible: queue not initialized");
+    }
+
     return task.task.children.isNotEmpty
         // Tasks with subtasks are expandable:
         ? ExpansionTile(
@@ -137,11 +148,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
               ),
             ),
             iconColor: const Color(0xFF636573),
-            collapsedTextColor: const Color(0xFF636573),
-            // textColor: const Color(0xFF40424A),
-            textColor: const Color(0xFF636573),
 
-            childrenPadding: const EdgeInsets.only(left: 20.0, right: 10.0),
+            childrenPadding: const EdgeInsets.only(left: 0.0, right: 10.0),
           )
         // Tasks without subtasks are not expandable:
         : ListTile(
@@ -159,7 +167,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
             ),
             iconColor: const Color(0xFF636573),
             textColor: const Color(0xFF636573),
-            // visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
+            selected: task.task.id == selectedTaskId,
+            selectedColor: Theme.of(context).colorScheme.primary,
           );
   }
 }

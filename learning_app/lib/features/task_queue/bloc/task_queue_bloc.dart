@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/task_queue/repositories/queue_repository.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
@@ -30,7 +31,15 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
     });
 
     on<UpdateQueueEvent>((event, emit) {
-      emit(TaskQueueReady(tasks: event.taskList));
+      var currentState = state;
+      if (currentState is TaskQueueReady) {
+        emit(TaskQueueReady(
+            tasks: event.taskList,
+            selectedTask: currentState.selectedTask,
+        ));
+      } else {
+        logger.d("This state should not be accessible.");
+      }
     });
 
     on<InitQueueEvent>((event, emit) async {
@@ -41,6 +50,18 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
       var currentState = state;
       if (currentState is TaskQueueReady) {
         _queueRepository.writeQueueOrder(event.taskList);
+      } else {
+        logger.d("This state should not be accessible.");
+      }
+    });
+
+    on<SelectQueuedTaskEvent>((event, emit) async {
+      var currentState = state;
+      if (currentState is TaskQueueReady) {
+        emit(TaskQueueReady(
+            tasks: currentState.tasks,
+            selectedTask: event.selectedTaskId,
+        ));
       } else {
         logger.d("This state should not be accessible.");
       }

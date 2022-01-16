@@ -53,7 +53,7 @@ class _TimerViewState extends State<TimerView> {
       parallaxEnabled: true,
       parallaxOffset: .0,
       panelSnapping: true,
-      minHeight: 90,
+      minHeight: 85,
       maxHeight: MediaQuery.of(context).size.height * 0.6,
       panelBuilder: (ScrollController sc) {
         return TaskQueueList(
