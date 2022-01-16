@@ -86,6 +86,12 @@ class SingleSubtask extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
+          onTap: () {
+            var bloc = context.read<TimeLoggingBloc>();
+            bloc.add(AddTimeLoggingObjectEvent(
+                task.id,
+                topLevelTask.id));
+          },
         ),
         Container(
           padding: const EdgeInsets.only(left: 12),
