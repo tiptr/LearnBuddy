@@ -5,13 +5,17 @@ import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
-import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
-import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
+
+import 'constants/theme_constants.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -41,16 +45,21 @@ void main() {
             // Loading tasks initially is probably a good idea
             // since many features depend on the tasks.
 
-            // Loading is acync., but will not take long anyways thanks to
+            // Loading is async., but will not take long anyways thanks to
             // dynamic loading (only the first X tasks are being loaded)
             cubit.loadTasks();
             return cubit;
           },
         ),
-        BlocProvider<AddTaskCubit>(
+        BlocProvider<TimeLoggingBloc>(
+          create: (context) {
+            return TimeLoggingBloc();
+          },
+        ),
+        BlocProvider<AlterTaskCubit>(
           lazy: true,
           create: (context) {
-            return AddTaskCubit();
+            return AlterTaskCubit();
           },
         ),
         BlocProvider<CategoriesCubit>(
@@ -61,12 +70,23 @@ void main() {
             return cubit;
           },
         ),
+        BlocProvider(
+          create: (context) => TaskQueueBloc(),
+        ),
         BlocProvider<KeyWordsCubit>(
           lazy: true,
           create: (context) {
             var cubit = KeyWordsCubit();
             cubit.loadKeyWords();
             return cubit;
+          },
+        ),
+        BlocProvider<TaskQueueBloc>(
+          lazy: true,
+          create: (context) {
+            var bloc = TaskQueueBloc();
+            bloc.add(InitQueueEvent());
+            return bloc;
           },
         ),
       ],
@@ -81,14 +101,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
-
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          primary: const Color(0xFF3444CF),
-          secondary: const Color(0xFF9E5EE1),
-        ),
+        colorScheme: ColorSchemes.defaultColorScheme(),
         scrollbarTheme: ScrollbarThemeData(
           isAlwaysShown: false,
           thickness: MaterialStateProperty.all(10),
@@ -110,8 +126,7 @@ class MyHomePage extends StatelessWidget {
       BlocProvider.of<NavCubit>(context).navigateTo(index);
     }
 
-    return BlocBuilder<NavCubit, int>(builder: (context, state) {
-      var selectedIndex = state;
+    return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return SafeArea(
         child: Scaffold(
           body: _pages[selectedIndex],

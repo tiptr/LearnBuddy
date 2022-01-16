@@ -7,7 +7,6 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
-import 'package:learning_app/util/logger.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 
 class TasksCard extends StatelessWidget {
@@ -101,9 +100,10 @@ class TasksCard extends StatelessWidget {
                             Text(
                               "$amountOfFurtherDueTasks weitere bis heute fällig",
                               style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.grey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const Icon(Icons.arrow_forward, color: Colors.grey)
                           ],

@@ -85,13 +85,17 @@ Future<void> initialization100HugeAmountOfTasks() async {
   for (i = subLevelCount + topLevelCount;
       i < subSubLevelCount + subLevelCount + topLevelCount;
       i++) {
-    final parentId = Random().nextInt(topLevelCount - 1);
+    final parentId =
+        Random().nextInt(subLevelCount - 1).floor() + topLevelCount;
+
+    final topLevelParentId =
+        tasksList.firstWhere((task) => task.id.value == parentId).parentTaskId;
 
     tasksList.add(TasksCompanion.insert(
       id: Value(i),
       title: (i % 4 != 0)
-          ? '$i Sub-Sub-Aufgabe von $parentId'
-          : '$i Sub-Sub-Aufgabe von $parentId mit langem Titel um die richtige Anzeige zu testen. Wird dies richtig angezeigt?',
+          ? '$i Sub-Sub-Aufgabe von $topLevelParentId'
+          : '$i Sub-Sub-Aufgabe von $topLevelParentId mit langem Titel um die richtige Anzeige zu testen. Wird dies richtig angezeigt?',
       doneDateTime: (i % 3 == 0)
           ? const Value.absent()
           : Value(now.subtract(Duration(days: i))),
