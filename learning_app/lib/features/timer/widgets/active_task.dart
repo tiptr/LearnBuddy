@@ -168,7 +168,7 @@ class ActiveTaskCard extends StatelessWidget {
                       task.id, task.doneDateTime == null ? true : false);
                 },
               ),
-              Spacer(),
+              const Spacer(),
             ],
           )
         ],
