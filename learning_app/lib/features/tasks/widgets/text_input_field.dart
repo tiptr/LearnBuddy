@@ -1,37 +1,72 @@
 import 'package:flutter/material.dart';
 
-class TextInputField extends StatelessWidget {
+class TextInputField extends StatefulWidget {
   final String label;
   final String hintText;
   final IconData? iconData;
-  final TextEditingController textController;
-  final Function(String)? onChanged;
+  final Function(String)? onChange;
+  final String preselectedText;
 
   const TextInputField({
     Key? key,
+    required this.onChange,
+    required this.preselectedText,
     required this.label,
     required this.hintText,
-    required this.iconData,
-    required this.textController,
-    this.onChanged,
+    this.iconData,
   }) : super(key: key);
+
+  @override
+  State<TextInputField> createState() => _TextInputFieldState();
+}
+
+class _TextInputFieldState extends State<TextInputField> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController.text = widget.preselectedText;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: const TextStyle(
+          color: Color(0xFF636573), fontWeight: FontWeight.normal),
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF636573),
+            width: 2.0,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2.0,
+          ),
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        filled: true,
-        prefixIcon: iconData != null ? Icon(iconData) : null,
-        label: Text(label),
-        hintText: hintText,
+        filled: false,
+        prefixIcon: widget.iconData != null
+            ? Icon(
+                widget.iconData,
+                color: const Color(0xFF636573),
+              )
+            : null,
+        label: Text(
+          widget.label,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        hintText: widget.hintText,
+        hintStyle: const TextStyle(color: Color(0xFF949597)),
       ),
-      controller: textController,
-      onChanged: onChanged,
+      maxLines: null, // no limit
+      controller: _textEditingController,
+      onChanged: widget.onChange,
     );
   }
 }

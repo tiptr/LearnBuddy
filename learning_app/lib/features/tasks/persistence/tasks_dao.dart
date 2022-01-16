@@ -38,6 +38,16 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     return into(tasks).insert(tasksCompanion);
   }
 
+  Future<int> updateTask(TasksCompanion tasksCompanion) {
+    assert(tasksCompanion.id.present);
+    var updateStmnt = (update(tasks)
+      ..where(
+        (t) => t.id.equals(tasksCompanion.id.value),
+      ));
+
+    return updateStmnt.write(tasksCompanion);
+  }
+
   Future<int> deleteTaskById(int taskId) {
     return (delete(tasks)..where((t) => t.id.equals(taskId))).go();
   }
@@ -54,6 +64,11 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         doneDateTime: newDoneDateTime,
       ),
     );
+  }
+
+  Stream<TaskEntity?> watchTaskById(int taskId) {
+    final query = select(tasks)..where((tsk) => tsk.id.equals(taskId));
+    return query.watchSingleOrNull();
   }
 
   Stream<List<TaskEntity>> watchSubLevelTaskEntities() {
@@ -86,16 +101,20 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   }
 
   Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
-    final queuedTopLevelTasksQuery = select(tasks)
-      ..where((tsk) => tsk.parentTaskId.isNull()) // top-levels only
-      ..join([
-        innerJoin(
-            taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
-      ])
+    final topLevelTasksQuery = select(tasks)
+      ..where((tsk) => tsk.parentTaskId.isNull()); // top-levels only
+    final queuedTopLevelTasksQuery = topLevelTasksQuery.join([
+      innerJoin(taskQueueElements, taskQueueElements.taskId.equalsExp(tasks.id))
+    ]);
+    final queuedTopLevelTasksQueryFiltered = queuedTopLevelTasksQuery
       ..orderBy([
-        (tsk) => OrderingTerm.asc(taskQueueElements.orderPlacement),
+        OrderingTerm.asc(taskQueueElements.orderPlacement),
       ]);
-    return queuedTopLevelTasksQuery.watch();
+    return queuedTopLevelTasksQueryFiltered.watch().map((rows) {
+      return rows.map((typedResult) {
+        return typedResult.readTable(tasks);
+      }).toList();
+    });
   }
 
   Stream<List<TaskEntity>> _createSubLevelTaskEntitiesStream() {

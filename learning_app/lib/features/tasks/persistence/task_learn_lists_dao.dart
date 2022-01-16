@@ -29,4 +29,23 @@ class TaskLearnListsDao extends DatabaseAccessor<Database>
 
     return _taskLearnListEntitiesStream as Stream<List<TaskLearnListEntity>>;
   }
+
+  /// Creates a new task - learn list relationship and returns its id.
+  ///
+  /// If it already exists, nothing happens, but the id is being returned
+  Future<int> createTaskLearnListIfNotExists(
+      TaskLearnListsCompanion companion) {
+    return into(taskLearnLists).insertOnConflictUpdate(companion);
+  }
+
+  /// Creates a new task - learn list relationship and returns its id.
+  ///
+  /// If it already exists, nothing happens, but the id is being returned
+  Future<int> deleteTaskLearnListsForTaskNotInList(
+      int taskId, List<int> learnListIds) {
+    final deleteStatement = delete(taskLearnLists)
+      ..where((tbl) => tbl.listId.isNotIn(learnListIds));
+
+    return deleteStatement.go();
+  }
 }
