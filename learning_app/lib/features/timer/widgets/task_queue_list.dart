@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list_tile.dart';
+import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class TaskQueueList extends StatefulWidget {
@@ -36,6 +37,7 @@ class _TaskQueueListState extends State<TaskQueueList> {
           if (state is TaskQueueReady) {
             return Column(
               children: <Widget>[
+                // The indicator on top showing the draggability of the panel
                 InkWell(
                   onTap: () {
                     // Toggle the panel
@@ -56,6 +58,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
                     ),
                   ),
                 ),
+
+                // The list of tasks:
                 Flexible(
                   child: GestureDetector(
                     onTapDown: (details) {
@@ -107,19 +111,55 @@ class _TaskQueueListState extends State<TaskQueueList> {
         });
   }
 
-  List<ExpansionTile> generateExpansionTiles(List<TaskWithQueueStatus> list) {
+  List<Widget> generateExpansionTiles(List<TaskWithQueueStatus> list) {
     return [
       for (int i = 0; i < list.length; i++) customExpansionTile(list[i], i)
     ];
   }
 
-  ExpansionTile customExpansionTile(TaskWithQueueStatus task, int index) {
-    return ExpansionTile(
-      key: Key(task.task.title),
-      title: TopLevelListTile(
-        topLevelTaskWithQueueStatus: task,
-      ),
-      children: <Widget>[SubtaskFullTile(topLevelTaskWithQueueStatus: task)],
-    );
+  Widget customExpansionTile(TaskWithQueueStatus task, int index) {
+    return task.task.children.isNotEmpty
+        // Tasks with subtasks are expandable:
+        ? ExpansionTile(
+            key: Key(task.task.title),
+            title: TopLevelListTile(
+              topLevelTaskWithQueueStatus: task,
+            ),
+            children: <Widget>[
+              AllSubtasksListTile(topLevelTaskWithQueueStatus: task)
+            ],
+            leading: Container(
+              margin: const EdgeInsets.only(right: 15.0),
+              child: ColorIndicator(
+                color: task.task.category?.color ?? Colors.grey,
+                height: 50.0,
+                width: 10.0,
+              ),
+            ),
+            iconColor: const Color(0xFF636573),
+            collapsedTextColor: const Color(0xFF636573),
+            // textColor: const Color(0xFF40424A),
+            textColor: const Color(0xFF636573),
+
+            childrenPadding: const EdgeInsets.only(left: 20.0, right: 10.0),
+          )
+        // Tasks without subtasks are not expandable:
+        : ListTile(
+            key: Key(task.task.title),
+            title: TopLevelListTile(
+              topLevelTaskWithQueueStatus: task,
+            ),
+            leading: Container(
+              margin: const EdgeInsets.only(right: 15.0),
+              child: ColorIndicator(
+                color: task.task.category?.color ?? Colors.grey,
+                height: 50.0,
+                width: 10.0,
+              ),
+            ),
+            iconColor: const Color(0xFF636573),
+            textColor: const Color(0xFF636573),
+            // visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
+          );
   }
 }
