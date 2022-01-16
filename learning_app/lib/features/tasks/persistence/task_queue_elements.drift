@@ -12,6 +12,6 @@ import 'package:learning_app/features/tasks/persistence/tasks.drift';
 -- 'MAPPED BY' is used to include custom converters that allow storing complex data types.
 CREATE TABLE TaskQueueElements (
     task_id INT NOT NULL PRIMARY KEY REFERENCES Tasks(id),
-    order_placement INT NOT NULL UNIQUE,
+    order_placement INT NOT NULL,
     added_to_queue_date_time DATETIME NOT NULL
 ) AS TaskQueueElementEntity;

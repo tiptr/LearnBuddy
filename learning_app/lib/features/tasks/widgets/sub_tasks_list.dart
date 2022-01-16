@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
 // class SubTasksList extends StatefulWidget {
@@ -64,7 +64,7 @@ class SubTasksList extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const TaskAddScreen(),
+                builder: (context) => const TaskDetailsScreen(),
               ),
             );
           },

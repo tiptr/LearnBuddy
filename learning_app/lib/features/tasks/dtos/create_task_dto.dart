@@ -1,34 +1,39 @@
-class CreateTaskDto {
-  // Only attributes of task, that are userdefined at task creation:
-  String? title;
-  String? description;
-  Duration? estimatedTime;
-  DateTime? dueDate;
+import 'package:drift/drift.dart';
+import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 
-  //Task? parentTask; TODO
-  // category TODO
-  // List keywords TODO
+class CreateTaskDto extends TaskManipulationDto {
+  int? parentId;
 
   CreateTaskDto({
-    this.title,
-    this.description,
-    this.estimatedTime,
-    this.dueDate,
-  });
+    required this.parentId,
+    Value<String> title = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+    Value<Duration?> estimatedTime = const Value.absent(),
+    Value<DateTime?> dueDate = const Value.absent(),
+    Value<Duration> manualTimeEffortDelta = const Value.absent(),
+    Value<int?> categoryId = const Value.absent(),
+    Value<List<int>> keywordIds = const Value.absent(),
+    Value<List<int>> learnListsIds = const Value.absent(),
+  }) : super(
+          title: title,
+          description: description,
+          estimatedTime: estimatedTime,
+          dueDate: dueDate,
+          manualTimeEffortDelta: manualTimeEffortDelta,
+          categoryId: categoryId,
+          keywordIds: keywordIds,
+          learnListsIds: learnListsIds,
+        );
 
-  /// Changes the current instance by adding all non-null values of the new DTO
-  void applyChangesFrom(CreateTaskDto newDto) {
-    title = newDto.title ?? title;
-    description = newDto.description ?? description;
-    estimatedTime = newDto.estimatedTime ?? estimatedTime;
-    dueDate = newDto.dueDate ?? dueDate;
-    // TODO: parentTask
-    // TODO: category
-    // TODO: keywords
+  /// Changes the current instance by replacing all present values of the new DTO
+  @override
+  void applyChangesFrom(TaskManipulationDto newDto) {
+    super.applyChangesFrom(newDto);
   }
 
   /// Checks, if the DTO is fulfilling all attribute requirements
-  bool isReadyToStore() {
-    return title != null;
+  @override
+  bool get isReadyToStore {
+    return title.present && title.value != '';
   }
 }

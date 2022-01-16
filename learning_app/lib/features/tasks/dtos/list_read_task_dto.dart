@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 /// Contains everything about a task, that is required to display it in a list
-///
-/// Since this only combines the whole Task model with additional data from
-/// other models, Task is simply referenced here
 class ListReadTaskDto extends Equatable {
   final int id;
   final String title;
