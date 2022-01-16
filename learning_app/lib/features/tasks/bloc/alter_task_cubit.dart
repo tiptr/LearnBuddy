@@ -79,11 +79,11 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
     final currentState = state;
     if (currentState is ConstructingNewTask) {
       ConstructingNewTask constructingState = currentState;
-      return constructingState.createTaskDto.isReadyToStore();
+      return constructingState.createTaskDto.isReadyToStore;
     } else if (currentState is AlteringExistingTask) {
       AlteringExistingTask constructingState = currentState;
 
-      return constructingState.updateTaskDto.isReadyToStore();
+      return constructingState.updateTaskDto.isReadyToStore;
     } else {
       logger.d(
           'Task construction validation triggered, but not in a construction state');
@@ -97,11 +97,11 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
     final currentState = state;
     if (currentState is ConstructingNewTask) {
       ConstructingNewTask constructingState = currentState;
-      return constructingState.createTaskDto.getMissingFieldsDescription();
+      return constructingState.createTaskDto.missingFieldsDescription;
     } else if (currentState is AlteringExistingTask) {
       AlteringExistingTask constructingState = currentState;
 
-      return constructingState.updateTaskDto.getMissingFieldsDescription();
+      return constructingState.updateTaskDto.missingFieldsDescription;
     } else {
       logger.d(
           'Task construction validation triggered, but not in a construction state');
@@ -116,7 +116,7 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
     if (currentState is ConstructingNewTask) {
       // Save the task, if all required attributes are given
       ConstructingNewTask constructingState = currentState;
-      if (constructingState.createTaskDto.isReadyToStore()) {
+      if (constructingState.createTaskDto.isReadyToStore) {
         int newTaskId =
             await _taskRepository.createTask(constructingState.createTaskDto);
         logger.d("[Task Cubit] New task was saved. Id: $newTaskId");

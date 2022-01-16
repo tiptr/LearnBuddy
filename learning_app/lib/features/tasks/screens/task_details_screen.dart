@@ -79,10 +79,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 DateInputField(
                   preselectedDate: preSelectedDueDate,
                   onChange: (DateTime? datetime) {
-                    // TODO: remove setState here?
-                    // setState(() {
-                    //   selectedDueDate = datetime;
-                    // });
                     BlocProvider.of<AlterTaskCubit>(context)
                         .alterTaskAttribute(TaskManipulationDto(
                       dueDate: drift.Value(datetime),
@@ -93,10 +89,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 DurationInputField(
                   preselectedDuration: preSelectedTimeEstimate,
                   onChange: (Duration? duration) {
-                    // TODO: remove setState here?
-                    setState(() {
-                      preSelectedTimeEstimate = duration;
-                    });
                     BlocProvider.of<AlterTaskCubit>(context)
                         .alterTaskAttribute(TaskManipulationDto(
                       estimatedTime: drift.Value(duration),

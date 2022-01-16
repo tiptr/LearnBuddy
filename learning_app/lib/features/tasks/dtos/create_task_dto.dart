@@ -33,7 +33,7 @@ class CreateTaskDto extends TaskManipulationDto {
 
   /// Checks, if the DTO is fulfilling all attribute requirements
   @override
-  bool isReadyToStore() {
+  bool get isReadyToStore {
     return title.present && title.value != '';
   }
 }

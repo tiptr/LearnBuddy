@@ -41,14 +41,14 @@ class TaskManipulationDto {
   }
 
   /// Checks, if the DTO is fulfilling all attribute requirements
-  bool isReadyToStore() {
+  bool get isReadyToStore {
     return title.present && title.value != '';
   }
 
   /// Returns a string that explains, which fields are still missing for
   /// the validation to succeed
-  String? getMissingFieldsDescription() {
-    if (isReadyToStore()) {
+  String? get missingFieldsDescription {
+    if (isReadyToStore) {
       // Nothing missing
       return null;
     } else {

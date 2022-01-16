@@ -87,7 +87,7 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Future<int> createTask(CreateTaskDto newTask) async {
-    assert(newTask.isReadyToStore());
+    assert(newTask.isReadyToStore);
 
     // Do the complete update in a transaction, so that the streams will only
     // update once, after the whole update is ready
