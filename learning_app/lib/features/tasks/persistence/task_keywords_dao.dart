@@ -47,4 +47,11 @@ class TaskKeywordsDao extends DatabaseAccessor<Database>
 
     return deleteStatement.go();
   }
+
+  Future<void> deleteTaskKeyWordsByKeyWordId(int id) {
+    final deleteStatement = delete(taskKeywords)
+      ..where((tbl) => tbl.keywordId.equals(id));
+
+    return deleteStatement.go();
+  }
 }

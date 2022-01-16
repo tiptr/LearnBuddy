@@ -95,18 +95,20 @@ class DbTaskRepository implements TaskRepository {
     // Important: whenever using transactions, every (!) query / update / insert
     //            inside, has to be awaited -> data loss possible otherwise!
     return _tasksDao.transaction(() async {
-      int newTaskId = await _tasksDao.createTask(db.TasksCompanion(
-        parentTaskId: Value(newTask.parentId),
-        title: newTask.title,
-        description: newTask.description,
-        estimatedTime: newTask.estimatedTime,
-        dueDate: newTask.dueDate,
-        manualTimeEffortDelta: newTask.manualTimeEffortDelta.present
-            ? newTask.manualTimeEffortDelta
-            : const Value(Duration.zero),
-        categoryId: newTask.categoryId,
-        creationDateTime: Value(DateTime.now()),
-      ));
+      int newTaskId = await _tasksDao.createTask(
+        db.TasksCompanion(
+          parentTaskId: Value(newTask.parentId),
+          title: newTask.title,
+          description: newTask.description,
+          estimatedTime: newTask.estimatedTime,
+          dueDate: newTask.dueDate,
+          manualTimeEffortDelta: newTask.manualTimeEffortDelta.present
+              ? newTask.manualTimeEffortDelta
+              : const Value(Duration.zero),
+          categoryId: newTask.categoryId,
+          creationDateTime: Value(DateTime.now()),
+        ),
+      );
 
       // Create the task-keyword relationships
       if (newTask.keywordIds.present) {
@@ -136,32 +138,37 @@ class DbTaskRepository implements TaskRepository {
     // Important: whenever using transactions, every (!) query / update / insert
     //            inside, has to be awaited -> data loss possible otherwise!
     return _tasksDao.transaction(() async {
-      int numberTasksChanged = await _tasksDao.updateTask(db.TasksCompanion(
-        id: Value(updateDto.id),
-        parentTaskId: const Value.absent(),
-        // moving tasks is not implemented
-        title: updateDto.title,
-        description: updateDto.description,
-        estimatedTime: updateDto.estimatedTime,
-        dueDate: updateDto.dueDate,
-        manualTimeEffortDelta: updateDto.manualTimeEffortDelta,
-        categoryId: updateDto.categoryId,
-        creationDateTime: const Value.absent(),
-      ));
+      int numberTasksChanged = await _tasksDao.updateTask(
+        db.TasksCompanion(
+          id: Value(updateDto.id),
+          parentTaskId: const Value.absent(),
+          // moving tasks is not implemented
+          title: updateDto.title,
+          description: updateDto.description,
+          estimatedTime: updateDto.estimatedTime,
+          dueDate: updateDto.dueDate,
+          manualTimeEffortDelta: updateDto.manualTimeEffortDelta,
+          categoryId: updateDto.categoryId,
+          creationDateTime: const Value.absent(),
+        ),
+      );
 
       // Update the task-keyword relationship, if changed
       if (updateDto.keywordIds.present) {
         // Delete keyword-relationships that don't apply anymore
         await _taskKeywordsDao.deleteTaskKeyWordsForTaskNotInList(
-            updateDto.id, updateDto.keywordIds.value);
+          updateDto.id,
+          updateDto.keywordIds.value,
+        );
 
         // Insert missing keywords:
         for (int keyWordId in updateDto.keywordIds.value) {
-          await _taskKeywordsDao
-              .createTaskKeyWordIfNotExists(TaskKeywordsCompanion(
-            taskId: Value(updateDto.id),
-            keywordId: Value(keyWordId),
-          ));
+          await _taskKeywordsDao.createTaskKeyWordIfNotExists(
+            TaskKeywordsCompanion(
+              taskId: Value(updateDto.id),
+              keywordId: Value(keyWordId),
+            ),
+          );
         }
       }
 
@@ -173,11 +180,12 @@ class DbTaskRepository implements TaskRepository {
 
         // Insert missing learn lists:
         for (int listId in updateDto.learnListsIds.value) {
-          await _taskLearnListsDao
-              .createTaskLearnListIfNotExists(TaskLearnListsCompanion(
-            taskId: Value(updateDto.id),
-            listId: Value(listId),
-          ));
+          await _taskLearnListsDao.createTaskLearnListIfNotExists(
+            TaskLearnListsCompanion(
+              taskId: Value(updateDto.id),
+              listId: Value(listId),
+            ),
+          );
         }
       }
 
@@ -390,8 +398,9 @@ class DbTaskRepository implements TaskRepository {
 
   /// Creates a map that allocates all linked keywords for each task-id
   Map<int, List<KeyWord>> _createTaskIdToKeywordsMap(
-      List<TaskKeywordEntity> taskKeywords,
-      Map<int, KeyWord> keywordIdToKeywordMap) {
+    List<TaskKeywordEntity> taskKeywords,
+    Map<int, KeyWord> keywordIdToKeywordMap,
+  ) {
     final idToModelList = <int, List<KeyWord>>{};
 
     for (var taskKeyword in taskKeywords) {
@@ -407,8 +416,9 @@ class DbTaskRepository implements TaskRepository {
 
   /// Creates a map that allocates all linked learn lists for each task-id
   Map<int, List<LearnList>> _createTaskIdToLearnListsMap(
-      List<TaskLearnListEntity> taskLearnLists,
-      Map<int, LearnList> learnListIdToLearnListMap) {
+    List<TaskLearnListEntity> taskLearnLists,
+    Map<int, LearnList> learnListIdToLearnListMap,
+  ) {
     final idToModelList = <int, List<LearnList>>{};
 
     for (var taskLearnList in taskLearnLists) {

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
 import 'package:learning_app/features/keywords/dtos/create_key_word_dto.dart';
+import 'package:learning_app/features/keywords/dtos/update_key_word_dto.dart';
 import 'package:learning_app/features/keywords/repositories/keyword_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -18,10 +19,17 @@ class KeyWordsCubit extends Cubit<KeyWordsState> {
     emit(KeyWordsLoaded(keywordsStream: stream));
   }
 
-  Future<void> createKeyWord(CreateKeyWordDto newKeyWord) async {
+  Future<void> createKeyWord(CreateKeyWordDto newKeyWordDto) async {
     final currentState = state;
     if (currentState is KeyWordsLoaded) {
-      await _keywordRepository.createKeyWord(newKeyWord);
+      await _keywordRepository.createKeyWord(newKeyWordDto);
+    }
+  }
+
+  Future<void> updateKeyWord(UpdateKeyWordDto updateKeyWordDto) async {
+    final currentState = state;
+    if (currentState is KeyWordsLoaded) {
+      await _keywordRepository.updateKeyWord(updateKeyWordDto);
     }
   }
 
