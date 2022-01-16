@@ -20,12 +20,20 @@ const List<DetailsReadTaskDto> preSelectedSubtasks = [];
 
 class TaskDetailsScreen extends StatelessWidget {
   final int? existingTaskId;
-  final int? parentId;
+  final int? directParentId;
+  final int? topLevelParentId;
 
+  /// If nothing is provided, the screen is used to create a new top level task.
+  /// If a directParentId is provided, a new sub-task will be created for
+  /// that parent and the topLevelParentId is also required to fetch all required
+  /// data.
+  /// If existingTaskId is provided, that task will be opened for editing. Then,
+  /// also the top level parent id is required.
   const TaskDetailsScreen({
     Key? key,
     this.existingTaskId,
-    this.parentId, // if null -> top level task
+    this.directParentId, // if null -> top level task
+    this.topLevelParentId, // required, if any of the others is set
   }) : super(key: key);
 
   @override
@@ -37,7 +45,8 @@ class TaskDetailsScreen extends StatelessWidget {
       },
       child: TaskDetailsScreenMainElement(
         existingTaskId: existingTaskId,
-        parentId: parentId,
+        parentId: directParentId,
+        topLevelParentId: topLevelParentId,
       ),
     );
   }
@@ -49,11 +58,13 @@ class TaskDetailsScreen extends StatelessWidget {
 class TaskDetailsScreenMainElement extends StatefulWidget {
   final int? existingTaskId;
   final int? parentId;
+  final int? topLevelParentId;
 
   const TaskDetailsScreenMainElement({
     Key? key,
     this.existingTaskId,
     this.parentId, // if null -> top level task
+    this.topLevelParentId, // required, if any of the others is set
   }) : super(key: key);
 
   @override
@@ -65,21 +76,34 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
   final ScrollController _scrollController = ScrollController();
 
   Stream<DetailsReadTaskDto?>? _existingTaskStream;
+  Stream<DetailsReadTaskDto?>? _parentTaskStream;
 
   @override
   void initState() {
     super.initState();
 
     // Load the stream and introduce a listener, if opened for editing a task
-    if (widget.existingTaskId != null) {
+    if (widget.existingTaskId != null && widget.topLevelParentId != null) {
       int id = widget.existingTaskId as int;
+      int topLevelId = widget.topLevelParentId as int;
+
       // Load the detail-dto stream for the selected card:
       _existingTaskStream = BlocProvider.of<TasksCubit>(context)
-          .getDetailsDtoForTopLevelTaskIdStream(id);
+          .getDetailsDtoStreamById(id, topLevelId);
 
       // Screen is used to update an existing task
       BlocProvider.of<AlterTaskCubit>(context).startAlteringExistingTask(id);
     } else {
+      // If a parent id is provided, watch it.
+      if (widget.parentId != null && widget.topLevelParentId != null) {
+        int id = widget.parentId as int;
+        int topLevelId = widget.topLevelParentId as int;
+
+        // Load the detail-dto stream for the parent task:
+        _parentTaskStream = BlocProvider.of<TasksCubit>(context)
+            .getDetailsDtoStreamById(id, topLevelId);
+      }
+
       // Screen is used to create a new task
       BlocProvider.of<AlterTaskCubit>(context)
           .startNewTaskConstruction(widget.parentId);
@@ -97,7 +121,25 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         dueDate: drift.Value(preSelectedDueDate),
       ));
 
-      return _buildTaskDetailsScreen(null);
+      if (_parentTaskStream == null) {
+        // New top level task
+        return _buildTaskDetailsScreen();
+      } else {
+        // New sub task
+        return StreamBuilder<DetailsReadTaskDto?>(
+            stream: _parentTaskStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (!snapshot.hasData) {
+                return _buildTaskDetailsScreen();
+              }
+
+              return _buildTaskDetailsScreen(parentDetailsDto: snapshot.data);
+            });
+      }
     } else {
       // Open an existing task
       return StreamBuilder<DetailsReadTaskDto?>(
@@ -108,15 +150,23 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
             }
 
             if (!snapshot.hasData) {
-              return _buildTaskDetailsScreen(null);
+              return _buildTaskDetailsScreen();
             }
 
-            return _buildTaskDetailsScreen(snapshot.data);
+            return _buildTaskDetailsScreen(detailsDto: snapshot.data);
           });
     }
   }
 
-  Widget _buildTaskDetailsScreen(DetailsReadTaskDto? detailsDto) {
+  /// Builds the actual details screen
+  /// If the detailsDto is not provided, the parentDetailsDto is used
+  /// to get information about the parent task(s) -> title, category...
+  /// If neither is provided, the screen will be used to create a new top-level
+  /// task
+  Widget _buildTaskDetailsScreen({
+    DetailsReadTaskDto? detailsDto,
+    DetailsReadTaskDto? parentDetailsDto,
+  }) {
     return Scaffold(
       appBar: TaskAddAppBar(existingTask: detailsDto),
       body: Scrollbar(

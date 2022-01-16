@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
@@ -82,6 +81,7 @@ class _TaskCardState extends State<TaskCard> {
             MaterialPageRoute(
               builder: (context) => TaskDetailsScreen(
                 existingTaskId: widget._task.id,
+                topLevelParentId: widget._task.topLevelParentId,
               ),
             ),
           );

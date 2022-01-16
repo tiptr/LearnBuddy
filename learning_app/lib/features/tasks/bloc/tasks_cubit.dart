@@ -1,8 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
-import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -29,27 +27,6 @@ class TasksCubit extends Cubit<TaskState> {
     if (currentState is TasksLoaded) {
       var success = await _taskRepository.toggleDone(taskId, done);
       if (!success) return;
-
-      // Here, since only one flag is changed, the list does not have to be
-      // reloaded:
-      // Create a deep copy so the actual state isn't mutated
-      // var tasks = List<ListReadTaskDto>.from(currentState.tasks);
-      // int index = tasks.indexWhere((ListReadTaskDto t) => t.id == taskId);
-      // tasks[index] = ListReadTaskDto(
-      //   id: tasks[index].id,
-      //   title: tasks[index].title,
-      //   done: !tasks[index].done, // toggle
-      //   categoryColor: tasks[index].categoryColor,
-      //   keywords: tasks[index].keywords,
-      //   remainingTimeEstimation: tasks[index].remainingTimeEstimation,
-      //   dueDate: tasks[index].dueDate,
-      //   subTaskCount: tasks[index].subTaskCount,
-      //   finishedSubTaskCount: tasks[index].finishedSubTaskCount,
-      //   isQueued: false,
-      // );
-      //
-      // emit(TasksLoaded(tasks: tasks));
-      // TODO: remove
     }
   }
 
@@ -69,52 +46,22 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-  /// This returns the details-dto for a task
+  /// This returns the details-dto for a task (subtask or top-level)
   ///
-  /// The task has to be currently loaded for this, otherwise it will return null
-  Future<DetailsReadTaskDto?> getDetailsDtoForTopLevelTaskId(int taskId) async {
-    final currentState = state;
-    if (currentState is TasksLoaded) {
-      final List<TaskWithQueueStatus?> tasksWithQueueList =
-          await currentState.selectedTasksStream.first;
-      final TaskWithQueueStatus? selectedTaskWithQueueStatus =
-          tasksWithQueueList.firstWhereOrNull(
-              (taskWithQueue) => taskWithQueue?.task.id == taskId);
+  /// The topLevelParentId has to be provided to efficiently find the task
+  Stream<DetailsReadTaskDto?>? getDetailsDtoStreamById(
+      int taskId, int topLevelParentId) {
+    final topLevelTaskStream =
+        _taskRepository.watchTopLevelTaskById(id: topLevelParentId);
+
+    return topLevelTaskStream.map((topLevel) {
       // Only create a details-dto, if the task was found
-      if (selectedTaskWithQueueStatus != null) {
-        return DetailsReadTaskDto.fromTaskWithQueueStatus(
-            selectedTaskWithQueueStatus);
+      if (topLevel != null) {
+        return DetailsReadTaskDto.fromTaskWithQueueStatus(topLevel,
+            targetId: taskId);
       } else {
         return null;
       }
-    } else {
-      // tasks not yet loaded
-      return null;
-    }
-  }
-
-  /// This returns the details-dto for a task
-  ///
-  /// The task has to be currently loaded for this, otherwise it will return null
-  Stream<DetailsReadTaskDto?>? getDetailsDtoForTopLevelTaskIdStream(
-      int taskId) {
-    final currentState = state;
-    if (currentState is TasksLoaded) {
-      return currentState.selectedTasksStream.map((tasksWithQueueList) {
-        final TaskWithQueueStatus? selectedTaskWithQueueStatus =
-            tasksWithQueueList.firstWhereOrNull(
-                (taskWithQueue) => taskWithQueue.task.id == taskId);
-        // Only create a details-dto, if the task was found
-        if (selectedTaskWithQueueStatus != null) {
-          return DetailsReadTaskDto.fromTaskWithQueueStatus(
-              selectedTaskWithQueueStatus);
-        } else {
-          return null;
-        }
-      });
-    } else {
-      // tasks not yet loaded
-      return null;
-    }
+    });
   }
 }
