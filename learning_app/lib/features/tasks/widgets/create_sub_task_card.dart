@@ -27,8 +27,8 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 10.0, vertical: distanceBetweenCardsSubTasks),
+      padding:
+          const EdgeInsets.symmetric(vertical: distanceBetweenCardsSubTasks),
       child: _card(context),
     );
   }
@@ -51,45 +51,60 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
           right: 10.0,
           left: 10.0,
         ),
-        // category:
         height: 75.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Content
-            Expanded(
-              flex: 80,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Left Row: title input
-                  _buildTitleInputTextField(context),
-                  const SizedBox(width: 10.0), // min distance
-                  // Right Row: due date + stats
-                  // TODO: confirm button?
-                ],
+        child: Expanded(
+          flex: 80,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // TODO: cancel button
+              // Checkbox
+              Transform.scale(
+                scale: 1.3,
+                child: IconButton(
+                    onPressed: () {
+                      // TODO
+                    },
+                    icon: const Icon(Icons.cancel_outlined)),
               ),
-            )
-          ],
+
+              // Left Row: title input
+              _buildTitleInputTextField(context),
+              const SizedBox(width: 10.0), // min distance
+              // TODO: confirm button?
+              Transform.scale(
+                scale: 1.3,
+                child: IconButton(
+                    onPressed: () {
+                      // TODO
+                    },
+                    icon: const Icon(
+                      Icons.add_task_outlined,
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildTitleInputTextField(BuildContext context) {
-    return TextField(
-      style: const TextStyle(
-          color: Color(0xFF636573), fontWeight: FontWeight.normal),
-      decoration: const InputDecoration(
-        filled: false,
-        hintText: 'Name der Unteraufgabe',
-        hintStyle: TextStyle(color: Color(0xFF949597)),
+    return Expanded(
+      flex: 80,
+      child: TextField(
+        style: const TextStyle(
+            color: Color(0xFF636573), fontWeight: FontWeight.normal),
+        decoration: const InputDecoration(
+          filled: false,
+          hintText: 'Name der Unteraufgabe',
+          hintStyle: TextStyle(color: Color(0xFF949597)),
+        ),
+        maxLines: null, // no limit
+        controller: _textEditingController,
+        // onChanged: widget.onChange, // TODO
       ),
-      maxLines: null, // no limit
-      controller: _textEditingController,
-      // onChanged: widget.onChange, // TODO
     );
   }
 }

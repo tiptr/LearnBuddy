@@ -62,34 +62,39 @@ class _TaskScreenState extends State<TaskScreen> {
                 return Scrollbar(
                   controller: _scrollController,
                   interactive: true,
-                  child: GroupedListView<ListReadTaskDto, DateTime?>(
-                    controller: _scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    sort: false,
-                    // sorting will be done via SQL
-                    elements: activeTasks,
-                    // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
-                    groupBy: (task) =>
-                        task.dueDate.getBeginOfDayConcatPastToYesterday(),
-                    useStickyGroupSeparators: true,
-                    cacheExtent: 20,
-                    // This would improve scrolling performance, but I did not get it to
-                    // work with the separators
-                    // itemExtent: 110,
-                    floatingHeader: true,
-                    groupSeparatorBuilder: (DateTime? dateTime) {
-                      return ListGroupSeparator(
-                        content: dateTime == null
-                            ? 'Ohne Fälligkeitsdatum'
-                            : (dateTime.isInPast()
-                                ? 'Überfällig'
-                                : '${dateTime.formatDependingOnCurrentDate()} fällig'),
-                        highlight: dateTime.isInPast(),
-                      );
-                    },
-                    indexedItemBuilder: (context, task, index) {
-                      return TaskCard(task: task);
-                    },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    child: GroupedListView<ListReadTaskDto, DateTime?>(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      sort: false,
+                      // sorting will be done via SQL
+                      elements: activeTasks,
+                      // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
+                      groupBy: (task) =>
+                          task.dueDate.getBeginOfDayConcatPastToYesterday(),
+                      useStickyGroupSeparators: true,
+                      cacheExtent: 20,
+                      // This would improve scrolling performance, but I did not get it to
+                      // work with the separators
+                      // itemExtent: 110,
+                      floatingHeader: true,
+                      groupSeparatorBuilder: (DateTime? dateTime) {
+                        return ListGroupSeparator(
+                          content: dateTime == null
+                              ? 'Ohne Fälligkeitsdatum'
+                              : (dateTime.isInPast()
+                                  ? 'Überfällig'
+                                  : '${dateTime.formatDependingOnCurrentDate()} fällig'),
+                          highlight: dateTime.isInPast(),
+                        );
+                      },
+                      indexedItemBuilder: (context, task, index) {
+                        return TaskCard(task: task);
+                      },
+                    ),
                   ),
                 );
               },

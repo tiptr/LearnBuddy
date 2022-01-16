@@ -22,7 +22,7 @@ class _SubTasksListState extends State<SubTasksList> {
   @override
   void initState() {
     super.initState();
-    subTasksList = widget.subTasksList;
+    subTasksList = List<DetailsReadTaskDto?>.from(widget.subTasksList);
   }
 
   @override
