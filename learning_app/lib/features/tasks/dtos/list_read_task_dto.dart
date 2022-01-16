@@ -63,7 +63,8 @@ class ListReadTaskDto extends Equatable {
       subTaskCount: detailsDto.subTaskCount,
       finishedSubTaskCount: detailsDto.finishedSubTaskCount,
       isQueued: detailsDto.isQueued,
-      keywords: detailsDto.keywords.map((keywordDto) => keywordDto.name).toList(),
+      keywords:
+          detailsDto.keywords.map((keywordDto) => keywordDto.name).toList(),
       dueDate: detailsDto.dueDate,
       remainingTimeEstimation: detailsDto.remainingTimeEstimation,
     );

@@ -1,10 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
-import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
@@ -18,7 +16,6 @@ const double verticalPaddingCardContentSubTasks = 2;
 
 const double distanceBetweenCardsTopLevel = 10.0;
 const double distanceBetweenCardsSubTasks = 7.0;
-
 
 /// The card used inside the the main tasks list as well as for the subtasks (!)
 class TaskCard extends StatefulWidget {
@@ -36,7 +33,7 @@ class TaskCard extends StatefulWidget {
       {Key? key, required ListReadTaskDto task, bool isSubTaskCard = false})
       : _task = task,
         _isSubTaskCard = isSubTaskCard,
-  // calculated:
+        // calculated:
         _formattedDueDate = task.dueDate
             .formatDependingOnCurrentDate(ifNull: 'Ohne Fälligkeit'),
         _isOverDue = task.dueDate.isInPast(),
@@ -80,23 +77,14 @@ class _TaskCardState extends State<TaskCard> {
           BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id),
       child: InkWell(
         onTap: () async {
-          // Load the detail-dto for the selected card:
-          final DetailsReadTaskDto? details =
-              await BlocProvider.of<TasksCubit>(context)
-                  .getDetailsDtoForTopLevelTaskId(widget._task.id);
-
-          if (details != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TaskDetailsScreen(
-                  existingTask: details,
-                ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskDetailsScreen(
+                existingTaskId: widget._task.id,
               ),
-            );
-          } else {
-            log('The task with ID ${widget._task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
-          }
+            ),
+          );
         },
         child: Card(
           clipBehavior: Clip.hardEdge,
@@ -210,9 +198,8 @@ class _TaskCardState extends State<TaskCard> {
               maxLines: 2,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                decoration: _checked
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
+                decoration:
+                    _checked ? TextDecoration.lineThrough : TextDecoration.none,
                 decorationThickness: 2.0,
                 fontSize: widget._isSubTaskCard ? 14 : 16,
                 overflow: TextOverflow.ellipsis,
@@ -258,7 +245,8 @@ class _TaskCardState extends State<TaskCard> {
               (widget._task.dueDate != null) ? widget._formattedDueDate : '',
               textAlign: TextAlign.end,
               style: TextStyle(
-                color: widget._isOverDue ? Colors.white : const Color(0xFF949597),
+                color:
+                    widget._isOverDue ? Colors.white : const Color(0xFF949597),
                 fontWeight: FontWeight.normal,
                 decorationThickness: 2.0,
                 fontSize: 12,
@@ -273,7 +261,9 @@ class _TaskCardState extends State<TaskCard> {
                 ? Icon(
                     Icons.today_outlined,
                     size: 16,
-                    color: widget._isOverDue ? Colors.white : const Color(0xFF949597),
+                    color: widget._isOverDue
+                        ? Colors.white
+                        : const Color(0xFF949597),
                   )
                 : null,
             backgroundColor: widget._isOverDue

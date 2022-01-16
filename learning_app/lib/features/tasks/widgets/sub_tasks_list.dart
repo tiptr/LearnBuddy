@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
+import 'package:learning_app/features/tasks/widgets/create_sub_task_card.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
-// class SubTasksList extends StatefulWidget {
-//   const SubTasksList({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SubTasksList> createState() => _SubTasksListState();
-// }
-//
-// class _SubTasksListState extends State<SubTasksList> {
-//   final ScrollController scrollController;
-//
-//   _SubTasksListState({required this.scrollController})
-//
-
-class SubTasksList extends StatelessWidget {
+class SubTasksList extends StatefulWidget {
   final ScrollController scrollController;
   final List<DetailsReadTaskDto> subTasksList;
 
@@ -28,6 +15,19 @@ class SubTasksList extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SubTasksList> createState() => _SubTasksListState();
+}
+
+class _SubTasksListState extends State<SubTasksList> {
+  late List<DetailsReadTaskDto?> subTasksList;
+
+  @override
+  void initState() {
+    super.initState();
+    subTasksList = widget.subTasksList;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -36,27 +36,40 @@ class SubTasksList extends StatelessWidget {
           // -> we want the whole view to be scrollable rather than just the subtasks
           physics: const NeverScrollableScrollPhysics(),
           // Use the scroll controller of the parent, to actually allow scrolling
-          controller: scrollController,
+          controller: widget.scrollController,
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: subTasksList.length,
           // itemExtent: 95,
           itemBuilder: (BuildContext context, int index) {
-            return TaskCard(
-              isSubTaskCard: true,
-              task: ListReadTaskDto.fromDetailsReadTasksDto(subTasksList[index]),
-            );
+            DetailsReadTaskDto? detailsDto = subTasksList[index];
+
+            if (detailsDto == null) {
+              // Null means to build a creation-card for a new subtask
+              return const CreateSubTaskCard();
+            } else {
+              DetailsReadTaskDto actualDetailsDto = detailsDto;
+              return TaskCard(
+                isSubTaskCard: true,
+                task: ListReadTaskDto.fromDetailsReadTasksDto(actualDetailsDto),
+              );
+            }
           },
         ),
         InkWell(
           onTap: () {
             //TODO
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const TaskDetailsScreen(),
-              ),
-            );
+
+            setState(() {
+              subTasksList.add(null);
+            });
+
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const TaskDetailsScreen(),
+            //   ),
+            // );
           },
           child: Ink(
             height: 50,

@@ -92,4 +92,29 @@ class TasksCubit extends Cubit<TaskState> {
       return null;
     }
   }
+
+  /// This returns the details-dto for a task
+  ///
+  /// The task has to be currently loaded for this, otherwise it will return null
+  Stream<DetailsReadTaskDto?>? getDetailsDtoForTopLevelTaskIdStream(
+      int taskId) {
+    final currentState = state;
+    if (currentState is TasksLoaded) {
+      return currentState.selectedTasksStream.map((tasksWithQueueList) {
+        final TaskWithQueueStatus? selectedTaskWithQueueStatus =
+            tasksWithQueueList.firstWhereOrNull(
+                (taskWithQueue) => taskWithQueue.task.id == taskId);
+        // Only create a details-dto, if the task was found
+        if (selectedTaskWithQueueStatus != null) {
+          return DetailsReadTaskDto.fromTaskWithQueueStatus(
+              selectedTaskWithQueueStatus);
+        } else {
+          return null;
+        }
+      });
+    } else {
+      // tasks not yet loaded
+      return null;
+    }
+  }
 }
