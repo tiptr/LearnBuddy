@@ -28,7 +28,7 @@ import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/database/database.dart' as db;
 import 'package:rxdart/rxdart.dart';
 
-/// Concrete repository implementation using the database with drift
+/// Concrete repositories implementation using the database with drift
 @Injectable(as: TaskRepository)
 class DbTaskRepository implements TaskRepository {
   // load the data access object (with generated entities and queries) via dependency inj.

@@ -6,6 +6,8 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/screens/le
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
@@ -64,12 +66,23 @@ void main() {
             return cubit;
           },
         ),
+        BlocProvider(
+          create: (context) => TaskQueueBloc(),
+        ),
         BlocProvider<KeyWordsCubit>(
           lazy: true,
           create: (context) {
             var cubit = KeyWordsCubit();
             cubit.loadKeyWords();
             return cubit;
+          },
+        ),
+        BlocProvider<TaskQueueBloc>(
+          lazy: true,
+          create: (context) {
+            var bloc = TaskQueueBloc();
+            bloc.add(InitQueueEvent());
+            return bloc;
           },
         ),
       ],
