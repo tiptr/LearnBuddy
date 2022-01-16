@@ -18,6 +18,8 @@ class ListReadTaskDto extends Equatable {
   // estimations of finished subtasks are not added
   final Duration? remainingTimeEstimation; // minutes
 
+  final DateTime? doneDateTime;
+
   // dueDate is not optional, because there is no good way to integrate
   // tasks without one into the sorted list of the UI.
   // Instead, 'Today' is the predefined due_date
@@ -38,14 +40,17 @@ class ListReadTaskDto extends Equatable {
     required this.keywords,
     this.remainingTimeEstimation,
     this.dueDate,
+    this.doneDateTime,
     required this.subTaskCount,
     required this.finishedSubTaskCount,
     required this.isQueued,
   });
 
   static ListReadTaskDto fromTaskWithQueueStatus(
-      TaskWithQueueStatus taskWithQueueStatus) {
+    TaskWithQueueStatus taskWithQueueStatus,
+  ) {
     final task = taskWithQueueStatus.task;
+
     return ListReadTaskDto(
       id: task.id,
       title: task.title,
@@ -56,6 +61,7 @@ class ListReadTaskDto extends Equatable {
       isQueued: taskWithQueueStatus.queueStatus != null,
       keywords: task.keywords.map((keyword) => keyword.name).toList(),
       dueDate: task.dueDate,
+      doneDateTime: task.doneDateTime,
       remainingTimeEstimation: task.remainingTimeEstimation,
     );
   }

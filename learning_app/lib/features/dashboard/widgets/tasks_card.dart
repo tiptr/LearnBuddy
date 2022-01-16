@@ -51,13 +51,24 @@ class TasksCard extends StatelessWidget {
             // Sort the task so the next due dates come first
             dueTasks.sort((a, b) => a.dueDate!.compareTo(b.dueDate!));
 
+            // How many tasks are display in the dashboard
+            // TODO: This will be a setting
             const taskAmount = 2;
 
             final hasMore = dueTasks.length > taskAmount;
             final amountOfFurtherDueTasks = dueTasks.length - taskAmount;
+
             final upcomingTasks =
                 dueTasks.where((task) => !task.done).take(taskAmount).toList();
-            final doneTasksCount = dueTasks.where((task) => task.done).length;
+
+            final doneTasksCount = dueTasks
+                .where(
+                  (task) =>
+                      task.done &&
+                      task.doneDateTime != null &&
+                      task.doneDateTime.compareDayOnly(DateTime.now()) == 0,
+                )
+                .length;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
