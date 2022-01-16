@@ -5,12 +5,15 @@ import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
+import 'package:learning_app/features/categories/dtos/update_category_dto.dart';
 import 'package:learning_app/features/categories/repositories/category_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockCategoriesRepository extends Mock implements CategoryRepository {}
 
 class AnyCreateCategoriesDto extends Mock implements CreateCategoryDto {}
+
+class AnyUpdateCategoriesDto extends Mock implements UpdateCategoryDto {}
 
 void main() {
   late MockCategoriesRepository mockCategoriesRepository;
@@ -20,6 +23,8 @@ void main() {
       const ReadCategoryDto(id: 1, name: "Mock Category", color: Colors.red);
   CreateCategoryDto mockCreateDto =
       const CreateCategoryDto(name: "New Category", color: Colors.yellow);
+  UpdateCategoryDto mockUpdateDto = const UpdateCategoryDto(
+      id: 1, name: "New Category", color: Colors.yellow);
   Stream<List<ReadCategoryDto>> mockCategoryStream =
       Stream.value([mockCategory]);
 
@@ -31,6 +36,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(AnyCreateCategoriesDto());
+    registerFallbackValue(AnyUpdateCategoriesDto());
   });
 
   group(
@@ -70,6 +76,26 @@ void main() {
         act: (cubit) async => await cubit.createCategory(mockCreateDto),
         verify: (_) {
           verify(() => mockCategoriesRepository.createCategory(mockCreateDto))
+              .called(1);
+        },
+      );
+    },
+  );
+
+  group(
+    'when calling updateCategory',
+    () {
+      blocTest<CategoriesCubit, CategoriesState>(
+        'CategoriesCubit should update the category',
+        build: () {
+          when(() => mockCategoriesRepository.updateCategory(any()))
+              .thenAnswer((_) => Future.value(1));
+          return categoriesCubit;
+        },
+        seed: () => CategoriesLoaded(categoriesStream: Stream.value([])),
+        act: (cubit) async => await cubit.updateCategory(mockUpdateDto),
+        verify: (_) {
+          verify(() => mockCategoriesRepository.updateCategory(mockUpdateDto))
               .called(1);
         },
       );
