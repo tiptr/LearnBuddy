@@ -148,23 +148,24 @@ class ActiveTaskCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-                IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      TimeLoggingBloc timeLoggingBloc = context.read<TimeLoggingBloc>();
-                      timeLoggingBloc.add(const RemoveTimeLoggingObjectEvent());
-                    },
-                ),
+              IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  TimeLoggingBloc timeLoggingBloc =
+                      context.read<TimeLoggingBloc>();
+                  timeLoggingBloc.add(const RemoveTimeLoggingObjectEvent());
+                },
+              ),
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.all(
                   task.category?.color,
                 ),
-                value: task.doneDateTime == null? false : true,
+                value: task.doneDateTime == null ? false : true,
                 shape: const CircleBorder(),
                 onChanged: (bool? value) {
-                  BlocProvider.of<TasksCubit>(context)
-                      .toggleDone(task.id, task.doneDateTime == null? true : false);
+                  BlocProvider.of<TasksCubit>(context).toggleDone(
+                      task.id, task.doneDateTime == null ? true : false);
                 },
               ),
               Spacer(),

@@ -49,7 +49,7 @@ class TimerActions extends StatelessWidget {
                   child: Container(
                     width: 100,
                     child: const Padding(
-                      padding: EdgeInsets.symmetric( vertical: 8),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
@@ -71,7 +71,8 @@ class TimerActions extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
-                  onTap: () => context.read<TimerBloc>().add(const TimerPaused()),
+                  onTap: () =>
+                      context.read<TimerBloc>().add(const TimerPaused()),
                   child: Container(
                     width: 100,
                     child: const Padding(
@@ -99,7 +100,7 @@ class TimerActions extends StatelessWidget {
                   child: Container(
                     width: 100,
                     child: const Padding(
-                      padding: EdgeInsets.symmetric( vertical: 8),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
@@ -121,7 +122,8 @@ class TimerActions extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
-                  onTap: () => context.read<TimerBloc>().add(const TimerResumed()),
+                  onTap: () =>
+                      context.read<TimerBloc>().add(const TimerResumed()),
                   child: Container(
                     width: 100,
                     child: const Padding(
@@ -149,7 +151,7 @@ class TimerActions extends StatelessWidget {
                   child: Container(
                     width: 100,
                     child: const Padding(
-                      padding: EdgeInsets.symmetric( vertical: 8),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
@@ -166,7 +168,6 @@ class TimerActions extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
             if (state is TimerRunComplete) ...[
               Padding(
@@ -176,7 +177,7 @@ class TimerActions extends StatelessWidget {
                   child: Container(
                     width: 100,
                     child: const Padding(
-                      padding: EdgeInsets.symmetric( vertical: 8),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Phase beenden",
@@ -193,9 +194,6 @@ class TimerActions extends StatelessWidget {
                   ),
                 ),
               ),
-
-
-
             ],
             if (state is TimerInitialInSession) ...[
               Padding(
@@ -203,7 +201,7 @@ class TimerActions extends StatelessWidget {
                 child: InkWell(
                   onTap: () => context
                       .read<TimerBloc>()
-                  //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
+                      //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
                       .add(TimerStarted(duration: state.getDuration())),
                   child: Container(
                     width: 100,
@@ -232,7 +230,7 @@ class TimerActions extends StatelessWidget {
                   child: Container(
                     width: 100,
                     child: const Padding(
-                      padding: EdgeInsets.symmetric( vertical: 8),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",

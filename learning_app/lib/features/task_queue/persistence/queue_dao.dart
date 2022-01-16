@@ -34,7 +34,8 @@ class QueueDao extends DatabaseAccessor<Database> with _$QueueDaoMixin {
   }
 
   Future<int> deleteQueueElementById(int id) async {
-    return (delete(taskQueueElements)..where((tuple) => tuple.taskId.equals(id))).go();
-
+    return (delete(taskQueueElements)
+          ..where((tuple) => tuple.taskId.equals(id)))
+        .go();
   }
 }
