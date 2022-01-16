@@ -13,7 +13,6 @@ class ColorSchemes {
     ColorScheme darkTheme = const ColorScheme.dark().copyWith(
       primary: const Color(0xFFFF2222),
       secondary: const Color(0xFFEEEE44),
-      secondaryVariant: Colors.green,
       background: backgroundColor,
       onPrimary: const Color(0xFFFFFFFF),
       onSecondary: const Color(0xFF000000),
