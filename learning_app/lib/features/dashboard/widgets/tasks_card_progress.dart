@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_process_indicator.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
 class TasksCardProgress extends StatelessWidget {
   final int amountDone;
   final int amountTotal;
+  final Duration? remainingDuration;
 
   final horizontalCardPadding = 10.0;
   final processIndicatorFlexPortion = 40;
@@ -16,6 +18,7 @@ class TasksCardProgress extends StatelessWidget {
     Key? key,
     required this.amountDone,
     required this.amountTotal,
+    required this.remainingDuration,
   }) : super(key: key);
 
   @override
@@ -57,16 +60,18 @@ class TasksCardProgress extends StatelessWidget {
                   // Hourglass and Text
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      Icon(
+                    children: [
+                      const Icon(
                         Icons.hourglass_top_outlined,
                         size: 40.0,
                         // TODO: to be structured in the theme-issue:
                         color: Color(0xFF636573),
                       ),
                       Text(
-                        "Heutiger Restaufwand:\n2h 30min",
-                        style: TextStyle(
+                        remainingDuration == null
+                            ? "Keine Zeitschätzungen\n vorhanden"
+                            : "Heutiger Restaufwand:\n${remainingDuration.format()}",
+                        style: const TextStyle(
                           // TODO: to be structured in the theme-issue:
                           color: Color(0xFF949597),
                         ),
