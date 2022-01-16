@@ -11,7 +11,7 @@ class BaseLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.background,
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

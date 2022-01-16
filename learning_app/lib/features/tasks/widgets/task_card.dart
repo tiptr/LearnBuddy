@@ -98,7 +98,7 @@ class TaskCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.cardColor,
           shadowColor: Theme.of(context).colorScheme.shadowColor,
           elevation:
-          _task.done ? BasicCard.elevation.low : BasicCard.elevation.high,
+              _task.done ? BasicCard.elevation.low : BasicCard.elevation.high,
           child: ColorFiltered(
             // Grey out when done -> Overlay with semitransparent white; Else
             // overlay with fulltransparent "black" (no effect)
@@ -123,10 +123,8 @@ class TaskCard extends StatelessWidget {
                       border: Border(
                         left: BorderSide(
                             width: BasicCard.borderRadius,
-                            color: _categoryColor ??
-                                Theme.of(context)
-                                    .colorScheme
-                                    .noCategoryDefaultColor),
+                            color: _categoryColor
+                        ),
                       ),
                     ),
               height: _isSubTaskCard ? 75.0 : BasicCard.height,

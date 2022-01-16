@@ -6,6 +6,8 @@ import 'package:drift/drift.dart' as drift;
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   final DetailsReadTaskDto? existingTask;
@@ -47,16 +49,29 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
                 ),
                 Expanded(
                   child: TextField(
-                    decoration: const InputDecoration.collapsed(
+                    decoration: InputDecoration.collapsed(
                       hintText: 'Name der Aufgabe',
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .textStyle2
+                          .withOnBackgroundSoft
+                          .withOutBold,
                       border: InputBorder.none,
                     ),
                     controller: _textEditingController,
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withOnBackgroundHard
+                        .withBold,
                     onChanged: (text) async {
                       BlocProvider.of<AlterTaskCubit>(context)
                           .alterTaskAttribute(TaskManipulationDto(
@@ -86,9 +101,9 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                     // Exit task details screen
                     Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.save_outlined,
-                    color: Color(0xFF636573),
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
                   ),
                   iconSize: 30,
                 ),

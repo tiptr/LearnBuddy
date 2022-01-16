@@ -64,9 +64,9 @@ class _TextInputFieldState extends State<TextInputField> {
         ),
         hintText: widget.hintText,
         hintStyle:
-        // Same TextStyle with a softer color. Inherited from the textfield,
-        // so the TextStyle is not explicitly defined with a constant
-        TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
+            // Same TextStyle with a softer color. Inherited from the textfield,
+            // so the TextStyle is not explicitly defined with a constant
+            TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
       ),
       maxLines: null, // no limit
       controller: _textEditingController,

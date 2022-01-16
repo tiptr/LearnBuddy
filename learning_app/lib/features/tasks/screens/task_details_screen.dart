@@ -9,6 +9,7 @@ import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
 import 'package:learning_app/features/tasks/widgets/task_details_app_bar.dart';
 import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 /// This screen is used for both creating and editing tasks
 ///
@@ -68,6 +69,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
     return Scaffold(
       appBar: TaskAddAppBar(existingTask: widget.existingTask),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Scrollbar(
         interactive: true,
         controller: _scrollController,
@@ -111,14 +113,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 // Subtasks
                 const SizedBox(height: 20.0),
                 Row(
-                  children: const [
+                  children: [
                     Text(
                       "Unteraufgaben",
-                      style: TextStyle(
-                        fontSize: 22.0,
-                        color: Color(0xFF636573),
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.textStyle1,
                     ),
                   ],
                 ),
