@@ -105,11 +105,9 @@ class _DurationInputFieldState extends State<DurationInputField> {
                 },
               )
             : null,
-        label: const Text(
+        label: Text(
           "Zeitschätzung",
-          // Same TextStyle with bold text. Inherited from the textfield,
-          // so the TextStyle is not explicitly defined with a constant
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
         hintText: 'Dauer auswählen',
         hintStyle:

@@ -30,6 +30,7 @@ class TasksCardProgress extends StatelessWidget {
         flexPortion: processIndicatorFlexPortion / 100,
       ),
       elevation: BasicCard.elevation.high,
+      shadowColor: Theme.of(context).colorScheme.shadowColor,
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 10.0,

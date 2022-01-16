@@ -6,9 +6,22 @@ class TextThemes {
     TextTheme theme = ThemeData().textTheme;
     theme.setCustomColorScheme(colorScheme);
     return ThemeData().textTheme.copyWith(
-        // If the default attributes of the TextTheme (headline1-6, etc.) want to
-        // be used, they can be set here. Custom attributes are defined in the
-        // extension
+          // If the default attributes of the TextTheme (headline1-6, etc.) want to
+          // be used, they can be set here. Custom attributes are defined in the
+          // extension
+
+          // Necessary for native components like DatePicker or DurationPicker:
+          // For the love of god, DON'T REMOVE!
+          // Unit "min" in DurationPicker
+          bodyText2: theme.textStyle3.withOnBackgroundHard,
+          // selected duration in the circle of the DurationPicker
+          headline2: theme.textStyle1.withOnBackgroundHard,
+          // DatePicker date-textfield style; ColorPicker hex-textfield style;
+          // DurationPicker dial-numbers-style
+          // Can't be set independently (except for the DatePicker), either all
+          // onBackgroundHard, or normal (which would look better on the dial, but
+          // sucks for the TextInputFields)
+          subtitle1: theme.textStyle2.withOnBackgroundHard,
         );
   }
 }
@@ -71,6 +84,7 @@ extension CustomStyle on TextStyle {
 
   // Same style but bold
   TextStyle get withBold => copyWith(fontWeight: FontWeight.bold);
+  TextStyle get withOutBold => copyWith(fontWeight: FontWeight.normal);
 
   TextStyle withOverflow(TextOverflow overflow) {
     return copyWith(overflow: overflow);

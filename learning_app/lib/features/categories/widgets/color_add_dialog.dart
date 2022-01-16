@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class ColorAddDialog extends StatefulWidget {
   const ColorAddDialog({Key? key}) : super(key: key);
@@ -24,10 +26,11 @@ class _ColorAddDialogState extends State<ColorAddDialog> {
     return AlertDialog(
       titlePadding: const EdgeInsets.all(0),
       contentPadding: const EdgeInsets.all(0),
-      shape: const RoundedRectangleBorder(
+      backgroundColor: Theme.of(context).colorScheme.cardColor,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(500),
-          bottom: Radius.circular(15.0),
+          top: const Radius.circular(500),
+          bottom: Radius.circular(BasicCard.borderRadius),
         ),
       ),
       content: SingleChildScrollView(

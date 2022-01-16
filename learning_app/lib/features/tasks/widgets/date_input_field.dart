@@ -109,11 +109,9 @@ class _DateInputFieldState extends State<DateInputField> {
                 },
               )
             : null,
-        label: const Text(
+        label: Text(
           "Fälligkeitsdatum",
-          // Same TextStyle with bold text. Inherited from the textfield,
-          // so the TextStyle is not explicitly defined with a constant
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
         hintText: 'Datum auswählen',
         hintStyle:

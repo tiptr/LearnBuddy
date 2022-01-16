@@ -20,6 +20,7 @@ class TasksCardItem extends StatelessWidget {
       ),
       color: Theme.of(context).colorScheme.cardColor,
       elevation: BasicCard.elevation.high,
+      shadowColor: Theme.of(context).colorScheme.shadowColor,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
         decoration: BoxDecoration(

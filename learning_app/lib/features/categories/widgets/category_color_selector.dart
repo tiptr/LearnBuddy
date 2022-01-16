@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/color_add_dialog.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class CategoryColorSelector extends StatefulWidget {
   final Function onColorSelect;
@@ -115,7 +116,7 @@ Widget pickerItemBuilder(
       color: color,
       boxShadow: [
         BoxShadow(
-          color: color.withOpacity(0.8),
+          color: Colors.black.withOpacity(0.8),
           offset: const Offset(1, 2),
           blurRadius: _blurRadius,
         )

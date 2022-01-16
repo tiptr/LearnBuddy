@@ -81,19 +81,30 @@ class MyApp extends StatelessWidget {
     final ThemeData theme = ThemeData();
     // Must be declared explicitly to be passed on to the TextTheme, which relies
     // on the colorScheme
-    final ColorScheme colorScheme = ColorSchemes.darkColorScheme();
+    final ColorScheme colorScheme = ColorSchemes.defaultColorScheme();
     final TextTheme textTheme = TextThemes.defaultTextTheme(colorScheme);
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-          colorScheme: colorScheme,
-          scrollbarTheme: ScrollbarThemeData(
-            isAlwaysShown: false,
-            thickness: MaterialStateProperty.all(10),
-            radius: const Radius.circular(10),
-            minThumbLength: 50,
-          ),
-          textTheme: textTheme),
+        colorScheme: colorScheme,
+        scrollbarTheme: ScrollbarThemeData(
+          isAlwaysShown: false,
+          thickness: MaterialStateProperty.all(10),
+          radius: const Radius.circular(10),
+          minThumbLength: 50,
+        ),
+        textTheme: textTheme,
+
+        // necessary for native Components like DatePicker or DurationPicker:
+        // Date and Durationpicker background
+        dialogBackgroundColor: colorScheme.cardColor,
+        // ColorPicker hex-textfield label
+        hintColor: colorScheme.onBackgroundSoft,
+        // DurationPicker innercircle color
+        canvasColor: colorScheme.cardColor,
+        // DurationPicker thick circle border
+        backgroundColor: colorScheme.tertiary,
+      ),
       home: const MyHomePage(),
     );
   }

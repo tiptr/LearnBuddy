@@ -54,6 +54,7 @@ class LeisureCategoryCard extends StatelessWidget {
         ),
         color: Theme.of(context).colorScheme.cardColor,
         elevation: BasicCard.elevation.high,
+        shadowColor: Theme.of(context).colorScheme.shadowColor,
         child: Container(
           padding: const EdgeInsets.all(20.0),
           child: Row(

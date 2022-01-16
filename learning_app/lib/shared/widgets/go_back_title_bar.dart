@@ -28,7 +28,10 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
                   color: Theme.of(context).colorScheme.onBackgroundHard,
                 ),

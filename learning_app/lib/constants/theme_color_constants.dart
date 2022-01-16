@@ -7,23 +7,32 @@ import 'package:flutter/material.dart';
 class ColorSchemes {
   /// Feature Relase: dark mode
   static ColorScheme darkColorScheme() {
+    const backgroundColor = Color(0xFF212121);
+    const onBackgroundColor = Color(0xFFAAAAAA);
+    const onBackgroundHardColor = Color(0xFFFFFFFF);
     ColorScheme darkTheme = const ColorScheme.dark().copyWith(
       primary: const Color(0xFFFF2222),
-      secondary: const Color(0xFFCCCC00),
-      background: const Color(0xFF121212),
+      secondary: const Color(0xFFEEEE44),
+      secondaryVariant: Colors.green,
+      background: backgroundColor,
       onPrimary: const Color(0xFFFFFFFF),
       onSecondary: const Color(0xFF000000),
-      onBackground: const Color(0xFF636573),
+      onBackground: onBackgroundColor,
+
+      //necessary for native components such as DatePicker, DurationPicker
+      surface: backgroundColor,
+      onSurface: onBackgroundHardColor,
     );
     darkTheme.setCustomAttributes(
       greyOutOverlayColor: const Color(0xB8060606),
       noCategoryDefaultColor: darkTheme.onBackground,
-      onBackgroundHard: const Color(0xFFFFFFFF),
-      onBackgroundSoft: const Color(0xFF999999),
-      tertiary: const Color(0xFF78C6E2),
+      onBackgroundHard: onBackgroundHardColor,
+      onBackgroundSoft: const Color(0xFF636573),
+      tertiary: const Color(0xFFFF8844),
       onTertiary: const Color(0xFF000000), // Same as onBackgroundHard
-      subtleBackgroundGrey: const Color(0xFF424242),
-      cardColor: const Color(0xFF212121),
+      subtleBackgroundGrey: const Color(0xFF3F3F3F),
+      cardColor: const Color(0xFF303030),
+      shadowColor: const Color(0xFF000000),
       isDark: true,
     );
     return darkTheme;
@@ -31,13 +40,19 @@ class ColorSchemes {
 
   /// Returns the default theme
   static ColorScheme defaultColorScheme() {
+    const backgroundColor = Color(0xFFF9F9FE);
+    const onBackgroundColor = Color(0xFF636573);
     ColorScheme theme = ThemeData().colorScheme.copyWith(
           primary: const Color(0xFF3444CF),
           secondary: const Color(0xFF9E5EE1),
-          background: const Color(0xFFF9F9FE),
+          background: backgroundColor,
           onPrimary: const Color(0xFFFFFFFF),
           onSecondary: const Color(0xFFFFFFFF),
-          onBackground: const Color(0xFF636573),
+          onBackground: onBackgroundColor,
+
+          //necessary for native components such as DatePicker, DurationPicker
+          surface: backgroundColor,
+          onSurface: onBackgroundColor,
         );
     theme.setCustomAttributes(
       greyOutOverlayColor: const Color(0xB8FFFFFF),
@@ -48,6 +63,7 @@ class ColorSchemes {
       onTertiary: const Color(0xFF40424A), // Same as onBackgroundHard
       subtleBackgroundGrey: const Color(0xFFEAECFA),
       cardColor: const Color(0xFFFFFFFF),
+      shadowColor: const Color(0xFF000000).withOpacity(0.8),
       isDark: false,
     );
     return theme;
@@ -75,6 +91,8 @@ extension CustomColorScheme on ColorScheme {
   // Circle Progress Indicator Grey Color
   static Color? _subtleBackgroundGrey;
 
+  static Color? _shadowColor;
+
   static late bool _isDark;
 
   /// Sets the custom attributes that are not contained in the ColorScheme class
@@ -87,6 +105,7 @@ extension CustomColorScheme on ColorScheme {
     Color? onBackgroundSoft,
     Color? subtleBackgroundGrey,
     Color? cardColor,
+    Color? shadowColor,
     required isDark,
   }) {
     //Using ??= to allow multiple calls of this method, without overriding set values
@@ -100,6 +119,7 @@ extension CustomColorScheme on ColorScheme {
     _onBackgroundSoft ??= onBackgroundSoft;
     _subtleBackgroundGrey ??= subtleBackgroundGrey;
     _cardColor ??= cardColor;
+    _shadowColor ??= shadowColor;
     _isDark = isDark;
   }
 
@@ -121,6 +141,8 @@ extension CustomColorScheme on ColorScheme {
 
   Color get subtleBackgroundGrey =>
       _subtleBackgroundGrey ?? _customAttributeForgotToSetColor;
+
+  Color get shadowColor => _shadowColor ?? _customAttributeForgotToSetColor;
 
   bool get isDark => _isDark;
 }

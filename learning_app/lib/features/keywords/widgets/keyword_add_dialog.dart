@@ -4,6 +4,7 @@ import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/dtos/create_key_word_dto.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class KeyWordAddDialog extends StatefulWidget {
   const KeyWordAddDialog({Key? key}) : super(key: key);
@@ -18,7 +19,15 @@ class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Neues Schlagwort"),
+      title: Text(
+        "Neues Schlagwort",
+        style: Theme.of(context)
+            .textTheme
+            .textStyle1
+            .withBold
+            .withOnBackgroundHard,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.cardColor,
       scrollable: false,
       content: Scrollbar(
         isAlwaysShown: true,
@@ -31,10 +40,17 @@ class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
                 margin: const EdgeInsets.only(left: 10.0),
                 width: 250,
                 child: TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Bezeichnung eingeben",
-                  ),
+                  // Use subtitle1 here, to match the inputfield Styles from the
+                  // native components (DatePicker,ColorPicker-hex-field)
+                  style: Theme.of(context).textTheme.subtitle1,
+                  decoration: InputDecoration(
+                      hintText: "Bezeichnung eingeben",
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .withOnBackgroundSoft),
                   controller: _textController,
+                  autofocus: true,
                 ),
               ),
             ],

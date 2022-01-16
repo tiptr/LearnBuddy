@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/add_task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
@@ -26,16 +29,30 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
                 ),
                 Expanded(
                   child: TextField(
-                    decoration: const InputDecoration.collapsed(
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration.collapsed(
                       hintText: 'Name der Aufgabe',
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .textStyle1
+                          .withOnBackgroundSoft
+                          .withOutBold,
                       border: InputBorder.none,
                     ),
                     controller: textController,
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle1
+                        .withOnBackgroundHard
+                        .withBold,
                     onChanged: (text) async {
                       BlocProvider.of<AddTaskCubit>(context)
                           .addTaskAttribute(CreateTaskDto(
@@ -59,7 +76,7 @@ class TaskAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: Icon(
                     Icons.save_outlined,
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
                   ),
                   iconSize: 30,
                 ),

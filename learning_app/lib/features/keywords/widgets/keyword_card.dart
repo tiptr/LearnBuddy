@@ -62,10 +62,7 @@ class KeyWordCard extends StatelessWidget {
                           text: TextSpan(
                             // Note: Styles for TextSpans must be explicitly defined.
                             // Child text spans will inherit styles from parent
-                            style: Theme.of(context)
-                                .textTheme
-                                .textStyle3
-                                .withOnBackgroundHard,
+                            style: Theme.of(context).textTheme.textStyle2,
                             children: <TextSpan>[
                               const TextSpan(text: 'Willst du das Schlagwort '),
                               TextSpan(

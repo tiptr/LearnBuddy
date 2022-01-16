@@ -47,9 +47,7 @@ class TextInputField extends StatelessWidget {
             : null,
         label: Text(
           label,
-          // Same TextStyle with bold text. Inherited from the textfield,
-          // so the TextStyle is not explicitly defined with a constant
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
         hintText: hintText,
         hintStyle:
