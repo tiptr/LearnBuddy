@@ -6,9 +6,10 @@ import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
-import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
+import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:learning_app/constants/theme_constants.dart';
 
@@ -30,13 +31,56 @@ class TimerScreen extends StatelessWidget {
   }
 }
 
-class TimerView extends StatelessWidget {
+class TimerView extends StatefulWidget {
   const TimerView({Key? key}) : super(key: key);
+
+  @override
+  _TimerViewState createState() => _TimerViewState();
+}
+
+class _TimerViewState extends State<TimerView> {
+  final _panelController = PanelController();
+
+  @override
+  Widget build(BuildContext context) {
+    //List<TaskWithQueueStatus>? taskList = context.select((TaskQueueBloc bloc) => bloc.state.getTasks);
+    return SlidingUpPanel(
+      controller: _panelController,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(18.0),
+        topRight: Radius.circular(18.0),
+      ),
+      parallaxEnabled: true,
+      parallaxOffset: .0,
+      panelSnapping: true,
+      minHeight: 85,
+      maxHeight: MediaQuery.of(context).size.height * 0.6,
+      panelBuilder: (ScrollController sc) {
+        return TaskQueueList(
+          scrollController: sc,
+          panelController: _panelController,
+        );
+      },
+      color: Colors.white,
+      body: const Center(
+        child: TimerBackGround(),
+      ),
+    );
+  }
+}
+
+//Stack(
+//children: <Widget>[
+//const TimerBackGround(),
+//TimerDraggableScrollableSheet(_tween, _controller),
+
+class TimerBackGround extends StatelessWidget {
+  const TimerBackGround({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
         ActiveTaskBar(),
@@ -48,7 +92,6 @@ class TimerView extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
             child: PomodoroPhaseCountWidget()),
         TimerActions(),
-        ToggleActiveTask(),
       ],
     );
   }
