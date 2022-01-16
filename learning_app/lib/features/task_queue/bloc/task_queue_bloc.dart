@@ -34,8 +34,8 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
       var currentState = state;
       if (currentState is TaskQueueReady) {
         emit(TaskQueueReady(
-            tasks: event.taskList,
-            selectedTask: currentState.selectedTask,
+          tasks: event.taskList,
+          selectedTask: currentState.selectedTask,
         ));
       } else {
         logger.d("This state should not be accessible.");
@@ -59,8 +59,8 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
       var currentState = state;
       if (currentState is TaskQueueReady) {
         emit(TaskQueueReady(
-            tasks: currentState.tasks,
-            selectedTask: event.selectedTaskId,
+          tasks: currentState.tasks,
+          selectedTask: event.selectedTaskId,
         ));
       } else {
         logger.d("This state should not be accessible.");

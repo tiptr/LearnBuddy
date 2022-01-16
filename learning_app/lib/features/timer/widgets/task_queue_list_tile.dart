@@ -31,13 +31,16 @@ class TopLevelListTile extends StatelessWidget {
         maxLines: 1,
         textAlign: TextAlign.left,
         style: TextStyle(
-          color: topLevelTaskWithQueueStatus.task.id == selectedTaskId ? Theme.of(context).colorScheme.primary : const Color(0xFF636573),
+          color: topLevelTaskWithQueueStatus.task.id == selectedTaskId
+              ? Theme.of(context).colorScheme.primary
+              : const Color(0xFF636573),
         ),
       ),
-
       onTap: () {
-        taskQueueBloc.add(SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
-        timeLogBloc.add(AddTimeLoggingObjectEvent(topLevelTaskWithQueueStatus.task.id,
+        taskQueueBloc
+            .add(SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
+        timeLogBloc.add(AddTimeLoggingObjectEvent(
+            topLevelTaskWithQueueStatus.task.id,
             topLevelTaskWithQueueStatus.task.id));
       },
     );
@@ -47,17 +50,18 @@ class TopLevelListTile extends StatelessWidget {
 class AllSubtasksListTile extends StatelessWidget {
   final TaskWithQueueStatus topLevelTaskWithQueueStatus;
 
-  const AllSubtasksListTile({required this.topLevelTaskWithQueueStatus, Key? key})
+  const AllSubtasksListTile(
+      {required this.topLevelTaskWithQueueStatus, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (Task child in topLevelTaskWithQueueStatus.task.children)
-            SingleSubtask(child, topLevelTaskWithQueueStatus.task, 1),
-        ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (Task child in topLevelTaskWithQueueStatus.task.children)
+          SingleSubtask(child, topLevelTaskWithQueueStatus.task, 1),
+      ],
     );
   }
 }
@@ -97,8 +101,8 @@ class SingleSubtask extends StatelessWidget {
           selectedColor: Theme.of(context).colorScheme.primary,
           onTap: () {
             taskQueueBloc.add(SelectQueuedTaskEvent(task.id));
-            timeLogBloc.add(AddTimeLoggingObjectEvent(task.id,
-                topLevelTask.id));
+            timeLogBloc
+                .add(AddTimeLoggingObjectEvent(task.id, topLevelTask.id));
           },
         ),
         Container(
