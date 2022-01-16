@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/util/logger.dart';
 
 class TopLevelListTile extends StatelessWidget {
   final TaskWithQueueStatus topLevelTaskWithQueueStatus;
@@ -12,56 +14,54 @@ class TopLevelListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimeLoggingBloc bloc;
-    bloc = context.read<TimeLoggingBloc>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ListTile(
-          title: Text(
-            topLevelTaskWithQueueStatus.task.title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          onTap: () {
-            bloc.add(AddTimeLoggingObjectEvent(
-                topLevelTaskWithQueueStatus.task.id,
-                topLevelTaskWithQueueStatus.task.id));
-          },
+    final TimeLoggingBloc timeLogBloc = context.read<TimeLoggingBloc>();
+    final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
+    int? selectedTaskId;
+    if (taskQueueBloc.state is TaskQueueReady) {
+      final state = taskQueueBloc.state as TaskQueueReady;
+      selectedTaskId = state.selectedTask;
+    } else {
+      logger.d("This state should not be accessible: queue not initialized");
+    }
+
+    return InkWell(
+      child: Text(
+        topLevelTaskWithQueueStatus.task.title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          color: topLevelTaskWithQueueStatus.task.id == selectedTaskId
+              ? Theme.of(context).colorScheme.primary
+              : const Color(0xFF636573),
         ),
-      ],
+      ),
+      onTap: () {
+        taskQueueBloc
+            .add(SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
+        timeLogBloc.add(AddTimeLoggingObjectEvent(
+            topLevelTaskWithQueueStatus.task.id,
+            topLevelTaskWithQueueStatus.task.id));
+      },
     );
   }
 }
 
-class SubtaskFullTile extends StatelessWidget {
+class AllSubtasksListTile extends StatelessWidget {
   final TaskWithQueueStatus topLevelTaskWithQueueStatus;
 
-  const SubtaskFullTile({required this.topLevelTaskWithQueueStatus, Key? key})
+  const AllSubtasksListTile(
+      {required this.topLevelTaskWithQueueStatus, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 12),
-      margin: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color:
-                topLevelTaskWithQueueStatus.task.category?.color ?? Colors.grey,
-            width: 8,
-            style: BorderStyle.solid,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (Task child in topLevelTaskWithQueueStatus.task.children)
-            SingleSubtask(child, topLevelTaskWithQueueStatus.task, 1),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (Task child in topLevelTaskWithQueueStatus.task.children)
+          SingleSubtask(child, topLevelTaskWithQueueStatus.task, 1),
+      ],
     );
   }
 }
@@ -77,6 +77,16 @@ class SingleSubtask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TimeLoggingBloc timeLogBloc = context.read<TimeLoggingBloc>();
+    final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
+    int? selectedTaskId;
+    if (taskQueueBloc.state is TaskQueueReady) {
+      final state = taskQueueBloc.state as TaskQueueReady;
+      selectedTaskId = state.selectedTask;
+    } else {
+      logger.d("This state should not be accessible: queue not initialized");
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -86,25 +96,17 @@ class SingleSubtask extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
+          textColor: const Color(0xFF636573),
+          selected: task.id == selectedTaskId,
+          selectedColor: Theme.of(context).colorScheme.primary,
           onTap: () {
-            var bloc = context.read<TimeLoggingBloc>();
-            bloc.add(AddTimeLoggingObjectEvent(
-                task.id,
-                topLevelTask.id));
+            taskQueueBloc.add(SelectQueuedTaskEvent(task.id));
+            timeLogBloc
+                .add(AddTimeLoggingObjectEvent(task.id, topLevelTask.id));
           },
         ),
         Container(
-          padding: const EdgeInsets.only(left: 12),
-          margin: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                color: topLevelTask.category?.color ?? Colors.grey,
-                width: 8,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
+          margin: EdgeInsets.only(left: 24.0 * level),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

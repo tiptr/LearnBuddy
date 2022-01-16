@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 
-class TextInputField extends StatelessWidget {
+class TextInputField extends StatefulWidget {
   final String label;
   final String hintText;
   final IconData? iconData;
-  final TextEditingController textController;
-  final Function(String)? onChanged;
+  final Function(String)? onChange;
+  final String preselectedText;
 
   const TextInputField({
     Key? key,
+    required this.onChange,
+    required this.preselectedText,
     required this.label,
     required this.hintText,
     this.iconData,
-    required this.textController,
-    this.onChanged,
   }) : super(key: key);
+
+  @override
+  State<TextInputField> createState() => _TextInputFieldState();
+}
+
+class _TextInputFieldState extends State<TextInputField> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController.text = widget.preselectedText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +51,22 @@ class TextInputField extends StatelessWidget {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        prefixIcon: iconData != null
+        prefixIcon: widget.iconData != null
             ? Icon(
-                iconData,
+                widget.iconData,
                 color: const Color(0xFF636573),
               )
             : null,
         label: Text(
-          label,
+          widget.label,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        hintText: hintText,
+        hintText: widget.hintText,
         hintStyle: const TextStyle(color: Color(0xFF949597)),
       ),
       maxLines: null, // no limit
-      controller: textController,
-      onChanged: onChanged,
+      controller: _textEditingController,
+      onChanged: widget.onChange,
     );
   }
 }

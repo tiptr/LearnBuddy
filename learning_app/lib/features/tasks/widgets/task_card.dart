@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 import 'package:learning_app/constants/theme_constants.dart';
@@ -60,83 +64,104 @@ class TaskCard extends StatelessWidget {
       key: Key(_task.id.toString()),
       onDismissed: (_) =>
           BlocProvider.of<TasksCubit>(context).deleteTaskById(_task.id),
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        margin: const EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        color: Theme.of(context).cardColor,
-        elevation: _task.done ? CardElevation.low : CardElevation.high,
-        child: ColorFiltered(
-          // Grey out when done -> Overlay with semitransparent white; Else
-          // overlay with fulltransparent "black" (no effect)
-          colorFilter: ColorFilter.mode(
-              _task.done
-                  ? Theme.of(context).colorScheme.greyOutOverlayColor
-                  : Colors.transparent,
-              BlendMode.lighten),
-          child: Container(
-            padding: EdgeInsets.only(
-              top: 10.0,
-              bottom: 10.0,
-              right: 10.0,
-              left: _isSubTaskCard ? 10.0 : 3.0,
-            ),
-            // category:
-            decoration: _isSubTaskCard
-                ? null
-                : BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                          width: 12.5,
-                          color: _categoryColor ??
-                              Theme.of(context)
-                                  .colorScheme
-                                  .noCategoryDefaultColor),
-                    ),
-                  ),
-            height: _isSubTaskCard ? 75.0 : 110.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Checkbox
-                Expanded(
-                  flex: 10,
-                  child: Transform.scale(
-                    scale: _isSubTaskCard ? 1.3 : 1.5,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.all(
-                        _categoryColor,
-                      ),
-                      value: _task.done,
-                      shape: const CircleBorder(),
-                      onChanged: (bool? value) {
-                        BlocProvider.of<TasksCubit>(context)
-                            .toggleDone(_task.id, !_task.done);
-                      },
-                    ),
-                  ),
+      child: InkWell(
+        onTap: () async {
+          // Load the detail-dto for the selected card:
+          final DetailsReadTaskDto? details =
+              await BlocProvider.of<TasksCubit>(context)
+                  .getDetailsDtoForTopLevelTaskId(_task.id);
+
+          if (details != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TaskDetailsScreen(
+                  existingTask: details,
                 ),
-                const SizedBox(width: 5.0),
-                // Content
-                Expanded(
-                  flex: 80,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Left Row: title + keywords
-                      _buildTitleKeyWordsColumn(context),
-                      const SizedBox(width: 10.0), // min distance
-                      // Right Row: due date + stats
-                      _buildDueDateStatsColumn(context)
-                    ],
+              ),
+            );
+          } else {
+            log('The task with ID ${_task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
+          }
+        },
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          margin: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          color: Theme.of(context).cardColor,
+          elevation: _task.done ? CardElevation.low : CardElevation.high,
+          child: ColorFiltered(
+            // Grey out when done -> Overlay with semitransparent white; Else
+            // overlay with fulltransparent "black" (no effect)
+            colorFilter: ColorFilter.mode(
+                _task.done
+                    ? Theme.of(context).colorScheme.greyOutOverlayColor
+                    : Colors.transparent,
+                BlendMode.lighten),
+            child: Container(
+              padding: EdgeInsets.only(
+                top: 10.0,
+                bottom: 10.0,
+                right: 10.0,
+                left: _isSubTaskCard ? 10.0 : 3.0,
+              ),
+              // category:
+              decoration: _isSubTaskCard
+                  ? null
+                  : BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                            width: 12.5,
+                            color: _categoryColor ??
+                                Theme.of(context)
+                                    .colorScheme
+                                    .noCategoryDefaultColor),
+                      ),
+                    ),
+              height: _isSubTaskCard ? 75.0 : 110.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Checkbox
+                  Expanded(
+                    flex: 10,
+                    child: Transform.scale(
+                      scale: _isSubTaskCard ? 1.3 : 1.5,
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(
+                          _categoryColor,
+                        ),
+                        value: _task.done,
+                        shape: const CircleBorder(),
+                        onChanged: (bool? value) {
+                          BlocProvider.of<TasksCubit>(context)
+                              .toggleDone(_task.id, !_task.done);
+                        },
+                      ),
+                    ),
                   ),
-                )
-              ],
+                  const SizedBox(width: 5.0),
+                  // Content
+                  Expanded(
+                    flex: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Left Row: title + keywords
+                        _buildTitleKeyWordsColumn(context),
+                        const SizedBox(width: 10.0), // min distance
+                        // Right Row: due date + stats
+                        _buildDueDateStatsColumn(context)
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

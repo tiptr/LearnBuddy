@@ -15,3 +15,8 @@ class UpdateQueueOrderEvent extends TaskQueueEvent {
 class InitQueueEvent extends TaskQueueEvent {
   InitQueueEvent();
 }
+
+class SelectQueuedTaskEvent extends TaskQueueEvent {
+  final int? selectedTaskId;
+  SelectQueuedTaskEvent(this.selectedTaskId);
+}

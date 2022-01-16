@@ -11,15 +11,19 @@ extension DurationFormatting on Duration? {
     }
   }
 
-  String formatVarLength() {
-    final duration = this as Duration;
+  String toExactSecondsFormat({String? ifNull}) {
+    if (this == null) {
+      return ifNull ?? 'Ohne Dauer';
+    } else {
+      final duration = this as Duration;
 
-    final hours = (duration.inMinutes / 60).floor();
-    String hoursString = hours == 0 ? "" : "$hours h ";
-    final minutes = (duration.inMinutes % 60);
-    String minutesString = minutes == 0 ? "" : "$minutes min ";
-    final secondsString = (duration.inSeconds % 60).toString() + " sec";
-    return hoursString + minutesString + secondsString;
+      final hours = (duration.inMinutes / 60).floor();
+      String hoursString = hours == 0 ? "" : "$hours h ";
+      final minutes = (duration.inMinutes % 60);
+      String minutesString = minutes == 0 ? "" : "$minutes min ";
+      final secondsString = (duration.inSeconds % 60).toString() + " sec";
+      return hoursString + minutesString + secondsString;
+    }
   }
 
   /// Provides a rounded String representation of a duration
