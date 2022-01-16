@@ -29,4 +29,22 @@ class TaskKeywordsDao extends DatabaseAccessor<Database>
 
     return _taskKeyWordEntitiesStream as Stream<List<TaskKeywordEntity>>;
   }
+
+  /// Creates a new task-keyword relationship and returns its id.
+  ///
+  /// If it already exists, nothing happens, but the id is being returned
+  Future<int> createTaskKeyWordIfNotExists(TaskKeywordsCompanion companion) {
+    return into(taskKeywords).insertOnConflictUpdate(companion);
+  }
+
+  /// Creates a new task-keyword relationship and returns its id.
+  ///
+  /// If it already exists, nothing happens, but the id is being returned
+  Future<int> deleteTaskKeyWordsForTaskNotInList(
+      int taskId, List<int> keyWordIds) {
+    final deleteStatement = delete(taskKeywords)
+      ..where((tbl) => tbl.keywordId.isNotIn(keyWordIds));
+
+    return deleteStatement.go();
+  }
 }

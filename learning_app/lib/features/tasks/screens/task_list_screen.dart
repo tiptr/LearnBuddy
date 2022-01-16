@@ -4,7 +4,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/tasks/widgets/list_group_separator.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 import 'package:learning_app/shared/widgets/base_layout.dart';
@@ -102,7 +102,7 @@ class _TaskScreenState extends State<TaskScreen> {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const TaskAddScreen(),
+            builder: (context) => const TaskDetailsScreen(),
           ),
         ),
         child: const Icon(Icons.add),

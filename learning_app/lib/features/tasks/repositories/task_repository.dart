@@ -17,7 +17,7 @@ abstract class TaskRepository {
 
   Future<int> createTask(CreateTaskDto newTask);
 
-  Future<bool> update(int id, UpdateTaskDto updateDto);
+  Future<bool> update(UpdateTaskDto updateDto);
 
   Future<bool> deleteById(int id);
 
