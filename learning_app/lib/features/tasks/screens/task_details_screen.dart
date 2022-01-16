@@ -123,6 +123,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         interactive: true,
         controller: _scrollController,
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Container(
             margin: const EdgeInsets.all(20.0),
             child: Column(
@@ -182,7 +183,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                 const SizedBox(height: 20.0),
 
                 SubTasksList(
-                  scrollController: _scrollController,
                   subTasksList: detailsDto != null
                       ? detailsDto.children
                       : preSelectedSubtasks,

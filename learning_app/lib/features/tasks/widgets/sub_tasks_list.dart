@@ -5,12 +5,10 @@ import 'package:learning_app/features/tasks/widgets/create_sub_task_card.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
 class SubTasksList extends StatefulWidget {
-  final ScrollController scrollController;
   final List<DetailsReadTaskDto> subTasksList;
 
   const SubTasksList({
     Key? key,
-    required this.scrollController,
     this.subTasksList = const [],
   }) : super(key: key);
 
@@ -35,8 +33,6 @@ class _SubTasksListState extends State<SubTasksList> {
           // Use this physics, so that the scrolling of the parent is used instead
           // -> we want the whole view to be scrollable rather than just the subtasks
           physics: const NeverScrollableScrollPhysics(),
-          // Use the scroll controller of the parent, to actually allow scrolling
-          controller: widget.scrollController,
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: subTasksList.length,
