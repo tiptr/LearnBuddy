@@ -53,7 +53,8 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
                     _descriptionControllers.add(newDescriptionController);
                     // add another item to the list
                     //items.add(items.length);
-                    items.add(ListViewItem(newDescriptionController: newDescriptionController));
+                    items.add(ListViewItem(
+                        newDescriptionController: newDescriptionController));
                   });
                 },
                 child: Ink(
@@ -87,15 +88,16 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
 }
 
 class ListViewItem extends StatelessWidget {
-  const ListViewItem({Key? key, required this.newDescriptionController}) : super(key: key);
+  const ListViewItem({Key? key, required this.newDescriptionController})
+      : super(key: key);
 
   final TextEditingController newDescriptionController;
 
   @override
   Widget build(BuildContext context) {
-     return Column(
+    return Column(
       children: [
-          TermInputField(
+        TermInputField(
           hintText: "Text eingeben",
           iconData: Icons.edit,
           textController: newDescriptionController,

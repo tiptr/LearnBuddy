@@ -27,6 +27,7 @@ class TermInputField extends StatelessWidget {
         hintText: hintText,
       ),
       controller: textController,
+      autofocus: true,
     );
   }
 }
