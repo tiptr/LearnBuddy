@@ -130,7 +130,7 @@ class MyHomePage extends StatelessWidget {
       return SafeArea(
         child: Scaffold(
           body: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
+            duration: const Duration(milliseconds: 350),
             switchInCurve: Curves.linear,
             child: _pages[selectedIndex],
           ),
