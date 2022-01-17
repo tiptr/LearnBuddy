@@ -114,7 +114,16 @@ class _TaskQueueListState extends State<TaskQueueList> {
 
   List<Widget> generateExpansionTiles(List<TaskWithQueueStatus> list) {
     return [
-      for (int i = 0; i < list.length; i++) customExpansionTile(list[i], i)
+      for (int i = 0; i < list.length; i++)
+        Dismissible(
+          key: Key(list[i].task.id.toString()),
+          child: customExpansionTile(list[i], i),
+          onDismissed: (direction) {
+            context
+                .read<TaskQueueBloc>()
+                .add(RemoveFromQueueEvent(list[i].task.id));
+          },
+        )
     ];
   }
 

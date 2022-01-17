@@ -25,4 +25,10 @@ class DbQueueRepository implements QueueRepository {
     });
     return count;
   }
+
+  @override
+  Future<bool> deleteQueueElementById(int id) async {
+    final affected = await dao.deleteQueueElementById(id);
+    return affected > 0;
+  }
 }

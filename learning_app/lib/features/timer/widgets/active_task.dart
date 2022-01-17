@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
@@ -64,9 +66,10 @@ class ActiveTaskCard extends StatelessWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
+
     return Container(
-      padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
-      margin: const EdgeInsets.only(top: 5, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 5, left: 5, right: 0),
+      margin: const EdgeInsets.only(top: 5, left: 5, right: 0),
       child: Row(
         children: [
           Container(
@@ -107,7 +110,7 @@ class ActiveTaskCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.hourglass_top,
-                          size: 20,
+                          size: 15,
                           color: Theme.of(context).colorScheme.onBackgroundHard,
                         ),
                         Text(
@@ -123,13 +126,16 @@ class ActiveTaskCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.hourglass_bottom,
-                          size: 20,
+                          size: 15,
                           color: Theme.of(context).colorScheme.onBackgroundHard,
                         ),
                         Text(
                           "Aufgewendet: " + timeSpent,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.textStyle4,
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundHard,
                         ),
                       ],
                     )
@@ -138,6 +144,33 @@ class ActiveTaskCard extends StatelessWidget {
               ],
             ),
           ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  TimeLoggingBloc timeLoggingBloc =
+                      context.read<TimeLoggingBloc>();
+                  timeLoggingBloc.add(const RemoveTimeLoggingObjectEvent());
+                  context.read<TaskQueueBloc>().add(RemoveSelectedTaskEvent());
+                },
+              ),
+              Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateProperty.all(
+                  task.category?.color,
+                ),
+                value: task.doneDateTime == null ? false : true,
+                shape: const CircleBorder(),
+                onChanged: (bool? value) {
+                  BlocProvider.of<TasksCubit>(context).toggleDone(
+                      task.id, task.doneDateTime == null ? true : false);
+                },
+              ),
+              const Spacer(),
+            ],
+          )
         ],
       ),
     );
