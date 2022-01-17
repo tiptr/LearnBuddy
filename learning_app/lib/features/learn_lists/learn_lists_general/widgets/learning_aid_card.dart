@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/features/learning_aids/models/learning_aid.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
 
 const double iconSize = 18.0;
 

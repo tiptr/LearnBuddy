@@ -10,7 +10,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'package:learning_app/features/learning_aids/screens/learning_aids_screen.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 
