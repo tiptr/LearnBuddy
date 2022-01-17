@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
@@ -63,9 +64,10 @@ class ActiveTaskCard extends StatelessWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
+
     return Container(
-      padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
-      margin: const EdgeInsets.only(top: 5, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 5, left: 5, right: 0),
+      margin: const EdgeInsets.only(top: 5, left: 5, right: 0),
       child: Row(
         children: [
           Container(
@@ -109,13 +111,13 @@ class ActiveTaskCard extends StatelessWidget {
                       children: [
                         const Icon(
                           Icons.hourglass_top,
-                          size: 20,
+                          size: 15,
                           color: Color(0xFF40424A),
                         ),
                         Text(
                           "Urspr.: " + estimatedTime,
                           style: const TextStyle(
-                            fontSize: 10,
+                            fontSize: 8,
                             color: Color(0xFF40424A),
                           ),
                         ),
@@ -125,14 +127,14 @@ class ActiveTaskCard extends StatelessWidget {
                       children: [
                         const Icon(
                           Icons.hourglass_bottom,
-                          size: 20,
+                          size: 15,
                           color: Color(0xFF40424A),
                         ),
                         Text(
                           "Aufgewendet: " + timeSpent,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 10,
+                            fontSize: 8,
                             color: Color(0xFF40424A),
                           ),
                         ),
@@ -143,6 +145,32 @@ class ActiveTaskCard extends StatelessWidget {
               ],
             ),
           ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  TimeLoggingBloc timeLoggingBloc =
+                      context.read<TimeLoggingBloc>();
+                  timeLoggingBloc.add(const RemoveTimeLoggingObjectEvent());
+                },
+              ),
+              Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateProperty.all(
+                  task.category?.color,
+                ),
+                value: task.doneDateTime == null ? false : true,
+                shape: const CircleBorder(),
+                onChanged: (bool? value) {
+                  BlocProvider.of<TasksCubit>(context).toggleDone(
+                      task.id, task.doneDateTime == null ? true : false);
+                },
+              ),
+              const Spacer(),
+            ],
+          )
         ],
       ),
     );

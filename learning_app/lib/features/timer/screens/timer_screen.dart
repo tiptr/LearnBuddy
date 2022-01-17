@@ -53,8 +53,8 @@ class _TimerViewState extends State<TimerView> {
       parallaxEnabled: true,
       parallaxOffset: .0,
       panelSnapping: true,
-      minHeight: 85,
-      maxHeight: MediaQuery.of(context).size.height * 0.6,
+      minHeight: 145,
+      maxHeight: MediaQuery.of(context).size.height * 0.61,
       panelBuilder: (ScrollController sc) {
         return TaskQueueList(
           scrollController: sc,
@@ -85,11 +85,11 @@ class TimerBackGround extends StatelessWidget {
       children: const <Widget>[
         ActiveTaskBar(),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.0),
+          padding: EdgeInsets.symmetric(vertical: 20.0),
           child: TimerWidget(),
         ),
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 70),
             child: PomodoroPhaseCountWidget()),
         TimerActions(),
       ],
@@ -118,7 +118,7 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
         // index starts with 1 apparently :(
         selectedColor: completedSessionColor,
         size: 30,
-        padding: 10,
+        padding: 5,
         customStep: (index, color, _) {
           return Container(
             width: 30.0,
@@ -160,8 +160,8 @@ class TimerWidget extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state is! TimerRunComplete);
 
     return SizedBox(
-      width: 200,
-      height: 200,
+      width: 180,
+      height: 180,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -170,6 +170,9 @@ class TimerWidget extends StatelessWidget {
             child: CircularProgressIndicator(
               value: duration / phaseDuration,
               strokeWidth: 15,
+              color: Theme.of(context)
+                  .colorScheme
+                  .timerProgressIndicatorCompletedSessionColor,
             ),
           ),
           Column(
@@ -178,12 +181,12 @@ class TimerWidget extends StatelessWidget {
               Flexible(
                 child: Text(
                   pomoState,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
               ),
               // This text should be in the middle of the circular progress bar
               Text('$signStr$minutesStr:$secondsStr',
-                  style: Theme.of(context).textTheme.headline2),
+                  style: Theme.of(context).textTheme.headline3),
             ],
           )
         ],
