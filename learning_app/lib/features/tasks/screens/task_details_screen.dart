@@ -177,6 +177,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
       appBar: TaskAddAppBar(
         existingTask: detailsDto,
         onSaveTask: onSaveTask,
+        onDelete: onDeleteTask,
+        onExit: onExitTask,
       ),
       body: Scrollbar(
         interactive: true,
@@ -312,5 +314,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
     }
 
     return await BlocProvider.of<AlterTaskCubit>(context).saveTask();
+  }
+
+  /// Handles the 'save task' functionality
+  Future<bool> onDeleteTask() async {
+   // TODO: implement
+    return false;
+  }
+
+  /// Handles the 'save task' functionality
+  Future<bool> onExitTask() async {
+    // TODO: implement
+    return true;
   }
 }

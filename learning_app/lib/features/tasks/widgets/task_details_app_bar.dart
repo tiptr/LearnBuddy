@@ -5,15 +5,20 @@ import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
+import 'package:learning_app/features/tasks/widgets/task_details_three_points_menu.dart';
 
 class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   final DetailsReadTaskDto? existingTask;
   final Function() onSaveTask;
+  final Function() onExit;
+  final Function() onDelete;
 
   const TaskAddAppBar({
     Key? key,
     this.existingTask,
     required this.onSaveTask,
+    required this.onExit,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -25,12 +30,26 @@ class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _TaskAddAppBarState extends State<TaskAddAppBar> {
   final TextEditingController _textEditingController = TextEditingController();
+  bool titleEmpty = true;
 
   @override
   void initState() {
     super.initState();
     // Initial value, if present
     _textEditingController.text = widget.existingTask?.title ?? '';
+
+    _textEditingController.addListener(() {
+      // Toggle titleEmpty
+      if (_textEditingController.text != '' && titleEmpty) {
+        setState(() {
+          titleEmpty = false;
+        });
+      } else if (_textEditingController.text == '' && !titleEmpty) {
+        setState(() {
+          titleEmpty = true;
+        });
+      }
+    });
   }
 
   @override
@@ -45,8 +64,11 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    bool allowed = await widget.onExit();
+                    if (allowed) {
+                      Navigator.pop(context);
+                    }
                   },
                   icon: const Icon(Icons.arrow_back),
                   iconSize: 30,
@@ -68,21 +90,10 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                     maxLines: 1,
                   ),
                 ),
-                IconButton(
-                  onPressed: () async {
-                    int? savedTaskId = await widget.onSaveTask();
-
-                    if (savedTaskId != null) {
-                      // Exit task details screen
-                      Navigator.pop(context);
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.save_outlined,
-                    color: Color(0xFF636573),
-                  ),
-                  iconSize: 30,
-                ),
+                // Right button
+                widget.existingTask == null
+                  ? _buildSaveButton()
+                  : buildThreePointsMenu(onDelete: widget.onDelete),
               ],
             ),
           ),
@@ -90,4 +101,26 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
       ),
     );
   }
+
+  /// Save-button displayed for the creation of new tasks
+  Widget _buildSaveButton() {
+    return IconButton(
+      onPressed: () async {
+        int? savedTaskId = await widget.onSaveTask();
+
+        if (savedTaskId != null) {
+          // Exit task details screen
+          Navigator.pop(context);
+        }
+      },
+      icon: Icon(
+        Icons.save_outlined,
+        color: titleEmpty
+          ? const Color(0xFF949597)
+            : const Color(0xFF40424A),
+      ),
+      iconSize: 30,
+    );
+  }
+
 }
