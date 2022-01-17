@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
+import 'package:learning_app/constants/basic_card.dart';
 
 const double iconSize = 14.0;
 
@@ -65,7 +65,7 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       color: Theme.of(context).cardColor,
-      elevation: CardElevation.high,
+      elevation: BasicCard.elevation.high,
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 10.0,

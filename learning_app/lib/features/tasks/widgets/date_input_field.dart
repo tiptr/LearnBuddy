@@ -93,7 +93,7 @@ class _DateInputFieldState extends State<DateInputField> {
         ),
         suffixIcon: date != null
             ? IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   color: Theme.of(context).colorScheme.onBackground,
                 ),

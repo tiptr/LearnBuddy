@@ -49,6 +49,7 @@ class _SubTasksListState extends State<SubTasksList> {
               return TaskCard(
                 isSubTaskCard: true,
                 task: ListReadTaskDto.fromDetailsReadTasksDto(detailsDto),
+                context: context,
               );
             } else {
               // Build card for new subtask creation

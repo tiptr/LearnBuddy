@@ -99,7 +99,8 @@ class _TaskCardState extends State<TaskCard> {
           ),
           color: Theme.of(context).colorScheme.cardColor,
           shadowColor: Theme.of(context).colorScheme.shadowColor,
-          elevation: _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
+          elevation:
+              _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
           child: ColorFiltered(
             // Grey out when done -> Overlay with semitransparent white; Else
             // overlay with fulltransparent "black" (no effect)
@@ -183,7 +184,7 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Widget _buildTitleKeyWordsColumn(BuildContext context) {
-    TextStyle titleStyle = _isSubTaskCard
+    TextStyle titleStyle = widget._isSubTaskCard
         ? Theme.of(context).textTheme.textStyle3.withOnBackgroundHard.withBold
         : Theme.of(context).textTheme.textStyle2.withOnBackgroundHard.withBold;
     return Expanded(
@@ -201,16 +202,14 @@ class _TaskCardState extends State<TaskCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            Text(
-              widget._task.title,
-              maxLines: 2,
-            style: _checked
-                ? titleStyle.copyWith(
-              decoration: TextDecoration.lineThrough,
-              decorationThickness: 2.0,
-            )
-                : titleStyle),
-            ),
+            Text(widget._task.title,
+                maxLines: 2,
+                style: _checked
+                    ? titleStyle.copyWith(
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 2.0,
+                      )
+                    : titleStyle),
 
             // Keywords
             if (widget._task.keywords.isNotEmpty)
