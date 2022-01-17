@@ -16,32 +16,30 @@ class TopLevelListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final TimeLoggingBloc timeLogBloc = context.read<TimeLoggingBloc>();
     final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
-    int? selectedTaskId;
-    if (taskQueueBloc.state is TaskQueueReady) {
-      final state = taskQueueBloc.state as TaskQueueReady;
-      selectedTaskId = state.selectedTask;
-    } else {
-      logger.d("This state should not be accessible: queue not initialized");
-    }
 
-    return InkWell(
-      child: Text(
-        topLevelTaskWithQueueStatus.task.title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          color: topLevelTaskWithQueueStatus.task.id == selectedTaskId
-              ? Theme.of(context).colorScheme.primary
-              : const Color(0xFF636573),
-        ),
-      ),
-      onTap: () {
-        taskQueueBloc
-            .add(SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
-        timeLogBloc.add(AddTimeLoggingObjectEvent(
-            topLevelTaskWithQueueStatus.task.id,
-            topLevelTaskWithQueueStatus.task.id));
+    return BlocBuilder<TaskQueueBloc, TaskQueueState>(
+      builder: (context, state) {
+        return InkWell(
+          child: Text(
+            topLevelTaskWithQueueStatus.task.title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: topLevelTaskWithQueueStatus.task.id ==
+                      (state as TaskQueueReady).selectedTask
+                  ? Theme.of(context).colorScheme.primary
+                  : const Color(0xFF636573),
+            ),
+          ),
+          onTap: () {
+            taskQueueBloc.add(
+                SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
+            timeLogBloc.add(AddTimeLoggingObjectEvent(
+                topLevelTaskWithQueueStatus.task.id,
+                topLevelTaskWithQueueStatus.task.id));
+          },
+        );
       },
     );
   }
