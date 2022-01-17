@@ -89,7 +89,7 @@ class _DurationInputFieldState extends State<DurationInputField> {
         suffixIcon: duration != null
             ? IconButton(
                 icon: const Icon(
-                  Icons.backspace_outlined,
+                  Icons.close,
                   color: Color(0xFF636573),
                 ),
                 onPressed: () {
