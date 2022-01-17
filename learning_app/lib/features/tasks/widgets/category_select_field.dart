@@ -93,6 +93,7 @@ class _CategorySelectFieldState extends State<CategorySelectField> {
             setState(() {
               category = newValue!;
             });
+            widget.onSelect(newValue?.id);
           },
         ),
       ),
