@@ -16,9 +16,11 @@ class LeisureCategoryLoaded extends LeisureCategoryState {
   late Stream<List<ReadLeisureCategoriesDto>> listViewLeisureCategoriesStream;
 
   LeisureCategoryLoaded({required this.selectedLeisureCategoriesStream}) {
-    listViewLeisureCategoriesStream = selectedLeisureCategoriesStream.map((categoryList) {
+    listViewLeisureCategoriesStream =
+        selectedLeisureCategoriesStream.map((categoryList) {
       return categoryList
-          .map((category) => ReadLeisureCategoriesDto.fromLeisureCategory(category))
+          .map((category) =>
+              ReadLeisureCategoriesDto.fromLeisureCategory(category))
           .toList();
     });
   }

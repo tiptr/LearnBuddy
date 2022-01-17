@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
+import 'package:learning_app/features/tasks/bloc/add_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:logger/logger.dart';
-import 'features/tasks/bloc/add_task_cubit.dart';
-import 'features/timer/screens/timer_screen.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
+
+import 'constants/theme_constants.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -42,6 +46,11 @@ void main() {
             return cubit;
           },
         ),
+        BlocProvider<TimeLoggingBloc>(
+          create: (context) {
+            return TimeLoggingBloc();
+          },
+        ),
         BlocProvider<AddTaskCubit>(
           lazy: true,
           create: (context) {
@@ -53,6 +62,14 @@ void main() {
           create: (context) {
             var cubit = CategoriesCubit();
             cubit.loadCategories();
+            return cubit;
+          },
+        ),
+        BlocProvider<KeyWordsCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = KeyWordsCubit();
+            cubit.loadKeyWords();
             return cubit;
           },
         ),
@@ -76,14 +93,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
-
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          primary: const Color(0xFF3444CF),
-          secondary: const Color(0xFF9E5EE1),
-        ),
+        colorScheme: ColorSchemes.defaultColorScheme(),
         scrollbarTheme: ScrollbarThemeData(
           isAlwaysShown: false,
           thickness: MaterialStateProperty.all(10),
@@ -132,7 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor:
+          Theme.of(context).colorScheme.bottomNavigationBarUnselectedItemColor,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,

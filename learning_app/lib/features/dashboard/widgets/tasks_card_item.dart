@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/features/categories/constants/selection_colors.dart';
+import 'package:learning_app/constants/theme_constants.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/util/logger.dart';
 
@@ -17,7 +17,7 @@ class TasksCardItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.5),
       ),
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: Theme.of(context).cardColor,
       elevation: CardElevation.high,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
@@ -25,10 +25,10 @@ class TasksCardItem extends StatelessWidget {
           border: Border(
             left: BorderSide(
               width: 12.5,
-              color: task.categoryColor ?? noCategoryDefaultColor,
+              color: task.categoryColor ??
+                  Theme.of(context).colorScheme.noCategoryDefaultColor,
             ),
           ),
-          color: Colors.white,
         ),
         height: 75.0,
         child: Row(
@@ -54,7 +54,7 @@ class TasksCardItem extends StatelessWidget {
                   ),
                   Text(
                     task.keywords.join(", "),
-                    style: const TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Color(0xFF949597)),
                   )
                 ],
               ),

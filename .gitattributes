@@ -1,0 +1,26 @@
+assets/* linguist-generated=true
+learning_app/assets/* linguist-generated=true
+learning_app/assets/leisure/* linguist-generated=true
+
+# Don't treat SVG as text.
+*.svg -diff
+*.svg    binary
+*.svg linguist-generated=true
+
+*.lock linguist-generated=true
+*.lock -diff
+
+*.xconfig linguist-generated=true
+*.xconfig -diff
+
+**/Podfile linguist-generated=true
+**/Podfile -diff
+
+*.pbxproj linguist-generated=true
+*.pbxproj -diff
+
+*.xcscheme linguist-generated=true
+*.xcscheme -diff
+
+*.xcworkspacedata linguist-generated=true
+*.xcworkspacedata -diff
