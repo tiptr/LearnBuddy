@@ -130,9 +130,9 @@ class MyHomePage extends StatelessWidget {
       return SafeArea(
         child: Scaffold(
           body: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              switchInCurve: Curves.linear,
-              child: _pages[selectedIndex],
+            duration: const Duration(milliseconds: 250),
+            switchInCurve: Curves.linear,
+            child: _pages[selectedIndex],
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
@@ -166,7 +166,6 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
-
       );
     });
   }
