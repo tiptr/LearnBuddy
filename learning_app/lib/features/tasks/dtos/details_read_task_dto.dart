@@ -58,8 +58,8 @@ class DetailsReadTaskDto {
   /// Creates a details dto from the model. Optionally can provide the details
   /// DTO for a specific subtask (of this model), if a targetId is provided
   static DetailsReadTaskDto? fromTaskWithQueueStatus(
-      TaskWithQueueStatus topLevelTaskWithQueueStatus,
-      {int? targetId}) {
+      {required TaskWithQueueStatus topLevelTaskWithQueueStatus,
+      int? targetId}) {
     final task = topLevelTaskWithQueueStatus.task;
 
     DetailsReadTaskDto topLevelDetailsDto = _buildFromTaskWithQueueStatus(
