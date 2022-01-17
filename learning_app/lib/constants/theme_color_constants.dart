@@ -11,11 +11,11 @@ class ColorSchemes {
     const onBackgroundColor = Color(0xFFAAAAAA);
     const onBackgroundHardColor = Color(0xFFFFFFFF);
     ColorScheme darkTheme = const ColorScheme.dark().copyWith(
-      primary: const Color(0xFFFF2222),
-      secondary: const Color(0xFFEEEE44),
+      primary: const Color(0xFFC51212),
+      secondary: const Color(0xFFC56C12),
       background: backgroundColor,
       onPrimary: const Color(0xFFFFFFFF),
-      onSecondary: const Color(0xFF000000),
+      onSecondary: const Color(0xFFFFFFFF),
       onBackground: onBackgroundColor,
 
       //necessary for native components such as DatePicker, DurationPicker
@@ -23,11 +23,11 @@ class ColorSchemes {
       onSurface: onBackgroundHardColor,
     );
     darkTheme.setCustomAttributes(
-      greyOutOverlayColor: const Color(0xB8060606),
+      greyOutOverlayColor: const Color(0xB8161616),
       noCategoryDefaultColor: darkTheme.onBackground,
       onBackgroundHard: onBackgroundHardColor,
       onBackgroundSoft: const Color(0xFF636573),
-      tertiary: const Color(0xFFFF8844),
+      tertiary: const Color(0xFFC5C504),
       onTertiary: const Color(0xFF000000), // Same as onBackgroundHard
       subtleBackgroundGrey: const Color(0xFF3F3F3F),
       cardColor: const Color(0xFF303030),

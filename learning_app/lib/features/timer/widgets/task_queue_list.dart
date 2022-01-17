@@ -148,6 +148,7 @@ class _TaskQueueListState extends State<TaskQueueList> {
               ),
             ),
             iconColor: Theme.of(context).colorScheme.onBackground,
+            collapsedIconColor: Theme.of(context).colorScheme.onBackground,
             initiallyExpanded: false,
             childrenPadding: const EdgeInsets.only(left: 0.0, right: 10.0),
           )

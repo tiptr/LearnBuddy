@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/settings/screens/display_style_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
@@ -29,7 +30,7 @@ class SettingsOverviewScreen extends StatelessWidget {
               title: "Darstellung und Farbe",
               subtitle: "Dark / Light Mode, Highlightfarben, ...",
               iconData: Icons.palette_outlined,
-              nextScreen: const NotImplementedScreen()),
+              nextScreen: const DisplayStyleSettingsScreen()),
           _settingsGroup(
               context: context,
               title: "Dashboard",
