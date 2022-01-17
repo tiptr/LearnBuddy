@@ -34,7 +34,8 @@ class _SubTasksListState extends State<SubTasksList> {
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: widget.subTasksList.length + (currentlyCreatingNewSubtask ? 1 : 0),
+          itemCount: widget.subTasksList.length +
+              (currentlyCreatingNewSubtask ? 1 : 0),
           // itemExtent: 95,
           itemBuilder: (BuildContext context, int index) {
             if (index < widget.subTasksList.length) {

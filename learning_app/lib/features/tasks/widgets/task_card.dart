@@ -59,7 +59,7 @@ class _TaskCardState extends State<TaskCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: 0.0, // defined in the list
+          horizontal: widget._isSubTaskCard ? 0.0 : 10.0,
           vertical: widget._isSubTaskCard
               ? distanceBetweenCardsSubTasks
               : distanceBetweenCardsTopLevel),
