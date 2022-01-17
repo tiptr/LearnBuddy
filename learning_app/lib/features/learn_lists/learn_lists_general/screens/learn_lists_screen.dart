@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learning_aid_add_screen.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learning_aid_body_add_screen.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_card.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -40,7 +40,7 @@ class LearningAidsScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => const LearningAidBodyAddScreen(),
                 ),
-        )     ,
+              ),
               icon: Icons.accessibility_new_rounded,
               text: "Begriffe an Körperteile binden",
             ),
