@@ -132,7 +132,10 @@ class MyHomePage extends StatelessWidget {
           body: AnimatedSwitcher(
             duration: const Duration(milliseconds: 350),
             switchInCurve: Curves.linear,
-            child: _pages[selectedIndex],
+            child: IndexedStack(
+              index: selectedIndex,
+              children: _pages,
+            ),
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
