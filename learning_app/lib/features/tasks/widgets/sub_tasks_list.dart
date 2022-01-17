@@ -8,10 +8,12 @@ import 'package:learning_app/features/tasks/widgets/task_card.dart';
 
 class SubTasksList extends StatefulWidget {
   final List<DetailsReadTaskDto> subTasksList;
+  final bool directlyStartSubtaskCreation;
 
   const SubTasksList({
     Key? key,
     this.subTasksList = const [],
+    this.directlyStartSubtaskCreation = false,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,9 @@ class _SubTasksListState extends State<SubTasksList> {
   @override
   void initState() {
     super.initState();
+    if (widget.directlyStartSubtaskCreation) {
+      currentlyCreatingNewSubtask = true;
+    }
   }
 
   @override
@@ -59,16 +64,17 @@ class _SubTasksListState extends State<SubTasksList> {
                   // When enter is used, allow the quick creation of multiple
                   // subtasks
                   // -> currentlyCreatingNewSubtask not changed on purpose
-                  BlocProvider.of<AlterTaskCubit>(context).createNewSubTask(title);
-
-                  },
+                  BlocProvider.of<AlterTaskCubit>(context)
+                      .createNewSubTask(title);
+                },
                 onUseButtonSubmit: (title) async {
                   // When the button is used, only create one subtask
                   setState(() {
                     currentlyCreatingNewSubtask = false;
                   });
 
-                  BlocProvider.of<AlterTaskCubit>(context).createNewSubTask(title);
+                  BlocProvider.of<AlterTaskCubit>(context)
+                      .createNewSubTask(title);
                 },
               );
             }

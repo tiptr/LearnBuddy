@@ -23,6 +23,7 @@ class TaskDetailsScreen extends StatelessWidget {
   final int? existingTaskId;
   final int? directParentId;
   final int? topLevelParentId;
+  final bool directlyStartSubtaskCreation;
 
   /// If nothing is provided, the screen is used to create a new top level task.
   /// If a directParentId is provided, a new sub-task will be created for
@@ -35,6 +36,7 @@ class TaskDetailsScreen extends StatelessWidget {
     this.existingTaskId,
     this.directParentId, // if null -> top level task
     this.topLevelParentId, // required, if any of the others is set
+    this.directlyStartSubtaskCreation = false,
   }) : super(key: key);
 
   @override
@@ -48,6 +50,7 @@ class TaskDetailsScreen extends StatelessWidget {
         existingTaskId: existingTaskId,
         parentId: directParentId,
         topLevelParentId: topLevelParentId,
+        directlyStartSubtaskCreation: directlyStartSubtaskCreation,
       ),
     );
   }
@@ -60,12 +63,14 @@ class TaskDetailsScreenMainElement extends StatefulWidget {
   final int? existingTaskId;
   final int? parentId;
   final int? topLevelParentId;
+  final bool directlyStartSubtaskCreation;
 
   const TaskDetailsScreenMainElement({
     Key? key,
-    this.existingTaskId,
-    this.parentId, // if null -> top level task
-    this.topLevelParentId, // required, if any of the others is set
+    required this.existingTaskId,
+    required this.parentId, // if null -> top level task
+    required this.topLevelParentId, // required, if any of the others is set
+    required this.directlyStartSubtaskCreation,
   }) : super(key: key);
 
   @override
@@ -169,7 +174,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
     DetailsReadTaskDto? parentDetailsDto,
   }) {
     return Scaffold(
-      appBar: TaskAddAppBar(existingTask: detailsDto, onSaveTask: onSaveTask,),
+      appBar: TaskAddAppBar(
+        existingTask: detailsDto,
+        onSaveTask: onSaveTask,
+      ),
       body: Scrollbar(
         interactive: true,
         controller: _scrollController,
@@ -235,7 +243,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                 const SizedBox(height: 20.0),
                 // Subtasks list or shortcut button
                 detailsDto != null
-                    ? SubTasksList(subTasksList: detailsDto.children)
+                    ? SubTasksList(
+                        subTasksList: detailsDto.children,
+                        directlyStartSubtaskCreation:
+                            widget.directlyStartSubtaskCreation)
                     : InkWell(
                         onTap: () async {
                           int? savedTaskId = await onSaveTask();
@@ -248,22 +259,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                               MaterialPageRoute(
                                 builder: (context) => TaskDetailsScreen(
                                   existingTaskId: id,
-                                  topLevelParentId: id, // Subtasks are not created this way
+                                  topLevelParentId:
+                                      id, // Subtasks are not created this way
+                                  directlyStartSubtaskCreation: true,
                                 ),
                               ),
                             );
                           }
-
-
-
-
-                          //TODO: handle different at task creation screen!
-
-                          // setState(() {
-                          //   currentlyCreatingNewSubtask = true;
-                          // });
-                          // Exit task details screen
-
                         },
                         child: Ink(
                           height: 50,
@@ -297,13 +299,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
   }
 
   /// Handles the 'save task' functionality
-  Future<int?> onSaveTask() async{
+  Future<int?> onSaveTask() async {
     final cubit = BlocProvider.of<AlterTaskCubit>(context);
     // validate required fields:
     if (!cubit.validateTaskConstruction()) {
       // Not ready to save! Inform the user and continue
-      final missingFieldsDescr =
-      cubit.getMissingFieldsDescription();
+      final missingFieldsDescr = cubit.getMissingFieldsDescription();
       logger.d(
           'The task is not ready to be saved! Description: $missingFieldsDescr');
       // TODO: inform the user with a SnackBar

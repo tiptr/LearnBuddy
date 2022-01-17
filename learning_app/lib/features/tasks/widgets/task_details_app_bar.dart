@@ -5,7 +5,6 @@ import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
-import 'package:learning_app/util/logger.dart';
 
 class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   final DetailsReadTaskDto? existingTask;

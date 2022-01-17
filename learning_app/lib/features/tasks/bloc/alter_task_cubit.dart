@@ -166,13 +166,12 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
         return false;
       }
 
-      int newSubTaskId =
-        await _taskRepository.createTask(CreateTaskDto(
-            parentId: constructingState.updateTaskDto.id,
-            title: Value(title),
-            // Adopt the category from the parent
-            categoryId: constructingState.updateTaskDto.categoryId,
-        ));
+      int newSubTaskId = await _taskRepository.createTask(CreateTaskDto(
+        parentId: constructingState.updateTaskDto.id,
+        title: Value(title),
+        // Adopt the category from the parent
+        categoryId: constructingState.updateTaskDto.categoryId,
+      ));
 
       logger.d("[Task Cubit] New subtask was saved. Id: $newSubTaskId");
 

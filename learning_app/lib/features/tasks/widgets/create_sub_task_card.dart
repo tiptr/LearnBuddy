@@ -86,7 +86,7 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
                       widget.onDiscard();
                     },
                     icon: const Icon(
-                        Icons.cancel_outlined,
+                      Icons.cancel_outlined,
                       color: Color(0xFF40424A),
                     )),
               ),
@@ -105,7 +105,9 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
                     },
                     icon: Icon(
                       Icons.add_task_outlined,
-                      color: titleEmpty ? const Color(0xFF949597) : const Color(0xFF40424A),
+                      color: titleEmpty
+                          ? const Color(0xFF949597)
+                          : const Color(0xFF40424A),
                     )),
               )
             ],
