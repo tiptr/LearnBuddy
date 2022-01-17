@@ -7,6 +7,7 @@ import 'package:learning_app/features/categories/widgets/category_form_dialog.da
 import 'package:learning_app/features/categories/widgets/category_card.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 
 class CategoryOverviewScreen extends StatelessWidget {
   const CategoryOverviewScreen({Key? key}) : super(key: key);
@@ -24,25 +25,19 @@ class CategoryOverviewScreen extends StatelessWidget {
         return StreamBuilder<List<ReadCategoryDto>>(
           stream: state.categoriesStream,
           builder: (context, snapshot) {
+            late Widget body;
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
+              body = const Center(child: CircularProgressIndicator());
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              body = Center(
                 child: Text(
                     'Du hast aktuell keine Kategorien.\nDrücke auf das Plus, um eine Kategorie anzulegen',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.textStyle4),
               );
-            }
-
-            final categories = snapshot.data!;
-
-            return Scaffold(
-              appBar: const GoBackTitleBar(title: "Kategorien"),
-              backgroundColor: Theme.of(context).colorScheme.background,
-              body: ListView.builder(
+            } else {
+              final categories = snapshot.data!;
+              body = ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -50,8 +45,13 @@ class CategoryOverviewScreen extends StatelessWidget {
                 itemBuilder: (BuildContext ctx, int idx) => CategoryCard(
                   category: categories[idx],
                 ),
-              ),
-              floatingActionButton: FloatingActionButton(
+              );
+            }
+
+            return ScreenWithoutBottomNavbarBaseTemplate(
+              titleBar: const GoBackTitleBar(title: "Kategorien"),
+              body: body,
+              fab: FloatingActionButton(
                 heroTag: "NavigateToCategoryAddScreen",
                 onPressed: () {
                   showDialog(

@@ -5,6 +5,7 @@ import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TopLevelListTile extends StatelessWidget {
   final TaskWithQueueStatus topLevelTaskWithQueueStatus;
@@ -23,18 +24,16 @@ class TopLevelListTile extends StatelessWidget {
     } else {
       logger.d("This state should not be accessible: queue not initialized");
     }
-
+    TextStyle queueTextStyle = Theme.of(context).textTheme.textStyle2;
     return InkWell(
       child: Text(
         topLevelTaskWithQueueStatus.task.title,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         textAlign: TextAlign.left,
-        style: TextStyle(
-          color: topLevelTaskWithQueueStatus.task.id == selectedTaskId
-              ? Theme.of(context).colorScheme.primary
-              : const Color(0xFF636573),
-        ),
+        style: topLevelTaskWithQueueStatus.task.id == selectedTaskId
+            ? queueTextStyle.withPrimary
+            : queueTextStyle,
       ),
       onTap: () {
         taskQueueBloc
@@ -96,7 +95,7 @@ class SingleSubtask extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
-          textColor: const Color(0xFF636573),
+          textColor: Theme.of(context).colorScheme.onBackground,
           selected: task.id == selectedTaskId,
           selectedColor: Theme.of(context).colorScheme.primary,
           onTap: () {

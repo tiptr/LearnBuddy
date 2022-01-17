@@ -14,85 +14,88 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseLayout(
       titleBar: const BaseTitleBar(title: "Heutige Aufgaben"),
-      content: Column(
-        children: [
-          const TasksCard(),
-          const SizedBox(height: 30.0),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CategoryOverviewScreen(),
+      content: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          children: [
+            const TasksCard(),
+            const SizedBox(height: 30.0),
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CategoryOverviewScreen(),
+                ),
               ),
-            ),
-            child: Ink(
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              child: Center(
-                child: Text(
-                  "Kategorien verwalten",
-                  style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
+              child: Ink(
+                width: 200,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: Center(
+                  child: Text(
+                    "Kategorien verwalten",
+                    style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
-          // Keyword Button
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const KeyWordOverviewScreen(),
-              ),
+            const SizedBox(
+              height: 15.0,
             ),
-            child: Ink(
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(25.0),
+            // Keyword Button
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const KeyWordOverviewScreen(),
+                ),
               ),
-              child: Center(
-                child: Text(
-                  "Schlagwörter verwalten",
-                  style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
+              child: Ink(
+                width: 200,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: Center(
+                  child: Text(
+                    "Schlagwörter verwalten",
+                    style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
-          // Settings Button
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SettingsOverviewScreen(),
-              ),
+            const SizedBox(
+              height: 15.0,
             ),
-            child: Ink(
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              child: Center(
-                child: Text(
-                  "Einstellungen",
-                  style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
+            // Settings Button
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsOverviewScreen(),
                 ),
               ),
-            ),
-          )
-        ],
+              child: Ink(
+                width: 200,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: Center(
+                  child: Text(
+                    "Einstellungen",
+                    style: Theme.of(context).textTheme.textStyle3.withOnPrimary,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

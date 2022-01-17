@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
@@ -81,60 +82,54 @@ class ActiveTaskCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: task.description != null
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.spaceAround,
               children: [
                 if (parentTask.task.id != task.id) topLevelTaskWidget,
                 Text(
                   task.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decorationThickness: 2.0,
-                      fontSize: 20,
-                      overflow: TextOverflow.ellipsis,
-                      color: Color(0xFF40424A)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle1
+                      .withBold
+                      .withOnBackgroundHard,
                 ),
                 if (task.description != null)
-                  Text(
-                    task.description.toString(),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Color(0xFF40424A),
-                    ),
-                  ),
+                  Text(task.description.toString(),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.textStyle2),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.hourglass_top,
                           size: 20,
-                          color: Color(0xFF40424A),
+                          color: Theme.of(context).colorScheme.onBackgroundHard,
                         ),
                         Text(
                           "Urspr.: " + estimatedTime,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF40424A),
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundHard,
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.hourglass_bottom,
                           size: 20,
-                          color: Color(0xFF40424A),
+                          color: Theme.of(context).colorScheme.onBackgroundHard,
                         ),
                         Text(
                           "Aufgewendet: " + timeSpent,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF40424A),
-                          ),
+                          style: Theme.of(context).textTheme.textStyle4,
                         ),
                       ],
                     )

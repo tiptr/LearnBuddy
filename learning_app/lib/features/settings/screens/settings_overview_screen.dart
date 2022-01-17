@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
-import 'package:learning_app/features/settings/widgets/settings_screen_base_template.dart';
+import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
+import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 import 'package:learning_app/features/settings/widgets/settings_group.dart';
 import 'package:learning_app/features/settings/screens/not_implemented_screen.dart';
 
@@ -11,58 +12,62 @@ class SettingsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Set initial dueDate:
 
-    return SettingsScreenBaseTemplate(
-      title: "Einstellungen",
-      children: [
-        _settingsGroup(
-            context: context,
-            title: "Persönliche Informationen",
-            subtitle: "Name, Alter",
-            iconData: Icons.person_outline_outlined,
-            nextScreen: const PersonalSettingsScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Darstellung und Farbe",
-            subtitle: "Dark / Light Mode, Highlightfarben, ...",
-            iconData: Icons.palette_outlined,
-            nextScreen: const NotImplementedScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Dashboard",
-            subtitle: "Anzahl Aufgaben, Ausgleichsvorschlag, ...",
-            iconData: Icons.house_outlined,
-            nextScreen: const NotImplementedScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Pomodoro-Timer",
-            subtitle: "Nicht-stören-Modus, Dauer der Phasen, ...",
-            iconData: Icons.av_timer_outlined,
-            nextScreen: const NotImplementedScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Aufgaben",
-            subtitle: "Layout der Liste",
-            iconData: Icons.task_alt_outlined,
-            nextScreen: const NotImplementedScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Ausgleichsvorschläge",
-            subtitle: "",
-            iconData: Icons.local_florist_outlined,
-            nextScreen: const NotImplementedScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Lernhilfen",
-            subtitle: "Körpermethode: Standardansicht, ...",
-            iconData: Icons.library_books_outlined,
-            nextScreen: const NotImplementedScreen()),
-        _settingsGroup(
-            context: context,
-            title: "Über die App",
-            subtitle: "Urheber, Ziele, ...",
-            iconData: Icons.info_outline,
-            nextScreen: const NotImplementedScreen()),
-      ],
+    return ScreenWithoutBottomNavbarBaseTemplate(
+      titleBar: const GoBackTitleBar(title: "Einstellungen"),
+      body: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(10.0),
+        children: [
+          _settingsGroup(
+              context: context,
+              title: "Persönliche Informationen",
+              subtitle: "Name, Alter",
+              iconData: Icons.person_outline_outlined,
+              nextScreen: const PersonalSettingsScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Darstellung und Farbe",
+              subtitle: "Dark / Light Mode, Highlightfarben, ...",
+              iconData: Icons.palette_outlined,
+              nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Dashboard",
+              subtitle: "Anzahl Aufgaben, Ausgleichsvorschlag, ...",
+              iconData: Icons.house_outlined,
+              nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Pomodoro-Timer",
+              subtitle: "Nicht-stören-Modus, Dauer der Phasen, ...",
+              iconData: Icons.av_timer_outlined,
+              nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Aufgaben",
+              subtitle: "Layout der Liste",
+              iconData: Icons.task_alt_outlined,
+              nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Ausgleichsvorschläge",
+              subtitle: "",
+              iconData: Icons.local_florist_outlined,
+              nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Lernhilfen",
+              subtitle: "Körpermethode: Standardansicht, ...",
+              iconData: Icons.library_books_outlined,
+              nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Über die App",
+              subtitle: "Urheber, Ziele, ...",
+              iconData: Icons.info_outline,
+              nextScreen: const NotImplementedScreen()),
+        ],
+      ),
     );
   }
 

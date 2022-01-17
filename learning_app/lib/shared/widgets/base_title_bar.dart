@@ -8,9 +8,13 @@ class BaseTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: Theme.of(context).textTheme.mainPageTitleStyle,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.mainPageTitleStyle,
+      ),
     );
   }
 }

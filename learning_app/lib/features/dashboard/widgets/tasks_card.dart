@@ -33,9 +33,9 @@ class TasksCard extends StatelessWidget {
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(
                 child: Text(
-                  'Keine anstehenden Aufgaben.',
+                  'Du hast aktuell keine anstehenden Aufgaben.\nGehe in den Aufgabenbereich, um eine Aufgabe anzulegen',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.textStyle3,
+                  style: Theme.of(context).textTheme.textStyle4,
                 ),
               );
             }

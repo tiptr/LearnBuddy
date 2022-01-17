@@ -44,7 +44,6 @@ class _TimerViewState extends State<TimerView> {
 
   @override
   Widget build(BuildContext context) {
-    //List<TaskWithQueueStatus>? taskList = context.select((TaskQueueBloc bloc) => bloc.state.getTasks);
     return SlidingUpPanel(
       controller: _panelController,
       borderRadius: const BorderRadius.only(
@@ -62,7 +61,7 @@ class _TimerViewState extends State<TimerView> {
           panelController: _panelController,
         );
       },
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.cardColor,
       body: const Center(
         child: TimerBackGround(),
       ),

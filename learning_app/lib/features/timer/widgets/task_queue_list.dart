@@ -6,6 +6,7 @@ import 'package:learning_app/features/timer/widgets/task_queue_list_tile.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TaskQueueList extends StatefulWidget {
   final ScrollController scrollController;
@@ -51,9 +52,9 @@ class _TaskQueueListState extends State<TaskQueueList> {
                   height: 5,
                   width: 80,
                   margin: const EdgeInsets.only(right: 10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFCBCCCD),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.subtleBackgroundGrey,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
@@ -140,12 +141,13 @@ class _TaskQueueListState extends State<TaskQueueList> {
             leading: Container(
               margin: const EdgeInsets.only(right: 15.0),
               child: ColorIndicator(
-                color: task.task.category?.color ?? Colors.grey,
+                color: task.task.category?.color ??
+                    Theme.of(context).colorScheme.noCategoryDefaultColor,
                 height: 50.0,
                 width: 10.0,
               ),
             ),
-            iconColor: const Color(0xFF636573),
+            iconColor: Theme.of(context).colorScheme.onBackground,
             initiallyExpanded: false,
             childrenPadding: const EdgeInsets.only(left: 0.0, right: 10.0),
           )
@@ -158,13 +160,14 @@ class _TaskQueueListState extends State<TaskQueueList> {
             leading: Container(
               margin: const EdgeInsets.only(right: 15.0),
               child: ColorIndicator(
-                color: task.task.category?.color ?? Colors.grey,
+                color: task.task.category?.color ??
+                    Theme.of(context).colorScheme.noCategoryDefaultColor,
                 height: 50.0,
                 width: 10.0,
               ),
             ),
-            iconColor: const Color(0xFF636573),
-            textColor: const Color(0xFF636573),
+            iconColor: Theme.of(context).colorScheme.onBackground,
+            textColor: Theme.of(context).colorScheme.onBackground,
             selected: task.task.id == selectedTaskId,
             selectedColor: Theme.of(context).colorScheme.primary,
           );

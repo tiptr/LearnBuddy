@@ -60,7 +60,7 @@ class ColorSchemes {
       onBackgroundSoft: const Color(0xFF949597),
       tertiary: const Color(0xFF39BBD1),
       onTertiary: const Color(0xFF40424A), // Same as onBackgroundHard
-      subtleBackgroundGrey: const Color(0xFFEAECFA),
+      subtleBackgroundGrey: const Color(0xFFCBCCCD),
       cardColor: const Color(0xFFFFFFFF),
       shadowColor: const Color(0xFF000000).withOpacity(0.8),
       isDark: false,
