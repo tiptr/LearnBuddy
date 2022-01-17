@@ -9,6 +9,7 @@ import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
+import 'package:learning_app/util/animated_indexed_stack.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:learning_app/util/nav_cubit.dart';
@@ -129,13 +130,9 @@ class MyHomePage extends StatelessWidget {
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return SafeArea(
         child: Scaffold(
-          body: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 350),
-            switchInCurve: Curves.linear,
-            child: IndexedStack(
-              index: selectedIndex,
-              children: _pages,
-            ),
+          body: AnimatedIndexedStack(
+            index: selectedIndex,
+            children: _pages,
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
