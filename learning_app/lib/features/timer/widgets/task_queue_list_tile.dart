@@ -19,9 +19,13 @@ class TopLevelListTile extends StatelessWidget {
     final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
     int? selectedTaskId;
     TextStyle queueTextStyle = Theme.of(context).textTheme.textStyle2;
-    return BlocBuilder<TaskQueueBloc, TaskQueueState>(
-      builder: (context, state) {
-        return InkWell(
+
+    if (taskQueueBloc.state is TaskQueueReady) {
+      final state = taskQueueBloc.state as TaskQueueReady;
+      selectedTaskId = state.selectedTask;
+    }
+
+    return InkWell(
           child: Text(
             topLevelTaskWithQueueStatus.task.title,
             overflow: TextOverflow.ellipsis,
@@ -38,8 +42,7 @@ class TopLevelListTile extends StatelessWidget {
                 topLevelTaskWithQueueStatus.task.id,
                 topLevelTaskWithQueueStatus.task.id));
           },
-        );
-      },
+
     );
   }
 }
