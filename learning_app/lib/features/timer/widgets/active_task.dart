@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
@@ -154,6 +155,7 @@ class ActiveTaskCard extends StatelessWidget {
                   TimeLoggingBloc timeLoggingBloc =
                       context.read<TimeLoggingBloc>();
                   timeLoggingBloc.add(const RemoveTimeLoggingObjectEvent());
+                  context.read<TaskQueueBloc>().add(RemoveSelectedTaskEvent());
                 },
               ),
               Checkbox(
