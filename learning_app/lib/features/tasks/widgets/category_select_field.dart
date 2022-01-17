@@ -81,7 +81,10 @@ class _CategorySelectFieldState extends State<CategorySelectField> {
         child: DropdownButton(
           isExpanded: true,
           value: category,
-          hint: const Text("Kategorie auswählen"),
+          hint: const Text(
+            "Kategorie auswählen",
+            style: TextStyle(color: Color(0xFF949597)),
+          ),
           items: widget.options.map<DropdownMenuItem<ReadCategoryDto>>(
               (ReadCategoryDto category) {
             return DropdownMenuItem<ReadCategoryDto>(

@@ -217,8 +217,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                           );
                         },
                         options: snapshot.data!,
-                        preselectedCategoryId:
-                            widget.existingTask?.category?.id,
+                        preselectedCategoryId: detailsDto?.category?.id,
                       );
                     },
                   );
