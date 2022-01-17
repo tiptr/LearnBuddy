@@ -1,15 +1,39 @@
-import 'package:equatable/equatable.dart';
+import 'package:drift/drift.dart';
+import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 
-class CreateTaskDto extends Equatable {
-  final String title;
-  final bool done;
+class CreateTaskDto extends TaskManipulationDto {
+  int? parentId;
 
-  const CreateTaskDto({required this.title, required this.done});
+  CreateTaskDto({
+    required this.parentId,
+    Value<String> title = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+    Value<Duration?> estimatedTime = const Value.absent(),
+    Value<DateTime?> dueDate = const Value.absent(),
+    Value<Duration> manualTimeEffortDelta = const Value.absent(),
+    Value<int?> categoryId = const Value.absent(),
+    Value<List<int>> keywordIds = const Value.absent(),
+    Value<List<int>> learnListsIds = const Value.absent(),
+  }) : super(
+          title: title,
+          description: description,
+          estimatedTime: estimatedTime,
+          dueDate: dueDate,
+          manualTimeEffortDelta: manualTimeEffortDelta,
+          categoryId: categoryId,
+          keywordIds: keywordIds,
+          learnListsIds: learnListsIds,
+        );
 
-  Map<String, dynamic> toMap() {
-    return {'title': title, 'done': done ? 1 : 0};
+  /// Changes the current instance by replacing all present values of the new DTO
+  @override
+  void applyChangesFrom(TaskManipulationDto newDto) {
+    super.applyChangesFrom(newDto);
   }
 
+  /// Checks, if the DTO is fulfilling all attribute requirements
   @override
-  List<Object?> get props => [title, done];
+  bool get isReadyToStore {
+    return title.present && title.value != '';
+  }
 }

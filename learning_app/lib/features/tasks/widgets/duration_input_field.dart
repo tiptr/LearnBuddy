@@ -1,21 +1,44 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_app/util/formatting.dart';
+import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
-class DurationInputField extends StatelessWidget {
-  final Function onSelect;
-  final Duration? selectedDuration;
+class DurationInputField extends StatefulWidget {
+  final Function onChange;
+  final Duration? preselectedDuration;
 
   const DurationInputField({
     Key? key,
-    required this.onSelect,
-    required this.selectedDuration,
+    required this.onChange,
+    required this.preselectedDuration,
   }) : super(key: key);
 
   @override
+  State<DurationInputField> createState() => _DurationInputFieldState();
+}
+
+class _DurationInputFieldState extends State<DurationInputField> {
+  final TextEditingController _textEditingController = TextEditingController();
+  Duration? duration;
+
+  @override
+  void initState() {
+    super.initState();
+    duration = widget.preselectedDuration;
+    _textEditingController.text = duration.format(ifNull: '');
+    // This listener is used for disallowing text selection
+    _textEditingController.addListener(() {
+      _textEditingController.selection =
+          const TextSelection.collapsed(offset: 0);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TextField(
       onTap: () async {
+        // Unfocus, so that no keyboard will be opened for the textfield
+        FocusManager.instance.primaryFocus?.unfocus();
+
         var resultingDuration = await showDurationPicker(
           context: context,
           initialTime: const Duration(minutes: 30),
@@ -23,28 +46,70 @@ class DurationInputField extends StatelessWidget {
         );
 
         if (resultingDuration != null) {
-          onSelect(resultingDuration);
+          // Change the text content
+          _textEditingController.text = resultingDuration.format(ifNull: '');
+          // Change the state, so the widget will re-render
+          setState(() {
+            duration = resultingDuration;
+          });
+          // Notify Listener:
+          widget.onChange(duration);
         }
       },
-      child: AbsorbPointer(
-        child: TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            filled: true,
-            prefixIcon: const Icon(Icons.timer_outlined),
-            label: const Text("Zeitschätzung"),
-            hintText: Formatting.formatDuration(
-              selectedDuration,
-              "Dauer auswählen",
-            ),
+      // The following attributes are used for disallowing text selection
+      mouseCursor: null,
+      showCursor: false,
+      toolbarOptions: const ToolbarOptions(), // empty -> no toolbar
+      readOnly: true,
+
+      controller: _textEditingController,
+      style: const TextStyle(
+          color: Color(0xFF636573), fontWeight: FontWeight.normal),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF636573),
+            width: 2.0,
           ),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2.0,
+          ),
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        filled: false,
+        prefixIcon: const Icon(
+          Icons.timer_outlined,
+          color: Color(0xFF636573),
+        ),
+        suffixIcon: duration != null
+            ? IconButton(
+                icon: const Icon(
+                  Icons.backspace_outlined,
+                  color: Color(0xFF636573),
+                ),
+                onPressed: () {
+                  // Change the text content
+                  _textEditingController.text = '';
+                  // Change the state, so the widget will re-render
+                  setState(() {
+                    duration = null;
+                  });
+                  // Notify Listener:
+                  widget.onChange(duration);
+                },
+              )
+            : null,
+        label: const Text(
+          "Zeitschätzung",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        hintText: 'Dauer auswählen',
+        hintStyle: const TextStyle(color: Color(0xFF949597)),
       ),
     );
   }

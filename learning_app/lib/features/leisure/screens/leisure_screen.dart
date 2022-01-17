@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
-import 'package:learning_app/features/leisure/model/leisure_category.dart';
+import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
+import 'package:learning_app/shared/widgets/base_layout.dart';
+import 'package:learning_app/shared/widgets/base_title_bar.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
-      bloc: LeasureCategoryCubit(),
-      builder: (context, state) {
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: state.leisureCategories.length,
-          itemBuilder: (BuildContext ctx, int idx) => LeisureCategoryCard(
-            leisureCategory: state.leisureCategories[idx],
-          ),
-        );
-      },
+    return BaseLayout(
+      titleBar: const BaseTitleBar(
+        title: "Abwechslung",
+      ),
+      content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+        bloc: LeasureCategoryCubit(),
+        builder: (context, state) {
+          return ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: state.leisureCategoriesDtos.length,
+            itemBuilder: (BuildContext ctx, int idx) => LeisureCategoryCard(
+              leisureCategory: state.leisureCategoriesDtos[idx],
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
 class LeisureCategoryCard extends StatelessWidget {
-  final LeisureCategory leisureCategory;
+  final ReadLeisureCategoriesDto leisureCategory;
 
   const LeisureCategoryCard({required this.leisureCategory, Key? key})
       : super(key: key);
@@ -52,8 +60,8 @@ class LeisureCategoryCard extends StatelessWidget {
               Expanded(
                 flex: 60,
                 child: LeisureCategoryDescription(
-                  title: leisureCategory.title,
-                  countExercises: leisureCategory.countAids,
+                  title: leisureCategory.name,
+                  countExercises: leisureCategory.leisureActivityCount,
                 ),
               ),
               Expanded(
@@ -65,7 +73,8 @@ class LeisureCategoryCard extends StatelessWidget {
                       count: leisureCategory.starCount,
                     ),
                     Image(
-                      image: AssetImage(leisureCategory.assetString),
+                      image: AssetImage(leisureCategory.pathToImage ??
+                          defaultLeisureCategoryImagePath),
                       width: 85.0,
                       height: 85.0,
                     ),

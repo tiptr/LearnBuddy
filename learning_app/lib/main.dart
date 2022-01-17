@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
-import 'package:learning_app/features/tasks/bloc/task_cubit.dart';
-import 'package:learning_app/features/tasks/screens/task_screen.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
+import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
+import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:logger/logger.dart';
-import 'features/timer/screens/timer_screen.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
+
+import 'constants/theme_constants.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -26,10 +33,10 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<TaskCubit>(
+        BlocProvider<TasksCubit>(
           lazy: true,
           create: (context) {
-            var cubit = TaskCubit();
+            var cubit = TasksCubit();
             // Loading tasks initially is probably a good idea
             // since many features depend on the tasks.
 
@@ -37,6 +44,44 @@ void main() {
             // dynamic loading (only the first X tasks are being loaded)
             cubit.loadTasks();
             return cubit;
+          },
+        ),
+        BlocProvider<TimeLoggingBloc>(
+          create: (context) {
+            return TimeLoggingBloc();
+          },
+        ),
+        BlocProvider<AlterTaskCubit>(
+          lazy: true,
+          create: (context) {
+            return AlterTaskCubit();
+          },
+        ),
+        BlocProvider<CategoriesCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = CategoriesCubit();
+            cubit.loadCategories();
+            return cubit;
+          },
+        ),
+        BlocProvider(
+          create: (context) => TaskQueueBloc(),
+        ),
+        BlocProvider<KeyWordsCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = KeyWordsCubit();
+            cubit.loadKeyWords();
+            return cubit;
+          },
+        ),
+        BlocProvider<TaskQueueBloc>(
+          lazy: true,
+          create: (context) {
+            var bloc = TaskQueueBloc();
+            bloc.add(InitQueueEvent());
+            return bloc;
           },
         ),
       ],
@@ -51,13 +96,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
-
     return MaterialApp(
       title: 'Lernbuddy',
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          primary: const Color(0xFF3444CF),
-          secondary: const Color(0xFF9E5EE1),
+        colorScheme: ColorSchemes.defaultColorScheme(),
+        scrollbarTheme: ScrollbarThemeData(
+          isAlwaysShown: false,
+          thickness: MaterialStateProperty.all(10),
+          radius: const Radius.circular(10),
+          minThumbLength: 50,
         ),
       ),
       home: const MyHomePage(),
@@ -84,17 +131,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Lernbuddy"),
+    return SafeArea(
+      child: Scaffold(
+        // TODO: think about changing to something like lazy_load_indexed_stack
+        // (separate package), so that not every page has to be loaded at startup
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: _pages,
+        ),
+        bottomNavigationBar: _navBar(context),
       ),
-      // TODO: think about changing to something like lazy_load_indexed_stack
-      // (separate package), so that not every page has to be loaded at startup
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: _navBar(context),
     );
   }
 
@@ -102,7 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor:
+          Theme.of(context).colorScheme.bottomNavigationBarUnselectedItemColor,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       showUnselectedLabels: true,
       showSelectedLabels: true,
