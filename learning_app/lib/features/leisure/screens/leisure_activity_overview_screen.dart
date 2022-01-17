@@ -22,8 +22,10 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
       body: BlocBuilder<LeisureActivityCubit, LeisureActivityState>(
         bloc: correctCubit,
         builder: (context, state) {
-          if(state is! LeisureActivityListLoadedState){
-            return const Center(child: CircularProgressIndicator(),);
+          if (state is! LeisureActivityListLoadedState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           return ListView.builder(
@@ -42,7 +44,8 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (ctx) => LeisureActivityScreen(
                                   leisureActivity:
-                                      state.listViewLeisureActivities[idx], cubit: correctCubit),
+                                      state.listViewLeisureActivities[idx],
+                                  cubit: correctCubit),
                             ))
                       });
             },
@@ -88,14 +91,18 @@ class LeisureActivityCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.star, color: leisureActivity.isFavorite ? Colors.purple : Colors.grey),
+                    Icon(Icons.star,
+                        color: leisureActivity.isFavorite
+                            ? Colors.purple
+                            : Colors.grey),
                     SizedBox(
-                        width: 85.0,
-                        height: 85.0,
-                        child: SvgPicture.asset(
-                          leisureActivity.pathToImage ?? defaultLeisureCategoryImagePath,
-                          color: Colors.cyan,
-                        ), 
+                      width: 85.0,
+                      height: 85.0,
+                      child: SvgPicture.asset(
+                        leisureActivity.pathToImage ??
+                            defaultLeisureCategoryImagePath,
+                        color: Colors.cyan,
+                      ),
                     )
                   ],
                 ),

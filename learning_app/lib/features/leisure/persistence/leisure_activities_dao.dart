@@ -5,7 +5,6 @@ import 'package:learning_app/features/leisure/model/leisure_activity.dart';
 
 part 'leisure_activities_dao.g.dart';
 
-
 /// Data access object to structure all related queries
 ///
 /// This contains the queries and insert / update features to access the
@@ -17,7 +16,6 @@ part 'leisure_activities_dao.g.dart';
     'package:learning_app/features/leisure/persistence/leisure_activities.drift'
   },
 )
-
 class LeisureActivitiesDao extends DatabaseAccessor<Database>
     with _$LeisureActivitiesDaoMixin {
   // this constructor is required so that the main database can create an instance
@@ -50,21 +48,26 @@ class LeisureActivitiesDao extends DatabaseAccessor<Database>
   }
 
   Stream<List<LeisureActivity>> watchAllActivities() {
-    _activitiesStream = _activitiesStream ?? 
-      (select(leisureActivities)
-            .map(
-                (row) => LeisureActivity(id: row.id, categoryId: row.leisureCategoryId, name: row.name, duration: row.duration, descriptionShort: row.descriptionShort, descriptionLong: row.descriptionLong, isFavorite: row.isFavorite, pathToImage: row.pathToImage))
+    _activitiesStream = _activitiesStream ??
+        (select(leisureActivities)
+            .map((row) => LeisureActivity(
+                id: row.id,
+                categoryId: row.leisureCategoryId,
+                name: row.name,
+                duration: row.duration,
+                descriptionShort: row.descriptionShort,
+                descriptionLong: row.descriptionLong,
+                isFavorite: row.isFavorite,
+                pathToImage: row.pathToImage))
             .watch());
 
     return _activitiesStream as Stream<List<LeisureActivity>>;
   }
 
-
   Future<int> toggleActivityFavoriteById(int activityId, bool favorite) {
     Value<bool> newIsFavorite = Value(favorite);
 
-    return (update(leisureActivities)..where((t) => t.id.equals(activityId))).write(
-      LeisureActivitiesCompanion(isFavorite: newIsFavorite)
-    );
+    return (update(leisureActivities)..where((t) => t.id.equals(activityId)))
+        .write(LeisureActivitiesCompanion(isFavorite: newIsFavorite));
   }
 }

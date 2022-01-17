@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/features/timer/models/config.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
@@ -16,7 +17,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   StreamSubscription<int>? _tickerSubscription;
 
-  TimerBloc() : super(TimerInitial()) {
+  late final TimeLoggingBloc timeLoggingBloc;
+
+  TimerBloc({required this.timeLoggingBloc}) : super(TimerInitial()) {
     on<TimerStarted>(_onStarted);
     on<TimerPaused>(_onPaused);
     on<TimerResumed>(_onResumed);
@@ -36,28 +39,41 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     _tickerSubscription = _ticker
         .tick(secs: state._duration)
         .listen((duration) => add(TimerTicked(duration: duration)));
+    timeLoggingBloc.add(StartTimeLoggingEvent(beginTime: DateTime.now()));
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
-    emit(
-      event.duration > 0
-          ? TimerRunInProgress(
-              event.duration, state._pomodoroMode, state._countPhase)
-          : TimerRunComplete(
-              event.duration, state._pomodoroMode, state._countPhase),
-    );
+    if (event.duration > 0) {
+      emit(TimerRunInProgress(
+          event.duration, state._pomodoroMode, state._countPhase));
+    } else {
+      emit(TimerRunComplete(
+          event.duration, state._pomodoroMode, state._countPhase));
+    }
+
+    // Notify the Time Logging Bloc that it has to update
+    //TODO: Change this to more than one second?
+    if (state._pomodoroMode == PomodoroMode.concentration) {
+      timeLoggingBloc
+          .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
+    }
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
     if (state is TimerRunInProgress) {
-      _tickerSubscription?.pause();
+      _tickerSubscription?.cancel();
+      timeLoggingBloc.add(StopTimeLoggingEvent());
       emit(state.onPaused());
     }
   }
 
   void _onResumed(TimerResumed resume, Emitter<TimerState> emit) {
     if (state is TimerRunPause) {
-      _tickerSubscription?.resume();
+      //state has remaining duration
+      _tickerSubscription = _ticker
+          .tick(secs: state._duration)
+          .listen((duration) => add(TimerTicked(duration: duration)));
+      timeLoggingBloc.add(StartTimeLoggingEvent(beginTime: DateTime.now()));
       emit(state.onResumed());
     }
   }
@@ -65,5 +81,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
+    if (timeLoggingBloc.state is ActiveState) {
+      timeLoggingBloc.add(StopTimeLoggingEvent());
+    }
   }
 }

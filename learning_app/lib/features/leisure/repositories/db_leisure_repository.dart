@@ -13,14 +13,17 @@ import 'package:rxdart/rxdart.dart';
 @Injectable(as: LeisureRepository)
 class DbLeisureRepository implements LeisureRepository {
   // load the data access object (with generated entities and queries) via dependency inj.
-  final LeisureCategoriesDao _leisureCategoriesDao = getIt<LeisureCategoriesDao>();
-  final LeisureActivitiesDao _leisureActivitiesDao = getIt<LeisureActivitiesDao>();
+  final LeisureCategoriesDao _leisureCategoriesDao =
+      getIt<LeisureCategoriesDao>();
+  final LeisureActivitiesDao _leisureActivitiesDao =
+      getIt<LeisureActivitiesDao>();
 
   Stream<List<LeisureCategory>>? _leisureCategoryStream;
 
   @override
   Future<bool> toggleFavorite(int activityId, bool favorite) async {
-    final affected = await _leisureActivitiesDao.toggleActivityFavoriteById(activityId, favorite);
+    final affected = await _leisureActivitiesDao.toggleActivityFavoriteById(
+        activityId, favorite);
     return affected > 0;
   }
 
@@ -35,22 +38,23 @@ class DbLeisureRepository implements LeisureRepository {
     final Stream<List<LeisureCategoryEntity>> leisureCategoryEntitiesStream =
         _leisureCategoriesDao.watchLeisureCategoryEntities();
 
-    final Stream<Map<int, List<LeisureActivity>>> leisureCategoryIdToActivityMapStream =
-      _leisureActivitiesDao.watchCategoryIdToActivityMap();
+    final Stream<Map<int, List<LeisureActivity>>>
+        leisureCategoryIdToActivityMapStream =
+        _leisureActivitiesDao.watchCategoryIdToActivityMap();
 
     return leisureCategoryEntitiesStream.switchMap((categoryList) {
-      return leisureCategoryIdToActivityMapStream.map((categoryIdToActivitiesMap) {
+      return leisureCategoryIdToActivityMapStream
+          .map((categoryIdToActivitiesMap) {
         final List<LeisureCategory> resultList = [];
         for (var category in categoryList) {
           resultList.add(LeisureCategory(
-            id: category.id, 
-            name: category.name, 
-            pathToImage: category.pathToImage, 
-            activities: categoryIdToActivitiesMap[category.id] ?? []));
+              id: category.id,
+              name: category.name,
+              pathToImage: category.pathToImage,
+              activities: categoryIdToActivitiesMap[category.id] ?? []));
         }
         return resultList;
       });
     });
   }
-
 }

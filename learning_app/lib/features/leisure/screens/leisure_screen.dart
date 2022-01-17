@@ -20,8 +20,10 @@ class LeisureScreen extends StatelessWidget {
       ),
       content: BlocBuilder<LeisureCategoryCubit, LeisureCategoryState>(
         builder: (context, state) {
-          if(state is! LeisureCategoryLoaded){
-            return const Center(child: CircularProgressIndicator(),);
+          if (state is! LeisureCategoryLoaded) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           return StreamBuilder<List<ReadLeisureCategoriesDto>>(
@@ -54,13 +56,12 @@ class LeisureScreen extends StatelessWidget {
                     ),
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) { 
-                          var cubit = LeisureActivityCubit();
-                          cubit.setActivityList(categories[idx].activities);
-                          return LeisureActivityOverviewScreen(
-                            correctCubit: cubit,
-                          );
+                      MaterialPageRoute(builder: (context) {
+                        var cubit = LeisureActivityCubit();
+                        cubit.setActivityList(categories[idx].activities);
+                        return LeisureActivityOverviewScreen(
+                          correctCubit: cubit,
+                        );
                       }),
                     ),
                   );

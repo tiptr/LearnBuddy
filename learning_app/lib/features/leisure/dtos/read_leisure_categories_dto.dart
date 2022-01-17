@@ -29,15 +29,18 @@ class ReadLeisureCategoriesDto extends Equatable {
     required this.leisureActivityCount,
   });
 
-  static ReadLeisureCategoriesDto fromLeisureCategory(LeisureCategory leisureCategory) {
+  static ReadLeisureCategoriesDto fromLeisureCategory(
+      LeisureCategory leisureCategory) {
     return ReadLeisureCategoriesDto(
-      id: leisureCategory.id,
-      name: leisureCategory.name,
-      pathToImage: leisureCategory.pathToImage,
-      activities: leisureCategory.activities,
-      starCount: leisureCategory.activities.where((activity) => activity.isFavorite).toList().length,
-      leisureActivityCount: leisureCategory.activities.length
-    );
+        id: leisureCategory.id,
+        name: leisureCategory.name,
+        pathToImage: leisureCategory.pathToImage,
+        activities: leisureCategory.activities,
+        starCount: leisureCategory.activities
+            .where((activity) => activity.isFavorite)
+            .toList()
+            .length,
+        leisureActivityCount: leisureCategory.activities.length);
   }
 
   @override

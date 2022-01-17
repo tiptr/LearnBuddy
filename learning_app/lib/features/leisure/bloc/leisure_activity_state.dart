@@ -22,7 +22,7 @@ class LeisureActivityListLoadedState extends LeisureActivityState {
       );
     }
   }
-  
+
   @override
   List<Object> get props => [listViewLeisureActivities];
 }

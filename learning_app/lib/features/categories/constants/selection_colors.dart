@@ -24,5 +24,3 @@ const availableColors = <Color>[
 ];
 
 const preSelectedColorForSelection = Colors.lightGreen;
-
-const noCategoryDefaultColor = Colors.grey;
