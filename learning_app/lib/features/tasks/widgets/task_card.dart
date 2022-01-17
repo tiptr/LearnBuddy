@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
-import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
@@ -21,7 +18,7 @@ const double distanceBetweenCardsTopLevel = 10.0;
 const double distanceBetweenCardsSubTasks = 7.0;
 
 /// The card used inside the the main tasks list as well as for the subtasks (!)
-class TaskCard extends StatelessWidget {
+class TaskCard extends StatefulWidget {
   final ListReadTaskDto _task;
   final bool _isSubTaskCard;
 
@@ -51,11 +48,24 @@ class TaskCard extends StatelessWidget {
         super(key: key);
 
   @override
+  State<TaskCard> createState() => _TaskCardState();
+}
+
+class _TaskCardState extends State<TaskCard> {
+  bool _checked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checked = widget._task.done;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: _isSubTaskCard
+          horizontal: widget._isSubTaskCard ? 0.0 : 10.0,
+          vertical: widget._isSubTaskCard
               ? distanceBetweenCardsSubTasks
               : distanceBetweenCardsTopLevel),
       child: _card(context),
@@ -66,28 +76,20 @@ class TaskCard extends StatelessWidget {
     double borderRadius = BasicCard.borderRadius;
 
     return Dismissible(
-      key: Key(_task.id.toString()),
+      key: Key(widget._task.id.toString()),
       onDismissed: (_) =>
-          BlocProvider.of<TasksCubit>(context).deleteTaskById(_task.id),
+          BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id),
       child: InkWell(
         onTap: () async {
-          // Load the detail-dto for the selected card:
-          final DetailsReadTaskDto? details =
-              await BlocProvider.of<TasksCubit>(context)
-                  .getDetailsDtoForTopLevelTaskId(_task.id);
-
-          if (details != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TaskDetailsScreen(
-                  existingTask: details,
-                ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskDetailsScreen(
+                existingTaskId: widget._task.id,
+                topLevelParentId: widget._task.topLevelParentId,
               ),
-            );
-          } else {
-            log('The task with ID ${_task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
-          }
+            ),
+          );
         },
         child: Card(
           clipBehavior: Clip.hardEdge,
@@ -97,13 +99,12 @@ class TaskCard extends StatelessWidget {
           ),
           color: Theme.of(context).colorScheme.cardColor,
           shadowColor: Theme.of(context).colorScheme.shadowColor,
-          elevation:
-              _task.done ? BasicCard.elevation.low : BasicCard.elevation.high,
+          elevation: _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
           child: ColorFiltered(
             // Grey out when done -> Overlay with semitransparent white; Else
             // overlay with fulltransparent "black" (no effect)
             colorFilter: ColorFilter.mode(
-                _task.done
+                _checked
                     ? Theme.of(context).colorScheme.greyOutOverlayColor
                     : Colors.transparent,
                 Theme.of(context).colorScheme.isDark
@@ -114,19 +115,19 @@ class TaskCard extends StatelessWidget {
                 top: 10.0,
                 bottom: 10.0,
                 right: 10.0,
-                left: _isSubTaskCard ? 10.0 : 3.0,
+                left: widget._isSubTaskCard ? 10.0 : 3.0,
               ),
               // category:
-              decoration: _isSubTaskCard
+              decoration: widget._isSubTaskCard
                   ? null
                   : BoxDecoration(
                       border: Border(
                         left: BorderSide(
                             width: BasicCard.borderRadius,
-                            color: _categoryColor),
+                            color: widget._categoryColor),
                       ),
                     ),
-              height: _isSubTaskCard ? 75.0 : BasicCard.height,
+              height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,17 +136,23 @@ class TaskCard extends StatelessWidget {
                   Expanded(
                     flex: 10,
                     child: Transform.scale(
-                      scale: _isSubTaskCard ? 1.3 : 1.5,
+                      scale: widget._isSubTaskCard ? 1.3 : 1.5,
                       child: Checkbox(
                         checkColor: Colors.white,
                         fillColor: MaterialStateProperty.all(
-                          _categoryColor,
+                          widget._categoryColor,
                         ),
-                        value: _task.done,
+                        value: _checked,
                         shape: const CircleBorder(),
                         onChanged: (bool? value) {
+                          // Directly change the card status, so the user has
+                          // a responsive feedback
+                          setState(() {
+                            _checked = !_checked;
+                          });
+                          // Actually change the attribute
                           BlocProvider.of<TasksCubit>(context)
-                              .toggleDone(_task.id, !_task.done);
+                              .toggleDone(widget._task.id, !widget._task.done);
                         },
                       ),
                     ),
@@ -184,30 +191,32 @@ class TaskCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: 0,
-            vertical: _isSubTaskCard
+            vertical: widget._isSubTaskCard
                 ? verticalPaddingCardContentSubTasks
                 : verticalPaddingCardContentTopLevel),
         child: Column(
-          mainAxisAlignment: _task.keywords.isNotEmpty
+          mainAxisAlignment: widget._task.keywords.isNotEmpty
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            Text(_task.title,
-                maxLines: 2,
-                style: _task.done
-                    ? titleStyle.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        decorationThickness: 2.0,
-                      )
-                    : titleStyle),
+            Text(
+              widget._task.title,
+              maxLines: 2,
+            style: _checked
+                ? titleStyle.copyWith(
+              decoration: TextDecoration.lineThrough,
+              decorationThickness: 2.0,
+            )
+                : titleStyle),
+            ),
 
             // Keywords
-            if (_task.keywords.isNotEmpty)
+            if (widget._task.keywords.isNotEmpty)
               Text(
-                _task.keywords.join(', '),
-                maxLines: _isSubTaskCard ? 1 : 2,
+                widget._task.keywords.join(', '),
+                maxLines: widget._isSubTaskCard ? 1 : 2,
                 style:
                     Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
               ),
@@ -222,7 +231,7 @@ class TaskCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: 0,
-          vertical: _isSubTaskCard
+          vertical: widget._isSubTaskCard
               ? verticalPaddingCardContentSubTasks
               : verticalPaddingCardContentTopLevel),
       child: Column(
@@ -234,26 +243,26 @@ class TaskCard extends StatelessWidget {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4.0),
             label: Text(
-              (_task.dueDate != null) ? _formattedDueDate : '',
+              (widget._task.dueDate != null) ? widget._formattedDueDate : '',
               textAlign: TextAlign.end,
-              style: _isOverDue
+              style: widget._isOverDue
                   ? dueDateStyle.withOnSecondary
                   : dueDateStyle.withOnBackgroundHard,
             ),
             labelPadding: EdgeInsets.symmetric(
               vertical: 0,
-              horizontal: _isOverDue ? 4 : 0,
+              horizontal: widget._isOverDue ? 4 : 0,
             ),
-            avatar: (_task.dueDate != null)
+            avatar: (widget._task.dueDate != null)
                 ? Icon(
                     Icons.today_outlined,
                     size: 16,
-                    color: _isOverDue
+                    color: widget._isOverDue
                         ? Theme.of(context).colorScheme.onSecondary
                         : Theme.of(context).colorScheme.onBackgroundHard,
                   )
                 : null,
-            backgroundColor: _isOverDue
+            backgroundColor: widget._isOverDue
                 ? Theme.of(context).colorScheme.secondary
                 : Theme.of(context).colorScheme.cardColor,
             // Required, because Colors.transparent does not work.
@@ -273,7 +282,7 @@ class TaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Remaining time estimation, only if provided
-                if (!_task.done && _isEstimated)
+                if (!_checked && widget._isEstimated)
                   Row(
                     children: [
                       Icon(
@@ -281,7 +290,7 @@ class TaskCard extends StatelessWidget {
                         size: iconSize,
                         color: Theme.of(context).colorScheme.onBackgroundSoft,
                       ),
-                      Text(_formattedTimeEstimation,
+                      Text(widget._formattedTimeEstimation,
                           textAlign: TextAlign.end,
                           style: Theme.of(context)
                               .textTheme
@@ -289,7 +298,7 @@ class TaskCard extends StatelessWidget {
                               .withOnBackgroundSoft),
                     ],
                   ),
-                if (_task.subTaskCount > 0)
+                if (widget._task.subTaskCount > 0)
                   Container(
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Row(
@@ -301,7 +310,7 @@ class TaskCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 5.0),
                         Text(
-                          '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
+                          '${widget._task.finishedSubTaskCount} / ${widget._task.subTaskCount}',
                           textAlign: TextAlign.end,
                           style: Theme.of(context)
                               .textTheme

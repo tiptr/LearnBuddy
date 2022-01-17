@@ -11,10 +11,12 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   final DetailsReadTaskDto? existingTask;
+  final Function() onSaveTask;
 
   const TaskAddAppBar({
     Key? key,
     this.existingTask,
+    required this.onSaveTask,
   }) : super(key: key);
 
   @override
@@ -84,22 +86,12 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    final cubit = BlocProvider.of<AlterTaskCubit>(context);
-                    // validate required fields:
-                    if (!cubit.validateTaskConstruction()) {
-                      // Not ready to save! Inform the user and continue
-                      final missingFieldsDescr =
-                          cubit.getMissingFieldsDescription();
-                      logger.d(
-                          'The task is not ready to be saved! Description: $missingFieldsDescr');
-                      // TODO: inform the user with a SnackBar
-                      return;
+                    int? savedTaskId = await widget.onSaveTask();
+
+                    if (savedTaskId != null) {
+                      // Exit task details screen
+                      Navigator.pop(context);
                     }
-
-                    await BlocProvider.of<AlterTaskCubit>(context).saveTask();
-
-                    // Exit task details screen
-                    Navigator.pop(context);
                   },
                   icon: Icon(
                     Icons.save_outlined,
