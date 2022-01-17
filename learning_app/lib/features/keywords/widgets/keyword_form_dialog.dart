@@ -2,25 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/dtos/create_key_word_dto.dart';
+import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
+import 'package:learning_app/features/keywords/dtos/update_key_word_dto.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
-class KeyWordAddDialog extends StatefulWidget {
-  const KeyWordAddDialog({Key? key}) : super(key: key);
+class KeyWordFormDialog extends StatefulWidget {
+  final ReadKeyWordDto? existingKeyword;
+
+  /// This widget is a form to create and update
+  /// keywords. When no existingKeyword is passed,
+  /// a new keyword is created, otherwise, the
+  /// existing keyword gets updated.
+  const KeyWordFormDialog({Key? key, required this.existingKeyword})
+      : super(key: key);
 
   @override
-  State<KeyWordAddDialog> createState() => _KeyWordAddDialogState();
+  State<KeyWordFormDialog> createState() => _KeyWordFormDialogState();
 }
 
-class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
+class _KeyWordFormDialogState extends State<KeyWordFormDialog> {
   final _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.existingKeyword != null) {
+      var keyword = widget.existingKeyword!;
+      _textController.value = TextEditingValue(text: keyword.name);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        "Neues Schlagwort",
+        widget.existingKeyword == null
+            ? "Neues Schlagwort"
+            : "Schlagwort bearbeiten",
         style: Theme.of(context)
             .textTheme
             .textStyle1
@@ -70,13 +91,13 @@ class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
                       .textStyle3
                       .withOnBackgroundSoft),
               onPressed: () {
-                logger.d("Abbruch beim Erstellen einer Kategorie");
+                logger.d("Abbruch beim Speichern eines Schlagworts");
                 Navigator.of(context).pop();
               },
             ),
             MaterialButton(
               child: Text(
-                "Hinzufügen",
+                "Speichern",
                 style: Theme.of(context).textTheme.textStyle3.withPrimary,
               ),
               onPressed: () {
@@ -84,12 +105,26 @@ class _KeyWordAddDialogState extends State<KeyWordAddDialog> {
                   "Schlagwort ${_textController.value.text} hinzufügen",
                 );
 
-                var createKeyWordDto = CreateKeyWordDto(
-                  name: _textController.value.text,
-                );
+                if (widget.existingKeyword == null) {
+                  // Create new keyword
+                  var createKeyWordDto = CreateKeyWordDto(
+                    name: _textController.value.text,
+                  );
 
-                BlocProvider.of<KeyWordsCubit>(context)
-                    .createKeyWord(createKeyWordDto);
+                  BlocProvider.of<KeyWordsCubit>(context)
+                      .createKeyWord(createKeyWordDto);
+                } else {
+                  // Edit existing keyword
+                  var oldKeyWord = widget.existingKeyword!;
+
+                  var updateKeyWordDto = UpdateKeyWordDto(
+                    id: oldKeyWord.id,
+                    name: _textController.value.text,
+                  );
+
+                  BlocProvider.of<KeyWordsCubit>(context)
+                      .updateKeyWord(updateKeyWordDto);
+                }
 
                 // Close dialog
                 Navigator.of(context).pop();

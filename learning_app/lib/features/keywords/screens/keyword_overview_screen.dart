@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
-import 'package:learning_app/features/keywords/widgets/keyword_add_dialog.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
+import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
+import 'package:learning_app/features/keywords/widgets/keyword_form_dialog.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 
@@ -22,7 +22,7 @@ class KeyWordOverviewScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return StreamBuilder<List<KeyWord>>(
+        return StreamBuilder<List<ReadKeyWordDto>>(
           stream: state.keywordsStream,
           builder: (context, snapshot) {
             late Widget body;
@@ -58,7 +58,7 @@ class KeyWordOverviewScreen extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const KeyWordAddDialog();
+                      return const KeyWordFormDialog(existingKeyword: null);
                     },
                   );
                 },
