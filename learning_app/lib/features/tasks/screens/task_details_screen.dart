@@ -12,6 +12,7 @@ import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
 import 'package:learning_app/features/tasks/widgets/task_details_app_bar.dart';
 import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
+import 'package:learning_app/util/logger.dart';
 
 final DateTime? preSelectedDueDate = DateTime.now();
 const Duration? preSelectedTimeEstimate = null;
@@ -168,7 +169,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
     DetailsReadTaskDto? parentDetailsDto,
   }) {
     return Scaffold(
-      appBar: TaskAddAppBar(existingTask: detailsDto),
+      appBar: TaskAddAppBar(existingTask: detailsDto, onSaveTask: onSaveTask,),
       body: Scrollbar(
         interactive: true,
         controller: _scrollController,
@@ -216,6 +217,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                       ? (detailsDto.description ?? '')
                       : preSelectedDescription,
                 ),
+
                 // Subtasks
                 const SizedBox(height: 20.0),
                 Row(
@@ -231,17 +233,83 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   ],
                 ),
                 const SizedBox(height: 20.0),
+                // Subtasks list or shortcut button
+                detailsDto != null
+                    ? SubTasksList(subTasksList: detailsDto.children)
+                    : InkWell(
+                        onTap: () async {
+                          int? savedTaskId = await onSaveTask();
 
-                SubTasksList(
-                  subTasksList: detailsDto != null
-                      ? detailsDto.children
-                      : preSelectedSubtasks,
-                ),
+                          if (savedTaskId != null) {
+                            int id = savedTaskId;
+                            // Enter the task editing mode:
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TaskDetailsScreen(
+                                  existingTaskId: id,
+                                  topLevelParentId: id, // Subtasks are not created this way
+                                ),
+                              ),
+                            );
+                          }
+
+
+
+
+                          //TODO: handle different at task creation screen!
+
+                          // setState(() {
+                          //   currentlyCreatingNewSubtask = true;
+                          // });
+                          // Exit task details screen
+
+                        },
+                        child: Ink(
+                          height: 50,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add,
+                                    size: 30.0,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                Text(
+                                  "Speichern und neue Unteraufgabe",
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  /// Handles the 'save task' functionality
+  Future<int?> onSaveTask() async{
+    final cubit = BlocProvider.of<AlterTaskCubit>(context);
+    // validate required fields:
+    if (!cubit.validateTaskConstruction()) {
+      // Not ready to save! Inform the user and continue
+      final missingFieldsDescr =
+      cubit.getMissingFieldsDescription();
+      logger.d(
+          'The task is not ready to be saved! Description: $missingFieldsDescr');
+      // TODO: inform the user with a SnackBar
+      return null;
+    }
+
+    return await BlocProvider.of<AlterTaskCubit>(context).saveTask();
   }
 }

@@ -112,7 +112,7 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
 
   /// Finishes the construction of a new task or the update of an existing one
   /// by storing it in the database
-  Future<void> saveTask() async {
+  Future<int?> saveTask() async {
     final currentState = state;
     if (currentState is ConstructingNewTask) {
       // Save the task, if all required attributes are given
@@ -122,11 +122,13 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
             await _taskRepository.createTask(constructingState.createTaskDto);
         logger.d("[Task Cubit] New task was saved. Id: $newTaskId");
         emit(WaitingForAlterTaskState());
+        return newTaskId;
       } else {
         // Not all requirements given
         logger.d(
             "[Task Cubit] Save task triggered, but not every required attribute was set");
         emit(ConstructingNewTask(createTaskDto: currentState.createTaskDto));
+        return null;
       }
     } else if (currentState is AlteringExistingTask) {
       // Update a task
@@ -137,14 +139,17 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
         logger.d(
             "[Task Cubit] Task was updated. Id: ${constructingState.updateTaskDto.id}, Success: $success");
         emit(WaitingForAlterTaskState());
+        return constructingState.updateTaskDto.id;
       } else {
         // No updates made -> nothing to change
         emit(WaitingForAlterTaskState());
+        return null;
       }
     } else {
       // The task has to be constructed first with 'addTaskAttribute'
       logger.d(
           "[Task Cubit] Save task triggered without being in a constructing state.");
+      return null;
     }
   }
 

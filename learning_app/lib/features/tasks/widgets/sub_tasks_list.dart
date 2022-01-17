@@ -50,7 +50,7 @@ class _SubTasksListState extends State<SubTasksList> {
               // Build card for new subtask creation
               return CreateSubTaskCard(
                 onDiscard: () {
-                  // Remove the cration card
+                  // Remove the creation card
                   setState(() {
                     currentlyCreatingNewSubtask = false;
                   });
