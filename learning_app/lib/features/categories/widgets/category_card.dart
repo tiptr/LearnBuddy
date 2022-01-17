@@ -91,9 +91,11 @@ class CategoryCard extends StatelessWidget {
                               const TextSpan(text: 'Willst du die Kategorie '),
                               TextSpan(
                                 text: category.name,
-                                // Inherits the style of the parent and just makes it bold
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .textStyle2
+                                    .withBold
+                                    .withOnBackgroundHard,
                               ),
                               const TextSpan(text: ' wirklich löschen?'),
                             ],

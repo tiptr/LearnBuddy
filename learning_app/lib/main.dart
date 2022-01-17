@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
     final ThemeData theme = ThemeData();
     // Must be declared explicitly to be passed on to the TextTheme, which relies
     // on the colorScheme
-    final ColorScheme colorScheme = ColorSchemes.defaultColorScheme();
+    final ColorScheme colorScheme = ColorSchemes.darkColorScheme();
     final TextTheme textTheme = TextThemes.defaultTextTheme(colorScheme);
     return MaterialApp(
       title: 'Lernbuddy',
