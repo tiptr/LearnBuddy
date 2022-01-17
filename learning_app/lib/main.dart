@@ -129,7 +129,11 @@ class MyHomePage extends StatelessWidget {
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return SafeArea(
         child: Scaffold(
-          body: _pages[selectedIndex],
+          body: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              switchInCurve: Curves.linear,
+              child: _pages[selectedIndex],
+          ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
             onTap: onItemTapped,
@@ -162,6 +166,7 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
+
       );
     });
   }
