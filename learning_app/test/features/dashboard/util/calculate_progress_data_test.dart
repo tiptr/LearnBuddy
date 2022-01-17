@@ -82,7 +82,7 @@ void main() {
         ListReadTaskDto(
           id: 1,
           title: 'A',
-          done: true,
+          done: false,
           dueDate: DateTime.now(),
           doneDateTime: DateTime.now(),
           categoryColor: null,
@@ -94,7 +94,7 @@ void main() {
         ListReadTaskDto(
           id: 2,
           title: 'B',
-          done: true,
+          done: false,
           dueDate: DateTime.now(),
           doneDateTime: DateTime.now(),
           categoryColor: null,

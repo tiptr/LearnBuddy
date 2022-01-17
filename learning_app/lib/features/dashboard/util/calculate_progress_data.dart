@@ -22,7 +22,9 @@ class ProgressData {
 }
 
 ProgressData calculateProgressData(
-    List<ListReadTaskDto> tasks, int displayCount) {
+  List<ListReadTaskDto> tasks,
+  int displayCount,
+) {
   final dueTasks = tasks.where((task) {
     // Only consider tasks with a due date
     return task.dueDate != null &&
@@ -35,15 +37,16 @@ ProgressData calculateProgressData(
 
   // How many tasks are display in the dashboard
 
-  // TODO: Display Count will be a setting
-  final hasMore = dueTasks.length > displayCount;
-  final amountOfFurtherDueTasks = max(dueTasks.length - displayCount, 0);
+  final upcomingTasks = dueTasks.where((task) => !task.done);
 
-  final upcomingTasks =
-      dueTasks.where((task) => !task.done).take(displayCount).toList();
+  final hasMore = upcomingTasks.length > displayCount;
+  final amountOfFurtherDueTasks = max(upcomingTasks.length - displayCount, 0);
+
+  final upcomingToDisplay = upcomingTasks.take(displayCount);
 
   // Calculate remaining duration
-  var durations = upcomingTasks
+  var durations = upcomingToDisplay
+      .take(displayCount)
       .map((t) => t.remainingTimeEstimation)
       .where((d) => d != null)
       .toList();
@@ -67,7 +70,7 @@ ProgressData calculateProgressData(
     totalTaskCount: dueTasks.length,
     hasMore: hasMore,
     moreCount: amountOfFurtherDueTasks,
-    upcomingTasks: upcomingTasks,
+    upcomingTasks: upcomingToDisplay.toList(),
     remainingDuration: remainingDuration,
   );
 }
