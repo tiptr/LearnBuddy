@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:drift/drift.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/alter_task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
@@ -144,6 +145,37 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
       // The task has to be constructed first with 'addTaskAttribute'
       logger.d(
           "[Task Cubit] Save task triggered without being in a constructing state.");
+    }
+  }
+
+  /// Directly creates a new subTask with the given title as child of the task
+  /// currently being altered
+  ///
+  /// Only works out of a existing task, so the state has to be 'AlteringExistingTask'
+  Future<bool> createNewSubTask(String title) async {
+    final currentState = state;
+    if (currentState is AlteringExistingTask) {
+      AlteringExistingTask constructingState = currentState;
+      if (title == '') {
+        // A title has to be provided first
+        return false;
+      }
+
+      int newSubTaskId =
+        await _taskRepository.createTask(CreateTaskDto(
+            parentId: constructingState.updateTaskDto.id,
+            title: Value(title),
+            // Adopt the category from the parent
+            categoryId: constructingState.updateTaskDto.categoryId,
+        ));
+
+      logger.d("[Task Cubit] New subtask was saved. Id: $newSubTaskId");
+
+      return true;
+    } else {
+      logger.d(
+          "[Task Alter Cubit] Create subtask triggered, but not in AlteringExistingTask' state.");
+      return false;
     }
   }
 }

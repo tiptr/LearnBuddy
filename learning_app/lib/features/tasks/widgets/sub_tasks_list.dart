@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/widgets/create_sub_task_card.dart';
@@ -46,13 +48,35 @@ class _SubTasksListState extends State<SubTasksList> {
               );
             } else {
               // Build card for new subtask creation
-              return const CreateSubTaskCard();
+              return CreateSubTaskCard(
+                onDiscard: () {
+                  // Remove the cration card
+                  setState(() {
+                    currentlyCreatingNewSubtask = false;
+                  });
+                },
+                onPressEnterSubmit: (title) {
+                  // When enter is used, allow the quick creation of multiple
+                  // subtasks
+                  // -> currentlyCreatingNewSubtask not changed on purpose
+                  BlocProvider.of<AlterTaskCubit>(context).createNewSubTask(title);
+
+                  },
+                onUseButtonSubmit: (title) async {
+                  // When the button is used, only create one subtask
+                  setState(() {
+                    currentlyCreatingNewSubtask = false;
+                  });
+
+                  BlocProvider.of<AlterTaskCubit>(context).createNewSubTask(title);
+                },
+              );
             }
           },
         ),
         InkWell(
           onTap: () {
-            //TODO
+            //TODO: handle different at task creation screen!
 
             setState(() {
               currentlyCreatingNewSubtask = true;

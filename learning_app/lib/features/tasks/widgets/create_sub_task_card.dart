@@ -10,7 +10,16 @@ const double distanceBetweenCardsSubTasks = 7.0;
 /// The card used inside the tasks detail screen for the quick creation of new
 /// subtasks
 class CreateSubTaskCard extends StatefulWidget {
-  const CreateSubTaskCard({Key? key}) : super(key: key);
+  final Function(String) onPressEnterSubmit;
+  final Function(String) onUseButtonSubmit;
+  final Function onDiscard;
+
+  const CreateSubTaskCard({
+    Key? key,
+    required this.onPressEnterSubmit,
+    required this.onUseButtonSubmit,
+    required this.onDiscard,
+  }) : super(key: key);
 
   @override
   State<CreateSubTaskCard> createState() => _CreateSubTaskCardState();
@@ -18,10 +27,23 @@ class CreateSubTaskCard extends StatefulWidget {
 
 class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
   final TextEditingController _textEditingController = TextEditingController();
+  bool titleEmpty = true;
 
   @override
   void initState() {
     super.initState();
+    _textEditingController.addListener(() {
+      // Toggle titleEmpty
+      if (_textEditingController.text != '' && titleEmpty) {
+        setState(() {
+          titleEmpty = false;
+        });
+      } else if (_textEditingController.text == '' && !titleEmpty) {
+        setState(() {
+          titleEmpty = true;
+        });
+      }
+    });
   }
 
   @override
@@ -45,42 +67,45 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
       color: Theme.of(context).cardColor,
       elevation: CardElevation.high,
       child: Container(
-        padding: const EdgeInsets.only(
-          top: 10.0,
-          bottom: 10.0,
-          right: 10.0,
-          left: 10.0,
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 3.0,
         ),
         height: 75.0,
         child: Expanded(
           flex: 80,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // TODO: cancel button
-              // Checkbox
+              // Cancel button
               Transform.scale(
                 scale: 1.3,
                 child: IconButton(
                     onPressed: () {
-                      // TODO
-                    },
-                    icon: const Icon(Icons.cancel_outlined)),
-              ),
-
-              // Left Row: title input
-              _buildTitleInputTextField(context),
-              const SizedBox(width: 10.0), // min distance
-              // TODO: confirm button?
-              Transform.scale(
-                scale: 1.3,
-                child: IconButton(
-                    onPressed: () {
-                      // TODO
+                      widget.onDiscard();
                     },
                     icon: const Icon(
+                        Icons.cancel_outlined,
+                      color: Color(0xFF40424A),
+                    )),
+              ),
+              const SizedBox(width: 5.0), // min distance
+              // Title input
+              _buildTitleInputTextField(context),
+              const SizedBox(width: 5.0), // min distance
+              // Confirm button
+              Transform.scale(
+                scale: 1.3,
+                child: IconButton(
+                    onPressed: () {
+                      if (!titleEmpty) {
+                        widget.onUseButtonSubmit(_textEditingController.text);
+                      }
+                    },
+                    icon: Icon(
                       Icons.add_task_outlined,
+                      color: titleEmpty ? const Color(0xFF949597) : const Color(0xFF40424A),
                     )),
               )
             ],
@@ -94,16 +119,20 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
     return Expanded(
       flex: 80,
       child: TextField(
+        autofocus: true,
+        maxLines: 1,
         style: const TextStyle(
-            color: Color(0xFF636573), fontWeight: FontWeight.normal),
+            color: Color(0xFF40424A), fontWeight: FontWeight.normal),
         decoration: const InputDecoration(
           filled: false,
           hintText: 'Name der Unteraufgabe',
           hintStyle: TextStyle(color: Color(0xFF949597)),
+          border: InputBorder.none,
         ),
-        maxLines: null, // no limit
         controller: _textEditingController,
-        // onChanged: widget.onChange, // TODO
+        onSubmitted: (text) {
+          widget.onPressEnterSubmit(text);
+        },
       ),
     );
   }
