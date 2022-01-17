@@ -17,12 +17,11 @@ class SubTasksList extends StatefulWidget {
 }
 
 class _SubTasksListState extends State<SubTasksList> {
-  late List<DetailsReadTaskDto?> subTasksList;
+  bool currentlyCreatingNewSubtask = false;
 
   @override
   void initState() {
     super.initState();
-    subTasksList = List<DetailsReadTaskDto?>.from(widget.subTasksList);
   }
 
   @override
@@ -35,20 +34,18 @@ class _SubTasksListState extends State<SubTasksList> {
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: subTasksList.length,
+          itemCount: widget.subTasksList.length + (currentlyCreatingNewSubtask ? 1 : 0),
           // itemExtent: 95,
           itemBuilder: (BuildContext context, int index) {
-            DetailsReadTaskDto? detailsDto = subTasksList[index];
-
-            if (detailsDto == null) {
-              // Null means to build a creation-card for a new subtask
-              return const CreateSubTaskCard();
-            } else {
-              DetailsReadTaskDto actualDetailsDto = detailsDto;
+            if (index < widget.subTasksList.length) {
+              DetailsReadTaskDto detailsDto = widget.subTasksList[index];
               return TaskCard(
                 isSubTaskCard: true,
-                task: ListReadTaskDto.fromDetailsReadTasksDto(actualDetailsDto),
+                task: ListReadTaskDto.fromDetailsReadTasksDto(detailsDto),
               );
+            } else {
+              // Build card for new subtask creation
+              return const CreateSubTaskCard();
             }
           },
         ),
@@ -57,7 +54,7 @@ class _SubTasksListState extends State<SubTasksList> {
             //TODO
 
             setState(() {
-              subTasksList.add(null);
+              currentlyCreatingNewSubtask = true;
             });
 
             // Navigator.push(
