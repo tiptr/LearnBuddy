@@ -39,9 +39,9 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
                 shrinkWrap: true,
                 itemCount: items.length,
                 itemBuilder: (context, i) {
-                  var newDescriptionController = TextEditingController();
-                  _descriptionControllers.add(newDescriptionController);
-                  return ListViewItem(newDescriptionController: newDescriptionController); // item layout
+                  return ListViewItem(
+                    newDescriptionController: _descriptionControllers[i],
+                  ); // item layout
                 },
               ),
               // Only for navigation to tags
