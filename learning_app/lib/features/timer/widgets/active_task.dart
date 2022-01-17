@@ -178,8 +178,8 @@ class ActiveTaskCard extends StatelessWidget {
                   onPressed: () async {
                     // Load the detail-dto for the selected card:
                     final DetailsReadTaskDto? details =
-                    await BlocProvider.of<TasksCubit>(context)
-                        .getDetailsDtoForTopLevelTaskId(task.id);
+                        await BlocProvider.of<TasksCubit>(context)
+                            .getDetailsDtoForTopLevelTaskId(task.id);
 
                     if (details != null) {
                       Navigator.push(
