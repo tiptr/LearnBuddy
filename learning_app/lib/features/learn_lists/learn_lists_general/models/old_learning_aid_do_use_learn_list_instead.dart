@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class LearningAid extends Equatable {
+class OldLearningAidDoUseLearnListInstead extends Equatable {
   final int id;
   final String title;
 
-  const LearningAid({
+  const OldLearningAidDoUseLearnListInstead({
     required this.id,
     required this.title,
   });

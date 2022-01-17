@@ -1,1 +1,1 @@
-const appBarHeight = 70.0;
+const appBarHeight = 55.0;

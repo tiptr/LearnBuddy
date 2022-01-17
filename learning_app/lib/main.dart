@@ -9,19 +9,19 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'package:learning_app/features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 
 import 'constants/theme_constants.dart';
+import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
   TaskScreen(),
   DashboardScreen(),
   LeisureScreen(),
-  LearningAidsScreen(),
+  LearnListsScreen(),
 ];
 
 void main() {
@@ -120,8 +120,7 @@ class MyHomePage extends StatelessWidget {
     }
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
-      return SafeArea(
-        child: Scaffold(
+      return Scaffold(
           body: AnimatedSwitcher(
             duration: const Duration(milliseconds: 350),
             switchInCurve: Curves.linear,
@@ -158,7 +157,6 @@ class MyHomePage extends StatelessWidget {
               ),
             ],
           ),
-        ),
       );
     });
   }

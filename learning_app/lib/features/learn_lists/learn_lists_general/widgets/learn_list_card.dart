@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/features/learning_aids/models/learning_aid.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/old_learning_aid_do_use_learn_list_instead.dart';
 
 const double iconSize = 18.0;
 
-class LearningAidCard extends StatelessWidget {
-  final LearningAid _learningAid;
+class LearnListCard extends StatelessWidget {
+  final OldLearningAidDoUseLearnListInstead _learningAid;
 
-  const LearningAidCard({Key? key, required LearningAid learningAid})
+  const LearnListCard({Key? key, required OldLearningAidDoUseLearnListInstead learningAid})
       : _learningAid = learningAid,
         super(key: key);
 

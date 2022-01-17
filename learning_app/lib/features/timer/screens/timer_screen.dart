@@ -7,7 +7,6 @@ import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
-import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -21,11 +20,13 @@ class TimerScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) =>
           TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
-      child: const BaseLayout(
-        titleBar: BaseTitleBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        // Will change to a custom title bar in the future
+        appBar: const BaseTitleBar(
           title: "Pomodoro Timer",
         ),
-        content: TimerView(),
+        body: const TimerView(),
       ),
     );
   }

@@ -24,12 +24,12 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BaseLayout(
+        backgroundColor: Theme.of(context).colorScheme.background,
         // Will change to a custom title bar in the future
-        titleBar: const BaseTitleBar(
+        appBar: const BaseTitleBar(
           title: "Deine Aufgaben",
         ),
-        content: BlocBuilder<TasksCubit, TaskState>(
+        body: BlocBuilder<TasksCubit, TaskState>(
           builder: (context, state) {
             // This only checks for the success state, we might want to check for
             // errors in the future here.
@@ -96,7 +96,7 @@ class _TaskScreenState extends State<TaskScreen> {
             );
           },
         ),
-      ),
+
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToTaskAddScreen",
         onPressed: () => Navigator.push(

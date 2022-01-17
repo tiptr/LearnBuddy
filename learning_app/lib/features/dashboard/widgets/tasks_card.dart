@@ -61,15 +61,7 @@ class TasksCard extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Heutige Aufgaben",
-                  style: TextStyle(
-                    fontSize: 26.0,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 35.0),
+                const SizedBox(height: 5.0),
                 const TasksCardProgress(
                   progress: 4 / 7,
                 ),

@@ -12,11 +12,13 @@ class LeisureScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseLayout(
-      titleBar: const BaseTitleBar(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      // Will change to a custom title bar in the future
+      appBar: const BaseTitleBar(
         title: "Abwechslung",
       ),
-      content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+      body: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
         bloc: LeasureCategoryCubit(),
         builder: (context, state) {
           return ListView.builder(

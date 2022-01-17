@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/learning_aids/widgets/learning_aid_add_app_bar.dart';
-import 'package:learning_app/features/learning_aids/widgets/term_input_field.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 
-class LearningAidAddScreen extends StatefulWidget {
-  const LearningAidAddScreen({Key? key}) : super(key: key);
+class LearnListAddScreen extends StatefulWidget {
+  const LearnListAddScreen({Key? key}) : super(key: key);
 
   @override
-  State<LearningAidAddScreen> createState() => _LearningAidAddScreenState();
+  State<LearnListAddScreen> createState() => _LearnListAddScreenState();
 }
 
-class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
+class _LearnListAddScreenState extends State<LearnListAddScreen> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
 
@@ -18,7 +18,7 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: LearningAidAddAppBar(textController: _titleController),
+      appBar: LearnListAddAppBar(textController: _titleController),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20.0),
