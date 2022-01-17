@@ -17,7 +17,7 @@ class TopLevelListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final TimeLoggingBloc timeLogBloc = context.read<TimeLoggingBloc>();
     final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
-    
+    int? selectedTaskId;
     TextStyle queueTextStyle = Theme.of(context).textTheme.textStyle2;
     return BlocBuilder<TaskQueueBloc, TaskQueueState>(
       builder: (context, state) {

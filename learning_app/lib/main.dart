@@ -141,7 +141,7 @@ class MyHomePage extends StatelessWidget {
     void onItemTapped(int index) {
       BlocProvider.of<NavCubit>(context).navigateTo(index);
     }
-    
+
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return SafeArea(
         child: Scaffold(

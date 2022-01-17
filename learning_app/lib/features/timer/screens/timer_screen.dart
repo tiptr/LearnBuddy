@@ -180,14 +180,15 @@ class TimerWidget extends StatelessWidget {
                   pomoState,
                   style: Theme.of(context)
                       .textTheme
-                      .textStyle1
+                      .textStyle2
                       .withOnBackgroundHard
                       .withBold,
                 ),
               ),
               // This text should be in the middle of the circular progress bar
-              Text('$signStr$minutesStr:$secondsStr',
-                  style: Theme.of(context).textTheme.pomodoroTimeDisplayStyle,
+              Text(
+                '$signStr$minutesStr:$secondsStr',
+                style: Theme.of(context).textTheme.pomodoroTimeDisplayStyle,
               ),
             ],
           )
