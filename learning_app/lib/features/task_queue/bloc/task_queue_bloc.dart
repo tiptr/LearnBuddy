@@ -66,5 +66,9 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
         logger.d("This state should not be accessible.");
       }
     });
+
+    on<RemoveFromQueueEvent>((event, emit) async {
+      _queueRepository.deleteQueueElementById(event.id);
+    });
   }
 }
