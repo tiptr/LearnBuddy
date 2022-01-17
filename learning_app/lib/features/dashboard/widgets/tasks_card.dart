@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/dashboard/util/calculate_progress_data.dart';
+import 'package:learning_app/constants/page_ids.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_item.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_progress.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/util/nav_cubit.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({Key? key}) : super(key: key);
@@ -75,9 +76,9 @@ class TasksCard extends StatelessWidget {
                 if (tasksProgressData.hasMore)
                   InkWell(
                     onTap: () {
-                      // TODO: Will be done in #57
-                      logger.d("Navigate to Task Page");
                       // TODO: not only navigate to the task page, but automatically activate a filter that only shows the tasks of the current day (and overdue)
+                      BlocProvider.of<NavCubit>(context)
+                          .navigateTo(PageId.tasks);
                     },
                     child: Ink(
                       child: Container(
