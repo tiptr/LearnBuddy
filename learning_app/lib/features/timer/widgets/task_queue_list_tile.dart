@@ -26,23 +26,22 @@ class TopLevelListTile extends StatelessWidget {
     }
 
     return InkWell(
-          child: Text(
-            topLevelTaskWithQueueStatus.task.title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            textAlign: TextAlign.left,
-            style: topLevelTaskWithQueueStatus.task.id == selectedTaskId
-                ? queueTextStyle.withPrimary
-                : queueTextStyle,
-          ),
-          onTap: () {
-            taskQueueBloc.add(
-                SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
-            timeLogBloc.add(AddTimeLoggingObjectEvent(
-                topLevelTaskWithQueueStatus.task.id,
-                topLevelTaskWithQueueStatus.task.id));
-          },
-
+      child: Text(
+        topLevelTaskWithQueueStatus.task.title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        textAlign: TextAlign.left,
+        style: topLevelTaskWithQueueStatus.task.id == selectedTaskId
+            ? queueTextStyle.withPrimary
+            : queueTextStyle,
+      ),
+      onTap: () {
+        taskQueueBloc
+            .add(SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
+        timeLogBloc.add(AddTimeLoggingObjectEvent(
+            topLevelTaskWithQueueStatus.task.id,
+            topLevelTaskWithQueueStatus.task.id));
+      },
     );
   }
 }
