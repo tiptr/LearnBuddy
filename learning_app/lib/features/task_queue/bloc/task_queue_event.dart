@@ -20,3 +20,8 @@ class SelectQueuedTaskEvent extends TaskQueueEvent {
   final int? selectedTaskId;
   SelectQueuedTaskEvent(this.selectedTaskId);
 }
+
+class RemoveFromQueueEvent extends TaskQueueEvent {
+  final int id;
+  RemoveFromQueueEvent(this.id);
+}
