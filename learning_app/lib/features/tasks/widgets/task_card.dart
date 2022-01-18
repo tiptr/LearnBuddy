@@ -64,93 +64,94 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: widget._isSubTaskCard ? 0.0 : 10.0,
-          vertical: widget._isSubTaskCard
-              ? distanceBetweenCardsSubTasks
-              : distanceBetweenCardsTopLevel),
-      child: _card(context),
+
+    return Slidable(
+        key: Key(widget._task.id.toString()),
+
+        // The start action pane is the one at the left or the top side.
+        startActionPane: ActionPane(
+          dragDismissible: true,
+          // A motion is a widget used to control how the pane animates.
+          motion: const ScrollMotion(),
+
+          // We will abuse the dismissing functionality here for the ability
+          // to quickly select / disselect the task with one swipe only
+          dismissible: DismissiblePane(
+            onDismissed: () {
+              // Empty, because we do not actually dismiss the card
+            },
+            confirmDismiss: () async {
+              // This is called before onDismissed and before the card is
+              // dismissed
+
+              // Toggle queue status
+              BlocProvider.of<TasksCubit>(context)
+                  .toggleQueued(widget._task.id, !widget._task.isQueued);
+
+              // Always return false, so the card will not be dismissed
+              return false;
+            },
+            closeOnCancel: true,
+          ),
+
+          // All actions are defined in the children parameter.
+          children: [
+            // Slide to the right to select / deselect a task for the queue
+            SlidableAction(
+              // For further styling, also a CustomSlidableAction exists, with
+              // which a custom widget can be designed for this
+              onPressed: (context) {
+                // Toggle queue status
+                BlocProvider.of<TasksCubit>(context)
+                    .toggleQueued(widget._task.id, !widget._task.isQueued);
+              },
+              autoClose: false,
+              backgroundColor: Colors.transparent,
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              icon: widget._task.isQueued
+                  ? Icons.remove_from_queue_outlined
+                  : Icons.add_to_queue_outlined,
+              label: widget._task.isQueued
+                  ? 'Später bearbeiten'
+                  : 'Heute bearbeiten',
+            ),
+          ],
+        ),
+
+        // The end action pane is the one at the right or the bottom side.
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (context) {
+                // TODO: ask with a dialog
+                BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id);
+              },
+              autoClose: false,
+              backgroundColor: Colors.transparent,
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              icon: Icons.delete_outline_outlined,
+              label: 'Endgültig löschen',
+            ),
+            // More actions could be defined here, later
+          ],
+        ),
+
+        // The child of the Slidable is what the user sees when the
+        // component is not dragged.
+        child: _card(context),
     );
   }
 
   Widget _card(BuildContext context) {
     double borderRadius = BasicCard.borderRadius;
 
-    return Slidable(
-      key: Key(widget._task.id.toString()),
-
-      // The start action pane is the one at the left or the top side.
-      startActionPane: ActionPane(
-        dragDismissible: true,
-        // A motion is a widget used to control how the pane animates.
-        motion: const ScrollMotion(),
-
-        // We will abuse the dismissing functionality here for the ability
-        // to quickly select / disselect the task with one swipe only
-        dismissible: DismissiblePane(
-          onDismissed: () {
-            // Empty, because we do not actually dismiss the card
-          },
-          confirmDismiss: () async {
-            // This is called before onDismissed and before the card is
-            // dismissed
-
-            // Toggle queue status
-            BlocProvider.of<TasksCubit>(context)
-                .toggleQueued(widget._task.id, !widget._task.isQueued);
-
-            // Always return false, so the card will not be dismissed
-            return false;
-          },
-          closeOnCancel: true,
-        ),
-
-        // All actions are defined in the children parameter.
-        children: [
-          // Slide to the right to select / deselect a task for the queue
-          SlidableAction(
-            // For further styling, also a CustomSlidableAction exists, with
-            // which a custom widget can be designed for this
-            onPressed: (context) {
-              // Toggle queue status
-              BlocProvider.of<TasksCubit>(context)
-                  .toggleQueued(widget._task.id, !widget._task.isQueued);
-            },
-            autoClose: false,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.primary,
-            icon: widget._task.isQueued
-                ? Icons.remove_from_queue_outlined
-                : Icons.add_to_queue_outlined,
-            label: widget._task.isQueued
-                ? 'Später bearbeiten'
-                : 'Heute bearbeiten',
-          ),
-        ],
-      ),
-
-      // The end action pane is the one at the right or the bottom side.
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (context) {
-              // TODO: ask with a dialog
-              BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id);
-            },
-            autoClose: false,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.primary,
-            icon: Icons.delete_outline_outlined,
-            label: 'Endgültig löschen',
-          ),
-          // More actions could be defined here, later
-        ],
-      ),
-
-      // The child of the Slidable is what the user sees when the
-      // component is not dragged.
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: widget._isSubTaskCard ? 20.0 : 10.0,
+          vertical: widget._isSubTaskCard
+              ? distanceBetweenCardsSubTasks
+              : distanceBetweenCardsTopLevel),
       child: InkWell(
         onTap: () async {
           Navigator.push(
@@ -178,8 +179,9 @@ class _TaskCardState extends State<TaskCard> {
           ),
           color: Theme.of(context).colorScheme.cardColor,
           shadowColor: Theme.of(context).colorScheme.shadowColor,
-          elevation:
-              _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
+          elevation: _checked
+                  ? BasicCard.elevation.low
+                  : (widget._isSubTaskCard ? 3.0 : BasicCard.elevation.high),
           child: Stack(
             children: <Widget>[
               Align(
