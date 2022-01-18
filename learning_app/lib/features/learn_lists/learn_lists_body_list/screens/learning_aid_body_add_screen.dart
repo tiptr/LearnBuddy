@@ -14,6 +14,16 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
   List<Widget> items = [];
+  List<String> bodyParts = [
+    "Kopf:",
+    "Brust:",
+    "Ellenbogen:",
+    "Hände:",
+    "Bauch:",
+    "Po:",
+    "Knie:",
+    "Füße:"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +42,22 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
         maxHeight: MediaQuery.of(context).size.height * 0.80,
         panel: Column(
             children: [
+              // The indicator on top showing the draggability of the panel
+              InkWell(
+                child: Center(
+                  heightFactor: 5,
+                  child: Container(
+                    height: 5,
+                    width: 80,
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFCBCCCD),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
               const Text(
                 "Was möchtest du dir merken?",
                 textAlign: TextAlign.left,
@@ -51,6 +77,7 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
                   _descriptionControllers.add(newDescriptionController);
                   return ListViewItem(
                     newDescriptionController: _descriptionControllers[i],
+                    text: bodyParts[i],
                   );
                 },
               ),
@@ -68,15 +95,29 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
 }
 
 class ListViewItem extends StatelessWidget {
-  const ListViewItem({Key? key, required this.newDescriptionController})
+  const ListViewItem({Key? key, required this.newDescriptionController, required this.text})
       : super(key: key);
 
   final TextEditingController newDescriptionController;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            margin: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
         TermInputField(
           hintText: "Text eingeben",
           iconData: Icons.edit,
