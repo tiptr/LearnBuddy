@@ -121,10 +121,9 @@ class MyHomePage extends StatelessWidget {
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return Scaffold(
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 350),
-          switchInCurve: Curves.linear,
-          child: _pages[selectedIndex],
+        body: IndexedStack(
+          index: selectedIndex,
+          children: _pages,
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedIndex,
