@@ -96,88 +96,123 @@ class _TaskCardState extends State<TaskCard> {
           margin: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
+            // Marking tasks in the playlist
+            side: widget._task.isQueued
+                ? BorderSide(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    width: 1.5,
+                  )
+                : BorderSide.none,
           ),
           color: Theme.of(context).colorScheme.cardColor,
           shadowColor: Theme.of(context).colorScheme.shadowColor,
           elevation:
               _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
-          child: ColorFiltered(
-            // Grey out when done -> Overlay with semitransparent white; Else
-            // overlay with fulltransparent "black" (no effect)
-            colorFilter: ColorFilter.mode(
-                _checked
-                    ? Theme.of(context).colorScheme.greyOutOverlayColor
-                    : Colors.transparent,
-                Theme.of(context).colorScheme.isDark
-                    ? BlendMode.darken
-                    : BlendMode.lighten),
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 10.0,
-                bottom: 10.0,
-                right: 10.0,
-                left: widget._isSubTaskCard ? 10.0 : 3.0,
-              ),
-              // category:
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(
-                      width: BasicCard.borderRadius,
-                      color: widget._isSubTaskCard
-                          ? Colors.transparent
-                          : widget._categoryColor),
-                ),
-              ),
-
-              height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Checkbox
-                  Expanded(
-                    flex: 10,
-                    child: Transform.scale(
-                      scale: widget._isSubTaskCard ? 1.3 : 1.5,
-                      child: Checkbox(
-                        checkColor: Theme.of(context).colorScheme.checkColor,
-                        fillColor: MaterialStateProperty.all(
-                          widget._categoryColor,
-                        ),
-                        value: _checked,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          // Directly change the card status, so the user has
-                          // a responsive feedback
-                          setState(() {
-                            _checked = !_checked;
-                          });
-                          // Actually change the attribute
-                          BlocProvider.of<TasksCubit>(context)
-                              .toggleDone(widget._task.id, !widget._task.done);
-                        },
+          child: Stack(
+            children: <Widget>[
+              Align(
+                child: ColorFiltered(
+                  // Grey out when done -> Overlay with semitransparent white; Else
+                  // overlay with fulltransparent "black" (no effect)
+                  colorFilter: ColorFilter.mode(
+                      _checked
+                          ? Theme.of(context).colorScheme.greyOutOverlayColor
+                          : Colors.transparent,
+                      Theme.of(context).colorScheme.isDark
+                          ? BlendMode.darken
+                          : BlendMode.lighten),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 10.0,
+                      left: widget._isSubTaskCard ? 10.0 : 3.0,
+                    ),
+                    // category:
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                            width: BasicCard.borderRadius,
+                            color: widget._isSubTaskCard
+                                ? Colors.transparent
+                                : widget._categoryColor),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 5.0),
-                  // Content
-                  Expanded(
-                    flex: 80,
+
+                    height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Left Row: title + keywords
-                        _buildTitleKeyWordsColumn(context),
-                        const SizedBox(width: 10.0), // min distance
-                        // Right Row: due date + stats
-                        _buildDueDateStatsColumn(context)
+                        // Checkbox
+                        Expanded(
+                          flex: 10,
+                          child: Transform.scale(
+                            scale: widget._isSubTaskCard ? 1.3 : 1.5,
+                            child: Checkbox(
+                              checkColor:
+                                  Theme.of(context).colorScheme.checkColor,
+                              fillColor: MaterialStateProperty.all(
+                                widget._categoryColor,
+                              ),
+                              value: _checked,
+                              shape: const CircleBorder(),
+                              onChanged: (bool? value) {
+                                // Directly change the card status, so the user has
+                                // a responsive feedback
+                                setState(() {
+                                  _checked = !_checked;
+                                });
+                                // Actually change the attribute
+                                BlocProvider.of<TasksCubit>(context).toggleDone(
+                                    widget._task.id, !widget._task.done);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        // Content
+                        Expanded(
+                          flex: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Left Row: title + keywords
+                              _buildTitleKeyWordsColumn(context),
+                              const SizedBox(width: 10.0), // min distance
+                              // Right Row: due date + stats
+                              _buildDueDateStatsColumn(context)
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
+              // The label marking tasks in the playlist
+              if (widget._task.isQueued)
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: Text("Heute bearbeiten",
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle4
+                            .withBackground),
+                  ),
+                )
+            ],
           ),
         ),
       ),
