@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/old_learning_aid_do_use_learn_list_instead.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
@@ -103,9 +102,8 @@ class LearnListCard extends StatelessWidget {
               label: Text(
                 // TODO: Use real date here
                 "Heute",
-                style: TextStyle(
-                  color: dueDateStyle.withOnBackgroundHard,
-                ),
+                style:
+                    Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
               avatar: Icon(
                 Icons.calendar_today_outlined,

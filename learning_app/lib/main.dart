@@ -12,7 +12,6 @@ import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
-import 'constants/theme_constants.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
 import 'constants/theme_font_constants.dart';

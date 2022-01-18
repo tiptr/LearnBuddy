@@ -39,7 +39,10 @@ class LearnListsScreen extends StatelessWidget {
             builder: (context) => const LearnListAddScreen(),
           ),
         ),
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );

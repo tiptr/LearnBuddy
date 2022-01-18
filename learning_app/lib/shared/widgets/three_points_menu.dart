@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
+import 'package:learning_app/features/settings/screens/settings_overview_screen.dart';
 
 // This is the type used by the popup menu below.
 enum ThreePointsMenuItems {
@@ -33,7 +34,12 @@ Widget buildThreePointsMenu({
           break;
 
         case ThreePointsMenuItems.settings:
-          // TODO: implement navigation to settings here
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SettingsOverviewScreen(),
+            ),
+          );
           break;
 
         case ThreePointsMenuItems.categoryManagement:

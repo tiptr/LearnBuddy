@@ -53,7 +53,7 @@ extension CustomTextTheme on TextTheme {
   TextStyle get textStyle4 => textStyle1.copyWith(fontSize: 12);
 
   // Explicit TextStyles for concrete uses
-  TextStyle get mainPageTitleStyle => textStyle1.withBold.withPrimary;
+  TextStyle get mainPageTitleStyle => textStyle1.withBold.withOnBackgroundHard;
   TextStyle get pomodoroTimeDisplayStyle => textStyle1.copyWith(fontSize: 52);
   TextStyle get settingsInfoTextStyle => textStyle4.copyWith(
       height: 1.6, overflow: TextOverflow.visible, letterSpacing: 0.2);

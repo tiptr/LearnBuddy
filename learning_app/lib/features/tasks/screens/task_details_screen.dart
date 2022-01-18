@@ -280,7 +280,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   // Subtasks
                   const SizedBox(height: 20.0),
                   Row(
-                    children: const [
+                    children: [
                       Text(
                         "Unteraufgaben",
                         style: Theme.of(context).textTheme.textStyle1,
@@ -322,7 +322,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                                 children: [
                                   Icon(Icons.add,
                                       size: 30.0,
-                                      color: Theme.of(context).colorScheme.primary),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
                                   Text(
                                     "Speichern und neue Unteraufgabe",
                                     style: Theme.of(context)
