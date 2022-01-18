@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 const double iconSize = 14.0;
 
@@ -56,7 +58,7 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
   }
 
   Widget _card(BuildContext context) {
-    const borderRadius = 12.5;
+    var borderRadius = BasicCard.borderRadius;
 
     return Card(
       clipBehavior: Clip.hardEdge,
@@ -64,8 +66,9 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      color: Theme.of(context).cardColor,
-      elevation: CardElevation.high,
+      color: Theme.of(context).colorScheme.cardColor,
+      elevation: BasicCard.elevation.high,
+      shadowColor: Theme.of(context).colorScheme.shadowColor,
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 10.0,
@@ -85,9 +88,9 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
                     onPressed: () {
                       widget.onDiscard();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.cancel_outlined,
-                      color: Color(0xFF40424A),
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
                     )),
               ),
               const SizedBox(width: 5.0), // min distance
@@ -106,8 +109,8 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
                     icon: Icon(
                       Icons.add_task_outlined,
                       color: titleEmpty
-                          ? const Color(0xFF949597)
-                          : const Color(0xFF40424A),
+                          ? Theme.of(context).colorScheme.onBackgroundSoft
+                          : Theme.of(context).colorScheme.onBackgroundHard,
                     )),
               )
             ],
@@ -123,12 +126,18 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
       child: TextField(
         autofocus: true,
         maxLines: 1,
-        style: const TextStyle(
-            color: Color(0xFF40424A), fontWeight: FontWeight.normal),
-        decoration: const InputDecoration(
+        style: Theme.of(context)
+            .textTheme
+            .textStyle2
+            .withOnBackgroundHard
+            .withOutBold,
+        decoration: InputDecoration(
           filled: false,
           hintText: 'Name der Unteraufgabe',
-          hintStyle: TextStyle(color: Color(0xFF949597)),
+          hintStyle:
+              // Same TextStyle with softer color. Inherited from the textfield,
+              // so the TextStyle is not explicitly defined with a constant
+              TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
           border: InputBorder.none,
         ),
         controller: _textEditingController,
