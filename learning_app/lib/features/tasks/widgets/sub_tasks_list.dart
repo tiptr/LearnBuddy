@@ -5,6 +5,7 @@ import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/widgets/create_sub_task_card.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class SubTasksList extends StatefulWidget {
   final List<DetailsReadTaskDto> subTasksList;
@@ -48,6 +49,7 @@ class _SubTasksListState extends State<SubTasksList> {
               return TaskCard(
                 isSubTaskCard: true,
                 task: ListReadTaskDto.fromDetailsReadTasksDto(detailsDto),
+                context: context,
               );
             } else {
               // Build card for new subtask creation
@@ -94,10 +96,11 @@ class _SubTasksListState extends State<SubTasksList> {
                       size: 30.0, color: Theme.of(context).colorScheme.primary),
                   Text(
                     "Neue Unteraufgabe",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 18,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withPrimary
+                        .withBold,
                   ),
                 ],
               ),

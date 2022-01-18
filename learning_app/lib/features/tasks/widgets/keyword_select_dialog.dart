@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 
 class KeywordSelectDialog extends StatefulWidget {
@@ -70,7 +69,7 @@ class _KeywordSelectDialogState extends State<KeywordSelectDialog> {
                     itemCount: widget.options.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
-                        elevation: CardElevation.medium,
+                        elevation: 4.0,
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Column(

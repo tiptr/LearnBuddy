@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 const double iconSize = 14.0;
 
@@ -26,10 +27,13 @@ class TaskCard extends StatefulWidget {
   final bool _isOverDue;
   final String _formattedTimeEstimation;
   final bool _isEstimated;
-  final Color? _categoryColor;
+  final Color _categoryColor;
 
   TaskCard(
-      {Key? key, required ListReadTaskDto task, bool isSubTaskCard = false})
+      {Key? key,
+      required ListReadTaskDto task,
+      required BuildContext context,
+      bool isSubTaskCard = false})
       : _task = task,
         _isSubTaskCard = isSubTaskCard,
         // calculated:
@@ -39,7 +43,8 @@ class TaskCard extends StatefulWidget {
         _formattedTimeEstimation = task.remainingTimeEstimation
             .toListViewFormat(ifNull: 'Keine Zeitschätzung'),
         _isEstimated = task.remainingTimeEstimation == null ? false : true,
-        _categoryColor = task.categoryColor,
+        _categoryColor = task.categoryColor ??
+            Theme.of(context).colorScheme.noCategoryDefaultColor,
         super(key: key);
 
   @override
@@ -68,7 +73,7 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Widget _card(BuildContext context) {
-    const borderRadius = 12.5;
+    double borderRadius = BasicCard.borderRadius;
 
     return Dismissible(
       key: Key(widget._task.id.toString()),
@@ -92,8 +97,10 @@ class _TaskCardState extends State<TaskCard> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          color: Theme.of(context).cardColor,
-          elevation: _checked ? CardElevation.low : CardElevation.high,
+          color: Theme.of(context).colorScheme.cardColor,
+          shadowColor: Theme.of(context).colorScheme.shadowColor,
+          elevation:
+              _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
           child: ColorFiltered(
             // Grey out when done -> Overlay with semitransparent white; Else
             // overlay with fulltransparent "black" (no effect)
@@ -101,7 +108,9 @@ class _TaskCardState extends State<TaskCard> {
                 _checked
                     ? Theme.of(context).colorScheme.greyOutOverlayColor
                     : Colors.transparent,
-                BlendMode.lighten),
+                Theme.of(context).colorScheme.isDark
+                    ? BlendMode.darken
+                    : BlendMode.lighten),
             child: Container(
               padding: EdgeInsets.only(
                 top: 10.0,
@@ -110,19 +119,17 @@ class _TaskCardState extends State<TaskCard> {
                 left: widget._isSubTaskCard ? 10.0 : 3.0,
               ),
               // category:
-              decoration: widget._isSubTaskCard
-                  ? null
-                  : BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                            width: 12.5,
-                            color: widget._categoryColor ??
-                                Theme.of(context)
-                                    .colorScheme
-                                    .noCategoryDefaultColor),
-                      ),
-                    ),
-              height: widget._isSubTaskCard ? 75.0 : 110.0,
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                      width: BasicCard.borderRadius,
+                      color: widget._isSubTaskCard
+                          ? Colors.transparent
+                          : widget._categoryColor),
+                ),
+              ),
+
+              height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,7 +140,7 @@ class _TaskCardState extends State<TaskCard> {
                     child: Transform.scale(
                       scale: widget._isSubTaskCard ? 1.3 : 1.5,
                       child: Checkbox(
-                        checkColor: Colors.white,
+                        checkColor: Theme.of(context).colorScheme.checkColor,
                         fillColor: MaterialStateProperty.all(
                           widget._categoryColor,
                         ),
@@ -178,6 +185,9 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Widget _buildTitleKeyWordsColumn(BuildContext context) {
+    TextStyle titleStyle = widget._isSubTaskCard
+        ? Theme.of(context).textTheme.textStyle3.withOnBackgroundHard.withBold
+        : Theme.of(context).textTheme.textStyle2.withOnBackgroundHard.withBold;
     return Expanded(
       flex: 70,
       child: Padding(
@@ -193,32 +203,22 @@ class _TaskCardState extends State<TaskCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            Text(
-              widget._task.title,
-              maxLines: 2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration:
-                    _checked ? TextDecoration.lineThrough : TextDecoration.none,
-                decorationThickness: 2.0,
-                fontSize: widget._isSubTaskCard ? 14 : 16,
-                overflow: TextOverflow.ellipsis,
-                color: const Color(0xFF40424A),
-              ),
-            ),
+            Text(widget._task.title,
+                maxLines: 2,
+                style: _checked
+                    ? titleStyle.copyWith(
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 2.0,
+                      )
+                    : titleStyle),
 
             // Keywords
             if (widget._task.keywords.isNotEmpty)
               Text(
                 widget._task.keywords.join(', '),
                 maxLines: widget._isSubTaskCard ? 1 : 2,
-                style: const TextStyle(
-                  color: Color(0xFF949597),
-                  fontWeight: FontWeight.normal,
-                  decorationThickness: 2.0,
-                  fontSize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                style:
+                    Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
               ),
           ],
         ),
@@ -227,6 +227,7 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Widget _buildDueDateStatsColumn(BuildContext context) {
+    TextStyle dueDateStyle = Theme.of(context).textTheme.textStyle4;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: 0,
@@ -244,14 +245,9 @@ class _TaskCardState extends State<TaskCard> {
             label: Text(
               (widget._task.dueDate != null) ? widget._formattedDueDate : '',
               textAlign: TextAlign.end,
-              style: TextStyle(
-                color:
-                    widget._isOverDue ? Colors.white : const Color(0xFF949597),
-                fontWeight: FontWeight.normal,
-                decorationThickness: 2.0,
-                fontSize: 12,
-                overflow: TextOverflow.ellipsis,
-              ),
+              style: widget._isOverDue
+                  ? dueDateStyle.withOnSecondary
+                  : dueDateStyle.withOnBackgroundHard,
             ),
             labelPadding: EdgeInsets.symmetric(
               vertical: 0,
@@ -262,13 +258,13 @@ class _TaskCardState extends State<TaskCard> {
                     Icons.today_outlined,
                     size: 16,
                     color: widget._isOverDue
-                        ? Colors.white
-                        : const Color(0xFF949597),
+                        ? Theme.of(context).colorScheme.onSecondary
+                        : Theme.of(context).colorScheme.onBackgroundHard,
                   )
                 : null,
             backgroundColor: widget._isOverDue
-                ? const Color(0xFF9E5EE1)
-                : Theme.of(context).cardColor,
+                ? Theme.of(context).colorScheme.secondary
+                : Theme.of(context).colorScheme.cardColor,
             // Required, because Colors.transparent does not work.
             // The background is transparent through the card all
             // the way to the screen background, then.
@@ -289,22 +285,17 @@ class _TaskCardState extends State<TaskCard> {
                 if (!_checked && widget._isEstimated)
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.hourglass_top,
                         size: iconSize,
-                        color: Color(0xFF949597),
+                        color: Theme.of(context).colorScheme.onBackgroundSoft,
                       ),
-                      Text(
-                        widget._formattedTimeEstimation,
-                        textAlign: TextAlign.end,
-                        style: const TextStyle(
-                          color: Color(0xFF949597),
-                          fontWeight: FontWeight.normal,
-                          decorationThickness: 2.0,
-                          fontSize: 12,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      Text(widget._formattedTimeEstimation,
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundSoft),
                     ],
                   ),
                 if (widget._task.subTaskCount > 0)
@@ -312,22 +303,19 @@ class _TaskCardState extends State<TaskCard> {
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.dynamic_feed_outlined,
                           size: iconSize,
-                          color: Color(0xFF949597),
+                          color: Theme.of(context).colorScheme.onBackgroundSoft,
                         ),
                         const SizedBox(width: 5.0),
                         Text(
                           '${widget._task.finishedSubTaskCount} / ${widget._task.subTaskCount}',
                           textAlign: TextAlign.end,
-                          style: const TextStyle(
-                            color: Color(0xFF949597),
-                            fontWeight: FontWeight.normal,
-                            decorationThickness: 2.0,
-                            fontSize: 12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundSoft,
                         ),
                       ],
                     ),
