@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/task_queue/repositories/queue_repository.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
@@ -6,9 +7,12 @@ import 'package:learning_app/util/injection.dart';
 
 class TasksCubit extends Cubit<TaskState> {
   late final TaskRepository _taskRepository;
+  late final QueueRepository _queueRepository;
 
-  TasksCubit({TaskRepository? taskRepository}) : super(InitialTaskState()) {
+  TasksCubit({TaskRepository? taskRepository, QueueRepository? queueRepository})
+      : super(InitialTaskState()) {
     _taskRepository = taskRepository ?? getIt<TaskRepository>();
+    _queueRepository = queueRepository ?? getIt<QueueRepository>();
   }
 
   Future<void> loadTasks() async {
@@ -20,13 +24,21 @@ class TasksCubit extends Cubit<TaskState> {
     emit(TasksLoaded(selectedTasksStream: tasks));
   }
 
-  // Toggles the done flag in a task in the cubit state
+  /// Toggles the done flag in a task in the cubit state
   Future<void> toggleDone(int taskId, bool done) async {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var success = await _taskRepository.toggleDone(taskId, done);
-      if (!success) return;
+      await _taskRepository.toggleDone(taskId, done);
+    }
+  }
+
+  /// Toggles the queued status in a task in the cubit state
+  Future<void> toggleQueued({required int taskId, required bool queued}) async {
+    final currentState = state;
+
+    if (currentState is TasksLoaded) {
+      await _queueRepository.toggleQueued(taskId: taskId, queued: queued);
     }
   }
 
