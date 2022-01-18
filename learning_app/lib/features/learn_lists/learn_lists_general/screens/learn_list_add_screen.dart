@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 
 class LearnListAddScreen extends StatefulWidget {
@@ -21,8 +19,8 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
   @override
   void initState() {
     super.initState();
-      //BlocProvider.of<CreateNewLearningAidCubit>(context)
-      //    .startNewTaskConstruction(widget.parentId);
+    //BlocProvider.of<CreateNewLearningAidCubit>(context)
+    //    .startNewTaskConstruction(widget.parentId);
   }
 
   @override

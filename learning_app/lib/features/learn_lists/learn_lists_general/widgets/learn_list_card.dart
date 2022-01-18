@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
@@ -17,12 +18,34 @@ class LearnListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: _card(context),
+      child: InkWell(
+        onTap: () async {
+          // Load the detail-dto for the selected card:
+          //final DetailsReadTaskDto? details =
+          //    await BlocProvider.of<TasksCubit>(context)
+          //        .getDetailsDtoForTopLevelTaskId(_task.id);
+
+          //if (details != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                const LearnListDetailScreen() //TODO: Select correct screen! //TaskDetailsScreen(
+              //  existingTask: details,
+              //),
+            ),
+          );
+          //} else {
+          //  log('The task with ID ${_task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
+          //}
+        },
+        child: _card(context),
+      ),
     );
   }
 
   Widget _card(BuildContext context) {
-    var borderRadius = BasicCard.borderRadius;
+    final borderRadius = BasicCard.borderRadius;
 
     //////////////////////////////////////////////////
     //----------For Testing multiple options----------
@@ -51,6 +74,7 @@ class LearnListCard extends StatelessWidget {
               // TODO: Use color of category once added
               left: BorderSide(width: borderRadius, color: categoryColor),
             ),
+            color: Colors.white,
           ),
           height: 110.0,
           child: Row(
@@ -67,7 +91,7 @@ class LearnListCard extends StatelessWidget {
                     // Upper Row
                     _buildUpperRow(context),
                     // Lower Row
-                    _buildLowerRow(context),
+                    _buildLowerRow(context)
                   ],
                 ),
               )
@@ -87,12 +111,15 @@ class LearnListCard extends StatelessWidget {
           // Title
           Expanded(
             flex: 70,
-            child: Text(_learningAid.name,
+            child: Text(
+                _learningAid.name,
                 style: Theme.of(context)
                     .textTheme
                     .textStyle2
                     .withBold
                     .withOnBackgroundHard),
+
+
           ),
           // Date Chip
           Expanded(
@@ -102,9 +129,10 @@ class LearnListCard extends StatelessWidget {
                 // TODO: Use real date here
                 "Heute",
                 style:
-                    Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
+                Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
               avatar: Icon(
+                // TODO check if learningAid is overdue for color selection
                 Icons.calendar_today_outlined,
                 size: 16,
                 color: Theme.of(context).colorScheme.onBackgroundHard,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_card.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
@@ -31,7 +30,12 @@ class LearnListsScreen extends StatelessWidget {
         shrinkWrap: true,
         itemCount: 3, //state.tasks.length,
         itemBuilder: (BuildContext ctx, int idx) => LearnListCard(
-            learningAid: LearnList(id: 1, name: "Projektmanagement", creationDate: DateTime.now(), words: [], isArchived: false)),
+            learningAid: LearnList(
+                id: 1,
+                name: "Projektmanagement",
+                creationDate: DateTime.now(),
+                words: const [],
+                isArchived: false)),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",
@@ -66,18 +70,17 @@ class LearnListsScreen extends StatelessWidget {
               icon: Icons.accessibility_new_rounded,
               text: "Begriffe an Körperteile binden",
             ),
-            const Divider(
-              color: Colors.black
-            ),
+            const Divider(color: Colors.black),
             CustomButton(
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const LearnListAddScreen(),
                 ),
-        )     ,
+              ),
               icon: Icons.format_list_bulleted,
-              text: "Begriffsliste                              ", //makes the buttons equally sized:)
+              text:
+                  "Begriffsliste                              ", //makes the buttons equally sized:)
             )
           ],
         ),
@@ -87,13 +90,17 @@ class LearnListsScreen extends StatelessWidget {
   }
 }
 
-
 class CustomButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final IconData icon;
-  final String text; 
+  final String text;
 
-  const CustomButton({required this.onPressed, required this.icon, required this.text, Key? key}) : super(key: key);
+  const CustomButton(
+      {required this.onPressed,
+      required this.icon,
+      required this.text,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

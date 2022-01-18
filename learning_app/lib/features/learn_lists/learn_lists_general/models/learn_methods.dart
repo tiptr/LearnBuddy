@@ -8,4 +8,3 @@ enum LearnMethods {
   // assert(LearnMethods.bodyList.index == 0);
   // assert(LearnMethods.storyList.index == 1);
 }
-
