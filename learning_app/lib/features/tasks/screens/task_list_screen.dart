@@ -8,6 +8,7 @@ import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/tasks/widgets/list_group_separator.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 
 class TaskScreen extends StatefulWidget {
@@ -25,8 +26,16 @@ class _TaskScreenState extends State<TaskScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       // Will change to a custom title bar in the future
-      appBar: const BaseTitleBar(
+      appBar: BaseTitleBar(
         title: "Deine Aufgaben",
+        actions: [
+          buildThreePointsMenu(
+            context: context,
+            showCategoryManagement: true,
+            showKeyWordsManagement: true,
+            showGlobalSettings: true,
+          )
+        ],
       ),
       body: BlocBuilder<TasksCubit, TaskState>(
         builder: (context, state) {

@@ -3,8 +3,13 @@ import 'package:learning_app/constants/app_bar_height.dart';
 
 class BaseTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final List<Widget> actions;
 
-  const BaseTitleBar({Key? key, required this.title}) : super(key: key);
+  const BaseTitleBar({
+    Key? key,
+    required this.title,
+    this.actions = const [],
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +25,10 @@ class BaseTitleBar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      actions: actions,
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
+  Size get preferredSize => const Size.fromHeight(mainScreensAppBarHeight);
 }

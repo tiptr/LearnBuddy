@@ -25,7 +25,7 @@ class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<TaskAddAppBar> createState() => _TaskAddAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
+  Size get preferredSize => const Size.fromHeight(detailScreensAppBarHeight);
 }
 
 class _TaskAddAppBarState extends State<TaskAddAppBar> {
@@ -93,7 +93,8 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                 // Right button
                 widget.existingTask == null
                     ? _buildSaveButton()
-                    : buildThreePointsMenu(onDelete: widget.onDelete),
+                    : buildThreePointsMenu(
+                        context: context, onDelete: widget.onDelete),
               ],
             ),
           ),

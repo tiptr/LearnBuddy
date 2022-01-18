@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
+import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
 
 // This is the type used by the popup menu below.
 enum ThreePointsMenuItems {
@@ -13,10 +15,13 @@ enum ThreePointsMenuItems {
 ///
 /// Only the items will be displayed, for which handler functions are provided.
 Widget buildThreePointsMenu({
+  required BuildContext context,
+  // Globally defined options:
+  bool showGlobalSettings = false,
+  bool showCategoryManagement = false,
+  bool showKeyWordsManagement = false,
+  // Local different options:
   Function? onDelete,
-  Function? onSettings,
-  Function? onCategoryManagement,
-  Function? onKeyWordsManagement,
   Function? onHelp,
 }) {
   return PopupMenuButton<ThreePointsMenuItems>(
@@ -26,15 +31,29 @@ Widget buildThreePointsMenu({
         case ThreePointsMenuItems.delete:
           onDelete!();
           break;
+
         case ThreePointsMenuItems.settings:
-          onSettings!();
+          // TODO: implement navigation to settings here
           break;
+
         case ThreePointsMenuItems.categoryManagement:
-          onCategoryManagement!();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CategoryOverviewScreen(),
+            ),
+          );
           break;
+
         case ThreePointsMenuItems.keywordsManagement:
-          onKeyWordsManagement!();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const KeyWordOverviewScreen(),
+            ),
+          );
           break;
+
         case ThreePointsMenuItems.help:
           onHelp!();
           break;
@@ -47,26 +66,26 @@ Widget buildThreePointsMenu({
             value: ThreePointsMenuItems.delete,
             child: _buildMenuItem(
                 title: 'Aufgabe löschen', iconData: Icons.delete_outlined)),
-      if (onCategoryManagement != null)
+      if (showCategoryManagement)
         PopupMenuItem<ThreePointsMenuItems>(
-            value: ThreePointsMenuItems.delete,
+            value: ThreePointsMenuItems.categoryManagement,
             child: _buildMenuItem(
                 title: 'Kategorien verwalten',
                 iconData: Icons.category_outlined)),
-      if (onKeyWordsManagement != null)
+      if (showKeyWordsManagement)
         PopupMenuItem<ThreePointsMenuItems>(
-            value: ThreePointsMenuItems.delete,
+            value: ThreePointsMenuItems.keywordsManagement,
             child: _buildMenuItem(
                 title: 'Schlagwörter verwalten',
                 iconData: Icons.label_outline)),
       if (onHelp != null)
         PopupMenuItem<ThreePointsMenuItems>(
-            value: ThreePointsMenuItems.delete,
+            value: ThreePointsMenuItems.help,
             child:
                 _buildMenuItem(title: 'Hilfe', iconData: Icons.help_outline)),
-      if (onSettings != null)
+      if (showGlobalSettings)
         PopupMenuItem<ThreePointsMenuItems>(
-            value: ThreePointsMenuItems.delete,
+            value: ThreePointsMenuItems.settings,
             child: _buildMenuItem(
                 title: 'Einstellungen', iconData: Icons.settings_outlined)),
     ],
