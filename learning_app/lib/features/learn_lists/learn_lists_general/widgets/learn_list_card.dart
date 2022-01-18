@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
 import 'package:learning_app/constants/basic_card.dart';
-import 'package:learning_app/features/learning_aids/models/learning_aid.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
 const double iconSize = 18.0;
 
-class LearningAidCard extends StatelessWidget {
+class LearnListCard extends StatelessWidget {
   final LearningAid _learningAid;
 
-  const LearningAidCard({Key? key, required LearningAid learningAid})
+  const LearnListCard({Key? key, required LearningAid learningAid})
       : _learningAid = learningAid,
         super(key: key);
 
@@ -79,11 +79,6 @@ class LearningAidCard extends StatelessWidget {
   }
 
   Widget _buildUpperRow(BuildContext context) {
-    TextStyle dueDateStyle = Theme.of(context).textTheme.textStyle4;
-    // To keep this in for further expansion, the pipeline has to be tricked,
-    // otherwise, the on the date dependent styles are seen as dead code if the
-    // flag is constant.
-    bool _isOverDue = true == false ? true : false;
     return Expanded(
       flex: 50,
       child: Row(
@@ -106,21 +101,15 @@ class LearningAidCard extends StatelessWidget {
               label: Text(
                 // TODO: Use real date here
                 "Heute",
-                style: _isOverDue
-                    ? dueDateStyle.withOnSecondary
-                    : dueDateStyle.withOnBackgroundHard,
+                style:
+                    Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
               avatar: Icon(
-                // TODO check if learningAid is overdue for color selection
                 Icons.calendar_today_outlined,
                 size: 16,
-                color: _isOverDue
-                    ? Theme.of(context).colorScheme.onSecondary
-                    : Theme.of(context).colorScheme.onBackgroundHard,
+                color: Theme.of(context).colorScheme.onBackgroundHard,
               ),
-              backgroundColor: _isOverDue
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.cardColor,
+              backgroundColor: Theme.of(context).colorScheme.cardColor,
             ),
           )
         ],

@@ -60,6 +60,7 @@ class TasksCard extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 5.0),
                 const TasksCardProgress(
                   progress: 4 / 7,
                 ),

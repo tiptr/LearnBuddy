@@ -3,11 +3,11 @@ import 'package:learning_app/constants/app_bar_height.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 
-class LearningAidAddAppBar extends StatelessWidget
+class LearnListAddAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final TextEditingController textController;
 
-  const LearningAidAddAppBar({Key? key, required this.textController})
+  const LearnListAddAppBar({Key? key, required this.textController})
       : super(key: key);
 
   @override
@@ -71,5 +71,5 @@ class LearningAidAddAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
+  Size get preferredSize => const Size.fromHeight(detailScreensAppBarHeight);
 }
