@@ -8,21 +8,17 @@ class ListReadTaskDto extends Equatable {
   final int id;
   final int? topLevelParentId;
 
-  final String title;
-  final bool done;
-  final Color? categoryColor;
-  final List<String> keywords;
-
   // This is not the same as estimatedTime of a task entity.
   // Instead, here the estimations of the subtasks are accumulated and the
   // estimations of finished subtasks are not added
   final Duration? remainingTimeEstimation; // minutes
-
+  final String title;
+  final bool done;
+  final Color? categoryColor;
+  final List<String> keywords;
   final DateTime? dueDate;
-
   final int subTaskCount;
   final int finishedSubTaskCount;
-
   final bool isQueued;
 
   const ListReadTaskDto({

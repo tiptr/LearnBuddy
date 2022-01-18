@@ -5,8 +5,8 @@ import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
-import 'package:learning_app/shared/widgets/base_layout.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
@@ -15,11 +15,19 @@ class LeisureScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseLayout(
-      titleBar: const BaseTitleBar(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      // Will change to a custom title bar in the future
+      appBar: BaseTitleBar(
         title: "Abwechslung",
+        actions: [
+          buildThreePointsMenu(
+            context: context,
+            showGlobalSettings: true,
+          )
+        ],
       ),
-      content: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
+      body: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
         bloc: LeasureCategoryCubit(),
         builder: (context, state) {
           return ListView.builder(
