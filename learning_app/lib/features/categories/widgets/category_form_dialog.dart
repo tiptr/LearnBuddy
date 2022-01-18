@@ -8,6 +8,8 @@ import 'package:learning_app/features/categories/dtos/update_category_dto.dart';
 import 'package:learning_app/features/categories/widgets/category_color_selector.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class CategoryFormDialog extends StatefulWidget {
   final ReadCategoryDto? existingCategory;
@@ -45,13 +47,21 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.cardColor,
       title: Column(
         children: [
           Row(
             children: [
-              widget.existingCategory == null
-                  ? const Text("Neue Kategorie")
-                  : const Text("Kategorie bearbeiten"),
+              Text(
+                widget.existingCategory == null
+                    ? "Neue Kategorie"
+                    : "Kategorie bearbeiten",
+                style: Theme.of(context)
+                    .textTheme
+                    .textStyle1
+                    .withBold
+                    .withOnBackgroundHard,
+              ),
             ],
           ),
           // Spacer
@@ -63,12 +73,20 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
               ColorIndicator(color: selectedColor, height: 30.0, width: 10.0),
               Container(
                 margin: const EdgeInsets.only(left: 10.0),
-                width: 150.0,
+                width: 250.0,
                 child: TextField(
-                  decoration: const InputDecoration(
+                  // Use subtitle1 here, to match the inputfield Styles from the
+                  // native components (DatePicker,ColorPicker-hex-field)
+                  style: Theme.of(context).textTheme.subtitle1,
+                  decoration: InputDecoration(
                     hintText: "Bezeichnung eingeben",
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .subtitle1!
+                        .withOnBackgroundSoft,
                   ),
                   controller: _textController,
+                  autofocus: true,
                 ),
               ),
               const Spacer()
@@ -113,8 +131,11 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             MaterialButton(
-              child:
-                  const Text("Abbrechen", style: TextStyle(color: Colors.grey)),
+              child: Text("Abbrechen",
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle3
+                      .withOnBackgroundSoft),
               onPressed: () {
                 logger.d("Abbruch beim Speichern einer Kategorie");
                 Navigator.of(context).pop();
@@ -123,7 +144,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
             MaterialButton(
               child: Text(
                 "Speichern",
-                style: TextStyle(color: Theme.of(context).primaryColor),
+                style: Theme.of(context).textTheme.textStyle3.withPrimary,
               ),
               onPressed: () {
                 logger.d(

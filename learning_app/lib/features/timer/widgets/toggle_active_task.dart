@@ -14,8 +14,13 @@ class _ToggleActiveTaskState extends State<ToggleActiveTask> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon:
-          _active ? const Icon(Icons.toggle_on) : const Icon(Icons.toggle_off),
+      icon: _active
+          ? Icon(
+              Icons.toggle_on,
+              color: Theme.of(context).colorScheme.onBackground,
+            )
+          : Icon(Icons.toggle_off,
+              color: Theme.of(context).colorScheme.onBackground),
       onPressed: () {
         _toggle();
         if (_active) {

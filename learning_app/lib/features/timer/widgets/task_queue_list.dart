@@ -6,16 +6,21 @@ import 'package:learning_app/features/timer/widgets/task_queue_list_tile.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TaskQueueList extends StatefulWidget {
   final ScrollController scrollController;
   final PanelController panelController;
+  final Stream<bool> panelOpenedInformer;
 
   //final List<TaskWithQueueStatus>? taskList;
 
-  const TaskQueueList(
-      {required this.scrollController, required this.panelController, Key? key})
-      : super(key: key);
+  const TaskQueueList({
+    required this.scrollController,
+    required this.panelController,
+    required this.panelOpenedInformer,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TaskQueueList> createState() => _TaskQueueListState();
@@ -27,6 +32,23 @@ class _TaskQueueListState extends State<TaskQueueList> {
   @override
   void initState() {
     super.initState();
+
+    widget.panelOpenedInformer.listen((event) async {
+      // This is used to fix the drag-and-drop reordering of
+      // the tasks, in the case that the list is scrolled up
+      // completely
+      // This has the purpose of not having the list at a scroll-
+      // offset of 0, when dragging items down via drag and drop.
+      // If that is the case, the whole sliding up panel is being
+      // moved instead.
+      if (widget.scrollController.offset < 10) {
+        final position = widget.scrollController.position;
+
+        position.applyContentDimensions(
+            double.negativeInfinity, double.infinity);
+        position.jumpTo(10.0);
+      }
+    });
   }
 
   @override
@@ -45,15 +67,17 @@ class _TaskQueueListState extends State<TaskQueueList> {
                     ? widget.panelController.close()
                     : widget.panelController.open();
               },
-              child: Center(
-                heightFactor: 5,
+              child: Container(
+                padding: const EdgeInsets.only(top: 10),
                 child: Container(
                   height: 5,
                   width: 80,
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFCBCCCD),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackgroundSoft
+                        .withOpacity(0.4),
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
@@ -66,23 +90,17 @@ class _TaskQueueListState extends State<TaskQueueList> {
                   // This is used to fix the drag-and-drop reordering of
                   // the tasks, in the case that the list is scrolled up
                   // completely
+                  // This has the purpose of not having the list at a scroll-
+                  // offset of 0, when dragging items down via drag and drop.
+                  // If that is the case, the whole sliding up panel is being
+                  // moved instead.
                   if (widget.scrollController.offset < 10) {
-                    widget.scrollController.animateTo(10,
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.ease);
-                  }
-                },
-                onLongPressDown: (details) {
-                  // This is used to fix the drag-and-drop reordering of
-                  // the tasks, in the case that the list is scrolled up
-                  // completely
-                  if (widget.scrollController.offset < 10) {
-                    widget.scrollController.animateTo(10,
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.ease);
+                    widget.scrollController.jumpTo(10.0);
                   }
                 },
                 child: ReorderableListView(
+                  anchor:
+                      0.05, // This is important for making drag and drop work.
                   scrollController: widget.scrollController,
                   children: generateExpansionTiles(state.tasks),
                   onReorder: (oldIndex, newIndex) {
@@ -149,12 +167,14 @@ class _TaskQueueListState extends State<TaskQueueList> {
             leading: Container(
               margin: const EdgeInsets.only(right: 15.0),
               child: ColorIndicator(
-                color: task.task.category?.color ?? Colors.grey,
+                color: task.task.category?.color ??
+                    Theme.of(context).colorScheme.noCategoryDefaultColor,
                 height: 50.0,
                 width: 10.0,
               ),
             ),
-            iconColor: const Color(0xFF636573),
+            iconColor: Theme.of(context).colorScheme.onBackground,
+            collapsedIconColor: Theme.of(context).colorScheme.onBackground,
             initiallyExpanded: false,
             childrenPadding: const EdgeInsets.only(left: 0.0, right: 10.0),
           )
@@ -167,13 +187,14 @@ class _TaskQueueListState extends State<TaskQueueList> {
             leading: Container(
               margin: const EdgeInsets.only(right: 15.0),
               child: ColorIndicator(
-                color: task.task.category?.color ?? Colors.grey,
+                color: task.task.category?.color ??
+                    Theme.of(context).colorScheme.noCategoryDefaultColor,
                 height: 50.0,
                 width: 10.0,
               ),
             ),
-            iconColor: const Color(0xFF636573),
-            textColor: const Color(0xFF636573),
+            iconColor: Theme.of(context).colorScheme.onBackground,
+            textColor: Theme.of(context).colorScheme.onBackground,
             selected: task.task.id == selectedTaskId,
             selectedColor: Theme.of(context).colorScheme.primary,
           );
