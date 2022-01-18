@@ -1,0 +1,78 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter test ./learning_app
+
+## exception
+
+FileSystemException: FileSystemException: Directory listing failed, path = 'C:\Users\marca\Documents\Studium\Master Software Engineering\1. Semester\Software Engineering\Repository\SoftwareEngineering-WS2022-Unicorns\./learning_app\build\shared_preferences_android\generated\source\buildConfig\debug\io\flutter\plugins\sharedpreferences\*' (OS Error: Das System kann den angegebenen Pfad nicht finden.
+, errno = 3)
+
+```
+#0      _Directory._fillWithDirectoryListing (dart:io-patch/directory_patch.dart:42:24)
+#1      _Directory.listSync (dart:io/directory_impl.dart:243:5)
+#2      ForwardingDirectory.listSync (package:file/src/forwarding/forwarding_directory.dart:43:12)
+#3      ForwardingDirectory.listSync (package:file/src/forwarding/forwarding_directory.dart:43:12)
+#4      _findTests (package:flutter_tools/src/commands/test.dart:512:20)
+#5      TestCommand.verifyThenRunCommand (package:flutter_tools/src/commands/test.dart:276:16)
+#6      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1140:33)
+<asynchronous suspension>
+#7      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#8      CommandRunner.runCommand (package:args/command_runner.dart:209:13)
+<asynchronous suspension>
+#9      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:288:9)
+<asynchronous suspension>
+#10     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#11     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:236:5)
+<asynchronous suspension>
+#12     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:62:9)
+<asynchronous suspension>
+#13     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#14     main (package:flutter_tools/executable.dart:94:3)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 2.8.1, on Microsoft Windows [Version 10.0.22000.434], locale de-DE)
+    • Flutter version 2.8.1 at C:\Users\marca\AppData\Local\Programs\Flutter\flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision 77d935af4d (5 weeks ago), 2021-12-16 08:37:33 -0800
+    • Engine revision 890a5fca2e
+    • Dart version 2.15.1
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 31.0.0)
+    • Android SDK at C:\Users\marca\AppData\Local\Android\sdk
+    • Platform android-31, build-tools 31.0.0
+    • Java binary at: C:\Program Files\Android\Android Studio\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+    • All Android licenses accepted.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[✓] Android Studio (version 2020.3)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+
+[✓] VS Code, 64-bit edition (version 1.62.3)
+    • VS Code at C:\Program Files\Microsoft VS Code
+    • Flutter extension version 3.29.0
+
+[✓] Connected device (3 available)
+    • Android SDK built for x86 (mobile) • emulator-5554 • android-x86    • Android 11 (API 30) (emulator)
+    • Chrome (web)                       • chrome        • web-javascript • Google Chrome 97.0.4692.71
+    • Edge (web)                         • edge          • web-javascript • Microsoft Edge 96.0.1054.62
+
+• No issues found!
+```

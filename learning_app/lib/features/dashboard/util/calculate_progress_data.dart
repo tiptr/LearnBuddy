@@ -45,8 +45,7 @@ ProgressData calculateProgressData(
   final upcomingToDisplay = upcomingTasks.take(displayCount);
 
   // Calculate remaining duration
-  var durations = upcomingToDisplay
-      .take(displayCount)
+  var durations = upcomingTasks
       .map((t) => t.remainingTimeEstimation)
       .where((d) => d != null)
       .toList();
