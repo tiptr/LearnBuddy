@@ -4,5 +4,5 @@ abstract class QueueRepository {
   //Takes the ordered List and ignores the queue status -> will overwrite this
   Future<void> writeQueueOrder(List<TaskWithQueueStatus> taskList);
 
-  Future<bool> toggleQueued(int taskId, bool queued);
+  Future<bool> toggleQueued({required int taskId, required bool queued});
 }

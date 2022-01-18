@@ -8,6 +8,8 @@ import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
+const listTileHeight = 50;
+
 class TaskQueueList extends StatefulWidget {
   final ScrollController scrollController;
   final PanelController panelController;
@@ -116,8 +118,7 @@ class _TaskQueueListState extends State<TaskQueueList> {
                           final TaskWithQueueStatus item =
                               state.tasks.removeAt(oldIndex);
                           state.tasks.insert(newIndex, item);
-                          context
-                              .read<TaskQueueBloc>()
+                          BlocProvider.of<TaskQueueBloc>(context)
                               .add(UpdateQueueOrderEvent(state.tasks));
                         },
                       );
@@ -149,7 +150,7 @@ class _TaskQueueListState extends State<TaskQueueList> {
     ];
 
     final missingHeight = widget.panelMaxHeight -
-        (list.length * 50) // current actual height of the elements
+        (list.length * listTileHeight) // current actual height of the elements
         -
         50; // constant part of the panel
 

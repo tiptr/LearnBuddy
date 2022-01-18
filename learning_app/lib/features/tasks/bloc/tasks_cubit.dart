@@ -34,11 +34,11 @@ class TasksCubit extends Cubit<TaskState> {
   }
 
   /// Toggles the queued status in a task in the cubit state
-  Future<void> toggleQueued(int taskId, bool queued) async {
+  Future<void> toggleQueued({required int taskId, required bool queued}) async {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      await _queueRepository.toggleQueued(taskId, queued);
+      await _queueRepository.toggleQueued(taskId: taskId, queued: queued);
     }
   }
 

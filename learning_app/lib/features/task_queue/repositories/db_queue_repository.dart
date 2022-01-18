@@ -27,7 +27,7 @@ class DbQueueRepository implements QueueRepository {
   }
 
   @override
-  Future<bool> toggleQueued(int taskId, bool queued) async {
+  Future<bool> toggleQueued({required int taskId, required bool queued}) async {
     if (queued) {
       // Add to queue
       await dao.addElementToQueueByTaskId(taskId);

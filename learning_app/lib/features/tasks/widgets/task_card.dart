@@ -86,8 +86,8 @@ class _TaskCardState extends State<TaskCard> {
                   // dismissed
 
                   // Toggle queue status
-                  BlocProvider.of<TasksCubit>(context)
-                      .toggleQueued(widget._task.id, !widget._task.isQueued);
+                  BlocProvider.of<TasksCubit>(context).toggleQueued(
+                      taskId: widget._task.id, queued: !widget._task.isQueued);
 
                   // Always return false, so the card will not be dismissed
                   return false;
@@ -103,8 +103,9 @@ class _TaskCardState extends State<TaskCard> {
                   // which a custom widget can be designed for this
                   onPressed: (context) {
                     // Toggle queue status
-                    BlocProvider.of<TasksCubit>(context)
-                        .toggleQueued(widget._task.id, !widget._task.isQueued);
+                    BlocProvider.of<TasksCubit>(context).toggleQueued(
+                        taskId: widget._task.id,
+                        queued: !widget._task.isQueued);
                   },
                   autoClose: false,
                   backgroundColor: Colors.transparent,
