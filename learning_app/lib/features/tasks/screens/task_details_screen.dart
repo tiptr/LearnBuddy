@@ -236,7 +236,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                     );
                   }),
                   const SizedBox(height: 20.0),
-                  const SizedBox(height: 20.0),
 
                   // Keywords Selection
                   BlocBuilder<KeyWordsCubit, KeyWordsState>(

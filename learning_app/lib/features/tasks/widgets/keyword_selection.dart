@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/tasks/widgets/keyword_input_field.dart';
 
@@ -30,6 +31,7 @@ class _KeywordSelectionState extends State<KeywordSelection> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         KeyWordInputField(
           onSelect: (List<ReadKeyWordDto> selected) {
@@ -48,10 +50,14 @@ class _KeywordSelectionState extends State<KeywordSelection> {
         const SizedBox(height: 10.0),
         Wrap(
           direction: Axis.horizontal,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          runAlignment: WrapAlignment.start,
           runSpacing: 7.5,
           spacing: 7.5,
           children: selectedKeyWords.map((e) {
             return Chip(
+                backgroundColor:
+                    Theme.of(context).colorScheme.subtleBackgroundGrey,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 label: Text(e.name),
                 deleteIcon: const Icon(
@@ -70,7 +76,7 @@ class _KeywordSelectionState extends State<KeywordSelection> {
                   );
                 });
           }).toList(),
-        )
+        ),
       ],
     );
   }
