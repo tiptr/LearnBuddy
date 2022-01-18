@@ -12,6 +12,7 @@ class TaskQueueList extends StatefulWidget {
   final ScrollController scrollController;
   final PanelController panelController;
   final Stream<bool> panelOpenedInformer;
+  final double panelMaxHeight;
 
   //final List<TaskWithQueueStatus>? taskList;
 
@@ -19,6 +20,7 @@ class TaskQueueList extends StatefulWidget {
     required this.scrollController,
     required this.panelController,
     required this.panelOpenedInformer,
+    required this.panelMaxHeight,
     Key? key,
   }) : super(key: key);
 
@@ -104,19 +106,22 @@ class _TaskQueueListState extends State<TaskQueueList> {
                   scrollController: widget.scrollController,
                   children: generateExpansionTiles(state.tasks),
                   onReorder: (oldIndex, newIndex) {
-                    setState(
-                      () {
-                        if (newIndex > oldIndex) {
-                          newIndex -= 1;
-                        }
-                        final TaskWithQueueStatus item =
-                            state.tasks.removeAt(oldIndex);
-                        state.tasks.insert(newIndex, item);
-                        context
-                            .read<TaskQueueBloc>()
-                            .add(UpdateQueueOrderEvent(state.tasks));
-                      },
-                    );
+                    // Ignore the pseudo element at the end:
+                    if (newIndex <= state.tasks.length) {
+                      setState(
+                            () {
+                          if (newIndex > oldIndex) {
+                            newIndex -= 1;
+                          }
+                          final TaskWithQueueStatus item =
+                          state.tasks.removeAt(oldIndex);
+                          state.tasks.insert(newIndex, item);
+                          context
+                              .read<TaskQueueBloc>()
+                              .add(UpdateQueueOrderEvent(state.tasks));
+                        },
+                      );
+                    }
                   },
                 ),
               ),
@@ -130,7 +135,7 @@ class _TaskQueueListState extends State<TaskQueueList> {
   }
 
   List<Widget> generateExpansionTiles(List<TaskWithQueueStatus> list) {
-    return [
+    List<Widget> widgetList = [
       for (int i = 0; i < list.length; i++)
         Dismissible(
           key: Key(list[i].task.id.toString()),
@@ -142,6 +147,16 @@ class _TaskQueueListState extends State<TaskQueueList> {
           },
         )
     ];
+
+    final missingHeight = widget.panelMaxHeight
+      - (list.length * 50) // current actual height of the elements
+        - 50; // constant part of the panel
+
+    widgetList.add(SizedBox(
+      key: const Key('Placeholder element at the end of the list'),
+      height: missingHeight,
+    ));
+    return widgetList;
   }
 
   Widget customExpansionTile(TaskWithQueueStatus task, int index) {
