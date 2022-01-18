@@ -52,7 +52,6 @@ class _TimerViewState extends State<TimerView> {
     _panelOpenedInformer = _streamController.stream;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(

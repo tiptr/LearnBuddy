@@ -15,13 +15,12 @@ class TaskQueueList extends StatefulWidget {
 
   //final List<TaskWithQueueStatus>? taskList;
 
-  const TaskQueueList(
-      {
-        required this.scrollController,
-        required this.panelController,
-        required this.panelOpenedInformer,
-        Key? key,
-      }) : super(key: key);
+  const TaskQueueList({
+    required this.scrollController,
+    required this.panelController,
+    required this.panelOpenedInformer,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TaskQueueList> createState() => _TaskQueueListState();
@@ -34,7 +33,7 @@ class _TaskQueueListState extends State<TaskQueueList> {
   void initState() {
     super.initState();
 
-    widget.panelOpenedInformer.listen((event) async{
+    widget.panelOpenedInformer.listen((event) async {
       // This is used to fix the drag-and-drop reordering of
       // the tasks, in the case that the list is scrolled up
       // completely
@@ -42,7 +41,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
       if (widget.scrollController.offset < 10) {
         final position = widget.scrollController.position;
 
-        position.applyContentDimensions(double.negativeInfinity, double.infinity);
+        position.applyContentDimensions(
+            double.negativeInfinity, double.infinity);
         position.jumpTo(10.0);
       }
     });
