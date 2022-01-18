@@ -3,6 +3,9 @@ import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
+import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
@@ -14,6 +17,7 @@ import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/features/tasks/widgets/category_select_field.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
+import 'package:learning_app/features/tasks/widgets/keyword_selection.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
 import 'package:learning_app/features/tasks/widgets/task_details_app_bar.dart';
 import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
@@ -233,6 +237,47 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   }),
                   const SizedBox(height: 20.0),
 
+                  // Keywords Selection
+                  BlocBuilder<KeyWordsCubit, KeyWordsState>(
+                    builder: (context, state) {
+                      // This only checks for the success state, we might want to check for
+                      // errors in the future here.
+                      if (state is! KeyWordsLoaded) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      return StreamBuilder<List<ReadKeyWordDto>>(
+                        stream: state.keywordsStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+
+                          final keywords = snapshot.data!;
+
+                          return KeywordSelection(
+                            onSelect: (List<ReadKeyWordDto> keywords) {
+                              var keywordIds =
+                                  keywords.map((e) => e.id).toList();
+
+                              BlocProvider.of<AlterTaskCubit>(context)
+                                  .alterTaskAttribute(
+                                TaskManipulationDto(
+                                  keywordIds: drift.Value(keywordIds),
+                                ),
+                              );
+                            },
+                            options: keywords,
+                            selectedKeywords:
+                                detailsDto?.keywords.toList() ?? [],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
                   // Date Select
                   DateInputField(
                     preselectedDate: detailsDto != null

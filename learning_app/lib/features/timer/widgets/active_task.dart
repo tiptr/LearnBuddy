@@ -6,6 +6,7 @@ import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
@@ -168,7 +169,22 @@ class ActiveTaskCard extends StatelessWidget {
                       task.id, task.doneDateTime == null ? true : false);
                 },
               ),
-              const Spacer(),
+              Flexible(
+                child: IconButton(
+                  icon: const Icon(Icons.launch),
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TaskDetailsScreen(
+                          existingTaskId: task.id,
+                          topLevelParentId: parentTask.task.id,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           )
         ],
