@@ -6,6 +6,7 @@ import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/b
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list_learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_list_words_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists_dao.dart';
@@ -154,6 +155,24 @@ class DbLearnListRepository implements LearnListRepository {
         case LearnMethods.storyList:
           // TODO: Handle this case when implementing the story list.
           throw UnimplementedError();
+        case LearnMethods.simpleLearnList:
+          final wordEntities = listIdToWordsMap[listEntity.id];
+          final List<LearnListWord>? wordModels = wordEntities
+              ?.map((wordEntity) => LearnListWord(
+              id: wordEntity.id,
+              word: wordEntity.word,
+          )).toList();
+
+          listModel = LearnList(
+            id: listEntity.id,
+            name: listEntity.name,
+            creationDate: listEntity.creationDateTime,
+            words: wordModels ?? [],
+            category: idToCategoryMap[listEntity.categoryId],
+            isArchived: listEntity.isArchived,
+          );
+
+          break;
       }
 
       return listModel;
