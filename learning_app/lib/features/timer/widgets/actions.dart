@@ -34,7 +34,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -59,7 +59,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -87,7 +87,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -112,7 +112,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -140,7 +140,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -165,7 +165,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -192,7 +192,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -222,7 +222,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),
@@ -247,7 +247,7 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withOnBackgroundHard,
+                              .withBackground,
                         ),
                       ),
                     ),

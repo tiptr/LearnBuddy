@@ -318,11 +318,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                                         Theme.of(context).colorScheme.primary),
                                 Text(
                                   "Speichern und neue Unteraufgabe",
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontSize: 18,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .textStyle2
+                                      .withPrimary,
                                 ),
                               ],
                             ),

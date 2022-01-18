@@ -119,15 +119,16 @@ class _TaskCardState extends State<TaskCard> {
                 left: widget._isSubTaskCard ? 10.0 : 3.0,
               ),
               // category:
-              decoration: widget._isSubTaskCard
-                  ? null
-                  : BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                            width: BasicCard.borderRadius,
-                            color: widget._categoryColor),
-                      ),
-                    ),
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                      width: BasicCard.borderRadius,
+                      color: widget._isSubTaskCard
+                          ? Colors.transparent
+                          : widget._categoryColor),
+                ),
+              ),
+
               height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -139,7 +140,7 @@ class _TaskCardState extends State<TaskCard> {
                     child: Transform.scale(
                       scale: widget._isSubTaskCard ? 1.3 : 1.5,
                       child: Checkbox(
-                        checkColor: Colors.white,
+                        checkColor: Theme.of(context).colorScheme.checkColor,
                         fillColor: MaterialStateProperty.all(
                           widget._categoryColor,
                         ),

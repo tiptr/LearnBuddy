@@ -53,7 +53,10 @@ class _TaskQueueListState extends State<TaskQueueList> {
                   width: 80,
                   margin: const EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.subtleBackgroundGrey,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackgroundSoft
+                        .withOpacity(0.4),
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),

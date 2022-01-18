@@ -157,7 +157,7 @@ class ActiveTaskCard extends StatelessWidget {
                 },
               ),
               Checkbox(
-                checkColor: Colors.white,
+                checkColor: Theme.of(context).colorScheme.checkColor,
                 fillColor: MaterialStateProperty.all(
                   task.category?.color,
                 ),
