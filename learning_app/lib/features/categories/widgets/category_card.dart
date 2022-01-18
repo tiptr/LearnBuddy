@@ -5,6 +5,8 @@ import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/categories/widgets/category_form_dialog.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 const double iconSize = 18.0;
 
@@ -27,7 +29,7 @@ class CategoryCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.cardColor,
       elevation: 10,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 25),
@@ -46,10 +48,11 @@ class CategoryCard extends StatelessWidget {
               flex: 65,
               child: Text(
                 category.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .textStyle4
+                    .withBold
+                    .withOnBackgroundHard,
                 textAlign: TextAlign.start,
               ),
             ),
@@ -83,13 +86,16 @@ class CategoryCard extends StatelessWidget {
                           text: TextSpan(
                             // Note: Styles for TextSpans must be explicitly defined.
                             // Child text spans will inherit styles from parent
-                            style: DefaultTextStyle.of(context).style,
+                            style: Theme.of(context).textTheme.textStyle2,
                             children: <TextSpan>[
                               const TextSpan(text: 'Willst du die Kategorie '),
                               TextSpan(
                                 text: category.name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .textStyle2
+                                    .withBold
+                                    .withOnBackgroundHard,
                               ),
                               const TextSpan(text: ' wirklich löschen?'),
                             ],

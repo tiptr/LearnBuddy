@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -189,6 +189,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
           onDelete: onDeleteTask,
           onExit: onExitTask,
         ),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Scrollbar(
           interactive: true,
           controller: _scrollController,
@@ -282,11 +283,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                     children: const [
                       Text(
                         "Unteraufgaben",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Color(0xFF636573),
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.textStyle1,
                       ),
                     ],
                   ),
@@ -325,16 +322,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                                 children: [
                                   Icon(Icons.add,
                                       size: 30.0,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
+                                      color: Theme.of(context).colorScheme.primary),
                                   Text(
                                     "Speichern und neue Unteraufgabe",
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      fontSize: 18,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .textStyle2
+                                        .withPrimary,
                                   ),
                                 ],
                               ),

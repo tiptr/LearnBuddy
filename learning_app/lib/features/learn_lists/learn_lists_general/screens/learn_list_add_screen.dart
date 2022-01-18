@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
+import 'package:learning_app/features/learning_aids/widgets/learning_aid_add_app_bar.dart';
+import 'package:learning_app/features/learning_aids/widgets/term_input_field.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/base_layout.dart';
 
 class LearnListAddScreen extends StatefulWidget {
   const LearnListAddScreen({Key? key}) : super(key: key);
@@ -28,58 +32,56 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
                 "Was möchtest du dir merken?",
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.fade,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                style: Theme.of(context)
+                    .textTheme
+                    .textStyle2
+                    .withBold
+                    .withOnBackgroundSoft,
+                const SizedBox(height: 40.0),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: items.length,
+                  itemBuilder: (context, i) {
+                    return ListViewItem(
+                      newDescriptionController: _descriptionControllers[i],
+                    ); // item layout
+                  },
                 ),
-              ),
-              const SizedBox(height: 40.0),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: items.length,
-                itemBuilder: (context, i) {
-                  return ListViewItem(
-                    newDescriptionController: _descriptionControllers[i],
-                  ); // item layout
-                },
-              ),
-              // Only for navigation to tags
-              const SizedBox(height: 10.0),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    var newDescriptionController = TextEditingController();
-                    _descriptionControllers.add(newDescriptionController);
-                    // add another item to the list
-                    //items.add(items.length);
-                    items.add(ListViewItem(
-                        newDescriptionController: newDescriptionController));
-                  });
-                },
-                child: Ink(
-                  width: 200,
-                  height: 50,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add,
-                            size: 30.0,
-                            color: Theme.of(context).colorScheme.primary),
-                        Text(
-                          "Neuer Begriff",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
+                // Only for navigation to tags
+                const SizedBox(height: 10.0),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      var newDescriptionController = TextEditingController();
+                      _descriptionControllers.add(newDescriptionController);
+                      // add another item to the list
+                      //items.add(items.length);
+                      items.add(ListViewItem(
+                          newDescriptionController: newDescriptionController));
+                    });
+                  },
+                  child: Ink(
+                    width: 200,
+                    height: 50,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add,
+                              size: 30.0,
+                              color: Theme.of(context).colorScheme.primary),
+                          Text("Neuer Begriff",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .textStyle2
+                                  .withPrimary),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class LearnListAddAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -23,23 +25,41 @@ class LearnListAddAppBar extends StatelessWidget
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
                 ),
                 Expanded(
                   child: TextField(
-                    decoration: const InputDecoration.collapsed(
-                      hintText: 'Name der Lernhilfe',
+                    decoration: InputDecoration.collapsed(
+                      hintText: 'Name der Aufgabe',
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .textStyle2
+                          .withOnBackgroundSoft
+                          .withOutBold,
                       border: InputBorder.none,
                     ),
                     controller: textController,
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withOnBackgroundHard
+                        .withBold,
+                    autofocus: true,
+                    maxLines: 1,
                   ),
                 ),
                 IconButton(
                   onPressed: () {
                     //TODO: add cubit
                   },
-                  icon: const Icon(Icons.save),
+                  icon: Icon(
+                    Icons.save_outlined,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
                 ),
               ],

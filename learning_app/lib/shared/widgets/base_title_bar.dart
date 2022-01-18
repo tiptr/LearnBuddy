@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class BaseTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -20,10 +21,7 @@ class BaseTitleBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: const Color(0xFF636573),
       title: Text(
         title,
-        style: const TextStyle(
-          fontSize: 26.0,
-          fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(context).textTheme.mainPageTitleStyle,
       ),
       actions: actions,
     );

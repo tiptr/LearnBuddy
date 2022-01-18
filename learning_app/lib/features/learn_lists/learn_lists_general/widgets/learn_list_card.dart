@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/old_learning_aid_do_use_learn_list_instead.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 const double iconSize = 18.0;
 
@@ -21,7 +24,7 @@ class LearnListCard extends StatelessWidget {
   }
 
   Widget _card(BuildContext context) {
-    const borderRadius = 12.5;
+    var borderRadius = BasicCard.borderRadius;
 
     //////////////////////////////////////////////////
     //----------For Testing multiple options----------
@@ -40,43 +43,37 @@ class LearnListCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        color: Theme.of(context).scaffoldBackgroundColor,
-        elevation: CardElevation.high,
-        child: ColorFiltered(
-          // Grey out when done -> Overlay with semitransparent white; Else
-          // overlay with fulltransparent "black" (no effect)
-          colorFilter:
-              const ColorFilter.mode(Color(0x00000000), BlendMode.lighten),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                // TODO: Use color of category once added
-                left: BorderSide(width: 12.5, color: categoryColor),
-              ),
-              color: Colors.white,
+        color: Theme.of(context).colorScheme.cardColor,
+        elevation: BasicCard.elevation.high,
+        shadowColor: Theme.of(context).colorScheme.shadowColor,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+          decoration: BoxDecoration(
+            border: Border(
+              // TODO: Use color of category once added
+              left: BorderSide(width: borderRadius, color: categoryColor),
             ),
-            height: 110.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 80,
-                  // This column holds the title + datechip
-                  // and the description + further info row
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Upper Row
-                      _buildUpperRow(context),
-                      // Lower Row
-                      _buildLowerRow()
-                    ],
-                  ),
-                )
-              ],
-            ),
+          ),
+          height: 110.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 80,
+                // This column holds the title + datechip
+                // and the description + further info row
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Upper Row
+                    _buildUpperRow(context),
+                    // Lower Row
+                    _buildLowerRow(context),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -92,35 +89,30 @@ class LearnListCard extends StatelessWidget {
           // Title
           Expanded(
             flex: 70,
-            child: Text(
-              _learningAid.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.none,
-                decorationThickness: 2.0,
-                fontSize: 20,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            child: Text(_learningAid.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .textStyle2
+                    .withBold
+                    .withOnBackgroundHard),
           ),
           // Date Chip
           Expanded(
             flex: 30,
             child: Chip(
-              label: const Text(
+              label: Text(
                 // TODO: Use real date here
                 "Heute",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: dueDateStyle.withOnBackgroundHard,
                 ),
               ),
-              avatar: const Icon(
-                // TODO check if learningAid is overdue for color selection
+              avatar: Icon(
                 Icons.calendar_today_outlined,
                 size: 16,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onBackgroundHard,
               ),
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: Theme.of(context).colorScheme.cardColor,
             ),
           )
         ],
@@ -128,18 +120,22 @@ class LearnListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLowerRow() {
+  Widget _buildLowerRow(BuildContext context) {
     return Expanded(
       flex: 50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
-          Icon(Icons.accessibility_new_rounded, size: iconSize),
-          Spacer(flex: 1),
+        children: [
+          Icon(Icons.accessibility_new_rounded,
+              size: iconSize,
+              color: Theme.of(context).colorScheme.onBackgroundSoft),
+          const Spacer(flex: 1),
           Text(
             "9 Begriffe",
+            textAlign: TextAlign.end,
+            style: Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
           ),
-          Spacer(flex: 40),
+          const Spacer(flex: 40),
         ],
       ),
     );

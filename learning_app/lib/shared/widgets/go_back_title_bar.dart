@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
-class CategoryAddAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CategoryAddAppBar({Key? key}) : super(key: key);
+class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final TextStyle? textStyle;
+
+  const GoBackTitleBar({
+    Key? key,
+    required this.title,
+    this.textStyle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +28,21 @@ class CategoryAddAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
+                  color: Theme.of(context).colorScheme.onBackgroundHard,
                 ),
-                const Expanded(
+                Expanded(
                   child: Text(
-                    "Kategorien",
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle1
+                        .withBold
+                        .withOnBackgroundHard,
                   ),
                 ),
               ],

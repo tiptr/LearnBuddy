@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 
 import 'category_select_item.dart';
@@ -37,8 +38,8 @@ class _CategorySelectFieldState extends State<CategorySelectField> {
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF636573),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
             width: 2.0,
           ),
         ),
@@ -52,15 +53,15 @@ class _CategorySelectFieldState extends State<CategorySelectField> {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        prefixIcon: const Icon(
+        prefixIcon: Icon(
           Icons.category_outlined,
-          color: Color(0xFF636573),
+          color: Theme.of(context).colorScheme.onBackground,
         ),
         suffixIcon: category != null
             ? IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
-                  color: Color(0xFF636573),
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
                 onPressed: () {
                   // Change the state, so the widget will re-render
@@ -72,18 +73,18 @@ class _CategorySelectFieldState extends State<CategorySelectField> {
                 },
               )
             : null,
-        label: const Text(
+        label: Text(
           "Kategorie",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
           isExpanded: true,
           value: category,
-          hint: const Text(
+          hint: Text(
             "Kategorie auswählen",
-            style: TextStyle(color: Color(0xFF949597)),
+            style: Theme.of(context).textTheme.textStyle2.withOnBackgroundSoft,
           ),
           items: widget.options.map<DropdownMenuItem<ReadCategoryDto>>(
               (ReadCategoryDto category) {

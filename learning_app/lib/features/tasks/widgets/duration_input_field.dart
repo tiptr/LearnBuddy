@@ -1,6 +1,8 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class DurationInputField extends StatefulWidget {
   final Function onChange;
@@ -63,13 +65,12 @@ class _DurationInputFieldState extends State<DurationInputField> {
       readOnly: true,
 
       controller: _textEditingController,
-      style: const TextStyle(
-          color: Color(0xFF636573), fontWeight: FontWeight.normal),
+      style: Theme.of(context).textTheme.textStyle2,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF636573),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
             width: 2.0,
           ),
         ),
@@ -82,15 +83,15 @@ class _DurationInputFieldState extends State<DurationInputField> {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        prefixIcon: const Icon(
+        prefixIcon: Icon(
           Icons.timer_outlined,
-          color: Color(0xFF636573),
+          color: Theme.of(context).colorScheme.onBackground,
         ),
         suffixIcon: duration != null
             ? IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
-                  color: Color(0xFF636573),
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
                 onPressed: () {
                   // Change the text content
@@ -104,12 +105,15 @@ class _DurationInputFieldState extends State<DurationInputField> {
                 },
               )
             : null,
-        label: const Text(
+        label: Text(
           "Zeitschätzung",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
         hintText: 'Dauer auswählen',
-        hintStyle: const TextStyle(color: Color(0xFF949597)),
+        hintStyle:
+            // Same TextStyle with a softer color. Inherited from the textfield,
+            // so the TextStyle is not explicitly defined with a constant
+            TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
       ),
     );
   }
