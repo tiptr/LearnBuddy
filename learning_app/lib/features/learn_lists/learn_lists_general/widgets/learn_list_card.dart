@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/old_learning_aid_do_use_learn_list_instead.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
@@ -7,10 +7,9 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 const double iconSize = 18.0;
 
 class LearnListCard extends StatelessWidget {
-  final OldLearningAidDoUseLearnListInstead _learningAid;
+  final LearningAid _learningAid;
 
-  const LearnListCard(
-      {Key? key, required OldLearningAidDoUseLearnListInstead learningAid})
+  const LearnListCard({Key? key, required LearningAid learningAid})
       : _learningAid = learningAid,
         super(key: key);
 

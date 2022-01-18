@@ -308,6 +308,11 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                                     existingTaskId: id,
                                     topLevelParentId:
                                         id, // Subtasks are not created this way
+                                    // -> this is why we can always return the
+                                    // id of the task itself like this, here
+                                    // Subtasks are instead created  directly
+                                    // via 'createNewSubTask' of the alter tasks
+                                    // cubit
                                     directlyStartSubtaskCreation: true,
                                   ),
                                 ),
