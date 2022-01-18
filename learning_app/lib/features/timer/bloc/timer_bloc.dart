@@ -46,24 +46,22 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
     if (event.duration > 0) {
-      if(event.duration == 3){
+      if (event.duration == 3) {
         SoundApi.playTimerDone();
       }
       emit(TimerRunInProgress(
           event.duration, state._pomodoroMode, state._countPhase));
-    }
-    else {
+    } else {
       NotificationApi.showNotification(
         payload: 'timer',
-        body: state.getPomodoroMode() == PomodoroMode.concentration?
-          "Geschafft. Gönn dir nun eine Pause!"
-        : "Die Pause ist vorbei. Weiter geht's!",
+        body: state.getPomodoroMode() == PomodoroMode.concentration
+            ? "Geschafft. Gönn dir nun eine Pause!"
+            : "Die Pause ist vorbei. Weiter geht's!",
         title: 'Timer abgelaufen',
       );
       emit(TimerRunComplete(
           event.duration, state._pomodoroMode, state._countPhase));
     }
-
 
     if (state._pomodoroMode == PomodoroMode.concentration) {
       timeLoggingBloc
