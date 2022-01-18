@@ -43,7 +43,7 @@ class LeisureCard extends StatelessWidget {
             elevation: BasicCard.elevation.high,
             shadowColor: Theme.of(context).colorScheme.shadowColor,
             child: Container(
-              height: 220.0,
+              // height: 220.0,
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +92,11 @@ class LeisureCard extends StatelessWidget {
                   ),
                   // Leisure description
                   const Text(
-                    "Zeichne auf einem Papier fünf Katzen mit verschiedenen menschlichen Gesichtsausdrücken.\n\nTeilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.",
+                    """Zeichne auf einem Papier fünf Katzen mit verschiedenen menschlichen 
+Gesichtsausdrücken.\n\n
+Teilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.\n\n
+Außerdem gibt es noch einen langen Text:\n\n
+Dieser Text sollte darstellen, was passiert, wenn ein vertikaler Overflow passiert.""",
                     overflow: TextOverflow.visible,
                   )
                 ],
