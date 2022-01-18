@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/categories/models/category.dart';
 import 'learn_list_word.dart';
 
-abstract class LearnList extends Equatable {
+class LearnList extends Equatable {
   final int id;
   final String name;
   final DateTime creationDate;

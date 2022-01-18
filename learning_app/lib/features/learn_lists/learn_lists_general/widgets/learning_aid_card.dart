@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
 
 const double iconSize = 18.0;
 
 class LearningAidCard extends StatelessWidget {
-  final LearningAid _learningAid;
+  final LearnList _learningAid;
 
-  const LearningAidCard({Key? key, required LearningAid learningAid})
+  const LearningAidCard({Key? key, required LearnList learningAid})
       : _learningAid = learningAid,
         super(key: key);
 
@@ -62,7 +62,7 @@ class LearningAidCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         color: Theme.of(context).scaffoldBackgroundColor,
-        elevation: CardElevation.high,
+        elevation: BasicCard.elevation.high,
         child: ColorFiltered(
           // Grey out when done -> Overlay with semitransparent white; Else
           // overlay with fulltransparent "black" (no effect)
@@ -114,7 +114,7 @@ class LearningAidCard extends StatelessWidget {
           Expanded(
             flex: 70,
             child: Text(
-              _learningAid.title,
+              _learningAid.name,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none,

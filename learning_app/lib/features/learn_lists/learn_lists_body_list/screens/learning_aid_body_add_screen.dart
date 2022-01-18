@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_add_app_bar.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -30,7 +30,7 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: LearningAidAddAppBar(textController: _titleController),
+      appBar: LearnListAddAppBar(textController: _titleController),
       body: SlidingUpPanel(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(18.0),

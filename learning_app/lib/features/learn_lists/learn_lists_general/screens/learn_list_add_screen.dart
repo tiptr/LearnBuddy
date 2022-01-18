@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_add_app_bar.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
