@@ -109,12 +109,12 @@ class _TaskQueueListState extends State<TaskQueueList> {
                     // Ignore the pseudo element at the end:
                     if (newIndex <= state.tasks.length) {
                       setState(
-                            () {
+                        () {
                           if (newIndex > oldIndex) {
                             newIndex -= 1;
                           }
                           final TaskWithQueueStatus item =
-                          state.tasks.removeAt(oldIndex);
+                              state.tasks.removeAt(oldIndex);
                           state.tasks.insert(newIndex, item);
                           context
                               .read<TaskQueueBloc>()
@@ -148,9 +148,10 @@ class _TaskQueueListState extends State<TaskQueueList> {
         )
     ];
 
-    final missingHeight = widget.panelMaxHeight
-      - (list.length * 50) // current actual height of the elements
-        - 50; // constant part of the panel
+    final missingHeight = widget.panelMaxHeight -
+        (list.length * 50) // current actual height of the elements
+        -
+        50; // constant part of the panel
 
     widgetList.add(SizedBox(
       key: const Key('Placeholder element at the end of the list'),

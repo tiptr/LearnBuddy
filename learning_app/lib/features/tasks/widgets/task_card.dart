@@ -9,7 +9,6 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 14.0;
 
@@ -71,6 +70,7 @@ class _TaskCardState extends State<TaskCard> {
       startActionPane: widget._isSubTaskCard
           ? null
           : ActionPane(
+              extentRatio: 0.4,
               dragDismissible: true,
               // A motion is a widget used to control how the pane animates.
               motion: const ScrollMotion(),
