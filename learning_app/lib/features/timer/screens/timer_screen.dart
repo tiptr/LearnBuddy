@@ -8,6 +8,7 @@ import 'package:learning_app/features/timer/widgets/actions.dart'
 import 'package:learning_app/features/timer/widgets/active_task.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:learning_app/constants/theme_constants.dart';
@@ -23,8 +24,14 @@ class TimerScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         // Will change to a custom title bar in the future
-        appBar: const BaseTitleBar(
+        appBar: BaseTitleBar(
           title: "Pomodoro Timer",
+          actions: [
+            buildThreePointsMenu(
+              context: context,
+              showGlobalSettings: true,
+            )
+          ],
         ),
         body: const TimerView(),
       ),

@@ -5,6 +5,7 @@ import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
 
 class LeisureScreen extends StatelessWidget {
   const LeisureScreen({Key? key}) : super(key: key);
@@ -14,8 +15,14 @@ class LeisureScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       // Will change to a custom title bar in the future
-      appBar: const BaseTitleBar(
+      appBar: BaseTitleBar(
         title: "Abwechslung",
+        actions: [
+          buildThreePointsMenu(
+            context: context,
+            showGlobalSettings: true,
+          )
+        ],
       ),
       body: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
         bloc: LeasureCategoryCubit(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/old_learning_aid_do_use_learn_list_instead.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'learn_list_add_screen.dart';
 
 class LearnListsScreen extends StatelessWidget {
@@ -12,8 +13,14 @@ class LearnListsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       // Will change to a custom title bar in the future
-      appBar: const BaseTitleBar(
+      appBar: BaseTitleBar(
         title: "Lernhilfen",
+        actions: [
+          buildThreePointsMenu(
+            context: context,
+            showGlobalSettings: true,
+          )
+        ],
       ),
       body: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
