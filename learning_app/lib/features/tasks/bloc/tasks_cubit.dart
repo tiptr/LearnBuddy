@@ -57,8 +57,8 @@ class TasksCubit extends Cubit<TaskState> {
     return topLevelTaskStream.map((topLevel) {
       // Only create a details-dto, if the task was found
       if (topLevel != null) {
-        return DetailsReadTaskDto.fromTaskWithQueueStatus(topLevel,
-            targetId: taskId);
+        return DetailsReadTaskDto.fromTaskWithQueueStatus(
+            topLevelTaskWithQueueStatus: topLevel, targetId: taskId);
       } else {
         return null;
       }

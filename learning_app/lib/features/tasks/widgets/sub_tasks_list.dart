@@ -21,13 +21,13 @@ class SubTasksList extends StatefulWidget {
 }
 
 class _SubTasksListState extends State<SubTasksList> {
-  bool currentlyCreatingNewSubtask = false;
+  bool creatingModeActive = false;
 
   @override
   void initState() {
     super.initState();
     if (widget.directlyStartSubtaskCreation) {
-      currentlyCreatingNewSubtask = true;
+      creatingModeActive = true;
     }
   }
 
@@ -41,9 +41,7 @@ class _SubTasksListState extends State<SubTasksList> {
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: widget.subTasksList.length +
-              (currentlyCreatingNewSubtask ? 1 : 0),
-          // itemExtent: 95,
+          itemCount: widget.subTasksList.length + (creatingModeActive ? 1 : 0),
           itemBuilder: (BuildContext context, int index) {
             if (index < widget.subTasksList.length) {
               DetailsReadTaskDto detailsDto = widget.subTasksList[index];
@@ -57,7 +55,7 @@ class _SubTasksListState extends State<SubTasksList> {
                 onDiscard: () {
                   // Remove the creation card
                   setState(() {
-                    currentlyCreatingNewSubtask = false;
+                    creatingModeActive = false;
                   });
                 },
                 onPressEnterSubmit: (title) {
@@ -70,7 +68,7 @@ class _SubTasksListState extends State<SubTasksList> {
                 onUseButtonSubmit: (title) async {
                   // When the button is used, only create one subtask
                   setState(() {
-                    currentlyCreatingNewSubtask = false;
+                    creatingModeActive = false;
                   });
 
                   BlocProvider.of<AlterTaskCubit>(context)
@@ -82,18 +80,9 @@ class _SubTasksListState extends State<SubTasksList> {
         ),
         InkWell(
           onTap: () {
-            //TODO: handle different at task creation screen!
-
             setState(() {
-              currentlyCreatingNewSubtask = true;
+              creatingModeActive = true;
             });
-
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const TaskDetailsScreen(),
-            //   ),
-            // );
           },
           child: Ink(
             height: 50,

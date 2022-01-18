@@ -34,11 +34,11 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
     super.initState();
     _textEditingController.addListener(() {
       // Toggle titleEmpty
-      if (_textEditingController.text != '' && titleEmpty) {
+      if (_textEditingController.text.isNotEmpty && titleEmpty) {
         setState(() {
           titleEmpty = false;
         });
-      } else if (_textEditingController.text == '' && !titleEmpty) {
+      } else if (_textEditingController.text.isEmpty && !titleEmpty) {
         setState(() {
           titleEmpty = true;
         });

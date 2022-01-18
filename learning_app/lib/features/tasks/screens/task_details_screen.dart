@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
+import 'package:learning_app/features/categories/bloc/categories_state.dart';
+import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
+import 'package:learning_app/features/tasks/widgets/category_select_field.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
@@ -189,6 +193,40 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
             margin: const EdgeInsets.all(20.0),
             child: Column(
               children: [
+                // Category Select
+                BlocBuilder<CategoriesCubit, CategoriesState>(
+                    builder: (context, state) {
+                  if (state is! CategoriesLoaded) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  return StreamBuilder<List<ReadCategoryDto>>(
+                    stream: state.categoriesStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return CategorySelectField(
+                        onSelect: (int? categoryId) {
+                          BlocProvider.of<AlterTaskCubit>(context)
+                              .alterTaskAttribute(
+                            TaskManipulationDto(
+                              categoryId: drift.Value(categoryId),
+                            ),
+                          );
+                        },
+                        options: snapshot.data!,
+                        preselectedCategoryId: detailsDto?.category?.id,
+                      );
+                    },
+                  );
+                }),
+                const SizedBox(height: 20.0),
+
+                // Date Select
                 DateInputField(
                   preselectedDate: detailsDto != null
                       ? detailsDto.dueDate
@@ -201,6 +239,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   },
                 ),
                 const SizedBox(height: 20.0),
+
+                // Duration Select
                 DurationInputField(
                   preselectedDuration: detailsDto != null
                       ? detailsDto.estimatedTime
@@ -213,6 +253,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   },
                 ),
                 const SizedBox(height: 20.0),
+
+                // Description Select
                 TextInputField(
                   label: "Beschreibung",
                   hintText: "Text eingeben",
