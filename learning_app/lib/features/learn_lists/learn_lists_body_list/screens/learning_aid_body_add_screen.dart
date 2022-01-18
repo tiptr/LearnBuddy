@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -86,10 +87,15 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
             ],
           ),
         color: Colors.white,
-        body: const Center(
-          child: Text("This is the Widget behind the sliding panel"),
+        body: const Image(
+          image: AssetImage(
+            //"assets/leisure/leisure-group-fitness.png"
+            "assets/learning_aids/moehm_alternative.png",
+            //width: 85.0,
+            //height: 85.0,
+          ),
         ),
-      )
+      ),
     );
   }
 }
