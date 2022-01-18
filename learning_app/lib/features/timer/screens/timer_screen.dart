@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
@@ -49,6 +51,14 @@ class TimerView extends StatefulWidget {
 
 class _TimerViewState extends State<TimerView> {
   final _panelController = PanelController();
+  late final Stream<bool> _panelOpenedInformer;
+  final _streamController = StreamController<bool>();
+
+  @override
+  void initState() {
+    super.initState();
+    _panelOpenedInformer = _streamController.stream;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +77,16 @@ class _TimerViewState extends State<TimerView> {
         return TaskQueueList(
           scrollController: sc,
           panelController: _panelController,
+          panelOpenedInformer: _panelOpenedInformer,
         );
       },
       color: Theme.of(context).colorScheme.cardColor,
       body: const Center(
         child: TimerBackGround(),
       ),
+      onPanelOpened: () {
+        _streamController.add(true);
+      },
     );
   }
 }
