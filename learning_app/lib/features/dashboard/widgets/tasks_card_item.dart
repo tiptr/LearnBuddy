@@ -56,6 +56,7 @@ class TasksCardItem extends StatelessWidget {
                   ),
                   Text(
                     task.keywords.join(", "),
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .textStyle4

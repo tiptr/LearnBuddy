@@ -9,10 +9,10 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
-import 'package:learning_app/features/learning_aids/screens/learning_aids_screen.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
+import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
 
 import 'features/themes/bloc/bloc.dart';
@@ -23,7 +23,7 @@ const List<Widget> _pages = <Widget>[
   TaskScreen(),
   DashboardScreen(),
   LeisureScreen(),
-  LearningAidsScreen(),
+  LearnListsScreen(),
 ];
 
 void main() {
@@ -124,45 +124,42 @@ class MyHomePage extends StatelessWidget {
     }
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
-      return SafeArea(
-        child: Scaffold(
-          body: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 350),
-            switchInCurve: Curves.linear,
-            child: _pages[selectedIndex],
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
-            onTap: onItemTapped,
-            unselectedItemColor: Theme.of(context).colorScheme.onBackgroundSoft,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
-            showUnselectedLabels: true,
-            showSelectedLabels: true,
-            backgroundColor: Theme.of(context).colorScheme.cardColor,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.timer),
-                label: "Timer",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.document_scanner_outlined),
-                label: "Aufgaben",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: "Dashboard",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.beach_access_outlined),
-                label: "Ausgleich",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book_outlined),
-                label: "Lernhilfen",
-              ),
-            ],
-          ),
+      return Scaffold(
+        body: IndexedStack(
+          index: selectedIndex,
+          children: _pages,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          onTap: onItemTapped,
+          unselectedItemColor: Theme.of(context).colorScheme.onBackgroundSoft,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+          backgroundColor: Theme.of(context).colorScheme.cardColor,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.timer),
+              label: "Timer",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.document_scanner_outlined),
+              label: "Aufgaben",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "Dashboard",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.beach_access_outlined),
+              label: "Ausgleich",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_outlined),
+              label: "Lernhilfen",
+            ),
+          ],
         ),
       );
     });
