@@ -32,11 +32,17 @@ class _KeywordSelectionState extends State<KeywordSelection> {
     return Column(
       children: [
         KeyWordInputField(
-          // TODO: Open a modal for selection of keywords
-          onSelect: () {
+          onSelect: (List<ReadKeyWordDto> selected) {
             // Update local state and emit newly selected keywords
+            setState(() {
+              selectedKeyWords = selected;
+            });
+
+            widget.onSelect(
+              selected,
+            );
           },
-          selectedKeywords: selectedKeyWords,
+          preselectedKeywords: selectedKeyWords,
           options: widget.options,
         ),
         const SizedBox(height: 10.0),
