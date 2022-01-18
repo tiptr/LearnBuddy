@@ -5,6 +5,7 @@ import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TopLevelListTile extends StatelessWidget {
   final TaskWithQueueStatus topLevelTaskWithQueueStatus;
@@ -16,30 +17,30 @@ class TopLevelListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final TimeLoggingBloc timeLogBloc = context.read<TimeLoggingBloc>();
     final TaskQueueBloc taskQueueBloc = context.read<TaskQueueBloc>();
+    int? selectedTaskId;
+    TextStyle queueTextStyle = Theme.of(context).textTheme.textStyle2;
 
-    return BlocBuilder<TaskQueueBloc, TaskQueueState>(
-      builder: (context, state) {
-        return InkWell(
-          child: Text(
-            topLevelTaskWithQueueStatus.task.title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: topLevelTaskWithQueueStatus.task.id ==
-                      (state as TaskQueueReady).selectedTask
-                  ? Theme.of(context).colorScheme.primary
-                  : const Color(0xFF636573),
-            ),
-          ),
-          onTap: () {
-            taskQueueBloc.add(
-                SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
-            timeLogBloc.add(AddTimeLoggingObjectEvent(
-                topLevelTaskWithQueueStatus.task.id,
-                topLevelTaskWithQueueStatus.task.id));
-          },
-        );
+    if (taskQueueBloc.state is TaskQueueReady) {
+      final state = taskQueueBloc.state as TaskQueueReady;
+      selectedTaskId = state.selectedTask;
+    }
+
+    return InkWell(
+      child: Text(
+        topLevelTaskWithQueueStatus.task.title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        textAlign: TextAlign.left,
+        style: topLevelTaskWithQueueStatus.task.id == selectedTaskId
+            ? queueTextStyle.withPrimary
+            : queueTextStyle,
+      ),
+      onTap: () {
+        taskQueueBloc
+            .add(SelectQueuedTaskEvent(topLevelTaskWithQueueStatus.task.id));
+        timeLogBloc.add(AddTimeLoggingObjectEvent(
+            topLevelTaskWithQueueStatus.task.id,
+            topLevelTaskWithQueueStatus.task.id));
       },
     );
   }
@@ -94,7 +95,7 @@ class SingleSubtask extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
-          textColor: const Color(0xFF636573),
+          textColor: Theme.of(context).colorScheme.onBackground,
           selected: task.id == selectedTaskId,
           selectedColor: Theme.of(context).colorScheme.primary,
           onTap: () {

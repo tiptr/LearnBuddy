@@ -11,14 +11,12 @@ class BaseLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.background,
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15.0,
-              vertical: 10.0,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: titleBar,
           ),
           Expanded(child: content),

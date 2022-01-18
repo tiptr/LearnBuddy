@@ -5,14 +5,17 @@ import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
-import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   final DetailsReadTaskDto? existingTask;
+  final Function() onSaveTask;
 
   const TaskAddAppBar({
     Key? key,
     this.existingTask,
+    required this.onSaveTask,
   }) : super(key: key);
 
   @override
@@ -47,16 +50,29 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  ),
                   iconSize: 30,
                 ),
                 Expanded(
                   child: TextField(
-                    decoration: const InputDecoration.collapsed(
+                    decoration: InputDecoration.collapsed(
                       hintText: 'Name der Aufgabe',
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .textStyle2
+                          .withOnBackgroundSoft
+                          .withOutBold,
                       border: InputBorder.none,
                     ),
                     controller: _textEditingController,
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withOnBackgroundHard
+                        .withBold,
                     onChanged: (text) async {
                       BlocProvider.of<AlterTaskCubit>(context)
                           .alterTaskAttribute(TaskManipulationDto(
@@ -69,26 +85,16 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    final cubit = BlocProvider.of<AlterTaskCubit>(context);
-                    // validate required fields:
-                    if (!cubit.validateTaskConstruction()) {
-                      // Not ready to save! Inform the user and continue
-                      final missingFieldsDescr =
-                          cubit.getMissingFieldsDescription();
-                      logger.d(
-                          'The task is not ready to be saved! Description: $missingFieldsDescr');
-                      // TODO: inform the user with a SnackBar
-                      return;
+                    int? savedTaskId = await widget.onSaveTask();
+
+                    if (savedTaskId != null) {
+                      // Exit task details screen
+                      Navigator.pop(context);
                     }
-
-                    await BlocProvider.of<AlterTaskCubit>(context).saveTask();
-
-                    // Exit task details screen
-                    Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.save_outlined,
-                    color: Color(0xFF636573),
+                    color: Theme.of(context).colorScheme.onBackgroundHard,
                   ),
                   iconSize: 30,
                 ),
