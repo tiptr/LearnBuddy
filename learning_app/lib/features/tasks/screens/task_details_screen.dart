@@ -199,132 +199,139 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
           controller: _scrollController,
           child: SingleChildScrollView(
             controller: _scrollController,
-            child: Container(
-              margin: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  // Category Select
-                  BlocBuilder<CategoriesCubit, CategoriesState>(
-                      builder: (context, state) {
-                    if (state is! CategoriesLoaded) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    return StreamBuilder<List<ReadCategoryDto>>(
-                      stream: state.categoriesStream,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      // Category Select
+                      BlocBuilder<CategoriesCubit, CategoriesState>(
+                          builder: (context, state) {
+                        if (state is! CategoriesLoaded) {
+                          return const CircularProgressIndicator();
                         }
 
-                        return CategorySelectField(
-                          onSelect: (int? categoryId) {
-                            BlocProvider.of<AlterTaskCubit>(context)
-                                .alterTaskAttribute(
-                              TaskManipulationDto(
-                                categoryId: drift.Value(categoryId),
-                              ),
+                        return StreamBuilder<List<ReadCategoryDto>>(
+                          stream: state.categoriesStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            return CategorySelectField(
+                              onSelect: (int? categoryId) {
+                                BlocProvider.of<AlterTaskCubit>(context)
+                                    .alterTaskAttribute(
+                                  TaskManipulationDto(
+                                    categoryId: drift.Value(categoryId),
+                                  ),
+                                );
+                              },
+                              options: snapshot.data!,
+                              preselectedCategoryId: detailsDto?.category?.id,
                             );
                           },
-                          options: snapshot.data!,
-                          preselectedCategoryId: detailsDto?.category?.id,
                         );
-                      },
-                    );
-                  }),
-                  const SizedBox(height: 20.0),
+                      }),
+                      const SizedBox(height: 20.0),
 
-                  // Keywords Selection
-                  BlocBuilder<KeyWordsCubit, KeyWordsState>(
-                    builder: (context, state) {
-                      // This only checks for the success state, we might want to check for
-                      // errors in the future here.
-                      if (state is! KeyWordsLoaded) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-
-                      return StreamBuilder<List<ReadKeyWordDto>>(
-                        stream: state.keywordsStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
+                      // Keywords Selection
+                      BlocBuilder<KeyWordsCubit, KeyWordsState>(
+                        builder: (context, state) {
+                          // This only checks for the success state, we might want to check for
+                          // errors in the future here.
+                          if (state is! KeyWordsLoaded) {
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
 
-                          final keywords = snapshot.data!;
+                          return StreamBuilder<List<ReadKeyWordDto>>(
+                            stream: state.keywordsStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
 
-                          return KeywordSelection(
-                            onSelect: (List<ReadKeyWordDto> keywords) {
-                              var keywordIds =
-                                  keywords.map((e) => e.id).toList();
+                              final keywords = snapshot.data!;
 
-                              BlocProvider.of<AlterTaskCubit>(context)
-                                  .alterTaskAttribute(
-                                TaskManipulationDto(
-                                  keywordIds: drift.Value(keywordIds),
-                                ),
+                              return KeywordSelection(
+                                onSelect: (List<ReadKeyWordDto> keywords) {
+                                  var keywordIds =
+                                      keywords.map((e) => e.id).toList();
+
+                                  BlocProvider.of<AlterTaskCubit>(context)
+                                      .alterTaskAttribute(
+                                    TaskManipulationDto(
+                                      keywordIds: drift.Value(keywordIds),
+                                    ),
+                                  );
+                                },
+                                options: keywords,
+                                selectedKeywords:
+                                    detailsDto?.keywords.toList() ?? [],
                               );
                             },
-                            options: keywords,
-                            selectedKeywords:
-                                detailsDto?.keywords.toList() ?? [],
                           );
                         },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20.0),
-                  // Date Select
-                  DateInputField(
-                    preselectedDate: detailsDto != null
-                        ? detailsDto.dueDate
-                        : preSelectedDueDate,
-                    onChange: (DateTime? datetime) {
-                      BlocProvider.of<AlterTaskCubit>(context)
-                          .alterTaskAttribute(TaskManipulationDto(
-                        dueDate: drift.Value(datetime),
-                      ));
-                    },
-                  ),
-                  const SizedBox(height: 20.0),
+                      ),
+                      const SizedBox(height: 20.0),
+                      // Date Select
+                      DateInputField(
+                        preselectedDate: detailsDto != null
+                            ? detailsDto.dueDate
+                            : preSelectedDueDate,
+                        onChange: (DateTime? datetime) {
+                          BlocProvider.of<AlterTaskCubit>(context)
+                              .alterTaskAttribute(TaskManipulationDto(
+                            dueDate: drift.Value(datetime),
+                          ));
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
 
-                  // Duration Select
-                  DurationInputField(
-                    preselectedDuration: detailsDto != null
-                        ? detailsDto.estimatedTime
-                        : preSelectedTimeEstimate,
-                    onChange: (Duration? duration) {
-                      BlocProvider.of<AlterTaskCubit>(context)
-                          .alterTaskAttribute(TaskManipulationDto(
-                        estimatedTime: drift.Value(duration),
-                      ));
-                    },
-                  ),
-                  const SizedBox(height: 20.0),
+                      // Duration Select
+                      DurationInputField(
+                        preselectedDuration: detailsDto != null
+                            ? detailsDto.estimatedTime
+                            : preSelectedTimeEstimate,
+                        onChange: (Duration? duration) {
+                          BlocProvider.of<AlterTaskCubit>(context)
+                              .alterTaskAttribute(TaskManipulationDto(
+                            estimatedTime: drift.Value(duration),
+                          ));
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
 
-                  // Description Select
-                  TextInputField(
-                    label: "Beschreibung",
-                    hintText: "Text eingeben",
-                    iconData: Icons.description_outlined,
-                    onChange: (text) async {
-                      BlocProvider.of<AlterTaskCubit>(context)
-                          .alterTaskAttribute(TaskManipulationDto(
-                        description: drift.Value(text),
-                      ));
-                    },
-                    preselectedText: detailsDto != null
-                        ? (detailsDto.description ?? '')
-                        : preSelectedDescription,
+                      // Description Select
+                      TextInputField(
+                        label: "Beschreibung",
+                        hintText: "Text eingeben",
+                        iconData: Icons.description_outlined,
+                        onChange: (text) async {
+                          BlocProvider.of<AlterTaskCubit>(context)
+                              .alterTaskAttribute(TaskManipulationDto(
+                            description: drift.Value(text),
+                          ));
+                        },
+                        preselectedText: detailsDto != null
+                            ? (detailsDto.description ?? '')
+                            : preSelectedDescription,
+                      ),
+                    ],
                   ),
+                ),
 
-                  // Subtasks
-                  const SizedBox(height: 20.0),
-                  Row(
+                // Subtasks
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
                     children: [
                       Text(
                         "Unteraufgaben",
@@ -332,63 +339,63 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20.0),
-                  // Subtasks list or shortcut button
-                  detailsDto != null
-                      ? SubTasksList(
-                          subTasksList: detailsDto.children,
-                          directlyStartSubtaskCreation:
-                              widget.directlyStartSubtaskCreation)
-                      : InkWell(
-                          onTap: () async {
-                            int? savedTaskId = await onSaveTask();
+                ),
 
-                            if (savedTaskId != null) {
-                              int id = savedTaskId;
-                              // Enter the task editing mode:
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TaskDetailsScreen(
-                                    existingTaskId: id,
-                                    topLevelParentId:
-                                        id, // Subtasks are not created this way
-                                    // -> this is why we can always return the
-                                    // id of the task itself like this, here
-                                    // Subtasks are instead created  directly
-                                    // via 'createNewSubTask' of the alter tasks
-                                    // cubit
-                                    directlyStartSubtaskCreation: true,
-                                  ),
+                const SizedBox(height: 20.0),
+                // Subtasks list or shortcut button
+                detailsDto != null
+                    ? SubTasksList(
+                        subTasksList: detailsDto.children,
+                        directlyStartSubtaskCreation:
+                            widget.directlyStartSubtaskCreation)
+                    : InkWell(
+                        onTap: () async {
+                          int? savedTaskId = await onSaveTask();
+
+                          if (savedTaskId != null) {
+                            int id = savedTaskId;
+                            // Enter the task editing mode:
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TaskDetailsScreen(
+                                  existingTaskId: id,
+                                  topLevelParentId:
+                                      id, // Subtasks are not created this way
+                                  // -> this is why we can always return the
+                                  // id of the task itself like this, here
+                                  // Subtasks are instead created  directly
+                                  // via 'createNewSubTask' of the alter tasks
+                                  // cubit
+                                  directlyStartSubtaskCreation: true,
                                 ),
-                              );
-                            }
-                          },
-                          child: Ink(
-                            height: 50,
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add,
-                                      size: 30.0,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  Text(
-                                    "Speichern und neue Unteraufgabe",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .textStyle2
-                                        .withPrimary,
-                                  ),
-                                ],
                               ),
+                            );
+                          }
+                        },
+                        child: Ink(
+                          height: 50,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add,
+                                    size: 30.0,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                Text(
+                                  "Speichern und neue Unteraufgabe",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .textStyle2
+                                      .withPrimary,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                ],
-              ),
+                      ),
+              ],
             ),
           ),
         ),

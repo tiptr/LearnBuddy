@@ -40,13 +40,12 @@ class Task {
         (estimatedTimeChildren != Duration.zero ? estimatedTime : null);
   }
 
-  // I'm not sure if this is the right implementation of this
   Duration? get remainingTimeEstimation {
     if (fullTimeEstimation == null) {
       return null;
     } else {
-      final currentFullTimeEstimation = fullTimeEstimation as Duration;
-      return currentFullTimeEstimation - sumAllTimeLogs;
+      final remainingDuration = fullTimeEstimation! - sumAllTimeLogs;
+      return remainingDuration.isNegative ? Duration.zero : remainingDuration;
     }
   }
 

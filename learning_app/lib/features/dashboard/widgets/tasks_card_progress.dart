@@ -4,16 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_process_indicator.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TasksCardProgress extends StatelessWidget {
-  final double progress;
+  final int amountDone;
+  final int amountTotal;
+  final Duration? remainingDuration;
 
   final horizontalCardPadding = 10.0;
   final processIndicatorFlexPortion = 40;
 
-  const TasksCardProgress({Key? key, required this.progress}) : super(key: key);
+  const TasksCardProgress({
+    Key? key,
+    required this.amountDone,
+    required this.amountTotal,
+    required this.remainingDuration,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +52,8 @@ class TasksCardProgress extends StatelessWidget {
             Expanded(
               flex: processIndicatorFlexPortion,
               child: Center(
-                child: TasksProcessIndicator(progress: progress, size: 92.5),
+                child: TasksProcessIndicator(
+                    progress: amountDone / amountTotal, size: 92.5),
               ),
             ),
             Expanded(
@@ -63,7 +72,9 @@ class TasksCardProgress extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                       Text(
-                        "Heutiger Restaufwand:\n2h 30min",
+                        remainingDuration == null
+                            ? "Keine Zeitschätzungen\n vorhanden"
+                            : "Heutiger Restaufwand:\n${remainingDuration.format()}",
                         style: Theme.of(context)
                             .textTheme
                             .textStyle3
@@ -86,21 +97,20 @@ class TasksCardProgress extends StatelessWidget {
                         width: 30.0,
                       ),
                       Text(
-                        "4 Erledigt",
+                        "$amountDone Erledigt",
                         style: Theme.of(context)
                             .textTheme
                             .textStyle3
                             .withOnBackgroundSoft,
                       ),
                       ColorIndicator(
-                        // TODO: to be structured in the theme-issue:
                         color:
                             Theme.of(context).colorScheme.subtleBackgroundGrey,
                         height: 10.0,
                         width: 30.0,
                       ),
                       Text(
-                        "3 Offen",
+                        "${amountTotal - amountDone} Offen",
                         style: Theme.of(context)
                             .textTheme
                             .textStyle3

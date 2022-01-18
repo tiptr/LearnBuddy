@@ -14,6 +14,7 @@ class ListReadTaskDto extends Equatable {
   final Duration? remainingTimeEstimation; // minutes
   final String title;
   final bool done;
+  final DateTime? doneDateTime;
   final Color? categoryColor;
   final List<String> keywords;
   final DateTime? dueDate;
@@ -30,14 +31,17 @@ class ListReadTaskDto extends Equatable {
     required this.keywords,
     this.remainingTimeEstimation,
     this.dueDate,
+    this.doneDateTime,
     required this.subTaskCount,
     required this.finishedSubTaskCount,
     required this.isQueued,
   });
 
   static ListReadTaskDto fromTaskWithQueueStatus(
-      TaskWithQueueStatus taskWithQueueStatus) {
+    TaskWithQueueStatus taskWithQueueStatus,
+  ) {
     final task = taskWithQueueStatus.task;
+
     return ListReadTaskDto(
       id: task.id,
       topLevelParentId: task.id, // is top-level of its own
@@ -49,6 +53,7 @@ class ListReadTaskDto extends Equatable {
       isQueued: taskWithQueueStatus.queueStatus != null,
       keywords: task.keywords.map((keyword) => keyword.name).toList(),
       dueDate: task.dueDate,
+      doneDateTime: task.doneDateTime,
       remainingTimeEstimation: task.remainingTimeEstimation,
     );
   }

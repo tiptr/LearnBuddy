@@ -8,6 +8,7 @@ import 'package:learning_app/util/formatting_comparison/duration_extensions.dart
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 const double iconSize = 14.0;
 
@@ -62,12 +63,85 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: widget._isSubTaskCard ? 0.0 : 10.0,
-          vertical: widget._isSubTaskCard
-              ? distanceBetweenCardsSubTasks
-              : distanceBetweenCardsTopLevel),
+    return Slidable(
+      key: Key(widget._task.id.toString()),
+
+      // The start action pane is the one at the left or the top side.
+      startActionPane: widget._isSubTaskCard
+          ? null
+          : ActionPane(
+              extentRatio: 0.4,
+              dragDismissible: true,
+              // A motion is a widget used to control how the pane animates.
+              motion: const ScrollMotion(),
+
+              // We will abuse the dismissing functionality here for the ability
+              // to quickly select / disselect the task with one swipe only
+              dismissible: DismissiblePane(
+                onDismissed: () {
+                  // Empty, because we do not actually dismiss the card
+                },
+                confirmDismiss: () async {
+                  // This is called before onDismissed and before the card is
+                  // dismissed
+
+                  // Toggle queue status
+                  BlocProvider.of<TasksCubit>(context).toggleQueued(
+                      taskId: widget._task.id, queued: !widget._task.isQueued);
+
+                  // Always return false, so the card will not be dismissed
+                  return false;
+                },
+                closeOnCancel: true,
+              ),
+
+              // All actions are defined in the children parameter.
+              children: [
+                // Slide to the right to select / deselect a task for the queue
+                SlidableAction(
+                  // For further styling, also a CustomSlidableAction exists, with
+                  // which a custom widget can be designed for this
+                  onPressed: (context) {
+                    // Toggle queue status
+                    BlocProvider.of<TasksCubit>(context).toggleQueued(
+                        taskId: widget._task.id,
+                        queued: !widget._task.isQueued);
+                  },
+                  autoClose: false,
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: widget._task.isQueued
+                      ? Icons.remove_from_queue_outlined
+                      : Icons.add_to_queue_outlined,
+                  label: widget._task.isQueued
+                      ? 'Später bearbeiten'
+                      : 'Heute bearbeiten',
+                ),
+              ],
+            ),
+
+      // The end action pane is the one at the right or the bottom side.
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) {
+              // TODO: ask with a dialog
+              BlocProvider.of<TasksCubit>(context)
+                  .deleteTaskById(widget._task.id);
+            },
+            autoClose: false,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            icon: Icons.delete_outline_outlined,
+            label: 'Endgültig löschen',
+          ),
+          // More actions could be defined here, later
+        ],
+      ),
+
+      // The child of the Slidable is what the user sees when the
+      // component is not dragged.
       child: _card(context),
     );
   }
@@ -75,10 +149,12 @@ class _TaskCardState extends State<TaskCard> {
   Widget _card(BuildContext context) {
     double borderRadius = BasicCard.borderRadius;
 
-    return Dismissible(
-      key: Key(widget._task.id.toString()),
-      onDismissed: (_) =>
-          BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id),
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: widget._isSubTaskCard ? 20.0 : 10.0,
+          vertical: widget._isSubTaskCard
+              ? distanceBetweenCardsSubTasks
+              : distanceBetweenCardsTopLevel),
       child: InkWell(
         onTap: () async {
           Navigator.push(
@@ -96,88 +172,124 @@ class _TaskCardState extends State<TaskCard> {
           margin: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
+            // Marking tasks in the playlist
+            side: widget._task.isQueued
+                ? BorderSide(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    width: 1.5,
+                  )
+                : BorderSide.none,
           ),
           color: Theme.of(context).colorScheme.cardColor,
           shadowColor: Theme.of(context).colorScheme.shadowColor,
-          elevation:
-              _checked ? BasicCard.elevation.low : BasicCard.elevation.high,
-          child: ColorFiltered(
-            // Grey out when done -> Overlay with semitransparent white; Else
-            // overlay with fulltransparent "black" (no effect)
-            colorFilter: ColorFilter.mode(
-                _checked
-                    ? Theme.of(context).colorScheme.greyOutOverlayColor
-                    : Colors.transparent,
-                Theme.of(context).colorScheme.isDark
-                    ? BlendMode.darken
-                    : BlendMode.lighten),
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 10.0,
-                bottom: 10.0,
-                right: 10.0,
-                left: widget._isSubTaskCard ? 10.0 : 3.0,
-              ),
-              // category:
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(
-                      width: BasicCard.borderRadius,
-                      color: widget._isSubTaskCard
-                          ? Colors.transparent
-                          : widget._categoryColor),
-                ),
-              ),
-
-              height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Checkbox
-                  Expanded(
-                    flex: 10,
-                    child: Transform.scale(
-                      scale: widget._isSubTaskCard ? 1.3 : 1.5,
-                      child: Checkbox(
-                        checkColor: Theme.of(context).colorScheme.checkColor,
-                        fillColor: MaterialStateProperty.all(
-                          widget._categoryColor,
-                        ),
-                        value: _checked,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          // Directly change the card status, so the user has
-                          // a responsive feedback
-                          setState(() {
-                            _checked = !_checked;
-                          });
-                          // Actually change the attribute
-                          BlocProvider.of<TasksCubit>(context)
-                              .toggleDone(widget._task.id, !widget._task.done);
-                        },
+          elevation: _checked
+              ? BasicCard.elevation.low
+              : (widget._isSubTaskCard ? 3.0 : BasicCard.elevation.high),
+          child: Stack(
+            children: <Widget>[
+              Align(
+                child: ColorFiltered(
+                  // Grey out when done -> Overlay with semitransparent white; Else
+                  // overlay with fulltransparent "black" (no effect)
+                  colorFilter: ColorFilter.mode(
+                      _checked
+                          ? Theme.of(context).colorScheme.greyOutOverlayColor
+                          : Colors.transparent,
+                      Theme.of(context).colorScheme.isDark
+                          ? BlendMode.darken
+                          : BlendMode.lighten),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 10.0,
+                      left: widget._isSubTaskCard ? 10.0 : 3.0,
+                    ),
+                    // category:
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                            width: BasicCard.borderRadius,
+                            color: widget._isSubTaskCard
+                                ? Colors.transparent
+                                : widget._categoryColor),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 5.0),
-                  // Content
-                  Expanded(
-                    flex: 80,
+
+                    height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Left Row: title + keywords
-                        _buildTitleKeyWordsColumn(context),
-                        const SizedBox(width: 10.0), // min distance
-                        // Right Row: due date + stats
-                        _buildDueDateStatsColumn(context)
+                        // Checkbox
+                        Expanded(
+                          flex: 10,
+                          child: Transform.scale(
+                            scale: widget._isSubTaskCard ? 1.3 : 1.5,
+                            child: Checkbox(
+                              checkColor:
+                                  Theme.of(context).colorScheme.checkColor,
+                              fillColor: MaterialStateProperty.all(
+                                widget._categoryColor,
+                              ),
+                              value: _checked,
+                              shape: const CircleBorder(),
+                              onChanged: (bool? value) {
+                                // Directly change the card status, so the user has
+                                // a responsive feedback
+                                setState(() {
+                                  _checked = !_checked;
+                                });
+                                // Actually change the attribute
+                                BlocProvider.of<TasksCubit>(context).toggleDone(
+                                    widget._task.id, !widget._task.done);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        // Content
+                        Expanded(
+                          flex: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Left Row: title + keywords
+                              _buildTitleKeyWordsColumn(context),
+                              const SizedBox(width: 10.0), // min distance
+                              // Right Row: due date + stats
+                              _buildDueDateStatsColumn(context)
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
+              // The label marking tasks in the playlist
+              if (widget._task.isQueued)
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: Text("Heute bearbeiten",
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle4
+                            .withBackground),
+                  ),
+                )
+            ],
           ),
         ),
       ),
