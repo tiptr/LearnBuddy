@@ -13,15 +13,16 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/screens/le
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
+import 'features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
 import 'constants/theme_font_constants.dart';
 
-const List<Widget> _pages = <Widget>[
-  TimerScreen(),
-  TaskScreen(),
-  DashboardScreen(),
-  LeisureScreen(),
+List<Widget> _pages = <Widget>[
+  const TimerScreen(),
+  const TaskScreen(),
+  const DashboardScreen(),
+  const LeisureScreen(),
   LearnListsScreen(),
 ];
 
@@ -81,6 +82,14 @@ void main() {
             var bloc = TaskQueueBloc();
             bloc.add(InitQueueEvent());
             return bloc;
+          },
+        ),
+        BlocProvider<LearnListsCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = LearnListsCubit();
+            cubit.loadLearnLists();
+            return cubit;
           },
         ),
       ],

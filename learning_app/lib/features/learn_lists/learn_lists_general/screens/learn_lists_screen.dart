@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_state.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -8,7 +14,9 @@ import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'learn_list_add_screen.dart';
 
 class LearnListsScreen extends StatelessWidget {
-  const LearnListsScreen({Key? key}) : super(key: key);
+  LearnListsScreen({Key? key}) : super(key: key);
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +32,55 @@ class LearnListsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: 3, //state.tasks.length,
-        itemBuilder: (BuildContext ctx, int idx) => LearnListCard(
-            learningAid: LearnList(
-                id: 1,
-                name: "Projektmanagement",
-                creationDate: DateTime.now(),
-                words: const [],
-                isArchived: false)),
+      body: BlocBuilder<LearnListsCubit, LearnListsState>(
+        builder: (context, state) {
+          if (state is! LearnListLoaded) {
+             return const Center(
+               child: CircularProgressIndicator(),
+             );
+           }
+
+          return StreamBuilder<List<ReadLearnListDto>>(
+            stream: state.selectedListViewlearnListsStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Es sind keine Lernlisten verfügbar.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFF636573),
+                    ),
+                  ),
+                );
+              }
+
+              final categories = snapshot.data!;
+
+              return ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: categories.length,
+                itemBuilder: (BuildContext ctx, int idx) {
+                  return GestureDetector(
+                    child: LearnListCard(
+                      learningAid: categories[idx],
+                    ),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        //TODO: return the correct screen with the learn list dto
+                        return const LearnListAddScreen();
+                      })
+                    )
+                  );
+                }
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",

@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import '../models/learn_list_word.dart';
 
-abstract class ReadLearnListDto extends Equatable {
+class ReadLearnListDto extends Equatable {
   final int id;
   final String name;
   final DateTime creationDate;
@@ -22,6 +23,19 @@ abstract class ReadLearnListDto extends Equatable {
     required this.isArchived,
     required this.referencingTasksCount,
   });
+
+  static ReadLearnListDto fromLearnList(
+      LearnList learnList) {
+    return ReadLearnListDto(
+      id: learnList.id,
+      name: learnList.name,
+      creationDate: learnList.creationDate,
+      words: learnList.words,
+      category: learnList.category,
+      isArchived: learnList.isArchived,
+      referencingTasksCount: 0 //TODO: calculate it here correctly!!!
+    );
+  }
 
   /// Get the count of words in this list
   int get wordsCount => words.length;

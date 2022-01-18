@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 
 abstract class LearnListsState extends Equatable {
@@ -6,15 +7,23 @@ abstract class LearnListsState extends Equatable {
   List<Object> get props => [];
 }
 
-class InitialLearningAidState extends LearnListsState {}
+class InitialLearnListState extends LearnListsState {}
 
-class LearningAidLoading extends LearnListsState {}
+class LearnListLoading extends LearnListsState {}
 
-class LearningAidsLoaded extends LearnListsState {
-  final List<LearnList> learningAids;
+// ignore: must_be_immutable
+class LearnListLoaded extends LearnListsState {
+  Stream<List<LearnList>> selectedLearnListsStream;
+  late Stream<List<ReadLearnListDto>> selectedListViewlearnListsStream;
 
-  LearningAidsLoaded({required this.learningAids});
+  LearnListLoaded({required this.selectedLearnListsStream}) {
+    selectedListViewlearnListsStream = selectedLearnListsStream.map((learnListsList) {
+      return learnListsList
+          .map((learnList) => ReadLearnListDto.fromLearnList(learnList))
+          .toList();
+    });
+  }
 
   @override
-  List<Object> get props => [learningAids];
+  List<Object> get props => [selectedLearnListsStream];
 }
