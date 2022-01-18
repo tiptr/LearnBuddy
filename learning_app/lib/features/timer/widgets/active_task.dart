@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
-import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/models/task.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
@@ -176,23 +173,15 @@ class ActiveTaskCard extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.launch),
                   onPressed: () async {
-                    // Load the detail-dto for the selected card:
-                    final DetailsReadTaskDto? details =
-                        await BlocProvider.of<TasksCubit>(context)
-                            .getDetailsDtoForTopLevelTaskId(task.id);
-
-                    if (details != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TaskDetailsScreen(
-                            existingTask: details,
-                          ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TaskDetailsScreen(
+                          existingTaskId: task.id,
+                          topLevelParentId: parentTask.task.id,
                         ),
-                      );
-                    } else {
-                      log('The task with ID ${task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
-                    }
+                      ),
+                    );
                   },
                 ),
               ),
