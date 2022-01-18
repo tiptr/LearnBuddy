@@ -236,47 +236,49 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                     );
                   }),
                   const SizedBox(height: 20.0),
-                const SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
 
-                // Keywords Selection
-                BlocBuilder<KeyWordsCubit, KeyWordsState>(
-                builder: (context, state) {
-                // This only checks for the success state, we might want to check for
-                // errors in the future here.
-                if (state is! KeyWordsLoaded) {
-                return const Center(child: CircularProgressIndicator());
-                }
+                  // Keywords Selection
+                  BlocBuilder<KeyWordsCubit, KeyWordsState>(
+                    builder: (context, state) {
+                      // This only checks for the success state, we might want to check for
+                      // errors in the future here.
+                      if (state is! KeyWordsLoaded) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
 
-                return StreamBuilder<List<ReadKeyWordDto>>(
-                stream: state.keywordsStream,
-                builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                ConnectionState.waiting) {
-                return const Center(
-                child: CircularProgressIndicator());
-                }
+                      return StreamBuilder<List<ReadKeyWordDto>>(
+                        stream: state.keywordsStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
 
-                final keywords = snapshot.data!;
+                          final keywords = snapshot.data!;
 
-                return KeywordSelection(
-                onSelect: (List<ReadKeyWordDto> keywords) {
-                var keywordIds = keywords.map((e) => e.id).toList();
+                          return KeywordSelection(
+                            onSelect: (List<ReadKeyWordDto> keywords) {
+                              var keywordIds =
+                                  keywords.map((e) => e.id).toList();
 
-                BlocProvider.of<AlterTaskCubit>(context)
-                    .alterTaskAttribute(
-                TaskManipulationDto(
-                keywordIds: drift.Value(keywordIds),
-                ),
-                );
-                },
-                options: keywords,
-                selectedKeywords: detailsDto?.keywords.toList() ?? [],
-                );
-                },
-                );
-                },
-                ),
-                const SizedBox(height: 20.0),
+                              BlocProvider.of<AlterTaskCubit>(context)
+                                  .alterTaskAttribute(
+                                TaskManipulationDto(
+                                  keywordIds: drift.Value(keywordIds),
+                                ),
+                              );
+                            },
+                            options: keywords,
+                            selectedKeywords:
+                                detailsDto?.keywords.toList() ?? [],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
                   // Date Select
                   DateInputField(
                     preselectedDate: detailsDto != null
