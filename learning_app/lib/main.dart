@@ -87,7 +87,10 @@ void main() {
         BlocProvider<ThemeCubit>(create: (context) {
           return ThemeCubit(
             initialState: ThemeState(
-                themeName: ThemeName.light, themeData: Themes.lightThemeData()),
+              themeName: ThemeName.light,
+              themeData: Themes.lightThemeData(),
+              isDark: false,
+            ),
           );
         }),
       ],
@@ -104,7 +107,7 @@ class MyApp extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) => MaterialApp(
         title: 'Lernbuddy',
-        theme: Themes.lightThemeData(), //tate.themeData,
+        theme: state.themeData,
         home: const MyHomePage(),
       ),
     );

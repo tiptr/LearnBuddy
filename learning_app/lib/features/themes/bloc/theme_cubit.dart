@@ -7,12 +7,33 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   void setToLightTheme() {
     emit(ThemeState(
-        themeName: ThemeName.light, themeData: Themes.lightThemeData()));
+      themeName: ThemeName.light,
+      themeData: Themes.lightThemeData(),
+      isDark: false,
+    ));
   }
 
   void setToDarkTheme() {
     emit(ThemeState(
-        themeName: ThemeName.dark, themeData: Themes.darkThemeData()));
+      themeName: ThemeName.dark,
+      themeData: Themes.darkThemeData(),
+      isDark: true,
+    ));
   }
-  // yield ThemeState(themeData: Themes.[event.theme]);
+
+  void toggleTheme() {
+    emit(
+      state.themeName == ThemeName.light
+          ? ThemeState(
+              themeName: ThemeName.dark,
+              themeData: Themes.darkThemeData(),
+              isDark: true,
+            )
+          : ThemeState(
+              themeName: ThemeName.light,
+              themeData: Themes.lightThemeData(),
+              isDark: false,
+            ),
+    );
+  }
 }

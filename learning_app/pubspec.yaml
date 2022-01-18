@@ -58,10 +58,6 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   # draggable sheet
   sliding_up_panel: ^2.0.0+1
-  # color mode
-  easy_dynamic_theme: ^2.2.0
-  get: ^4.6.1
-  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:

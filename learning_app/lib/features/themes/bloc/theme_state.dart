@@ -7,13 +7,14 @@ import '../themes.dart';
 class ThemeState extends Equatable {
   final ThemeData themeData;
   final ThemeName themeName;
+  final bool isDark;
 
   const ThemeState({
     required this.themeData,
     required this.themeName,
+    required this.isDark,
   }) : super();
 
   @override
-  // TODO: implement props
   List<Object?> get props => [themeName];
 }
