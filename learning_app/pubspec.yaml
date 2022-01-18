@@ -60,6 +60,8 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   # color mode
   dynamic_theme: ^1.0.1
+  # Slidable cards e.g. for selecting for the task-queue:
+  flutter_slidable: ^1.2.0
 
 dev_dependencies:
   flutter_test:

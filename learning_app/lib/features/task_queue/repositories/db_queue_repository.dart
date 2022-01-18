@@ -27,8 +27,15 @@ class DbQueueRepository implements QueueRepository {
   }
 
   @override
-  Future<bool> deleteQueueElementById(int id) async {
-    final affected = await dao.deleteQueueElementById(id);
-    return affected > 0;
+  Future<bool> toggleQueued(int taskId, bool queued) async {
+    if (queued) {
+      // Add to queue
+      await dao.addElementToQueueByTaskId(taskId);
+      return true;
+    } else {
+      // Remove from queue
+      final affected = await dao.deleteQueueElementById(taskId);
+      return affected > 0;
+    }
   }
 }

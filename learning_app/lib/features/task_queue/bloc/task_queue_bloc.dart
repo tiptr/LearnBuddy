@@ -68,7 +68,7 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
     });
 
     on<RemoveFromQueueEvent>((event, emit) async {
-      _queueRepository.deleteQueueElementById(event.id);
+      _queueRepository.toggleQueued(event.id, false);
     });
 
     on<RemoveSelectedTaskEvent>((event, emit) async {

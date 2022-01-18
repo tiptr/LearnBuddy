@@ -8,6 +8,8 @@ import 'package:learning_app/util/formatting_comparison/duration_extensions.dart
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:learning_app/util/logger.dart';
 
 const double iconSize = 14.0;
 
@@ -75,10 +77,79 @@ class _TaskCardState extends State<TaskCard> {
   Widget _card(BuildContext context) {
     double borderRadius = BasicCard.borderRadius;
 
-    return Dismissible(
+    return Slidable(
       key: Key(widget._task.id.toString()),
-      onDismissed: (_) =>
-          BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id),
+
+      // The start action pane is the one at the left or the top side.
+      startActionPane: ActionPane(
+        dragDismissible: true,
+        // A motion is a widget used to control how the pane animates.
+        motion: const ScrollMotion(),
+
+        dismissible: DismissiblePane(
+          onDismissed: () {
+            logger.d('dismissed');
+          },
+          confirmDismiss: () async {
+            logger.d('confirm');
+
+            BlocProvider.of<TasksCubit>(context)
+                .toggleQueued(widget._task.id, !widget._task.isQueued);
+
+            // Always return false, so the card will not be dismissed
+            return false;
+          },
+          closeOnCancel: true,
+        ),
+
+        // All actions are defined in the children parameter.
+        children: [
+          // CustomSlidableAction(
+          //     onPressed: onPressed,
+          //     child: child
+          // ),
+
+          // Slide to the right to select / deselect a task for the queue
+          SlidableAction(
+            onPressed: (context) {},
+            autoClose: false,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            icon: widget._task.isQueued
+                ? Icons.remove_from_queue_outlined
+                : Icons.add_to_queue_outlined,
+            label: widget._task.isQueued
+                ? 'Nicht mehr für heutige Bearbeitung markieren'
+                : 'Heute bearbeiten',
+          ),
+        ],
+      ),
+
+      // The end action pane is the one at the right or the bottom side.
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            // An action can be bigger than the others.
+            flex: 2,
+            onPressed: (context) {},
+            backgroundColor: const Color(0xFF7BC043),
+            foregroundColor: Colors.white,
+            icon: Icons.archive,
+            label: 'Archive',
+          ),
+          SlidableAction(
+            onPressed: (context) {},
+            backgroundColor: const Color(0xFF0392CF),
+            foregroundColor: Colors.white,
+            icon: Icons.save,
+            label: 'Save',
+          ),
+        ],
+      ),
+
+      // The child of the Slidable is what the user sees when the
+      // component is not dragged.
       child: InkWell(
         onTap: () async {
           Navigator.push(
