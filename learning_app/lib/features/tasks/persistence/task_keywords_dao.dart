@@ -37,12 +37,13 @@ class TaskKeywordsDao extends DatabaseAccessor<Database>
     return into(taskKeywords).insertOnConflictUpdate(companion);
   }
 
-  /// Creates a new task-keyword relationship and returns its id.
-  ///
-  /// If it already exists, nothing happens, but the id is being returned
+  /// Removes
   Future<int> deleteTaskKeyWordsForTaskNotInList(
-      int taskId, List<int> keyWordIds) {
+    int taskId,
+    List<int> keyWordIds,
+  ) {
     final deleteStatement = delete(taskKeywords)
+      ..where((tbl) => tbl.taskId.equals(taskId))
       ..where((tbl) => tbl.keywordId.isNotIn(keyWordIds));
 
     return deleteStatement.go();
