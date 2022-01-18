@@ -86,13 +86,17 @@ class _TaskCardState extends State<TaskCard> {
         // A motion is a widget used to control how the pane animates.
         motion: const ScrollMotion(),
 
+        // We will abuse the dismissing functionality here for the ability
+        // to quickly select / disselect the task with one swipe only
         dismissible: DismissiblePane(
           onDismissed: () {
-            logger.d('dismissed');
+            // Empty, because we do not actually dismiss the card
           },
           confirmDismiss: () async {
-            logger.d('confirm');
+            // This is called before onDismissed and before the card is
+            // dismissed
 
+            // Toggle queue status
             BlocProvider.of<TasksCubit>(context)
                 .toggleQueued(widget._task.id, !widget._task.isQueued);
 
@@ -104,14 +108,15 @@ class _TaskCardState extends State<TaskCard> {
 
         // All actions are defined in the children parameter.
         children: [
-          // CustomSlidableAction(
-          //     onPressed: onPressed,
-          //     child: child
-          // ),
-
           // Slide to the right to select / deselect a task for the queue
           SlidableAction(
-            onPressed: (context) {},
+            // For further styling, also a CustomSlidableAction exists, with
+            // which a custom widget can be designed for this
+            onPressed: (context) {
+              // Toggle queue status
+              BlocProvider.of<TasksCubit>(context)
+                  .toggleQueued(widget._task.id, !widget._task.isQueued);
+            },
             autoClose: false,
             backgroundColor: Colors.transparent,
             foregroundColor: Theme.of(context).colorScheme.primary,
@@ -119,7 +124,7 @@ class _TaskCardState extends State<TaskCard> {
                 ? Icons.remove_from_queue_outlined
                 : Icons.add_to_queue_outlined,
             label: widget._task.isQueued
-                ? 'Nicht mehr für heutige Bearbeitung markieren'
+                ? 'Später bearbeiten'
                 : 'Heute bearbeiten',
           ),
         ],
@@ -130,21 +135,17 @@ class _TaskCardState extends State<TaskCard> {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            // An action can be bigger than the others.
-            flex: 2,
-            onPressed: (context) {},
-            backgroundColor: const Color(0xFF7BC043),
-            foregroundColor: Colors.white,
-            icon: Icons.archive,
-            label: 'Archive',
+            onPressed: (context) {
+              // TODO: ask with a dialog
+              BlocProvider.of<TasksCubit>(context).deleteTaskById(widget._task.id);
+            },
+            autoClose: false,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            icon: Icons.delete_outline_outlined,
+            label: 'Endgültig löschen',
           ),
-          SlidableAction(
-            onPressed: (context) {},
-            backgroundColor: const Color(0xFF0392CF),
-            foregroundColor: Colors.white,
-            icon: Icons.save,
-            label: 'Save',
-          ),
+          // More actions could be defined here, later
         ],
       ),
 
