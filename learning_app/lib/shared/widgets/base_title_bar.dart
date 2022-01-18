@@ -21,7 +21,6 @@ class BaseTitleBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
     );
-
   }
 
   @override

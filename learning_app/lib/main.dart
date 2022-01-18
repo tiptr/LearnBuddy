@@ -121,42 +121,42 @@ class MyHomePage extends StatelessWidget {
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return Scaffold(
-          body: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 350),
-            switchInCurve: Curves.linear,
-            child: _pages[selectedIndex],
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
-            onTap: onItemTapped,
-            unselectedItemColor: Colors.grey,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
-            showUnselectedLabels: true,
-            showSelectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.timer),
-                label: "Timer",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.document_scanner_outlined),
-                label: "Aufgaben",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: "Dashboard",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.beach_access_outlined),
-                label: "Ausgleich",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book_outlined),
-                label: "Lernhilfen",
-              ),
-            ],
-          ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 350),
+          switchInCurve: Curves.linear,
+          child: _pages[selectedIndex],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          onTap: onItemTapped,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.timer),
+              label: "Timer",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.document_scanner_outlined),
+              label: "Aufgaben",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "Dashboard",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.beach_access_outlined),
+              label: "Ausgleich",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_outlined),
+              label: "Lernhilfen",
+            ),
+          ],
+        ),
       );
     });
   }

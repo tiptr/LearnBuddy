@@ -360,7 +360,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
 
   /// Handles the 'save task' functionality
   Future<bool> onDeleteTask() async {
-   // TODO: implement
+    // TODO: implement
     return false;
   }
 

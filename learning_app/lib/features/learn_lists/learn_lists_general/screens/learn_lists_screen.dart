@@ -21,7 +21,8 @@ class LearnListsScreen extends StatelessWidget {
         shrinkWrap: true,
         itemCount: 3, //state.tasks.length,
         itemBuilder: (BuildContext ctx, int idx) => const LearnListCard(
-            learningAid: OldLearningAidDoUseLearnListInstead(id: 1, title: "Projektmanagement")),
+            learningAid: OldLearningAidDoUseLearnListInstead(
+                id: 1, title: "Projektmanagement")),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",

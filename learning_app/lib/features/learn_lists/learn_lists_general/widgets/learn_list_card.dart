@@ -7,7 +7,8 @@ const double iconSize = 18.0;
 class LearnListCard extends StatelessWidget {
   final OldLearningAidDoUseLearnListInstead _learningAid;
 
-  const LearnListCard({Key? key, required OldLearningAidDoUseLearnListInstead learningAid})
+  const LearnListCard(
+      {Key? key, required OldLearningAidDoUseLearnListInstead learningAid})
       : _learningAid = learningAid,
         super(key: key);
 

@@ -47,7 +47,6 @@ Widget buildThreePointsMenu({
             value: ThreePointsMenuItems.delete,
             child: _buildMenuItem(
                 title: 'Aufgabe löschen', iconData: Icons.delete_outlined)),
-
       if (onCategoryManagement != null)
         PopupMenuItem<ThreePointsMenuItems>(
             value: ThreePointsMenuItems.delete,
@@ -63,8 +62,8 @@ Widget buildThreePointsMenu({
       if (onHelp != null)
         PopupMenuItem<ThreePointsMenuItems>(
             value: ThreePointsMenuItems.delete,
-            child: _buildMenuItem(
-                title: 'Hilfe', iconData: Icons.help_outline)),
+            child:
+                _buildMenuItem(title: 'Hilfe', iconData: Icons.help_outline)),
       if (onSettings != null)
         PopupMenuItem<ThreePointsMenuItems>(
             value: ThreePointsMenuItems.delete,

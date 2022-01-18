@@ -92,8 +92,8 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                 ),
                 // Right button
                 widget.existingTask == null
-                  ? _buildSaveButton()
-                  : buildThreePointsMenu(onDelete: widget.onDelete),
+                    ? _buildSaveButton()
+                    : buildThreePointsMenu(onDelete: widget.onDelete),
               ],
             ),
           ),
@@ -115,12 +115,9 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
       },
       icon: Icon(
         Icons.save_outlined,
-        color: titleEmpty
-          ? const Color(0xFF949597)
-            : const Color(0xFF40424A),
+        color: titleEmpty ? const Color(0xFF949597) : const Color(0xFF40424A),
       ),
       iconSize: 30,
     );
   }
-
 }
