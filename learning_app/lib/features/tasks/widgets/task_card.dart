@@ -29,12 +29,12 @@ class TaskCard extends StatefulWidget {
   final bool _isEstimated;
   final Color _categoryColor;
 
-  TaskCard(
-      {Key? key,
-      required ListReadTaskDto task,
-      required BuildContext context,
-      bool isSubTaskCard = false})
-      : _task = task,
+  TaskCard({
+    Key? key,
+    required ListReadTaskDto task,
+    required BuildContext context,
+    bool isSubTaskCard = false,
+  })  : _task = task,
         _isSubTaskCard = isSubTaskCard,
         // calculated:
         _formattedDueDate = task.dueDate
@@ -64,10 +64,11 @@ class _TaskCardState extends State<TaskCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: widget._isSubTaskCard ? 0.0 : 10.0,
-          vertical: widget._isSubTaskCard
-              ? distanceBetweenCardsSubTasks
-              : distanceBetweenCardsTopLevel),
+        horizontal: widget._isSubTaskCard ? 0.0 : 10.0,
+        vertical: widget._isSubTaskCard
+            ? distanceBetweenCardsSubTasks
+            : distanceBetweenCardsTopLevel,
+      ),
       child: _card(context),
     );
   }
@@ -105,12 +106,13 @@ class _TaskCardState extends State<TaskCard> {
             // Grey out when done -> Overlay with semitransparent white; Else
             // overlay with fulltransparent "black" (no effect)
             colorFilter: ColorFilter.mode(
-                _checked
-                    ? Theme.of(context).colorScheme.greyOutOverlayColor
-                    : Colors.transparent,
-                Theme.of(context).colorScheme.isDark
-                    ? BlendMode.darken
-                    : BlendMode.lighten),
+              _checked
+                  ? Theme.of(context).colorScheme.greyOutOverlayColor
+                  : Colors.transparent,
+              Theme.of(context).colorScheme.isDark
+                  ? BlendMode.darken
+                  : BlendMode.lighten,
+            ),
             child: Container(
               padding: EdgeInsets.only(
                 top: 10.0,
