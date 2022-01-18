@@ -1,84 +1,262 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 import '../bloc/timer_bloc.dart';
 
 class TimerActions extends StatelessWidget {
   const TimerActions({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TimerBloc, TimerState>(
       buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
       builder: (context, state) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (state is TimerInitial) ...[
-              FloatingActionButton(
-                heroTag: "TimerInitialPlayButton",
-                child: const Icon(Icons.play_arrow),
-                onPressed: () => context
-                    .read<TimerBloc>()
-                    //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
-                    .add(TimerStarted(duration: state.getDuration())),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context
+                      .read<TimerBloc>()
+                      //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
+                      .add(TimerStarted(duration: state.getDuration())),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Start",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
-              FloatingActionButton(
-                heroTag: "TimerInitialSkipButton",
-                child: const Icon(Icons.skip_next),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerSkip()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Überspringen",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
             ],
             if (state is TimerRunInProgress) ...[
-              FloatingActionButton(
-                heroTag: "TimerInProgressPauseButton",
-                child: const Icon(Icons.pause),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerPaused()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () =>
+                      context.read<TimerBloc>().add(const TimerPaused()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Pause",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
-              FloatingActionButton(
-                heroTag: "TimerInProgressSkipButton",
-                child: const Icon(Icons.skip_next),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerSkip()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Überspringen",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
             ],
             if (state is TimerRunPause) ...[
-              FloatingActionButton(
-                heroTag: "TimerPausePlayButton",
-                child: const Icon(Icons.play_arrow),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerResumed()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () =>
+                      context.read<TimerBloc>().add(const TimerResumed()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Fortsetzen",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
-              FloatingActionButton(
-                heroTag: "TimerPauseSkipButton",
-                child: const Icon(Icons.skip_next),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerSkip()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Überspringen",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
             ],
             if (state is TimerRunComplete) ...[
-              FloatingActionButton(
-                heroTag: "TimerCompleteSkipButton",
-                child: const Icon(Icons.skip_next),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerSkip()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Phase beenden",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
             ],
             if (state is TimerInitialInSession) ...[
-              FloatingActionButton(
-                heroTag: "TimerInitialInSessionPlayButton",
-                child: const Icon(Icons.play_arrow),
-                onPressed: () => context
-                    .read<TimerBloc>()
-                    //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
-                    .add(TimerStarted(duration: state.getDuration())),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context
+                      .read<TimerBloc>()
+                      //context.read calls Provider.of<>(context, listen: false) -> does not trigger rebuild
+                      .add(TimerStarted(duration: state.getDuration())),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Start",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
-              FloatingActionButton(
-                heroTag: "TimerInitialInSessionSkipButton",
-                child: const Icon(Icons.skip_next),
-                onPressed: () =>
-                    context.read<TimerBloc>().add(const TimerSkip()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
+                  child: Container(
+                    width: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          "Überspringen",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
               ),
             ]
           ],

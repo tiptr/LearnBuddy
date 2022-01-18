@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 const double iconSize = 14.0;
 
@@ -16,7 +19,7 @@ const double distanceBetweenCardsTopLevel = 10.0;
 const double distanceBetweenCardsSubTasks = 7.0;
 
 /// The card used inside the the main tasks list as well as for the subtasks (!)
-class TaskCard extends StatelessWidget {
+class TaskCard extends StatefulWidget {
   final ListReadTaskDto _task;
   final bool _isSubTaskCard;
 
@@ -25,10 +28,13 @@ class TaskCard extends StatelessWidget {
   final bool _isOverDue;
   final String _formattedTimeEstimation;
   final bool _isEstimated;
-  final Color? _categoryColor;
+  final Color _categoryColor;
 
   TaskCard(
-      {Key? key, required ListReadTaskDto task, bool isSubTaskCard = false})
+      {Key? key,
+      required ListReadTaskDto task,
+      required BuildContext context,
+      bool isSubTaskCard = false})
       : _task = task,
         _isSubTaskCard = isSubTaskCard,
         // calculated:
@@ -38,167 +44,369 @@ class TaskCard extends StatelessWidget {
         _formattedTimeEstimation = task.remainingTimeEstimation
             .toListViewFormat(ifNull: 'Keine Zeitschätzung'),
         _isEstimated = task.remainingTimeEstimation == null ? false : true,
-        _categoryColor = task.categoryColor,
+        _categoryColor = task.categoryColor ??
+            Theme.of(context).colorScheme.noCategoryDefaultColor,
         super(key: key);
 
   @override
+  State<TaskCard> createState() => _TaskCardState();
+}
+
+class _TaskCardState extends State<TaskCard> {
+  bool _checked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checked = widget._task.done;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: _isSubTaskCard
-              ? distanceBetweenCardsSubTasks
-              : distanceBetweenCardsTopLevel),
+    return Slidable(
+      key: Key(widget._task.id.toString()),
+
+      // The start action pane is the one at the left or the top side.
+      startActionPane: widget._isSubTaskCard
+          ? null
+          : ActionPane(
+              extentRatio: 0.4,
+              dragDismissible: true,
+              // A motion is a widget used to control how the pane animates.
+              motion: const ScrollMotion(),
+
+              // We will abuse the dismissing functionality here for the ability
+              // to quickly select / disselect the task with one swipe only
+              dismissible: DismissiblePane(
+                onDismissed: () {
+                  // Empty, because we do not actually dismiss the card
+                },
+                confirmDismiss: () async {
+                  // This is called before onDismissed and before the card is
+                  // dismissed
+
+                  // Toggle queue status
+                  BlocProvider.of<TasksCubit>(context).toggleQueued(
+                      taskId: widget._task.id, queued: !widget._task.isQueued);
+
+                  // Always return false, so the card will not be dismissed
+                  return false;
+                },
+                closeOnCancel: true,
+              ),
+
+              // All actions are defined in the children parameter.
+              children: [
+                // Slide to the right to select / deselect a task for the queue
+                SlidableAction(
+                  // For further styling, also a CustomSlidableAction exists, with
+                  // which a custom widget can be designed for this
+                  onPressed: (context) {
+                    // Toggle queue status
+                    BlocProvider.of<TasksCubit>(context).toggleQueued(
+                        taskId: widget._task.id,
+                        queued: !widget._task.isQueued);
+                  },
+                  autoClose: false,
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: widget._task.isQueued
+                      ? Icons.remove_from_queue_outlined
+                      : Icons.add_to_queue_outlined,
+                  label: widget._task.isQueued
+                      ? 'Später bearbeiten'
+                      : 'Heute bearbeiten',
+                ),
+              ],
+            ),
+
+      // The end action pane is the one at the right or the bottom side.
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) {
+              // TODO: ask with a dialog
+              BlocProvider.of<TasksCubit>(context)
+                  .deleteTaskById(widget._task.id);
+            },
+            autoClose: false,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            icon: Icons.delete_outline_outlined,
+            label: 'Endgültig löschen',
+          ),
+          // More actions could be defined here, later
+        ],
+      ),
+
+      // The child of the Slidable is what the user sees when the
+      // component is not dragged.
       child: _card(context),
     );
   }
 
   Widget _card(BuildContext context) {
-    const borderRadius = 12.5;
+    double borderRadius = BasicCard.borderRadius;
 
-    return Dismissible(
-      key: Key(_task.id.toString()),
-      onDismissed: (_) =>
-          BlocProvider.of<TasksCubit>(context).deleteTaskById(_task.id),
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        margin: const EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        color: Theme.of(context).cardColor,
-        elevation: _task.done ? CardElevation.low : CardElevation.high,
-        child: ColorFiltered(
-          // Grey out when done -> Overlay with semitransparent white; Else
-          // overlay with fulltransparent "black" (no effect)
-          colorFilter: ColorFilter.mode(
-              _task.done
-                  ? Theme.of(context).colorScheme.greyOutOverlayColor
-                  : Colors.transparent,
-              BlendMode.lighten),
-          child: Container(
-            padding: EdgeInsets.only(
-              top: 10.0,
-              bottom: 10.0,
-              right: 10.0,
-              left: _isSubTaskCard ? 10.0 : 3.0,
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: widget._isSubTaskCard ? 20.0 : 10.0,
+          vertical: widget._isSubTaskCard
+              ? distanceBetweenCardsSubTasks
+              : distanceBetweenCardsTopLevel),
+      child: InkWell(
+        onTap: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskDetailsScreen(
+                existingTaskId: widget._task.id,
+                topLevelParentId: widget._task.topLevelParentId,
+              ),
             ),
-            // category:
-            decoration: _isSubTaskCard
-                ? null
-                : BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                          width: 12.5,
-                          color: _categoryColor ??
-                              Theme.of(context)
-                                  .colorScheme
-                                  .noCategoryDefaultColor),
-                    ),
+          );
+        },
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          margin: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            // Marking tasks in the playlist
+            side: widget._task.isQueued
+                ? BorderSide(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    width: 1.5,
+                  )
+                : BorderSide.none,
+          ),
+          color: Theme.of(context).colorScheme.cardColor,
+          shadowColor: Theme.of(context).colorScheme.shadowColor,
+          elevation: _checked
+              ? BasicCard.elevation.low
+              : (widget._isSubTaskCard ? 3.0 : BasicCard.elevation.high),
+          child: Stack(
+            children: <Widget>[
+              Align(
+                child: ColorFiltered(
+                  // Grey out when done -> Overlay with semitransparent white; Else
+                  // overlay with fulltransparent "black" (no effect)
+                  colorFilter: ColorFilter.mode(
+                    _checked
+                        ? Theme.of(context).colorScheme.greyOutOverlayColor
+                        : Colors.transparent,
+                    Theme.of(context).colorScheme.isDark
+                        ? BlendMode.darken
+                        : BlendMode.lighten,
                   ),
-            height: _isSubTaskCard ? 75.0 : 110.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Checkbox
-                Expanded(
-                  flex: 10,
-                  child: Transform.scale(
-                    scale: _isSubTaskCard ? 1.3 : 1.5,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.all(
-                        _categoryColor,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 10.0,
+                      left: widget._isSubTaskCard ? 10.0 : 3.0,
+                    ),
+                    // category:
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          width: BasicCard.borderRadius,
+                          color: widget._isSubTaskCard
+                              ? Colors.transparent
+                              : widget._categoryColor,
+                        ),
                       ),
-                      value: _task.done,
-                      shape: const CircleBorder(),
-                      onChanged: (bool? value) {
-                        BlocProvider.of<TasksCubit>(context)
-                            .toggleDone(_task.id, !_task.done);
-                      },
+                    ),
+
+                    height: widget._isSubTaskCard ? 75.0 : BasicCard.height,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Checkbox
+                        Expanded(
+                          flex: 10,
+                          child: Transform.scale(
+                            scale: widget._isSubTaskCard ? 1.3 : 1.5,
+                            child: Checkbox(
+                              checkColor:
+                                  Theme.of(context).colorScheme.checkColor,
+                              fillColor: MaterialStateProperty.all(
+                                widget._categoryColor,
+                              ),
+                              value: _checked,
+                              shape: const CircleBorder(),
+                              onChanged: (bool? value) {
+                                // Directly change the card status, so the user has
+                                // a responsive feedback
+                                setState(() {
+                                  _checked = !_checked;
+                                });
+                                // Actually change the attribute
+                                BlocProvider.of<TasksCubit>(context).toggleDone(
+                                    widget._task.id, !widget._task.done);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        // Content
+                        Expanded(
+                          flex: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Left Row: title + keywords
+                              _TitleKeyWordsColumn(
+                                checked: _checked,
+                                isSubTaskCard: widget._isSubTaskCard,
+                                keywords: widget._task.keywords,
+                                taskTitle: widget._task.title,
+                              ),
+                              const SizedBox(width: 10.0), // min distance
+                              // Right Row: due date + stats
+                              _DueDateStatsColumn(
+                                checked: _checked,
+                                dueDate: widget._task.dueDate,
+                                formattedDueDate: widget._formattedDueDate,
+                                isEstimated: widget._isEstimated,
+                                formattedTimeEstimation:
+                                    widget._formattedTimeEstimation,
+                                isSubTaskCard: widget._isSubTaskCard,
+                                isOverDue: widget._isOverDue,
+                                finishedSubTaskCount:
+                                    widget._task.finishedSubTaskCount,
+                                subTaskCount: widget._task.subTaskCount,
+                              )
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 5.0),
-                // Content
-                Expanded(
-                  flex: 80,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Left Row: title + keywords
-                      _buildTitleKeyWordsColumn(context),
-                      const SizedBox(width: 10.0), // min distance
-                      // Right Row: due date + stats
-                      _buildDueDateStatsColumn(context)
-                    ],
+              ),
+              // The label marking tasks in the playlist
+              if (widget._task.isQueued)
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      "Heute bearbeiten",
+                      style:
+                          Theme.of(context).textTheme.textStyle4.withBackground,
+                    ),
                   ),
                 )
-              ],
-            ),
+            ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildTitleKeyWordsColumn(BuildContext context) {
+class _TitleKeyWordsColumn extends StatelessWidget {
+  final bool isSubTaskCard;
+  final List<String> keywords;
+  final String taskTitle;
+  final bool checked;
+
+  const _TitleKeyWordsColumn({
+    Key? key,
+    required this.isSubTaskCard,
+    required this.keywords,
+    required this.taskTitle,
+    required this.checked,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle titleStyle = isSubTaskCard
+        ? Theme.of(context).textTheme.textStyle3.withOnBackgroundHard.withBold
+        : Theme.of(context).textTheme.textStyle2.withOnBackgroundHard.withBold;
     return Expanded(
       flex: 70,
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: 0,
-            vertical: _isSubTaskCard
+            vertical: isSubTaskCard
                 ? verticalPaddingCardContentSubTasks
                 : verticalPaddingCardContentTopLevel),
         child: Column(
-          mainAxisAlignment: _task.keywords.isNotEmpty
+          mainAxisAlignment: keywords.isNotEmpty
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
             Text(
-              _task.title,
+              taskTitle,
               maxLines: 2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: _task.done
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-                decorationThickness: 2.0,
-                fontSize: _isSubTaskCard ? 14 : 16,
-                overflow: TextOverflow.ellipsis,
-                color: const Color(0xFF40424A),
-              ),
+              style: checked
+                  ? titleStyle.copyWith(
+                      decoration: TextDecoration.lineThrough,
+                      decorationThickness: 2.0,
+                    )
+                  : titleStyle,
             ),
 
             // Keywords
-            if (_task.keywords.isNotEmpty)
+            if (keywords.isNotEmpty)
               Text(
-                _task.keywords.join(', '),
-                maxLines: _isSubTaskCard ? 1 : 2,
-                style: const TextStyle(
-                  color: Color(0xFF949597),
-                  fontWeight: FontWeight.normal,
-                  decorationThickness: 2.0,
-                  fontSize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                keywords.join(', '),
+                maxLines: isSubTaskCard ? 1 : 2,
+                style:
+                    Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
               ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildDueDateStatsColumn(BuildContext context) {
+class _DueDateStatsColumn extends StatelessWidget {
+  final bool isSubTaskCard;
+  final DateTime? dueDate;
+  final String formattedDueDate;
+  final bool isOverDue;
+  final bool isEstimated;
+  final String formattedTimeEstimation;
+  final bool checked;
+  final int subTaskCount;
+  final int finishedSubTaskCount;
+
+  const _DueDateStatsColumn({
+    Key? key,
+    required this.isSubTaskCard,
+    required this.dueDate,
+    required this.formattedDueDate,
+    required this.isOverDue,
+    required this.isEstimated,
+    required this.formattedTimeEstimation,
+    required this.checked,
+    required this.subTaskCount,
+    required this.finishedSubTaskCount,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle dueDateStyle = Theme.of(context).textTheme.textStyle4;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: 0,
-          vertical: _isSubTaskCard
+          vertical: isSubTaskCard
               ? verticalPaddingCardContentSubTasks
               : verticalPaddingCardContentTopLevel),
       child: Column(
@@ -210,30 +418,28 @@ class TaskCard extends StatelessWidget {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4.0),
             label: Text(
-              (_task.dueDate != null) ? _formattedDueDate : '',
+              (dueDate != null) ? formattedDueDate : '',
               textAlign: TextAlign.end,
-              style: TextStyle(
-                color: _isOverDue ? Colors.white : const Color(0xFF949597),
-                fontWeight: FontWeight.normal,
-                decorationThickness: 2.0,
-                fontSize: 12,
-                overflow: TextOverflow.ellipsis,
-              ),
+              style: isOverDue
+                  ? dueDateStyle.withOnSecondary
+                  : dueDateStyle.withOnBackgroundHard,
             ),
             labelPadding: EdgeInsets.symmetric(
               vertical: 0,
-              horizontal: _isOverDue ? 4 : 0,
+              horizontal: isOverDue ? 4 : 0,
             ),
-            avatar: (_task.dueDate != null)
+            avatar: (dueDate != null)
                 ? Icon(
                     Icons.today_outlined,
                     size: 16,
-                    color: _isOverDue ? Colors.white : const Color(0xFF949597),
+                    color: isOverDue
+                        ? Theme.of(context).colorScheme.onSecondary
+                        : Theme.of(context).colorScheme.onBackgroundHard,
                   )
                 : null,
-            backgroundColor: _isOverDue
-                ? const Color(0xFF9E5EE1)
-                : Theme.of(context).cardColor,
+            backgroundColor: isOverDue
+                ? Theme.of(context).colorScheme.secondary
+                : Theme.of(context).colorScheme.cardColor,
             // Required, because Colors.transparent does not work.
             // The background is transparent through the card all
             // the way to the screen background, then.
@@ -251,48 +457,40 @@ class TaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Remaining time estimation, only if provided
-                if (!_task.done && _isEstimated)
+                if (!checked && isEstimated)
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.hourglass_top,
                         size: iconSize,
-                        color: Color(0xFF949597),
+                        color: Theme.of(context).colorScheme.onBackgroundSoft,
                       ),
-                      Text(
-                        _formattedTimeEstimation,
-                        textAlign: TextAlign.end,
-                        style: const TextStyle(
-                          color: Color(0xFF949597),
-                          fontWeight: FontWeight.normal,
-                          decorationThickness: 2.0,
-                          fontSize: 12,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                      Text(formattedTimeEstimation,
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundSoft),
                     ],
                   ),
-                if (_task.subTaskCount > 0)
+                if (subTaskCount > 0)
                   Container(
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.dynamic_feed_outlined,
                           size: iconSize,
-                          color: Color(0xFF949597),
+                          color: Theme.of(context).colorScheme.onBackgroundSoft,
                         ),
                         const SizedBox(width: 5.0),
                         Text(
-                          '${_task.finishedSubTaskCount} / ${_task.subTaskCount}',
+                          '$finishedSubTaskCount / $subTaskCount',
                           textAlign: TextAlign.end,
-                          style: const TextStyle(
-                            color: Color(0xFF949597),
-                            fontWeight: FontWeight.normal,
-                            decorationThickness: 2.0,
-                            fontSize: 12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle4
+                              .withOnBackgroundSoft,
                         ),
                       ],
                     ),

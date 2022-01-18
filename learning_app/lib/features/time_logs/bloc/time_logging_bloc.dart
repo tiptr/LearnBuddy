@@ -171,6 +171,7 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       logger.d('Stop TimeLogging on not active State');
       return;
     }
+
     TimeLogDto timeLog = currentState.timeLog;
     TimeLogDto finalTimeLog = TimeLogDto(
       beginTime: timeLog.beginTime,

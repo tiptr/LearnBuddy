@@ -21,24 +21,30 @@ class KeyWordsDao extends DatabaseAccessor<Database> with _$KeyWordsDaoMixin {
   // of this object.
   KeyWordsDao(Database db) : super(db);
 
-  Stream<List<KeyWord>>? _keyWordsStream;
+  Stream<List<KeywordEntity>>? _keyWordsStream;
   Stream<Map<int, KeyWord>>? _idToKeyWordMapStream;
 
   Future<int> createKeyWord(KeywordsCompanion keyWordsCompanion) {
     return into(keywords).insert(keyWordsCompanion);
   }
 
+  Future<int> updateKeyWord(KeywordsCompanion keyWordsCompanion) {
+    var updateStmnt = (update(keywords)
+      ..where(
+        (t) => t.id.equals(keyWordsCompanion.id.value),
+      ));
+
+    return updateStmnt.write(keyWordsCompanion);
+  }
+
   Future<int> deleteKeyWordById(int keyWordId) {
     return (delete(keywords)..where((t) => t.id.equals(keyWordId))).go();
   }
 
-  Stream<List<KeyWord>> watchAllKeyWords() {
-    _keyWordsStream = _keyWordsStream ??
-        (select(keywords)
-            .map((row) => KeyWord(id: row.id, name: row.name))
-            .watch());
+  Stream<List<KeywordEntity>> watchAllKeyWords() {
+    _keyWordsStream = _keyWordsStream ?? (select(keywords).watch());
 
-    return _keyWordsStream as Stream<List<KeyWord>>;
+    return _keyWordsStream as Stream<List<KeywordEntity>>;
   }
 
   /// Returns a stream of maps that associate the keyword id with the keyword
@@ -53,11 +59,14 @@ class KeyWordsDao extends DatabaseAccessor<Database> with _$KeyWordsDaoMixin {
 
   /// Creates a stream of maps that associate the keyword id with the keyword
   Stream<Map<int, KeyWord>> _createIdToKeyWordMapStream() {
-    final Stream<List<KeyWord>> keyWordsStream = watchAllKeyWords();
+    final Stream<List<KeywordEntity>> keyWordsStream = watchAllKeyWords();
     return keyWordsStream.map((models) {
       final idToModel = <int, KeyWord>{};
       for (var model in models) {
-        idToModel.putIfAbsent(model.id, () => model);
+        idToModel.putIfAbsent(
+          model.id,
+          () => KeyWord(id: model.id, name: model.name),
+        );
       }
       return idToModel;
     });

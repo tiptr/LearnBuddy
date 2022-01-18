@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
@@ -6,11 +8,13 @@ import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
-import 'package:learning_app/features/timer/widgets/toggle_active_task.dart';
-import 'package:learning_app/shared/widgets/base_layout.dart';
+import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:learning_app/constants/theme_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -20,35 +24,99 @@ class TimerScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) =>
           TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
-      child: const BaseLayout(
-        titleBar: BaseTitleBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        // Will change to a custom title bar in the future
+        appBar: BaseTitleBar(
           title: "Pomodoro Timer",
+          actions: [
+            buildThreePointsMenu(
+              context: context,
+              showGlobalSettings: true,
+            )
+          ],
         ),
-        content: TimerView(),
+        body: const TimerView(),
       ),
     );
   }
 }
 
-class TimerView extends StatelessWidget {
+class TimerView extends StatefulWidget {
   const TimerView({Key? key}) : super(key: key);
+
+  @override
+  _TimerViewState createState() => _TimerViewState();
+}
+
+class _TimerViewState extends State<TimerView> {
+  final _panelController = PanelController();
+  late final Stream<bool> _panelOpenedInformer;
+  final _streamController = StreamController<bool>();
+
+  @override
+  void initState() {
+    super.initState();
+    _panelOpenedInformer = _streamController.stream;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final maxHeightForPanel = MediaQuery.of(context).size.height * 0.61;
+
+    return SlidingUpPanel(
+      controller: _panelController,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(18.0),
+        topRight: Radius.circular(18.0),
+      ),
+      parallaxEnabled: true,
+      parallaxOffset: .0,
+      panelSnapping: true,
+      minHeight: 145,
+      maxHeight: maxHeightForPanel,
+      panelBuilder: (ScrollController sc) {
+        return TaskQueueList(
+          scrollController: sc,
+          panelController: _panelController,
+          panelOpenedInformer: _panelOpenedInformer,
+          panelMaxHeight: maxHeightForPanel,
+        );
+      },
+      color: Theme.of(context).colorScheme.cardColor,
+      body: const Center(
+        child: TimerBackGround(),
+      ),
+      onPanelOpened: () {
+        _streamController.add(true);
+      },
+    );
+  }
+}
+
+//Stack(
+//children: <Widget>[
+//const TimerBackGround(),
+//TimerDraggableScrollableSheet(_tween, _controller),
+
+class TimerBackGround extends StatelessWidget {
+  const TimerBackGround({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
         ActiveTaskBar(),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.0),
+          padding: EdgeInsets.symmetric(vertical: 20.0),
           child: TimerWidget(),
         ),
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 70),
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 70),
             child: PomodoroPhaseCountWidget()),
         TimerActions(),
-        ToggleActiveTask(),
       ],
     );
   }
@@ -63,19 +131,16 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state.getCountPhase());
     final totalSteps = context
         .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCount());
-    final completedSessionColor = Theme.of(context)
-        .colorScheme
-        .timerProgressIndicatorCompletedSessionColor;
-    final unCompletedSessionColor = Theme.of(context)
-        .colorScheme
-        .timerProgressIndicatorUnCompletedSessionColor;
+    final completedSessionColor = Theme.of(context).colorScheme.tertiary;
+    final unCompletedSessionColor =
+        Theme.of(context).colorScheme.onBackgroundSoft;
     return StepProgressIndicator(
         totalSteps: totalSteps,
         currentStep: currentStep + 1,
         // index starts with 1 apparently :(
         selectedColor: completedSessionColor,
         size: 30,
-        padding: 10,
+        padding: 5,
         customStep: (index, color, _) {
           return Container(
             width: 30.0,
@@ -117,8 +182,8 @@ class TimerWidget extends StatelessWidget {
         context.select((TimerBloc bloc) => bloc.state is! TimerRunComplete);
 
     return SizedBox(
-      width: 200,
-      height: 200,
+      width: 180,
+      height: 180,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -127,6 +192,9 @@ class TimerWidget extends StatelessWidget {
             child: CircularProgressIndicator(
               value: duration / phaseDuration,
               strokeWidth: 15,
+              color: Theme.of(context).colorScheme.tertiary,
+              backgroundColor:
+                  Theme.of(context).colorScheme.subtleBackgroundGrey,
             ),
           ),
           Column(
@@ -135,12 +203,18 @@ class TimerWidget extends StatelessWidget {
               Flexible(
                 child: Text(
                   pomoState,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle2
+                      .withOnBackgroundHard
+                      .withBold,
                 ),
               ),
               // This text should be in the middle of the circular progress bar
-              Text('$signStr$minutesStr:$secondsStr',
-                  style: Theme.of(context).textTheme.headline2),
+              Text(
+                '$signStr$minutesStr:$secondsStr',
+                style: Theme.of(context).textTheme.pomodoroTimeDisplayStyle,
+              ),
             ],
           )
         ],

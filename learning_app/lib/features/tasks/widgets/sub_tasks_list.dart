@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/features/tasks/screens/task_add_screen.dart';
+import 'package:learning_app/features/tasks/widgets/create_sub_task_card.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
-// class SubTasksList extends StatefulWidget {
-//   const SubTasksList({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SubTasksList> createState() => _SubTasksListState();
-// }
-//
-// class _SubTasksListState extends State<SubTasksList> {
-//   final ScrollController scrollController;
-//
-//   _SubTasksListState({required this.scrollController})
-//
+class SubTasksList extends StatefulWidget {
+  final List<DetailsReadTaskDto> subTasksList;
+  final bool directlyStartSubtaskCreation;
 
-class SubTasksList extends StatelessWidget {
-  final ScrollController scrollController;
+  const SubTasksList({
+    Key? key,
+    this.subTasksList = const [],
+    this.directlyStartSubtaskCreation = false,
+  }) : super(key: key);
 
-  const SubTasksList({Key? key, required this.scrollController})
-      : super(key: key);
+  @override
+  State<SubTasksList> createState() => _SubTasksListState();
+}
+
+class _SubTasksListState extends State<SubTasksList> {
+  bool creatingModeActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.directlyStartSubtaskCreation) {
+      creatingModeActive = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,43 +40,51 @@ class SubTasksList extends StatelessWidget {
           // Use this physics, so that the scrolling of the parent is used instead
           // -> we want the whole view to be scrollable rather than just the subtasks
           physics: const NeverScrollableScrollPhysics(),
-          // Use the scroll controller of the parent, to actually allow scrolling
-          controller: scrollController,
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: 10,
-          // itemExtent: 95,
+          itemCount: widget.subTasksList.length + (creatingModeActive ? 1 : 0),
           itemBuilder: (BuildContext context, int index) {
-            return TaskCard(
-              isSubTaskCard: true,
-              task: ListReadTaskDto(
-                id: index,
-                title: 'Gemockte Sub-Aufgabe, noch ohne jegliche Funktion',
-                done: false,
-                categoryColor: Colors.lightBlue,
-                subTaskCount: 5,
-                finishedSubTaskCount: 0,
-                isQueued: false,
-                keywords: const ['Hausaufgabe'],
-                // keywords: const ['Hausaufgabe', 'Englisch', 'Klausurvorbereitung'],
-                // keywords: const [],
-                // dueDate: null
-                dueDate: DateTime.now(),
-                // remainingTimeEstimation: null,
-                remainingTimeEstimation: const Duration(minutes: 30),
-              ),
-            );
+            if (index < widget.subTasksList.length) {
+              DetailsReadTaskDto detailsDto = widget.subTasksList[index];
+              return TaskCard(
+                isSubTaskCard: true,
+                task: ListReadTaskDto.fromDetailsReadTasksDto(detailsDto),
+                context: context,
+              );
+            } else {
+              // Build card for new subtask creation
+              return CreateSubTaskCard(
+                onDiscard: () {
+                  // Remove the creation card
+                  setState(() {
+                    creatingModeActive = false;
+                  });
+                },
+                onPressEnterSubmit: (title) {
+                  // When enter is used, allow the quick creation of multiple
+                  // subtasks
+                  // -> currentlyCreatingNewSubtask not changed on purpose
+                  BlocProvider.of<AlterTaskCubit>(context)
+                      .createNewSubTask(title);
+                },
+                onUseButtonSubmit: (title) async {
+                  // When the button is used, only create one subtask
+                  setState(() {
+                    creatingModeActive = false;
+                  });
+
+                  BlocProvider.of<AlterTaskCubit>(context)
+                      .createNewSubTask(title);
+                },
+              );
+            }
           },
         ),
         InkWell(
           onTap: () {
-            //TODO
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const TaskAddScreen(),
-              ),
-            );
+            setState(() {
+              creatingModeActive = true;
+            });
           },
           child: Ink(
             height: 50,
@@ -78,10 +96,11 @@ class SubTasksList extends StatelessWidget {
                       size: 30.0, color: Theme.of(context).colorScheme.primary),
                   Text(
                     "Neue Unteraufgabe",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 18,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withPrimary
+                        .withBold,
                   ),
                 ],
               ),

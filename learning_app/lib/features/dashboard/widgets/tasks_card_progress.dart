@@ -1,22 +1,33 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/card_elevation.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_process_indicator.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
+import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class TasksCardProgress extends StatelessWidget {
-  final double progress;
+  final int amountDone;
+  final int amountTotal;
+  final Duration? remainingDuration;
 
   final horizontalCardPadding = 10.0;
   final processIndicatorFlexPortion = 40;
 
-  const TasksCardProgress({Key? key, required this.progress}) : super(key: key);
+  const TasksCardProgress({
+    Key? key,
+    required this.amountDone,
+    required this.amountTotal,
+    required this.remainingDuration,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
+      color: Theme.of(context).colorScheme.cardColor,
       shape: _ProgressBarCardShape(
         borderRadius: 25.0,
         circleRadius: 60.0,
@@ -26,7 +37,8 @@ class TasksCardProgress extends StatelessWidget {
         // is contained in
         flexPortion: processIndicatorFlexPortion / 100,
       ),
-      elevation: CardElevation.high,
+      elevation: BasicCard.elevation.high,
+      shadowColor: Theme.of(context).colorScheme.shadowColor,
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 10.0,
@@ -40,7 +52,8 @@ class TasksCardProgress extends StatelessWidget {
             Expanded(
               flex: processIndicatorFlexPortion,
               child: Center(
-                child: TasksProcessIndicator(progress: progress, size: 92.5),
+                child: TasksProcessIndicator(
+                    progress: amountDone / amountTotal, size: 92.5),
               ),
             ),
             Expanded(
@@ -51,19 +64,21 @@ class TasksCardProgress extends StatelessWidget {
                   // Hourglass and Text
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.hourglass_top_outlined,
                         size: 40.0,
                         // TODO: to be structured in the theme-issue:
-                        color: Color(0xFF636573),
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                       Text(
-                        "Heutiger Restaufwand:\n2h 30min",
-                        style: TextStyle(
-                          // TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),
-                        ),
+                        remainingDuration == null
+                            ? "Keine Zeitschätzungen\n vorhanden"
+                            : "Heutiger Restaufwand:\n${remainingDuration.format()}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                         textAlign: TextAlign.center,
                       )
                     ],
@@ -75,33 +90,31 @@ class TasksCardProgress extends StatelessWidget {
                   // Color Indicators and Done / Open
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       ColorIndicator(
-                        // TODO: to be structured in the theme-issue:
-                        // color: Theme.of(context).primaryColor,
-                        color: Color(0xFF39BBD1),
+                        color: Theme.of(context).colorScheme.tertiary,
                         height: 10.0,
                         width: 30.0,
                       ),
                       Text(
-                        "4 Erledigt",
-                        style: TextStyle(
-                          // TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),
-                        ),
+                        "$amountDone Erledigt",
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                       ),
                       ColorIndicator(
-                        // TODO: to be structured in the theme-issue:
-                        color: Color(0xFFF2EAFB),
+                        color:
+                            Theme.of(context).colorScheme.subtleBackgroundGrey,
                         height: 10.0,
                         width: 30.0,
                       ),
                       Text(
-                        "3 Offen",
-                        style: TextStyle(
-                          // TODO: to be structured in the theme-issue:
-                          color: Color(0xFF949597),
-                        ),
+                        "${amountTotal - amountDone} Offen",
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle3
+                            .withOnBackgroundSoft,
                       ),
                     ],
                   ),

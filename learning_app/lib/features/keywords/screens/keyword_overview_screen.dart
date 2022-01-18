@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
-import 'package:learning_app/features/keywords/widgets/keyword_add_dialog.dart';
-import 'package:learning_app/features/keywords/widgets/keyword_app_bar.dart';
+import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
+import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
+import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
+import 'package:learning_app/features/keywords/widgets/keyword_form_dialog.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_card.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class KeyWordOverviewScreen extends StatelessWidget {
   const KeyWordOverviewScreen({Key? key}) : super(key: key);
@@ -20,31 +22,23 @@ class KeyWordOverviewScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return StreamBuilder<List<KeyWord>>(
+        return StreamBuilder<List<ReadKeyWordDto>>(
           stream: state.keywordsStream,
           builder: (context, snapshot) {
+            late Widget body;
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
+              body = const Center(child: CircularProgressIndicator());
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              body = Center(
                 child: Text(
-                  'Du hast aktuell keine Kategorien.\nDrücke auf das Plus, um eine Kategorie anzulegen',
+                  'Du hast aktuell keine Schlagwörter.\nDrücke auf das Plus, um ein Schlagwort anzulegen',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Color(0xFF636573),
-                  ),
+                  style: Theme.of(context).textTheme.textStyle4,
                 ),
               );
-            }
-
-            final keywords = snapshot.data!;
-
-            return Scaffold(
-              appBar: const KeyWordAddAppBar(),
-              body: ListView.builder(
+            } else {
+              final keywords = snapshot.data!;
+              body = ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -52,14 +46,19 @@ class KeyWordOverviewScreen extends StatelessWidget {
                 itemBuilder: (BuildContext ctx, int idx) => KeyWordCard(
                   keyword: keywords[idx],
                 ),
-              ),
-              floatingActionButton: FloatingActionButton(
+              );
+            }
+
+            return ScreenWithoutBottomNavbarBaseTemplate(
+              titleBar: const GoBackTitleBar(title: "Schlagwörter"),
+              body: body,
+              fab: FloatingActionButton(
                 heroTag: "NavigateToKeyWordAddScreen",
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const KeyWordAddDialog();
+                      return const KeyWordFormDialog(existingKeyword: null);
                     },
                   );
                 },
