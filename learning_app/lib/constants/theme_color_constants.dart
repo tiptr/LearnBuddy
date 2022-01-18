@@ -11,8 +11,8 @@ class ColorSchemes {
     const onBackgroundColor = Color(0xFFAAAAAA);
     const onBackgroundHardColor = Color(0xFFFFFFFF);
     ColorScheme darkTheme = const ColorScheme.dark().copyWith(
-      primary: const Color(0xFFC51212),
-      secondary: const Color(0xFFC56C12),
+      primary: const Color(0xFFF5AC32),
+      secondary: const Color(0xFFC53232),
       background: backgroundColor,
       onPrimary: const Color(0xFFFFFFFF),
       onSecondary: const Color(0xFFFFFFFF),
@@ -27,7 +27,7 @@ class ColorSchemes {
       noCategoryDefaultColor: darkTheme.onBackground,
       onBackgroundHard: onBackgroundHardColor,
       onBackgroundSoft: const Color(0xFF636573),
-      tertiary: const Color(0xFFC5C504),
+      tertiary: const Color(0xFF7AD7F0),
       onTertiary: const Color(0xFF000000), // Same as onBackgroundHard
       subtleBackgroundGrey: const Color(0xFF3F3F3F),
       cardColor: const Color(0xFF303030),
