@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/page_ids.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
@@ -76,14 +77,10 @@ class LeisureCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 85.0,
                         height: 85.0,
-                        child: Image(
-                          image: AssetImage(
-                            "assets/leisure/leisure-fun-smiling-cats.png",
-                          ),
-                        ),
+                        child: SvgPicture.asset('assets/leisure/leisure-fun-smiling-cats.svg'),
                       ),
                     ],
                   ),
