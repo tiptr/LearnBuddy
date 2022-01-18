@@ -39,12 +39,9 @@ class LearnListsScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => _openPopup(context),
-          ),
-        ),
+        onPressed: () {
+          _openPopup(context);
+        },
         child: Icon(
           Icons.add,
           color: Theme.of(context).colorScheme.onPrimary,
