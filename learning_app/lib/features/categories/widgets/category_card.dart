@@ -56,65 +56,62 @@ class CategoryCard extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
             ),
-            Expanded(
-              flex: 35,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CategoryFormDialog(
-                            existingCategory: category,
-                          );
-                        },
-                      );
-                    },
-                    icon: Icon(
-                      Icons.create_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return CategoryFormDialog(
+                          existingCategory: category,
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.create_outlined,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  IconButton(
-                    onPressed: () async {
-                      var confirmed = await openConfirmDialog(
-                        context: context,
-                        title: "Kategorie löschen?",
-                        content: RichText(
-                          text: TextSpan(
-                            // Note: Styles for TextSpans must be explicitly defined.
-                            // Child text spans will inherit styles from parent
-                            style: Theme.of(context).textTheme.textStyle2,
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Willst du die Kategorie '),
-                              TextSpan(
-                                text: category.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .textStyle2
-                                    .withBold
-                                    .withOnBackgroundHard,
-                              ),
-                              const TextSpan(text: ' wirklich löschen?'),
-                            ],
-                          ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    var confirmed = await openConfirmDialog(
+                      context: context,
+                      title: "Kategorie löschen?",
+                      content: RichText(
+                        text: TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: Theme.of(context).textTheme.textStyle2,
+                          children: <TextSpan>[
+                            const TextSpan(text: 'Willst du die Kategorie '),
+                            TextSpan(
+                              text: category.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .textStyle2
+                                  .withBold
+                                  .withOnBackgroundHard,
+                            ),
+                            const TextSpan(text: ' wirklich löschen?'),
+                          ],
                         ),
-                      );
+                      ),
+                    );
 
-                      if (confirmed) {
-                        BlocProvider.of<CategoriesCubit>(context)
-                            .deleteCategoryById(category.id);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.delete_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  )
-                ],
-              ),
+                    if (confirmed) {
+                      BlocProvider.of<CategoriesCubit>(context)
+                          .deleteCategoryById(category.id);
+                    }
+                  },
+                  icon: Icon(
+                    Icons.delete_outlined,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                )
+              ],
             ),
           ],
         ),
