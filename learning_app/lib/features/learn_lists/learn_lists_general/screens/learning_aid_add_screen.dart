@@ -16,6 +16,13 @@ class _LearningAidAddScreenState extends State<LearningAidAddScreen> {
   List<Widget> items = [];
 
   @override
+  void initState() {
+    super.initState();
+      BlocProvider.of<CreateNewLearningAidCubit>(context)
+          .startNewTaskConstruction(widget.parentId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: LearningAidAddAppBar(textController: _titleController),

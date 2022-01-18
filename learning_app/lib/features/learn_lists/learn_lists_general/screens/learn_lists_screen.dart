@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learning_aid_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_card.dart';
@@ -16,8 +16,8 @@ class LearningAidsScreen extends StatelessWidget {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: 3, //state.tasks.length,
-        itemBuilder: (BuildContext ctx, int idx) => const LearningAidCard(
-            learningAid: LearningAid(id: 1, title: "Projektmanagement")),
+        itemBuilder: (BuildContext ctx, int idx) => LearningAidCard(
+            learningAid: LearnList(id: 1, name: "Projektmanagement", creationDate: DateTime.now(), words: [], isArchived: false)),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",

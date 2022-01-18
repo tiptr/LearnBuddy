@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/card_elevation.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
 
 const double iconSize = 18.0;
 
@@ -15,7 +16,28 @@ class LearningAidCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: _card(context),
+      child: InkWell(
+        onTap: () async {
+          // Load the detail-dto for the selected card:
+          //final DetailsReadTaskDto? details =
+          //    await BlocProvider.of<TasksCubit>(context)
+          //        .getDetailsDtoForTopLevelTaskId(_task.id);
+
+          //if (details != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LearnListDetailScreen() //TODO: Select correct screen! //TaskDetailsScreen(
+                //  existingTask: details,
+                //),
+              ),
+            );
+          //} else {
+          //  log('The task with ID ${_task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
+          //}
+        },
+        child: _card(context),
+      ),
     );
   }
 

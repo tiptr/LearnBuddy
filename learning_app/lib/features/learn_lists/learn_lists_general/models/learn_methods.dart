@@ -3,6 +3,7 @@ enum LearnMethods {
   // Reason: the index is used for persisting this
   bodyList,
   storyList,
+  generalList,
 
   // TODO: create a test that asserts the indices of the enum are not changed
   // assert(LearnMethods.bodyList.index == 0);

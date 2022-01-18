@@ -89,10 +89,7 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
         color: Colors.white,
         body: const Image(
           image: AssetImage(
-            //"assets/leisure/leisure-group-fitness.png"
             "assets/learning_aids/moehm_alternative.png",
-            //width: 85.0,
-            //height: 85.0,
           ),
         ),
       ),
