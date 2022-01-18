@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card.dart';
-import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 
