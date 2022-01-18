@@ -159,9 +159,10 @@ class DbLearnListRepository implements LearnListRepository {
           final wordEntities = listIdToWordsMap[listEntity.id];
           final List<LearnListWord>? wordModels = wordEntities
               ?.map((wordEntity) => LearnListWord(
-              id: wordEntity.id,
-              word: wordEntity.word,
-          )).toList();
+                    id: wordEntity.id,
+                    word: wordEntity.word,
+                  ))
+              .toList();
 
           listModel = LearnList(
             id: listEntity.id,

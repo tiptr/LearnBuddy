@@ -30,10 +30,10 @@ class LearnListCard extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                const LearnListDetailScreen() //TODO: Select correct screen! //TaskDetailsScreen(
-              //  existingTask: details,
-              //),
-            ),
+                    const LearnListDetailScreen() //TODO: Select correct screen! //TaskDetailsScreen(
+                //  existingTask: details,
+                //),
+                ),
           );
           //} else {
           //  log('The task with ID ${_task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
@@ -111,15 +111,12 @@ class LearnListCard extends StatelessWidget {
           // Title
           Expanded(
             flex: 70,
-            child: Text(
-                _learningAid.name,
+            child: Text(_learningAid.name,
                 style: Theme.of(context)
                     .textTheme
                     .textStyle2
                     .withBold
                     .withOnBackgroundHard),
-
-
           ),
           // Date Chip
           Expanded(
@@ -129,7 +126,7 @@ class LearnListCard extends StatelessWidget {
                 // TODO: Use real date here
                 "Heute",
                 style:
-                Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
+                    Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
               avatar: Icon(
                 // TODO check if learningAid is overdue for color selection
