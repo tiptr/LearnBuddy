@@ -20,7 +20,6 @@ class KeyWordInputField extends StatelessWidget {
       onTap: () async {
         // Unfocus, so that no keyboard will be opened for the textfield
         FocusManager.instance.primaryFocus?.unfocus();
-        print("Open an alert with options $options");
 
         // Open color picker
         List<ReadKeyWordDto>? selected = await showDialog(

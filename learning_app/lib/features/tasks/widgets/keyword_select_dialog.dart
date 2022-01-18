@@ -76,9 +76,9 @@ class _KeywordSelectDialogState extends State<KeywordSelectDialog> {
                           child: Column(
                             children: <Widget>[
                               CheckboxListTile(
-                                activeColor: Colors.pink[300],
+                                activeColor:
+                                    Theme.of(context).colorScheme.primary,
                                 dense: true,
-                                //font change
                                 title: Text(
                                   widget.options[index].name,
                                   style: const TextStyle(
