@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 
-class LearningAidDetailAppBar extends StatelessWidget
+class LearnListsDetailAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final TextEditingController textController;
 
-  const LearningAidDetailAppBar({Key? key, required this.textController})
+  const LearnListsDetailAppBar({Key? key, required this.textController})
       : super(key: key);
 
   @override
