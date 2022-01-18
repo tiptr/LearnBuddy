@@ -85,6 +85,28 @@ class DbTaskRepository implements TaskRepository {
     });
   }
 
+  /// This creates a stream watching the single task (with subtasks) with the
+  /// given ID.
+  ///
+  /// Do not forget to destroy this stream as soon as it is not required anymore.
+  /// Calling this multiple times creates new streams at each call without
+  /// destroying the other ones automatically (like with the list streams).
+  @override
+  Stream<TaskWithQueueStatus?> watchTopLevelTaskById({required int id}) {
+    final topLevelTaskEntityStream = _tasksDao.watchTaskById(id);
+    // Reuse the list-method for combining the entities to a model:
+    final singleTopLevelTaskEntityListStream = topLevelTaskEntityStream
+        .where((entity) => entity != null)
+        .map((entity) => [entity as TaskEntity]);
+
+    final singleModelListStream = _buildListStream(
+        topLevelEntitiesStream: singleTopLevelTaskEntityListStream);
+
+    return singleModelListStream
+        .where((list) => list.isNotEmpty)
+        .map((list) => list.first);
+  }
+
   @override
   Future<int> createTask(CreateTaskDto newTask) async {
     assert(newTask.isReadyToStore);
