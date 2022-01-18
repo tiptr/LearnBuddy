@@ -62,6 +62,8 @@ class _TimerViewState extends State<TimerView> {
 
   @override
   Widget build(BuildContext context) {
+    final maxHeightForPanel = MediaQuery.of(context).size.height * 0.61;
+
     return SlidingUpPanel(
       controller: _panelController,
       borderRadius: const BorderRadius.only(
@@ -72,12 +74,13 @@ class _TimerViewState extends State<TimerView> {
       parallaxOffset: .0,
       panelSnapping: true,
       minHeight: 145,
-      maxHeight: MediaQuery.of(context).size.height * 0.61,
+      maxHeight: maxHeightForPanel,
       panelBuilder: (ScrollController sc) {
         return TaskQueueList(
           scrollController: sc,
           panelController: _panelController,
           panelOpenedInformer: _panelOpenedInformer,
+          panelMaxHeight: maxHeightForPanel,
         );
       },
       color: Theme.of(context).colorScheme.cardColor,
