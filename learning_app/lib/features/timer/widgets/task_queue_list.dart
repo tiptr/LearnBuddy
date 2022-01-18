@@ -37,7 +37,10 @@ class _TaskQueueListState extends State<TaskQueueList> {
       // This is used to fix the drag-and-drop reordering of
       // the tasks, in the case that the list is scrolled up
       // completely
-      // Please do not modify without discussing it first
+      // This has the purpose of not having the list at a scroll-
+      // offset of 0, when dragging items down via drag and drop.
+      // If that is the case, the whole sliding up panel is being
+      // moved instead.
       if (widget.scrollController.offset < 10) {
         final position = widget.scrollController.position;
 
@@ -87,14 +90,16 @@ class _TaskQueueListState extends State<TaskQueueList> {
                   // This is used to fix the drag-and-drop reordering of
                   // the tasks, in the case that the list is scrolled up
                   // completely
-                  // Please do not modify without discussing it first
+                  // This has the purpose of not having the list at a scroll-
+                  // offset of 0, when dragging items down via drag and drop.
+                  // If that is the case, the whole sliding up panel is being
+                  // moved instead.
                   if (widget.scrollController.offset < 10) {
                     widget.scrollController.jumpTo(10.0);
                   }
                 },
                 child: ReorderableListView(
-                  anchor: 0.05, // This is important for making drag and drop
-                  // work. Please leave this anchor as it is.
+                  anchor: 0.05, // This is important for making drag and drop work.
                   scrollController: widget.scrollController,
                   children: generateExpansionTiles(state.tasks),
                   onReorder: (oldIndex, newIndex) {
