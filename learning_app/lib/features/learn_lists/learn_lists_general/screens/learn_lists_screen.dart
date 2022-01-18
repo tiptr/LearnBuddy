@@ -1,28 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learning_aid_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_aid_card.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_card.dart';
+import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
+import 'learn_list_add_screen.dart';
 
-class LearningAidsScreen extends StatelessWidget {
-  const LearningAidsScreen({Key? key}) : super(key: key);
+class LearnListsScreen extends StatelessWidget {
+  const LearnListsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      // Will change to a custom title bar in the future
+      appBar: BaseTitleBar(
+        title: "Lernhilfen",
+        actions: [
+          buildThreePointsMenu(
+            context: context,
+            showGlobalSettings: true,
+          )
+        ],
+      ),
       body: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: 3, //state.tasks.length,
-        itemBuilder: (BuildContext ctx, int idx) => LearningAidCard(
-            learningAid: LearnList(id: 1, name: "Projektmanagement", creationDate: DateTime.now(), words: [], isArchived: false)),
+        itemBuilder: (BuildContext ctx, int idx) => const LearnListCard(
+            learningAid: LearningAid(id: 1, title: "Projektmanagement")),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",
-        onPressed: () => _openPopup(context),
-        child: const Icon(Icons.add),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => _openPopup(context),
+          ),
+        ),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
@@ -51,7 +74,7 @@ class LearningAidsScreen extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const LearningAidAddScreen(),
+                  builder: (context) => const LearnListAddScreen(),
                 ),
         )     ,
               icon: Icons.format_list_bulleted,
