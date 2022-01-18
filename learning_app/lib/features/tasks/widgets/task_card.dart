@@ -115,12 +115,13 @@ class _TaskCardState extends State<TaskCard> {
                   // Grey out when done -> Overlay with semitransparent white; Else
                   // overlay with fulltransparent "black" (no effect)
                   colorFilter: ColorFilter.mode(
-                      _checked
-                          ? Theme.of(context).colorScheme.greyOutOverlayColor
-                          : Colors.transparent,
-                      Theme.of(context).colorScheme.isDark
-                          ? BlendMode.darken
-                          : BlendMode.lighten),
+                    _checked
+                        ? Theme.of(context).colorScheme.greyOutOverlayColor
+                        : Colors.transparent,
+                    Theme.of(context).colorScheme.isDark
+                        ? BlendMode.darken
+                        : BlendMode.lighten,
+                  ),
                   child: Container(
                     padding: EdgeInsets.only(
                       top: 10.0,
@@ -132,10 +133,11 @@ class _TaskCardState extends State<TaskCard> {
                     decoration: BoxDecoration(
                       border: Border(
                         left: BorderSide(
-                            width: BasicCard.borderRadius,
-                            color: widget._isSubTaskCard
-                                ? Colors.transparent
-                                : widget._categoryColor),
+                          width: BasicCard.borderRadius,
+                          color: widget._isSubTaskCard
+                              ? Colors.transparent
+                              : widget._categoryColor,
+                        ),
                       ),
                     ),
 
@@ -179,10 +181,27 @@ class _TaskCardState extends State<TaskCard> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               // Left Row: title + keywords
-                              _buildTitleKeyWordsColumn(context),
+                              _TitleKeyWordsColumn(
+                                checked: _checked,
+                                isSubTaskCard: widget._isSubTaskCard,
+                                keywords: widget._task.keywords,
+                                taskTitle: widget._task.title,
+                              ),
                               const SizedBox(width: 10.0), // min distance
                               // Right Row: due date + stats
-                              _buildDueDateStatsColumn(context)
+                              _DueDateStatsColumn(
+                                checked: _checked,
+                                dueDate: widget._task.dueDate,
+                                formattedDueDate: widget._formattedDueDate,
+                                isEstimated: widget._isEstimated,
+                                formattedTimeEstimation:
+                                    widget._formattedTimeEstimation,
+                                isSubTaskCard: widget._isSubTaskCard,
+                                isOverDue: widget._isOverDue,
+                                finishedSubTaskCount:
+                                    widget._task.finishedSubTaskCount,
+                                subTaskCount: widget._task.subTaskCount,
+                              )
                             ],
                           ),
                         )
@@ -205,11 +224,11 @@ class _TaskCardState extends State<TaskCard> {
                         bottomRight: Radius.circular(8),
                       ),
                     ),
-                    child: Text("Heute bearbeiten",
-                        style: Theme.of(context)
-                            .textTheme
-                            .textStyle4
-                            .withBackground),
+                    child: Text(
+                      "Heute bearbeiten",
+                      style:
+                          Theme.of(context).textTheme.textStyle4.withBackground,
+                    ),
                   ),
                 )
             ],
@@ -218,9 +237,25 @@ class _TaskCardState extends State<TaskCard> {
       ),
     );
   }
+}
 
-  Widget _buildTitleKeyWordsColumn(BuildContext context) {
-    TextStyle titleStyle = widget._isSubTaskCard
+class _TitleKeyWordsColumn extends StatelessWidget {
+  final bool isSubTaskCard;
+  final List<String> keywords;
+  final String taskTitle;
+  final bool checked;
+
+  const _TitleKeyWordsColumn({
+    Key? key,
+    required this.isSubTaskCard,
+    required this.keywords,
+    required this.taskTitle,
+    required this.checked,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle titleStyle = isSubTaskCard
         ? Theme.of(context).textTheme.textStyle3.withOnBackgroundHard.withBold
         : Theme.of(context).textTheme.textStyle2.withOnBackgroundHard.withBold;
     return Expanded(
@@ -228,30 +263,32 @@ class _TaskCardState extends State<TaskCard> {
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: 0,
-            vertical: widget._isSubTaskCard
+            vertical: isSubTaskCard
                 ? verticalPaddingCardContentSubTasks
                 : verticalPaddingCardContentTopLevel),
         child: Column(
-          mainAxisAlignment: widget._task.keywords.isNotEmpty
+          mainAxisAlignment: keywords.isNotEmpty
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            Text(widget._task.title,
-                maxLines: 2,
-                style: _checked
-                    ? titleStyle.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        decorationThickness: 2.0,
-                      )
-                    : titleStyle),
+            Text(
+              taskTitle,
+              maxLines: 2,
+              style: checked
+                  ? titleStyle.copyWith(
+                      decoration: TextDecoration.lineThrough,
+                      decorationThickness: 2.0,
+                    )
+                  : titleStyle,
+            ),
 
             // Keywords
-            if (widget._task.keywords.isNotEmpty)
+            if (keywords.isNotEmpty)
               Text(
-                widget._task.keywords.join(', '),
-                maxLines: widget._isSubTaskCard ? 1 : 2,
+                keywords.join(', '),
+                maxLines: isSubTaskCard ? 1 : 2,
                 style:
                     Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
               ),
@@ -260,13 +297,39 @@ class _TaskCardState extends State<TaskCard> {
       ),
     );
   }
+}
 
-  Widget _buildDueDateStatsColumn(BuildContext context) {
+class _DueDateStatsColumn extends StatelessWidget {
+  final bool isSubTaskCard;
+  final DateTime? dueDate;
+  final String formattedDueDate;
+  final bool isOverDue;
+  final bool isEstimated;
+  final String formattedTimeEstimation;
+  final bool checked;
+  final int subTaskCount;
+  final int finishedSubTaskCount;
+
+  const _DueDateStatsColumn({
+    Key? key,
+    required this.isSubTaskCard,
+    required this.dueDate,
+    required this.formattedDueDate,
+    required this.isOverDue,
+    required this.isEstimated,
+    required this.formattedTimeEstimation,
+    required this.checked,
+    required this.subTaskCount,
+    required this.finishedSubTaskCount,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     TextStyle dueDateStyle = Theme.of(context).textTheme.textStyle4;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: 0,
-          vertical: widget._isSubTaskCard
+          vertical: isSubTaskCard
               ? verticalPaddingCardContentSubTasks
               : verticalPaddingCardContentTopLevel),
       child: Column(
@@ -278,26 +341,26 @@ class _TaskCardState extends State<TaskCard> {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4.0),
             label: Text(
-              (widget._task.dueDate != null) ? widget._formattedDueDate : '',
+              (dueDate != null) ? formattedDueDate : '',
               textAlign: TextAlign.end,
-              style: widget._isOverDue
+              style: isOverDue
                   ? dueDateStyle.withOnSecondary
                   : dueDateStyle.withOnBackgroundHard,
             ),
             labelPadding: EdgeInsets.symmetric(
               vertical: 0,
-              horizontal: widget._isOverDue ? 4 : 0,
+              horizontal: isOverDue ? 4 : 0,
             ),
-            avatar: (widget._task.dueDate != null)
+            avatar: (dueDate != null)
                 ? Icon(
                     Icons.today_outlined,
                     size: 16,
-                    color: widget._isOverDue
+                    color: isOverDue
                         ? Theme.of(context).colorScheme.onSecondary
                         : Theme.of(context).colorScheme.onBackgroundHard,
                   )
                 : null,
-            backgroundColor: widget._isOverDue
+            backgroundColor: isOverDue
                 ? Theme.of(context).colorScheme.secondary
                 : Theme.of(context).colorScheme.cardColor,
             // Required, because Colors.transparent does not work.
@@ -317,7 +380,7 @@ class _TaskCardState extends State<TaskCard> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Remaining time estimation, only if provided
-                if (!_checked && widget._isEstimated)
+                if (!checked && isEstimated)
                   Row(
                     children: [
                       Icon(
@@ -325,7 +388,7 @@ class _TaskCardState extends State<TaskCard> {
                         size: iconSize,
                         color: Theme.of(context).colorScheme.onBackgroundSoft,
                       ),
-                      Text(widget._formattedTimeEstimation,
+                      Text(formattedTimeEstimation,
                           textAlign: TextAlign.end,
                           style: Theme.of(context)
                               .textTheme
@@ -333,7 +396,7 @@ class _TaskCardState extends State<TaskCard> {
                               .withOnBackgroundSoft),
                     ],
                   ),
-                if (widget._task.subTaskCount > 0)
+                if (subTaskCount > 0)
                   Container(
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Row(
@@ -345,7 +408,7 @@ class _TaskCardState extends State<TaskCard> {
                         ),
                         const SizedBox(width: 5.0),
                         Text(
-                          '${widget._task.finishedSubTaskCount} / ${widget._task.subTaskCount}',
+                          '$finishedSubTaskCount / $subTaskCount',
                           textAlign: TextAlign.end,
                           style: Theme.of(context)
                               .textTheme
