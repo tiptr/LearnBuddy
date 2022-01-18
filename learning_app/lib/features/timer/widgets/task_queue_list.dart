@@ -99,7 +99,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
                   }
                 },
                 child: ReorderableListView(
-                  anchor: 0.05, // This is important for making drag and drop work.
+                  anchor:
+                      0.05, // This is important for making drag and drop work.
                   scrollController: widget.scrollController,
                   children: generateExpansionTiles(state.tasks),
                   onReorder: (oldIndex, newIndex) {
