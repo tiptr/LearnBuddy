@@ -47,67 +47,64 @@ class KeyWordCard extends StatelessWidget {
                     .withOnBackgroundHard,
               ),
             ),
-            Expanded(
-              flex: 30,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return KeyWordFormDialog(
-                            existingKeyword: keyword,
-                          );
-                        },
-                      );
-                    },
-                    icon: Icon(
-                      Icons.create_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return KeyWordFormDialog(
+                          existingKeyword: keyword,
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.create_outlined,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  IconButton(
-                    onPressed: () async {
-                      var confirmed = await openConfirmDialog(
-                        context: context,
-                        title: "Schlagwort löschen?",
-                        content: RichText(
-                          text: TextSpan(
-                            // Note: Styles for TextSpans must be explicitly defined.
-                            // Child text spans will inherit styles from parent
-                            style: Theme.of(context).textTheme.textStyle2,
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Willst du das Schlagwort '),
-                              TextSpan(
-                                text: keyword.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .textStyle2
-                                    .withBold
-                                    .withOnBackgroundHard,
-                              ),
-                              const TextSpan(text: ' wirklich löschen?'),
-                            ],
-                          ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    var confirmed = await openConfirmDialog(
+                      context: context,
+                      title: "Schlagwort löschen?",
+                      content: RichText(
+                        text: TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: Theme.of(context).textTheme.textStyle2,
+                          children: <TextSpan>[
+                            const TextSpan(text: 'Willst du das Schlagwort '),
+                            TextSpan(
+                              text: keyword.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .textStyle2
+                                  .withBold
+                                  .withOnBackgroundHard,
+                            ),
+                            const TextSpan(text: ' wirklich löschen?'),
+                          ],
                         ),
-                      );
+                      ),
+                    );
 
-                      if (confirmed) {
-                        logger.d('Keyword ${keyword.name} wird gelöscht.');
+                    if (confirmed) {
+                      logger.d('Keyword ${keyword.name} wird gelöscht.');
 
-                        BlocProvider.of<KeyWordsCubit>(context)
-                            .deleteKeyWordById(keyword.id);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.delete_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  )
-                ],
-              ),
+                      BlocProvider.of<KeyWordsCubit>(context)
+                          .deleteKeyWordById(keyword.id);
+                    }
+                  },
+                  icon: Icon(
+                    Icons.delete_outlined,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                )
+              ],
             ),
           ],
         ),

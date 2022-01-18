@@ -143,7 +143,8 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
       } else {
         // No updates made -> nothing to change
         emit(WaitingForAlterTaskState());
-        return null;
+        // Success, because nothing had to be done
+        return constructingState.updateTaskDto.id;
       }
     } else {
       // The task has to be constructed first with 'addTaskAttribute'
