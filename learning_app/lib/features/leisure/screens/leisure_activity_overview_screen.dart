@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_activity_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 import 'package:learning_app/features/leisure/widgets/leisure_overview_app_bar.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LeisureActivityOverviewScreen extends StatelessWidget {
-  final LeisureActivityCubit correctCubit;
+  final List<ReadLeisureActivitiesDto> activities;
 
-  const LeisureActivityOverviewScreen({required this.correctCubit, Key? key})
+  const LeisureActivityOverviewScreen({required this.activities, Key? key})
       : super(key: key);
 
   @override
@@ -19,37 +16,24 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
     return Scaffold(
       appBar: const LeisureOverviewAppBar(
           categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
-      body: BlocBuilder<LeisureActivityCubit, LeisureActivityState>(
-        bloc: correctCubit,
-        builder: (context, state) {
-          if (state is! LeisureActivityListLoadedState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: state.listViewLeisureActivities.length,
-            itemBuilder: (BuildContext ctx, int idx) {
-              return GestureDetector(
-                  child: LeisureActivityCard(
-                    leisureActivity: state.listViewLeisureActivities[idx],
-                  ),
-                  onTap: () => {
-                        Navigator.push(
-                            ctx,
-                            MaterialPageRoute(
-                              builder: (ctx) => LeisureActivityScreen(
-                                  leisureActivity:
-                                      state.listViewLeisureActivities[idx],
-                                  cubit: correctCubit),
-                            ))
-                      });
-            },
-          );
+      body: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: activities.length,
+        itemBuilder: (BuildContext ctx, int idx) {
+          return GestureDetector(
+              child: LeisureActivityCard(
+                leisureActivity: activities[idx],
+              ),
+              onTap: () => {
+                    Navigator.push(
+                        ctx,
+                        MaterialPageRoute(
+                          builder: (ctx) => LeisureActivityScreen(
+                              leisureActivity: activities[idx]),
+                        ))
+                  });
         },
       ),
     );

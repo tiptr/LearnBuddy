@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
@@ -29,7 +28,7 @@ class LeisureScreen extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<LeisureCategoryCubit, LeisureCategoryState>(
+      body: BlocBuilder<LeisureCubit, LeisureState>(
         builder: (context, state) {
           if (state is! LeisureCategoryLoaded) {
             return const Center(
@@ -68,10 +67,8 @@ class LeisureScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        var cubit = LeisureActivityCubit();
-                        cubit.setActivityList(categories[idx].activities);
                         return LeisureActivityOverviewScreen(
-                          correctCubit: cubit,
+                          activities: categories[idx].activities,
                         );
                       }),
                     ),

@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_state.dart';
 import 'package:learning_app/features/leisure/repositories/leisure_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
-class LeisureCategoryCubit extends Cubit<LeisureCategoryState> {
+class LeisureCubit extends Cubit<LeisureState> {
   late final LeisureRepository _leisureRepository;
 
-  LeisureCategoryCubit({LeisureRepository? leisureRepository})
+  LeisureCubit({LeisureRepository? leisureRepository})
       : super(InitialLeisureCategoryState()) {
     _leisureRepository = leisureRepository ?? getIt<LeisureRepository>();
   }
@@ -16,5 +16,9 @@ class LeisureCategoryCubit extends Cubit<LeisureCategoryState> {
     var leisureCategories = _leisureRepository.watchLeisureCategories();
     emit(LeisureCategoryLoaded(
         selectedLeisureCategoriesStream: leisureCategories));
+  }
+
+  Future<void> toggleFavorite(int activityId, bool isFavorite) async {
+    await _leisureRepository.toggleFavorite(activityId, isFavorite);
   }
 }

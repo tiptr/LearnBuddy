@@ -2,16 +2,16 @@ import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.d
 import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/leisure/model/leisure_category.dart';
 
-abstract class LeisureCategoryState extends Equatable {
+abstract class LeisureState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class InitialLeisureCategoryState extends LeisureCategoryState {}
+class InitialLeisureCategoryState extends LeisureState {}
 
 // TODO: refactor LeisureCategory to hold the filters rather than the stream
 // ignore: must_be_immutable
-class LeisureCategoryLoaded extends LeisureCategoryState {
+class LeisureCategoryLoaded extends LeisureState {
   Stream<List<LeisureCategory>> selectedLeisureCategoriesStream;
   late Stream<List<ReadLeisureCategoriesDto>> listViewLeisureCategoriesStream;
 

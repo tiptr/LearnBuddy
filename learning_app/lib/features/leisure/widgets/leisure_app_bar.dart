@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_activity_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 
 class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String categoryTitle;
-  final LeisureActivityCubit cubit;
   final ReadLeisureActivitiesDto leisureActivity;
 
   const LeisureAppBar(
       {Key? key,
       required this.categoryTitle,
-      required this.cubit,
       required this.leisureActivity})
       : super(key: key);
 
@@ -41,7 +40,7 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   //TODO: Make icon change color immediately, not just after going to the main page and back
                   onPressed: () {
-                    cubit.toggleFavorite(
+                    BlocProvider.of<LeisureCubit>(context).toggleFavorite(
                         leisureActivity.id, !leisureActivity.isFavorite);
                   },
                   icon: Icon(Icons.star,
