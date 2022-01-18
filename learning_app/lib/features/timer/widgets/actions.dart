@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 import '../bloc/timer_bloc.dart';
 
@@ -24,20 +26,21 @@ class TimerActions extends StatelessWidget {
                       .add(TimerStarted(duration: state.getDuration())),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Start",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -48,20 +51,21 @@ class TimerActions extends StatelessWidget {
                   onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -75,20 +79,21 @@ class TimerActions extends StatelessWidget {
                       context.read<TimerBloc>().add(const TimerPaused()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Pause",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -99,20 +104,21 @@ class TimerActions extends StatelessWidget {
                   onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -126,20 +132,21 @@ class TimerActions extends StatelessWidget {
                       context.read<TimerBloc>().add(const TimerResumed()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Fortsetzen",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -150,20 +157,21 @@ class TimerActions extends StatelessWidget {
                   onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -176,20 +184,21 @@ class TimerActions extends StatelessWidget {
                   onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Phase beenden",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -205,20 +214,21 @@ class TimerActions extends StatelessWidget {
                       .add(TimerStarted(duration: state.getDuration())),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Start",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),
@@ -229,20 +239,21 @@ class TimerActions extends StatelessWidget {
                   onTap: () => context.read<TimerBloc>().add(const TimerSkip()),
                   child: Container(
                     width: 100,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
                           "Überspringen",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle3
+                              .withBackground,
                         ),
                       ),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
                 ),

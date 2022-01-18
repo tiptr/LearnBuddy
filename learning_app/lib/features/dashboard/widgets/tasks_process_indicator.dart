@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TasksProcessIndicator extends StatelessWidget {
   final double progress;
@@ -26,23 +28,21 @@ class TasksProcessIndicator extends StatelessWidget {
                   height: size,
                   child: CircularProgressIndicator(
                     strokeWidth: 12.5,
-                    // TODO: to be structured in the theme-issue:
-                    // color: Theme.of(context).primaryColor,
-                    color: const Color(0xFF39BBD1),
+                    color: Theme.of(context).colorScheme.tertiary,
                     value: progress,
-                    // TODO: to be structured in the theme-issue:
-                    backgroundColor: const Color(0xFFF2EAFB),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.subtleBackgroundGrey,
                   ),
                 ),
               ),
               Center(
                 child: Text(
                   "${(100 * progress).round()} %",
-                  style: const TextStyle(
-                    // TODO: to be structured in the theme-issue:
-                    color: Color(0xFF949597),
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle3
+                      .withOnBackgroundSoft
+                      .withBold,
                 ),
               ),
             ],

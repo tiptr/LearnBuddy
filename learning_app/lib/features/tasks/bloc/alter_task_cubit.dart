@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:drift/drift.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/alter_task_state.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
@@ -111,7 +112,7 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
 
   /// Finishes the construction of a new task or the update of an existing one
   /// by storing it in the database
-  Future<void> saveTask() async {
+  Future<int?> saveTask() async {
     final currentState = state;
     if (currentState is ConstructingNewTask) {
       // Save the task, if all required attributes are given
@@ -121,11 +122,13 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
             await _taskRepository.createTask(constructingState.createTaskDto);
         logger.d("[Task Cubit] New task was saved. Id: $newTaskId");
         emit(WaitingForAlterTaskState());
+        return newTaskId;
       } else {
         // Not all requirements given
         logger.d(
             "[Task Cubit] Save task triggered, but not every required attribute was set");
         emit(ConstructingNewTask(createTaskDto: currentState.createTaskDto));
+        return null;
       }
     } else if (currentState is AlteringExistingTask) {
       // Update a task
@@ -136,14 +139,48 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
         logger.d(
             "[Task Cubit] Task was updated. Id: ${constructingState.updateTaskDto.id}, Success: $success");
         emit(WaitingForAlterTaskState());
+        return constructingState.updateTaskDto.id;
       } else {
         // No updates made -> nothing to change
         emit(WaitingForAlterTaskState());
+        // Success, because nothing had to be done
+        return constructingState.updateTaskDto.id;
       }
     } else {
       // The task has to be constructed first with 'addTaskAttribute'
       logger.d(
           "[Task Cubit] Save task triggered without being in a constructing state.");
+      return null;
+    }
+  }
+
+  /// Directly creates a new subTask with the given title as child of the task
+  /// currently being altered
+  ///
+  /// Only works out of a existing task, so the state has to be 'AlteringExistingTask'
+  Future<bool> createNewSubTask(String title) async {
+    final currentState = state;
+    if (currentState is AlteringExistingTask) {
+      AlteringExistingTask constructingState = currentState;
+      if (title == '') {
+        // A title has to be provided first
+        return false;
+      }
+
+      int newSubTaskId = await _taskRepository.createTask(CreateTaskDto(
+        parentId: constructingState.updateTaskDto.id,
+        title: Value(title),
+        // Adopt the category from the parent
+        categoryId: constructingState.updateTaskDto.categoryId,
+      ));
+
+      logger.d("[Task Cubit] New subtask was saved. Id: $newSubTaskId");
+
+      return true;
+    } else {
+      logger.d(
+          "[Task Alter Cubit] Create subtask triggered, but not in AlteringExistingTask' state.");
+      return false;
     }
   }
 }

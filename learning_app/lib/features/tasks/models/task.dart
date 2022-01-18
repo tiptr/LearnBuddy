@@ -46,7 +46,10 @@ class Task {
       return null;
     } else {
       final currentFullTimeEstimation = fullTimeEstimation as Duration;
-      return currentFullTimeEstimation - sumAllTimeLogs;
+
+      return currentFullTimeEstimation.isNegative
+          ? Duration.zero
+          : currentFullTimeEstimation;
     }
   }
 
