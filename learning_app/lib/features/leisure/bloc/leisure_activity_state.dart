@@ -16,10 +16,9 @@ class LeisureActivityListLoadedState extends LeisureActivityState {
 
   LeisureActivityListLoadedState({required this.selectedLeisureActivities}) {
     listViewLeisureActivities = [];
-    for(LeisureActivity activity in selectedLeisureActivities) {
-      listViewLeisureActivities.add(
-        ReadLeisureActivitiesDto.fromLeisureActivity(activity)
-      );
+    for (LeisureActivity activity in selectedLeisureActivities) {
+      listViewLeisureActivities
+          .add(ReadLeisureActivitiesDto.fromLeisureActivity(activity));
     }
   }
 

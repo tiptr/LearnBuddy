@@ -26,20 +26,21 @@ class ReadLeisureActivitiesDto extends Equatable {
     this.pathToImage,
   });
 
-  static ReadLeisureActivitiesDto fromLeisureActivity(LeisureActivity leisureActivity) {
+  static ReadLeisureActivitiesDto fromLeisureActivity(
+      LeisureActivity leisureActivity) {
     return ReadLeisureActivitiesDto(
-        id: leisureActivity.id,
-        categoryId: leisureActivity.categoryId,
-        name: leisureActivity.name,
-        duration: leisureActivity.duration,
-        descriptionShort: leisureActivity.descriptionShort,
-        descriptionLong: leisureActivity.descriptionLong,
-        suitableForAgesAbove: leisureActivity.suitableForAgesAbove,
-        suitableForAgesBelow: leisureActivity.suitableForAgesBelow,
-        isFavorite: leisureActivity.isFavorite,
-        pathToImage: leisureActivity.pathToImage,
+      id: leisureActivity.id,
+      categoryId: leisureActivity.categoryId,
+      name: leisureActivity.name,
+      duration: leisureActivity.duration,
+      descriptionShort: leisureActivity.descriptionShort,
+      descriptionLong: leisureActivity.descriptionLong,
+      suitableForAgesAbove: leisureActivity.suitableForAgesAbove,
+      suitableForAgesBelow: leisureActivity.suitableForAgesBelow,
+      isFavorite: leisureActivity.isFavorite,
+      pathToImage: leisureActivity.pathToImage,
     );
-}
+  }
 
   @override
   List<Object?> get props => [

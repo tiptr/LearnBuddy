@@ -18,6 +18,16 @@ class LeisureActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: BaseTitleBar(
+      //   title: leisureActivity.name,
+      //   actions: [
+      //     buildThreePointsMenu(
+      //       context: context,
+      //       showGlobalSettings: true,
+      //     )
+      //   ],
+      // ),
+
       appBar: LeisureAppBar(
         categoryTitle: leisureActivity.name,
         cubit: cubit,

@@ -54,5 +54,5 @@ class LeisureOverviewAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
+  Size get preferredSize => const Size.fromHeight(mainScreensAppBarHeight);
 }
