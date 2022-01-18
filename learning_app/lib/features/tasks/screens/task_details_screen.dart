@@ -7,6 +7,7 @@ import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/tasks/bloc/alter_task_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/alter_task_state.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
@@ -366,7 +367,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
 
   /// Handles the 'save task' functionality
   Future<bool> onExitTask() async {
-    // TODO: implement
+    // save, if the screen was used in edit mode
+    final currentState = BlocProvider.of<AlterTaskCubit>(context).state;
+    if (currentState is AlteringExistingTask) {
+      final resultId = await onSaveTask();
+      return resultId != null;
+    }
+
     return true;
   }
 }
