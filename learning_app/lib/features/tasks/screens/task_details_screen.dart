@@ -178,7 +178,11 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
     DetailsReadTaskDto? detailsDto,
     DetailsReadTaskDto? parentDetailsDto,
   }) {
-    return Scaffold(
+    return WillPopScope (
+        onWillPop: () async {
+      return onExitTask();
+    },
+    child: Scaffold(
       appBar: TaskAddAppBar(
         existingTask: detailsDto,
         onSaveTask: onSaveTask,
@@ -340,6 +344,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
           ),
         ),
       ),
+    ),
     );
   }
 
