@@ -55,6 +55,7 @@ class _KeyWordFormDialogState extends State<KeyWordFormDialog> {
                     hintText: "Bezeichnung eingeben",
                   ),
                   controller: _textController,
+                  autofocus: true,
                 ),
               ),
             ],

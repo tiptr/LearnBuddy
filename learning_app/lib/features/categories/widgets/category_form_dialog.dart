@@ -69,6 +69,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
                     hintText: "Bezeichnung eingeben",
                   ),
                   controller: _textController,
+                  autofocus: true,
                 ),
               ),
               const Spacer()
