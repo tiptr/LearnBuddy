@@ -54,7 +54,7 @@ Future<void> main() async {
 
             // Loading is async., but will not take long anyways thanks to
             // dynamic loading (only the first X tasks are being loaded)
-            cubit.loadTasks();
+            cubit.loadTasksWithoutFilter();
             return cubit;
           },
         ),
@@ -149,6 +149,7 @@ class MyHomePage extends StatelessWidget {
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: IndexedStack(
           index: selectedIndex,
           children: _pages,
