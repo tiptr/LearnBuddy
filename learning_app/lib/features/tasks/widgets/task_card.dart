@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
+import 'package:learning_app/features/tasks/widgets/task_delete_dialog.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
@@ -126,13 +127,11 @@ class _TaskCardState extends State<TaskCard> {
         children: [
           SlidableAction(
             onPressed: (context) {
-              // TODO: ask with a dialog
-              BlocProvider.of<TasksCubit>(context)
-                  .deleteTaskById(widget._task.id);
+              onDeleteTask(widget._task);
             },
             autoClose: false,
             backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.error,
             icon: Icons.delete_outline_outlined,
             label: 'Endgültig löschen',
           ),
@@ -313,6 +312,30 @@ class _TaskCardState extends State<TaskCard> {
         ),
       ),
     );
+  }
+
+  /// Handles the 'save task' functionality
+  Future<bool> onDeleteTask(ListReadTaskDto taskDto) async {
+    var confirmed =
+        await taskDeleteConfirmDialog(context: context, title: taskDto.title);
+
+    if (confirmed) {
+      BlocProvider.of<TasksCubit>(context).deleteTaskById(taskDto.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gelöscht!',
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
+        ),
+      );
+
+      return true;
+    }
+
+    return false;
   }
 }
 

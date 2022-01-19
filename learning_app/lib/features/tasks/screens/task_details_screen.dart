@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
@@ -16,11 +17,13 @@ import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/features/tasks/widgets/category_select_field.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
-import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
+import 'package:learning_app/shared/widgets/inputfields/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/keyword_selection.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
+import 'package:learning_app/features/tasks/widgets/task_delete_dialog.dart';
 import 'package:learning_app/features/tasks/widgets/task_details_app_bar.dart';
-import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
+import 'package:learning_app/shared/widgets/inputfields/text_input_field.dart';
+import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/util/logger.dart';
 
 final DateTime? preSelectedDueDate = DateTime.now();
@@ -190,7 +193,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         appBar: TaskAddAppBar(
           existingTask: detailsDto,
           onSaveTask: onSaveTask,
-          onDelete: onDeleteTask,
+          onDelete: () {
+            onDeleteTask(detailsDto!);
+          },
           onExit: onExitTask,
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -395,6 +400,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                           ),
                         ),
                       ),
+                const SizedBox(height: 20.0),
               ],
             ),
           ),
@@ -412,16 +418,60 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
       final missingFieldsDescr = cubit.getMissingFieldsDescription();
       logger.d(
           'The task is not ready to be saved! Description: $missingFieldsDescr');
-      // TODO: inform the user with a SnackBar
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Bitte zuerst einen Titel festlegen.',
+            style: Theme.of(context).textTheme.textStyle2.withOnBackgroundHard,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
+        ),
+      );
       return null;
     }
 
-    return await BlocProvider.of<AlterTaskCubit>(context).saveTask();
+    int? id = await BlocProvider.of<AlterTaskCubit>(context).saveTask();
+
+    if (id != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gespeichert!',
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
+        ),
+      );
+      return id;
+    } else {
+      // If nothing had been changed, still return the current id, if set
+      return widget.existingTaskId;
+    }
   }
 
   /// Handles the 'save task' functionality
-  Future<bool> onDeleteTask() async {
-    // TODO: implement
+  Future<bool> onDeleteTask(DetailsReadTaskDto detailsDto) async {
+    var confirmed = await taskDeleteConfirmDialog(
+        context: context, title: detailsDto.title);
+
+    if (confirmed) {
+      Navigator.pop(context);
+
+      BlocProvider.of<TasksCubit>(context).deleteTaskById(detailsDto.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gelöscht!',
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
+        ),
+      );
+      return true;
+    }
+
     return false;
   }
 
@@ -432,8 +482,48 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
     if (currentState is AlteringExistingTask) {
       final resultId = await onSaveTask();
       return resultId != null;
-    }
+    } else if (currentState is ConstructingNewTask) {
+      ConstructingNewTask newTaskState = currentState;
 
-    return true;
+      // If nothing was entered by the user, no need for a dialog
+      if (!newTaskState.createTaskDto.containsUpdates()) {
+        return true;
+      }
+
+      // Ask, whether to really discard
+      String title = '';
+      if (newTaskState.createTaskDto.title.present) {
+        title = ' "${newTaskState.createTaskDto.title.value}"';
+      }
+      var confirmed = await openConfirmDialog(
+        // TODO: only if someting is set
+        context: context,
+        title: "Aufgabe verwerfen?",
+        content: RichText(
+          text: TextSpan(
+            // Note: Styles for TextSpans must be explicitly defined.
+            // Child text spans will inherit styles from parent
+            style: Theme.of(context).textTheme.textStyle2,
+            children: <TextSpan>[
+              const TextSpan(
+                  text: 'Willst du wirklich zurückkehren und die Aufgabe'),
+              TextSpan(
+                text: title,
+                style: Theme.of(context)
+                    .textTheme
+                    .textStyle2
+                    .withBold
+                    .withOnBackgroundHard,
+              ),
+              const TextSpan(text: ' verwerfen?'),
+            ],
+          ),
+        ),
+      );
+
+      return confirmed;
+    } else {
+      return true;
+    }
   }
 }

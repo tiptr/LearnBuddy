@@ -21,9 +21,7 @@ class LeisureActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<ReadLeisureActivitiesDto>(
       stream: BlocProvider.of<LeisureCubit>(context).watchLeisureActivityById(
-        categoryId: categoryId,
-        activityId: activityId,
-      ),
+          categoryId: categoryId, activityId: activityId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -85,6 +83,7 @@ class LeisureActivityScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.visible,
                         ),
                       ),
                     ),
@@ -107,9 +106,7 @@ class LeisureActivityScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Text(
                       activity.descriptionLong ?? '',
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                      ),
+                      overflow: TextOverflow.visible,
                     ),
                   ),
                 ],

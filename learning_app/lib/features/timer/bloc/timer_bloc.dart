@@ -8,6 +8,8 @@ import 'package:learning_app/features/timer/exceptions/invalid_state_exception.d
 import 'package:learning_app/features/timer/models/config.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/models/ticker.dart';
+import 'package:learning_app/util/notification_api.dart';
+import 'package:learning_app/util/sound_api.dart';
 
 part 'timer_event.dart';
 
@@ -46,15 +48,23 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
     if (event.duration > 0) {
+      if (event.duration == 3) {
+        SoundApi.playTimerDone();
+      }
       emit(TimerRunInProgress(
           event.duration, state._pomodoroMode, state._countPhase));
-    } else {
+    } else if (event.duration == 0) {
+      NotificationApi.showNotification(
+        payload: 'timer',
+        body: state.getPomodoroMode() == PomodoroMode.concentration
+            ? "Geschafft. Gönn dir nun eine Pause!"
+            : "Die Pause ist vorbei. Weiter geht's!",
+        title: 'Timer abgelaufen',
+      );
       emit(TimerRunComplete(
           event.duration, state._pomodoroMode, state._countPhase));
     }
 
-    // Notify the Time Logging Bloc that it has to update
-    //TODO: Change this to more than one second?
     if (state._pomodoroMode == PomodoroMode.concentration) {
       timeLoggingBloc
           .add(const TimeNoticeEvent(duration: Duration(seconds: 1)));
@@ -62,6 +72,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
+    SoundApi.cancelSound();
     if (state is TimerRunInProgress) {
       _tickerSubscription?.cancel();
       timeLoggingBloc.add(StopTimeLoggingEvent());
@@ -82,6 +93,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
     suggestedLeisureCubit.newLeisureActivity();
+    SoundApi.cancelSound();
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
     if (timeLoggingBloc.state is ActiveState) {

@@ -16,7 +16,7 @@ import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/b
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart';
 import 'package:learning_app/features/leisure/persistence/leisure_activities_dao.dart';
 import 'package:learning_app/features/leisure/persistence/leisure_categories_dao.dart';
-import 'package:learning_app/features/tasks/persistence/task_queue_elements_dao.dart';
+import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
 import 'package:learning_app/features/tasks/persistence/task_keywords_dao.dart';
 import 'package:learning_app/features/tasks/persistence/task_learn_lists_dao.dart';
 import 'package:learning_app/features/time_logs/persistence/time_logs_dao.dart';
@@ -92,7 +92,7 @@ LazyDatabase _openConnection() {
     'package:learning_app/features/categories/persistence/categories.drift',
     'package:learning_app/features/keywords/persistence/keywords.drift',
     'package:learning_app/features/time_logs/persistence/time_logs.drift',
-    'package:learning_app/features/tasks/persistence/task_queue_elements.drift',
+    'package:learning_app/features/task_queue/persistence/task_queue_elements.drift',
     'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists.drift',
     'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_list_words.drift',
     'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details.drift',

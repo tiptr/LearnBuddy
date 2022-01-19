@@ -115,13 +115,13 @@ class LeisureCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 15.0,
-                      ),
-                      // Leisure description
-                      Text(
-                        activity.descriptionLong ?? activity.descriptionShort,
-                        overflow: TextOverflow.visible,
+                      SizedBox(
+                        width: 85.0,
+                        height: 85.0,
+                        child: SvgPicture.asset(
+                          'assets/leisure/leisure-fun-smiling-cats.svg',
+                          color: Colors.cyan,
+                        ),
                       ),
                     ],
                   ),
