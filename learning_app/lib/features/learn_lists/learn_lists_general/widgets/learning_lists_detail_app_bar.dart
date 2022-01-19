@@ -3,9 +3,9 @@ import 'package:learning_app/constants/app_bar_height.dart';
 
 class LearnListsDetailAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final TextEditingController textController;
+  final String text;
 
-  const LearnListsDetailAppBar({Key? key, required this.textController})
+  const LearnListsDetailAppBar({Key? key, required this.text})
       : super(key: key);
 
   @override
@@ -27,12 +27,8 @@ class LearnListsDetailAppBar extends StatelessWidget
                   iconSize: 30,
                 ),
                 Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration.collapsed(
-                      hintText: 'Name der Lernhilfe',
-                      border: InputBorder.none,
-                    ),
-                    controller: textController,
+                  child: Text(
+                    text,
                   ),
                 ),
               ],

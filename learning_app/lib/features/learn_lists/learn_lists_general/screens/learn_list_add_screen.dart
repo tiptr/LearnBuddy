@@ -8,6 +8,8 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/te
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/util/logger.dart';
 
+//TODO: add cubit
+
 class LearnListAddScreen extends StatefulWidget {
   const LearnListAddScreen({Key? key}) : super(key: key);
 

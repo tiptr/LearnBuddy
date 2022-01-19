@@ -57,23 +57,23 @@ class LearnListsScreen extends StatelessWidget {
                 );
               }
 
-              final categories = snapshot.data!;
+              final learnLists = snapshot.data!;
 
               return ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: categories.length,
+                itemCount: learnLists.length,
                 itemBuilder: (BuildContext ctx, int idx) {
                   return GestureDetector(
                     child: LearnListCard(
-                      learningAid: categories[idx],
+                      learningAid: learnLists[idx],
                     ),
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
                         //TODO: return the correct screen with the learn list dto
-                        return const LearnListDetailScreen();
+                        return LearnListDetailScreen(learnListId: learnLists[idx].id);
                       })
                     )
                   );

@@ -19,26 +19,6 @@ class LearnListCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: InkWell(
-        onTap: () async {
-          // Load the detail-dto for the selected card:
-          //final DetailsReadTaskDto? details =
-          //    await BlocProvider.of<TasksCubit>(context)
-          //        .getDetailsDtoForTopLevelTaskId(_task.id);
-
-          //if (details != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    const LearnListDetailScreen() //TODO: Select correct screen! //TaskDetailsScreen(
-                //  existingTask: details,
-                //),
-                ),
-          );
-          //} else {
-          //  log('The task with ID ${_task.id} was selected to be opened, but it could not be found in the list of currently loaded tasks');
-          //}
-        },
         child: _card(context),
       ),
     );
@@ -91,7 +71,7 @@ class LearnListCard extends StatelessWidget {
                     // Upper Row
                     _buildUpperRow(context),
                     // Lower Row
-                    _buildLowerRow(context)
+                    _buildLowerRow(context, _learningAid)
                   ],
                 ),
               )
@@ -142,7 +122,8 @@ class LearnListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLowerRow(BuildContext context) {
+  Widget _buildLowerRow(BuildContext context, ReadLearnListDto learnList) {
+    int wordCount = learnList.words.length;
     return Expanded(
       flex: 50,
       child: Row(
@@ -153,7 +134,7 @@ class LearnListCard extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackgroundSoft),
           const Spacer(flex: 1),
           Text(
-            "9 Begriffe",
+            "$wordCount Begriffe",
             textAlign: TextAlign.end,
             style: Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
           ),
