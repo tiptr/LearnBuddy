@@ -36,6 +36,20 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
+  bool isFilterActive() {
+    final currentState = state;
+
+    if (currentState is TasksLoaded) {
+      final filter = currentState.taskFilter;
+      if (filter == null) {
+        return false;
+      } else {
+        return filter.isCustomFilter();
+      }
+    }
+    return false;
+  }
+
   /// Toggles the done flag in a task in the cubit state
   Future<void> toggleDone(int taskId, bool done) async {
     final currentState = state;
@@ -84,11 +98,10 @@ class TasksCubit extends Cubit<TaskState> {
 
   /// This returns the list-dtos for all due tasks
   Stream<List<ListReadTaskDto>>? getDetailsDtoStreamForDashboard() {
-    final tasksStream =
-    _taskRepository.watchFilteredSortedTasks(
-        taskFilter: const TaskFilter(
-          dueToday: Value(true),
-        ),
+    final tasksStream = _taskRepository.watchFilteredSortedTasks(
+      taskFilter: const TaskFilter(
+        dueToday: Value(true),
+      ),
     );
 
     return tasksStream.map((tasksList) {

@@ -5,7 +5,7 @@ import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 
 abstract class TaskState extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialTaskState extends TaskState {}
@@ -15,11 +15,11 @@ class TasksLoaded extends TaskState {
   Stream<List<TaskWithQueueStatus>> selectedTasksStream;
   late Stream<List<ListReadTaskDto>> selectedListViewTasksStream;
 
-  TaskFilter taskFilter;
+  TaskFilter? taskFilter;
 
   TasksLoaded({
     required this.selectedTasksStream,
-    this.taskFilter = const TaskFilter(),
+    this.taskFilter,
   }) {
     selectedListViewTasksStream = selectedTasksStream.map((tasksList) {
       return tasksList
@@ -29,5 +29,5 @@ class TasksLoaded extends TaskState {
   }
 
   @override
-  List<Object> get props => [selectedTasksStream, taskFilter];
+  List<Object?> get props => [selectedTasksStream, taskFilter];
 }

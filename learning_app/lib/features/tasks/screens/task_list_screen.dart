@@ -27,7 +27,6 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<TasksCubit, TaskState>(builder: (context, state) {
       // This only checks for the success state, we might want to check for
       // errors in the future here.
@@ -35,11 +34,11 @@ class _TaskScreenState extends State<TaskScreen> {
         return const Center(child: CircularProgressIndicator());
       }
 
-      final currentFilter = state.taskFilter;
+      final TaskFilter currentFilter = state.taskFilter ?? const TaskFilter();
+      final bool isFiltered = BlocProvider.of<TasksCubit>(context).isFilterActive();
 
-      final showingDoneTasks = currentFilter.done.present
-          ? currentFilter.done.value
-          : false;
+      final showingDoneTasks =
+          currentFilter.done.present ? currentFilter.done.value : false;
 
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -47,33 +46,28 @@ class _TaskScreenState extends State<TaskScreen> {
         appBar: BaseTitleBar(
           title: "Aufgaben",
           actions: [
-
             IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const FilterSelectDialog();
-                    },
-                  );
-                },
-                icon: const Icon(Icons.filter_list_outlined),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const FilterSelectDialog();
+                  },
+                );
+              },
+              icon: const Icon(Icons.filter_list_outlined),
             ),
             IconButton(
                 onPressed: () {
-                  final currentState = BlocProvider.of<TasksCubit>(context).state;
-                  if (currentState is TasksLoaded) {
-                    final currentFilter = currentState.taskFilter;
-                    final newFilter = TaskFilter(
-                      keywords: currentFilter.keywords,
-                      categories: currentFilter.categories,
-                      dueToday: currentFilter.dueToday,
-                      done: drift.Value(!currentFilter.done.value),
-                    );
+                  final newFilter = TaskFilter(
+                    keywords: currentFilter.keywords,
+                    categories: currentFilter.categories,
+                    dueToday: currentFilter.dueToday,
+                    done: drift.Value(!currentFilter.done.value),
+                  );
 
-                    BlocProvider.of<TasksCubit>(context)
-                        .loadFilteredTasks(newFilter);
-                  }
+                  BlocProvider.of<TasksCubit>(context)
+                      .loadFilteredTasks(newFilter);
                 },
                 icon: Icon(showingDoneTasks
                     ? Icons.done_all_outlined
@@ -105,38 +99,49 @@ class _TaskScreenState extends State<TaskScreen> {
 
             final activeTasks = snapshot.data!;
 
-            return Scrollbar(
-              controller: _scrollController,
-              interactive: true,
-              child: GroupedListView<ListReadTaskDto, DateTime?>(
-                controller: _scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                sort: false,
-                // sorting will be done via SQL
-                elements: activeTasks,
-                // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
-                groupBy: (task) =>
-                    task.dueDate.getBeginOfDayConcatPastToYesterday(),
-                useStickyGroupSeparators: true,
-                cacheExtent: 20,
-                // This would improve scrolling performance, but I did not get it to
-                // work with the separators
-                // itemExtent: 110,
-                floatingHeader: true,
-                groupSeparatorBuilder: (DateTime? dateTime) {
-                  return ListGroupSeparator(
-                    content: dateTime == null
-                        ? 'Ohne Fälligkeitsdatum'
-                        : (dateTime.isInPast()
-                            ? 'Überfällig'
-                            : '${dateTime.formatDependingOnCurrentDate()} fällig'),
-                    highlight: dateTime.isInPast(),
-                  );
-                },
-                indexedItemBuilder: (context, task, index) {
-                  return TaskCard(task: task, context: context);
-                },
-              ),
+            return Column(
+              children: [
+                if (isFiltered)
+                  Text('filtered'),
+                // Filter info and reset, if some set
+
+                // Task List
+                Flexible(
+                  child: Scrollbar(
+                    controller: _scrollController,
+                    interactive: true,
+                    child: GroupedListView<ListReadTaskDto, DateTime?>(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      sort: false,
+                      // sorting will be done via SQL
+                      elements: activeTasks,
+                      // TODO: this has to be generalized to work with other groups than the due date, when a different sorting is applied
+                      groupBy: (task) =>
+                          task.dueDate.getBeginOfDayConcatPastToYesterday(),
+                      useStickyGroupSeparators: true,
+                      cacheExtent: 20,
+                      // This would improve scrolling performance, but I did not get it to
+                      // work with the separators
+                      // itemExtent: 110,
+                      floatingHeader: true,
+                      groupSeparatorBuilder: (DateTime? dateTime) {
+                        return ListGroupSeparator(
+                          content: dateTime == null
+                              ? 'Ohne Fälligkeitsdatum'
+                              : (dateTime.isInPast()
+                                  ? 'Überfällig'
+                                  : '${dateTime.formatDependingOnCurrentDate()} fällig'),
+                          highlight: dateTime.isInPast(),
+                        );
+                      },
+                      indexedItemBuilder: (context, task, index) {
+                        return TaskCard(task: task, context: context);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           },
         ),

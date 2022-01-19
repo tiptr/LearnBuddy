@@ -14,4 +14,12 @@ class TaskFilter {
     this.done = const Value(false), // Default: only active tasks
     this.dueToday = const Value.absent(),
   });
+
+  bool isCustomFilter() {
+    return categories.present
+        || keywords.present
+        || !done.present
+        || (done.present && done.value == true)
+        || dueToday.present;
+  }
 }
