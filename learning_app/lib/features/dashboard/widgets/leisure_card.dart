@@ -100,8 +100,9 @@ class LeisureCard extends StatelessWidget {
                             width: 85.0,
                             height: 85.0,
                             child: SvgPicture.asset(
-                              // TODO: where do i get the svg path from?
-                              'assets/leisure/leisure-fun-smiling-cats.svg',
+                              activity.pathToImage ??
+                                  // For now, the crazy cat is the default when no path is present
+                                  'assets/leisure/leisure-fun-smiling-cats.svg',
                             ),
                           ),
                         ],

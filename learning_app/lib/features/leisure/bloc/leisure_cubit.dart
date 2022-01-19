@@ -69,7 +69,7 @@ class LeisureCubit extends Cubit<LeisureState> {
 
     var todayNumber = DateTime.now().day;
 
-    // Calculate a pseudo random activity index, 
+    // Calculate a pseudo random activity index,
     // but always the same for the same day.
     var pseudoRandomActivity =
         allActivities[allActivities.length - 1 % todayNumber];
