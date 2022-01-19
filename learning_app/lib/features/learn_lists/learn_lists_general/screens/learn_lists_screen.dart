@@ -132,7 +132,7 @@ class LearnListsScreen extends StatelessWidget {
                 ),
                 icon: Icons.format_list_bulleted,
                 text:
-                    "Begriffsliste                              ", //makes the buttons equally sized:)
+                    "Begriffsliste                            ", //makes the buttons equally sized:)
               )
             ],
           ),
