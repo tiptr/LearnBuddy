@@ -81,7 +81,8 @@ class LeisureCard extends StatelessWidget {
                         width: 85.0,
                         height: 85.0,
                         child: SvgPicture.asset(
-                            'assets/leisure/leisure-fun-smiling-cats.svg'),
+                          'assets/leisure/leisure-fun-smiling-cats.svg',
+                        ),
                       ),
                     ],
                   ),

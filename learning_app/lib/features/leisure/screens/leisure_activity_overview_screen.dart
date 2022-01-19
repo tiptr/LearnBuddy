@@ -10,9 +10,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class LeisureActivityOverviewScreen extends StatelessWidget {
   final int categoryId;
+  final String categoryTitle;
 
-  const LeisureActivityOverviewScreen({required this.categoryId, Key? key})
-      : super(key: key);
+  const LeisureActivityOverviewScreen({
+    Key? key,
+    required this.categoryId,
+    required this.categoryTitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +41,9 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
           final activities = snapshot.data!;
 
           return Scaffold(
-            appBar: const LeisureOverviewAppBar(
-                categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
+            appBar: LeisureOverviewAppBar(
+              categoryTitle: categoryTitle,
+            ), //TODO: insert title
             body: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -46,18 +51,20 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
               itemCount: activities.length,
               itemBuilder: (BuildContext ctx, int idx) {
                 return GestureDetector(
-                    child: LeisureActivityCard(
-                      leisureActivity: activities[idx],
-                    ),
-                    onTap: () => {
-                          Navigator.push(
-                              ctx,
-                              MaterialPageRoute(
-                                builder: (ctx) => LeisureActivityScreen(
-                                    categoryId: categoryId,
-                                    activityId: activities[idx].id),
-                              ))
-                        });
+                  child: LeisureActivityCard(
+                    leisureActivity: activities[idx],
+                  ),
+                  onTap: () => {
+                    Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                        builder: (ctx) => LeisureActivityScreen(
+                            categoryId: categoryId,
+                            activityId: activities[idx].id),
+                      ),
+                    )
+                  },
+                );
               },
             ),
           );
@@ -100,10 +107,12 @@ class LeisureActivityCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.star,
-                        color: leisureActivity.isFavorite
-                            ? Colors.purple
-                            : Colors.grey),
+                    Icon(
+                      Icons.star,
+                      color: leisureActivity.isFavorite
+                          ? Colors.purple
+                          : Colors.grey,
+                    ),
                     SizedBox(
                       width: 85.0,
                       height: 85.0,

@@ -70,6 +70,7 @@ class LeisureScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) {
                         return LeisureActivityOverviewScreen(
                           categoryId: categories[idx].id,
+                          categoryTitle: categories[idx].name,
                         );
                       }),
                     ),
