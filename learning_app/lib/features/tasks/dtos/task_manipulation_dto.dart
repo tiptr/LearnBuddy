@@ -55,4 +55,16 @@ class TaskManipulationDto {
       return 'Bitte zuerst einen Titel eingeben.';
     }
   }
+
+  /// Whether this update-dto actually contains changes
+  bool containsUpdates() {
+    return title.present ||
+        description.present ||
+        categoryId.present ||
+        keywordIds.present ||
+        estimatedTime.present ||
+        dueDate.present ||
+        learnListsIds.present ||
+        manualTimeEffortDelta.present;
+  }
 }

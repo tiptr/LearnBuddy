@@ -14,7 +14,7 @@ Future<bool> openConfirmDialog({
     title: Text(
       title,
       style:
-          Theme.of(context).textTheme.textStyle1.withBold.withOnBackgroundHard,
+          Theme.of(context).textTheme.textStyle2.withBold.withOnBackgroundHard,
     ),
     contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 5.0),
     backgroundColor: Theme.of(context).colorScheme.cardColor,
@@ -23,6 +23,9 @@ Future<bool> openConfirmDialog({
         children: [
           // Content of the dialog
           content,
+          const SizedBox(
+            height: 10.0,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

@@ -326,7 +326,10 @@ class _TaskCardState extends State<TaskCard> {
         SnackBar(
           content: Text(
             'Aufgabe erfolgreich gelöscht!',
-            style: Theme.of(context).textTheme.textStyle2.withBackground, // TODO: change to green success
+            style: Theme.of(context)
+                .textTheme
+                .textStyle2
+                .withBackground, // TODO: change to green success
           ),
           backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
         ),
