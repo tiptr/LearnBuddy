@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
+import 'package:learning_app/shared/widgets/inputfields/number_input_field.dart';
 import 'package:learning_app/shared/widgets/inputfields/text_input_field.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
@@ -16,6 +17,8 @@ class PersonalSettingsScreen extends StatefulWidget {
 class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
   final TextEditingController _nameTextEditingController =
       TextEditingController();
+  final TextEditingController _ageTextEditingController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -23,6 +26,7 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
     // Initial value, if present
     _loadSharedPreferences();
     _nameTextEditingController.text = _name ?? '';
+    _ageTextEditingController.text = _ageStringRep(_age);
   }
 
   int? _age;
@@ -33,9 +37,8 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
     // Set initial dueDate:
 
     return ScreenWithoutBottomNavbarBaseTemplate(
-      titleBar: GoBackTitleBar(
+      titleBar: const GoBackTitleBar(
         title: "Persönliche Informationen",
-        onExit: _onExit,
       ),
       body: ListView(
         shrinkWrap: true,
@@ -59,6 +62,7 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
           TextInputField(
             onChange: (String? newName) {
               _name = newName;
+              _saveUserName();
             },
             preselectedText: _name ?? "",
             label: "Name",
@@ -66,6 +70,15 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
           ),
           const SizedBox(
             height: 20.0,
+          ),
+          NumberInputField(
+            onChange: (String? newAge) {
+              _age = int.tryParse(newAge ?? "", radix: 10) ?? -1;
+              _saveUserAge();
+            },
+            textEditingController: _ageTextEditingController,
+            label: "Alter",
+            hintText: "Alter eingeben",
           ),
         ],
       ),
@@ -77,11 +90,18 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
       _age = SharedPreferencesData.userAge;
       _name = SharedPreferencesData.userName;
       _nameTextEditingController.text = _name ?? "";
+      _ageTextEditingController.text = _ageStringRep(_age);
     });
   }
 
-  void _onExit() async {
+  void _saveUserName() async {
     await SharedPreferencesData.storeUserName(_name);
+  }
+
+  void _saveUserAge() async {
     await SharedPreferencesData.storeUserAge(_age);
   }
+
+  String _ageStringRep(int? age) =>
+      age == null || age < 0 ? "" : _age.toString();
 }
