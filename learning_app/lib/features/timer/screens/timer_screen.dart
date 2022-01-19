@@ -67,7 +67,7 @@ class _TimerViewState extends State<TimerView> {
   @override
   Widget build(BuildContext context) {
     final maxHeightForPanel = MediaQuery.of(context).size.height * 0.61;
-    final currentPomoMode = context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
+
     return SlidingUpPanel(
       controller: _panelController,
       borderRadius: const BorderRadius.only(
@@ -80,18 +80,12 @@ class _TimerViewState extends State<TimerView> {
       minHeight: 145,
       maxHeight: maxHeightForPanel,
       panelBuilder: (ScrollController sc) {
-        if (currentPomoMode ==
-            PomodoroMode.concentration) {
-          return TaskQueueList(
-            scrollController: sc,
-            panelController: _panelController,
-            panelOpenedInformer: _panelOpenedInformer,
-            panelMaxHeight: maxHeightForPanel,
-          );
-        }
-        else {
-          return const SuggestedLeisureActivityCard();
-        }
+        return DraggableSheetView(
+          scrollController: sc,
+          panelController: _panelController,
+          panelOpenedInformer: _panelOpenedInformer,
+          panelMaxHeight: maxHeightForPanel,
+        );
       },
       color: Theme.of(context).colorScheme.cardColor,
       body: const Center(

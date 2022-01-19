@@ -81,6 +81,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
+    suggestedLeisureCubit.newLeisureActivity();
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
     if (timeLoggingBloc.state is ActiveState) {
