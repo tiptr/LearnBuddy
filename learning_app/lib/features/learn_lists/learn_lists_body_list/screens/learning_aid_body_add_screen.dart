@@ -135,6 +135,7 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
   /// Handles the 'save learn list' functionality
   Future<int?> onSaveLearnList() async {
     final cubit = BlocProvider.of<AlterLearnListCubit>(context);
+    //save the words
     cubit.alterLearnListAttribute(LearnListManipulationDto(
       words: drift.Value(words),
     ));

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
@@ -126,6 +128,11 @@ class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainEl
   /// Handles the 'save learn list' functionality
   Future<int?> onSaveLearnList() async {
     final cubit = BlocProvider.of<AlterLearnListCubit>(context);
+    //save the words
+    cubit.alterLearnListAttribute(LearnListManipulationDto(
+      words: drift.Value(words),
+    ));
+    
     // validate required fields:
     if (!cubit.validateLearnListConstruction()) {
       // Not ready to save! Inform the user and continue

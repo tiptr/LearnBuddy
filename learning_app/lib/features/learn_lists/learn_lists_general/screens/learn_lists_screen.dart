@@ -72,7 +72,7 @@ class LearnListsScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        //TODO: return the correct screen with the learn list dto
+                        //TODO: return the correct screen with the learn list dto (either this or bodyScreen)
                         return LearnListDetailScreen(learnListId: learnLists[idx].id);
                       })
                     )
