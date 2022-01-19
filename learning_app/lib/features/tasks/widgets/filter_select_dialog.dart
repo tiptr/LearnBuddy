@@ -131,8 +131,10 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                       final filter = TaskFilter(
                         // dueToday: drift.Value(false),
                         // done: drift.Value(true)
-                        // categories: drift.Value(selectedCategories.map((category) => category.id).toList()),
-                        // keywords: drift.Value(selectedKeywords.map((keyword) => keyword.id).toList()),
+                        categories: drift.Value(selectedCategories.map((category) => category.id).toList()),
+                        keywords: drift.Value(selectedKeywords.map((keyword) => keyword.id).toList()),
+                        categoryNames: selectedCategories.map((category) => category.name).toList(),
+                        keywordNames: selectedKeywords.map((keyword) => keyword.name).toList(),
                       );
 
                       BlocProvider.of<TasksCubit>(context)

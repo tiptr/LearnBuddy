@@ -8,11 +8,17 @@ class TaskFilter {
   final Value<bool> done;
   final Value<bool> dueToday;
 
+  // Further information -> only used by the frontend
+  final List<String> categoryNames;
+  final List<String> keywordNames;
+
   const TaskFilter({
     this.categories = const Value.absent(),
     this.keywords = const Value.absent(),
     this.done = const Value(false), // Default: only active tasks
     this.dueToday = const Value.absent(),
+    this.categoryNames = const [],
+    this.keywordNames = const [],
   });
 
   bool isCustomFilter() {

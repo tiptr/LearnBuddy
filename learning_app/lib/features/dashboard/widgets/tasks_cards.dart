@@ -9,7 +9,9 @@ import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/util/nav_cubit.dart';
+import 'package:drift/drift.dart' as drift;
 
 class TasksCards extends StatelessWidget {
   const TasksCards({Key? key}) : super(key: key);
@@ -62,7 +64,8 @@ class TasksCards extends StatelessWidget {
                 if (tasksProgressData.hasMore)
                   InkWell(
                     onTap: () {
-                      // TODO: not only navigate to the task page, but automatically activate a filter that only shows the tasks of the current day (and overdue)
+                      BlocProvider.of<TasksCubit>(context)
+                          .loadFilteredTasks(const TaskFilter(dueToday: drift.Value(true)));
                       BlocProvider.of<NavCubit>(context)
                           .navigateTo(PageId.tasks);
                     },

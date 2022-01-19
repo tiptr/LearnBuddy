@@ -9,6 +9,7 @@ import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/tasks/widgets/filter_select_dialog.dart';
 import 'package:learning_app/features/tasks/widgets/list_group_separator.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
+import 'package:learning_app/features/tasks/widgets/task_filter_indicator.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
@@ -101,9 +102,9 @@ class _TaskScreenState extends State<TaskScreen> {
 
             return Column(
               children: [
+                // Filter info and reset button, if some filters set
                 if (isFiltered)
-                  Text('filtered'),
-                // Filter info and reset, if some set
+                  TaskFilterIndicator(taskFilter: currentFilter),
 
                 // Task List
                 Flexible(
