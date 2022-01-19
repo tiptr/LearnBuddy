@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
@@ -122,11 +123,13 @@ class LeisureCategoryCard extends StatelessWidget {
                     StarCount(
                       count: leisureCategory.starCount,
                     ),
-                    Image(
-                      image: AssetImage(leisureCategory.pathToImage ??
-                          defaultLeisureCategoryImagePath),
+                    SizedBox(
                       width: 85.0,
                       height: 85.0,
+                      child: SvgPicture.asset(
+                        leisureCategory.pathToImage ??
+                            defaultLeisureCategoryImagePath,
+                      ),
                     ),
                   ],
                 ),

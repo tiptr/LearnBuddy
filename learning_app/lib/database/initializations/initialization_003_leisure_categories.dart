@@ -15,27 +15,27 @@ Future<void> initialization003LeisureCategories() async {
       LeisureCategoriesCompanion.insert(
         id: const Value(0),
         name: 'Fun Challenges',
-        pathToImage: const Value('assets/leisure/leisure-group-fun.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-fun.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(1),
         name: 'Fitness ohne Geräte',
-        pathToImage: const Value('assets/leisure/leisure-group-fitness.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-fitness.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(2),
         name: 'Yoga & Meditation',
-        pathToImage: const Value('assets/leisure/leisure-group-yoga.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-yoga.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(3),
         name: 'Outdoor & Bewegung',
-        pathToImage: const Value('assets/leisure/leisure-group-outdoor.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-outdoor.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(4),
         name: 'Weitere Vorschäge',
-        pathToImage: const Value('assets/leisure/leisure-group-further.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-further.svg'),
       ),
     ]);
   });
