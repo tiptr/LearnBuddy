@@ -111,7 +111,7 @@ class LeisureCard extends StatelessWidget {
                               activity.pathToImage ??
                                   // For now, the crazy cat is the default when no path is present
                                   'assets/leisure/leisure-fun-smiling-cats.svg',
-                              color: Colors.cyan,
+                              color: Theme.of(context).colorScheme.tertiary,
                             ),
                           ),
                         ],

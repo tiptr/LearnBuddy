@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
-import 'package:learning_app/util/logger.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TasksCardItem extends StatelessWidget {
@@ -78,9 +78,14 @@ class TasksCardItem extends StatelessWidget {
                       size: 24.0,
                     ),
                     onPressed: () {
-                      logger.d(
-                        // TODO: Will be done in #57
-                        "Handle click on Icon open_in_new for task ${task.title}",
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TaskDetailsScreen(
+                            existingTaskId: task.id,
+                            topLevelParentId: task.topLevelParentId,
+                          ),
+                        ),
                       );
                     },
                   )
