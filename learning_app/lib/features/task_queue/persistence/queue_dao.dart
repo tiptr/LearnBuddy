@@ -27,15 +27,30 @@ class QueueDao extends DatabaseAccessor<Database> with _$QueueDaoMixin {
       taskId: Value(id),
       orderPlacement: Value(queuePosition),
     ));
-
-    //    .write(TimeLogsCompanion(
-    //  duration: Value(duration),
-    //));
   }
 
   Future<int> deleteQueueElementById(int id) async {
     return (delete(taskQueueElements)
           ..where((tuple) => tuple.taskId.equals(id)))
         .go();
+  }
+
+  Future<int?> getMaxQueuePosition() async {
+    final max = taskQueueElements.orderPlacement.max();
+    final query = selectOnly(taskQueueElements)..addColumns([max]);
+
+    return query.map((row) => row.read(max)).getSingle();
+  }
+
+  Future<int> addElementToQueueByTaskId(int taskId) async {
+    final int maxPos = await getMaxQueuePosition() ?? -1;
+
+    final element = TaskQueueElementsCompanion.insert(
+      taskId: Value(taskId),
+      addedToQueueDateTime: DateTime.now(),
+      orderPlacement: maxPos + 1,
+    );
+
+    return into(taskQueueElements).insert(element);
   }
 }

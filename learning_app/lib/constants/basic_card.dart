@@ -6,5 +6,5 @@ class BasicCard {
 
 class _CardElevation {
   double get low => 2.0;
-  double get high => 10.0;
+  double get high => 5.0;
 }
