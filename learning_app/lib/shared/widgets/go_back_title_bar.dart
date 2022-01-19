@@ -7,12 +7,14 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final TextStyle? textStyle;
   final Function? onExit;
+  final Widget? actionWidget;
 
   const GoBackTitleBar({
     Key? key,
     required this.title,
     this.textStyle,
     this.onExit,
+    this.actionWidget,
   }) : super(key: key);
 
   @override
@@ -48,6 +50,7 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
                         .withOnBackgroundHard,
                   ),
                 ),
+                if (actionWidget != null) actionWidget!,
               ],
             ),
           ),

@@ -8,12 +8,14 @@ class NumberInputField extends StatefulWidget {
   final String hintText;
   final IconData? iconData;
   final Function(String)? onChange;
+  final Function(String)? onLostFocus;
   final String? preselectedText;
   final TextEditingController? textEditingController;
 
   const NumberInputField({
     Key? key,
     required this.onChange,
+    this.onLostFocus,
     this.preselectedText,
     required this.label,
     required this.hintText,

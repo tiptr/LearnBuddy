@@ -12,6 +12,7 @@ enum ThreePointsMenuItems {
   categoryManagement,
   keywordsManagement,
   help,
+  resetSettings,
 }
 
 /// General three-points menu to be used at various screens
@@ -23,9 +24,11 @@ Widget buildThreePointsMenu({
   bool showGlobalSettings = false,
   bool showCategoryManagement = false,
   bool showKeyWordsManagement = false,
+  bool showResetSettings = false,
   // Local different options:
   Function? onDelete,
   Function? onHelp,
+  Function? onResetSettings,
 }) {
   return PopupMenuButton<ThreePointsMenuItems>(
     color: Theme.of(context).colorScheme.cardColor,
@@ -65,6 +68,10 @@ Widget buildThreePointsMenu({
         case ThreePointsMenuItems.help:
           onHelp!();
           break;
+
+        case ThreePointsMenuItems.resetSettings:
+          onResetSettings!();
+          break;
       }
     },
     itemBuilder: (BuildContext context) =>
@@ -98,6 +105,12 @@ Widget buildThreePointsMenu({
           value: ThreePointsMenuItems.settings,
           child: ThreePointsMenuItem(
               title: 'Einstellungen', iconData: Icons.settings_outlined),
+        ),
+      if (showResetSettings)
+        const PopupMenuItem<ThreePointsMenuItems>(
+          value: ThreePointsMenuItems.resetSettings,
+          child: ThreePointsMenuItem(
+              title: 'Zurücksetzen', iconData: Icons.undo_outlined),
         ),
     ],
   );

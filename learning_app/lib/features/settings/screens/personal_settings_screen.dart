@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/settings_spacer.dart';
 import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/inputfields/number_input_field.dart';
@@ -42,7 +43,7 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
       ),
       body: ListView(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
         children: [
           Text(
             "Was passiert mit diesen Daten?",
@@ -56,9 +57,7 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
             "Wie auch alle anderen in dieser App hinterlegten Daten bleiben diese Informationen auf deinem Gerät gespeichert und werden nicht an uns oder Dritte übertragen. Sie dienen lediglich der personifizierten Ansprache durch die App und der Vorkonfiguration von Einstellungen.",
             style: Theme.of(context).textTheme.settingsInfoTextStyle,
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
+          spacer,
           TextInputField(
             onChange: (String? newName) {
               _name = newName;
@@ -68,9 +67,7 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
             label: "Name",
             hintText: "Name eingeben",
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
+          spacer,
           NumberInputField(
             onChange: (String? newAge) {
               _age = int.tryParse(newAge ?? "", radix: 10) ?? -1;
@@ -89,8 +86,6 @@ class _PersonalSettingsScreenState extends State<PersonalSettingsScreen> {
     setState(() {
       _age = SharedPreferencesData.userAge;
       _name = SharedPreferencesData.userName;
-      _nameTextEditingController.text = _name ?? "";
-      _ageTextEditingController.text = _ageStringRep(_age);
     });
   }
 
