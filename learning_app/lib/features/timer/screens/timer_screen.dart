@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/leisure/bloc/suggested_leisure_cubit.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
@@ -22,8 +23,10 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
+      create: (_) => TimerBloc(
+        timeLoggingBloc: context.read<TimeLoggingBloc>(),
+        suggestedLeisureCubit: context.read<SuggestedLeisureCubit>(),
+      ),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         // Will change to a custom title bar in the future
@@ -76,7 +79,7 @@ class _TimerViewState extends State<TimerView> {
       minHeight: 145,
       maxHeight: maxHeightForPanel,
       panelBuilder: (ScrollController sc) {
-        return TaskQueueList(
+        return DraggableSheetView(
           scrollController: sc,
           panelController: _panelController,
           panelOpenedInformer: _panelOpenedInformer,

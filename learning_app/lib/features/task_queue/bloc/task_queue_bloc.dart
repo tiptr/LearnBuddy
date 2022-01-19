@@ -15,6 +15,7 @@ part 'task_queue_event.dart';
 class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
   late final TaskRepository _taskRepository;
   late final QueueRepository _queueRepository;
+  StreamSubscription? _subscription;
 
   //late final StreamSubscription _streamSubscription;
 
@@ -26,7 +27,9 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
 
     Stream<List<TaskWithQueueStatus>> stream =
         _taskRepository.watchQueuedTasks();
-    stream.listen((List<TaskWithQueueStatus> taskListFromStream) {
+    _subscription?.cancel();
+    _subscription =
+        stream.listen((List<TaskWithQueueStatus> taskListFromStream) {
       add(UpdateQueueEvent(taskListFromStream));
     });
 
