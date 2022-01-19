@@ -67,14 +67,6 @@ class DbLeisureRepository implements LeisureRepository {
       },
     );
   }
-  /*Stream<TaskWithQueueStatus?> watchQueuedTaskWithId({required int id}) {
-    final queuedTasksStream = watchQueuedTasks();
-    return queuedTasksStream.map((queuedTasks) {
-      final matchingList =
-      queuedTasks.where((taskWithStatus) => taskWithStatus.task.id == id);
-      return matchingList.isNotEmpty ? matchingList.first : null;
-    });
-  }*/
 
   @override
   Stream<LeisureActivity> watchRandomLeisureActivity() {
