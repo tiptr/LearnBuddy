@@ -105,38 +105,39 @@ class ActiveTaskCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.textStyle2),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.hourglass_top,
-                        size: 15,
-                        color: Theme.of(context).colorScheme.onBackgroundHard,
-                      ),
-                      Text(
-                        "Urspr.: " + estimatedTime,
-                        style: Theme.of(context)
-                            .textTheme
-                            .textStyle4
-                            .withOnBackgroundHard,
-                      ),
-                      const SizedBox(width: 20,),
-                      Icon(
-                        Icons.hourglass_bottom,
-                        size: 15,
-                        color: Theme.of(context).colorScheme.onBackgroundHard,
-                      ),
-                      Text(
-                        "Aufgewendet: " + timeSpent,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .textStyle4
-                            .withOnBackgroundHard,
-                      ),
-                    ],
-                  ),
-
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.hourglass_top,
+                      size: 15,
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
+                    ),
+                    Text(
+                      "Urspr.: " + estimatedTime,
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle4
+                          .withOnBackgroundHard,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.hourglass_bottom,
+                      size: 15,
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
+                    ),
+                    Text(
+                      "Aufgewendet: " + timeSpent,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle4
+                          .withOnBackgroundHard,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
