@@ -20,8 +20,8 @@ class LeisureActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ReadLeisureActivitiesDto>(
-        stream: BlocProvider.of<LeisureCubit>(context)
-            .watchLeisureActivityById(categoryId: categoryId, activityId: activityId),
+        stream: BlocProvider.of<LeisureCubit>(context).watchLeisureActivityById(
+            categoryId: categoryId, activityId: activityId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -66,8 +66,7 @@ class LeisureActivityScreen extends StatelessWidget {
                       const SizedBox(height: 20.0),
                       Center(
                         child: Text(
-                          activity.duration.inMinutes.toString() +
-                              " Minuten",
+                          activity.duration.inMinutes.toString() + " Minuten",
                           style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,

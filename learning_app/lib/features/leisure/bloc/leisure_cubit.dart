@@ -28,9 +28,9 @@ class LeisureCubit extends Cubit<LeisureState> {
     final currentState = state;
     if (currentState is LeisuresLoaded) {
       return currentState.listViewLeisureCategoriesStream.map((categories) =>
-      categories
-          .firstWhere((category) => category.id == categoryId)
-          .activities);
+          categories
+              .firstWhere((category) => category.id == categoryId)
+              .activities);
     } else {
       throw InvalidStateException();
     }
@@ -41,7 +41,7 @@ class LeisureCubit extends Cubit<LeisureState> {
     final currentState = state;
     if (currentState is LeisuresLoaded) {
       final activitiesStream =
-      watchLeisureActivitiesByCategoryId(categoryId: categoryId);
+          watchLeisureActivitiesByCategoryId(categoryId: categoryId);
 
       return activitiesStream.map((activities) =>
           activities.firstWhere((activity) => activity.id == activityId));

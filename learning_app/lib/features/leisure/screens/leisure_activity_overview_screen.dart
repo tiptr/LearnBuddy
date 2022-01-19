@@ -29,10 +29,7 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
               child: Text(
                 'Aktuell existieren leider keine Aktivitäten für die gewählte Kategorie',
                 textAlign: TextAlign.center,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .textStyle4,
+                style: Theme.of(context).textTheme.textStyle4,
               ),
             );
           }
@@ -52,18 +49,15 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
                     child: LeisureActivityCard(
                       leisureActivity: activities[idx],
                     ),
-                    onTap: () =>
-                    {
-                      Navigator.push(
-                          ctx,
-                          MaterialPageRoute(
-                            builder: (ctx) =>
-                                LeisureActivityScreen(
-                                  categoryId: categoryId,
-                                    activityId: activities[idx].id
-                                ),
-                          ))
-                    });
+                    onTap: () => {
+                          Navigator.push(
+                              ctx,
+                              MaterialPageRoute(
+                                builder: (ctx) => LeisureActivityScreen(
+                                    categoryId: categoryId,
+                                    activityId: activities[idx].id),
+                              ))
+                        });
               },
             ),
           );
