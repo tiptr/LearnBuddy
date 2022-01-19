@@ -65,7 +65,7 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
             height: 5,
           ),
           Text(
-            "Die Standardwerte spiegeln die Empfehlungen der Pomodoro-Technik wieder. Sie zielen auf ein ausgewogenes Verhältnis zwischen Lern- oder Arbeitsphasen und den Pausen ab. \n\nUnten erfährst du mehr über die Pomodoro-Technik.\n\nEine Änderung der Werte kann diesen Effekt negativ beeinflussen.",
+            "Die Standardwerte spiegeln die Empfehlungen der Pomodoro-Technik wieder. Sie zielen auf ein ausgewogenes Verhältnis zwischen Lern- oder Arbeitsphasen und den Pausen ab.\n\nUnten erfährst du mehr über die Pomodoro-Technik.\n\nEine Änderung der Werte kann diesen Effekt negativ beeinflussen.",
             style: Theme.of(context).textTheme.settingsInfoTextStyle,
           ),
           spacer,
