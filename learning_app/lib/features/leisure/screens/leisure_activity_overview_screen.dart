@@ -95,7 +95,6 @@ class LeisureActivityCard extends StatelessWidget {
         elevation: BasicCard.elevation.high,
         shadowColor: Theme.of(context).colorScheme.shadowColor,
         child: Container(
-          height: BasicCard.height,
           padding: const EdgeInsets.all(20.0),
           height: BasicCard.height,
           child: Row(
