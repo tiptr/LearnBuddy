@@ -10,6 +10,7 @@ import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/nav_cubit.dart';
+import 'package:learning_app/util/notification_api.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
@@ -88,8 +89,20 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    NotificationApi.init();
+  }
 
   @override
   Widget build(BuildContext context) {
