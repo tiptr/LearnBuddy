@@ -6,11 +6,13 @@ import 'package:learning_app/constants/theme_font_constants.dart';
 class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final TextStyle? textStyle;
+  final Function? onExit;
 
   const GoBackTitleBar({
     Key? key,
     required this.title,
     this.textStyle,
+    this.onExit,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
+                    if (onExit != null) onExit!();
                     Navigator.pop(context);
                   },
                   icon: Icon(
