@@ -12,8 +12,8 @@ import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:drift/drift.dart' as drift;
 
-class TasksCards extends StatelessWidget {
-  const TasksCards({Key? key}) : super(key: key);
+class TasksCard extends StatelessWidget {
+  const TasksCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

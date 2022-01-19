@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/features/dashboard/widgets/leisure_card.dart';
-import 'package:learning_app/features/dashboard/widgets/tasks_cards.dart';
+import 'package:learning_app/features/dashboard/widgets/tasks_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 
@@ -36,7 +36,7 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               children: const [
                 SizedBox(height: 15.0),
-                TasksCards(),
+                TasksCard(),
                 SizedBox(height: 30.0),
                 LeisureCard(),
                 SizedBox(height: 30.0),
