@@ -109,7 +109,6 @@ class LearnListCard extends StatelessWidget {
                     Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
               avatar: Icon(
-                // TODO check if learningAid is overdue for color selection
                 Icons.calendar_today_outlined,
                 size: 16,
                 color: Theme.of(context).colorScheme.onBackgroundHard,
