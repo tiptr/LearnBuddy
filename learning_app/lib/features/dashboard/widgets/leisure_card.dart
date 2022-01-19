@@ -111,17 +111,18 @@ class LeisureCard extends StatelessWidget {
                               activity.pathToImage ??
                                   // For now, the crazy cat is the default when no path is present
                                   'assets/leisure/leisure-fun-smiling-cats.svg',
+                              color: Colors.cyan,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        width: 85.0,
-                        height: 85.0,
-                        child: SvgPicture.asset(
-                          'assets/leisure/leisure-fun-smiling-cats.svg',
-                          color: Colors.cyan,
-                        ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      // Leisure description
+                      Text(
+                        activity.descriptionLong ?? activity.descriptionShort,
+                        overflow: TextOverflow.visible,
                       ),
                     ],
                   ),
