@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 
-Future<bool> taskDeleteConfirmDialog({
-  required BuildContext context,
-  required String title
-}) {
+Future<bool> taskDeleteConfirmDialog(
+    {required BuildContext context, required String title}) {
   return openConfirmDialog(
     context: context,
     title: "Aufgabe löschen?",

@@ -109,8 +109,7 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
                 widget.existingTask == null
                     ? _buildSaveButton()
                     : buildThreePointsMenu(
-                        context: context,
-                    onDelete: widget.onDelete),
+                        context: context, onDelete: widget.onDelete),
               ],
             ),
           ),

@@ -131,7 +131,7 @@ class _TaskCardState extends State<TaskCard> {
             },
             autoClose: false,
             backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.onError.primary,
+            foregroundColor: Theme.of(context).colorScheme.primary,
             icon: Icons.delete_outline_outlined,
             label: 'Endgültig löschen',
           ),
@@ -316,11 +316,11 @@ class _TaskCardState extends State<TaskCard> {
 
   /// Handles the 'save task' functionality
   Future<bool> onDeleteTask(ListReadTaskDto taskDto) async {
-    var confirmed = await taskDeleteConfirmDialog(context: context, title: taskDto.title);
+    var confirmed =
+        await taskDeleteConfirmDialog(context: context, title: taskDto.title);
 
     if (confirmed) {
-      BlocProvider.of<TasksCubit>(context)
-          .deleteTaskById(taskDto.id);
+      BlocProvider.of<TasksCubit>(context).deleteTaskById(taskDto.id);
       return true;
     }
 

@@ -424,13 +424,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
 
   /// Handles the 'save task' functionality
   Future<bool> onDeleteTask(DetailsReadTaskDto detailsDto) async {
-    var confirmed = await taskDeleteConfirmDialog(context: context, title: detailsDto.title);
+    var confirmed = await taskDeleteConfirmDialog(
+        context: context, title: detailsDto.title);
 
     if (confirmed) {
       Navigator.pop(context);
 
-      BlocProvider.of<TasksCubit>(context)
-          .deleteTaskById(detailsDto.id);
+      BlocProvider.of<TasksCubit>(context).deleteTaskById(detailsDto.id);
       return true;
     }
 
