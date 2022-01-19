@@ -18,6 +18,7 @@ import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/features/tasks/widgets/category_select_field.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/task_ancestor_indicator.dart';
+import 'package:learning_app/features/tasks/widgets/task_used_time_indicator.dart';
 import 'package:learning_app/shared/widgets/inputfields/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/keyword_selection.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
@@ -224,7 +225,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                           detailsDto.ancestorTitles.isNotEmpty)
                         const SizedBox(height: 30.0),
 
-                      // Category Select
+                      // Used time indicator, if timelogs exist
+                      if (detailsDto != null &&
+                          detailsDto.timeLogSum > Duration.zero)
+                        TaskUsedTimeIndicator(
+                          usedTime: detailsDto.timeLogSum,
+                        ),
+
+                      if (detailsDto != null &&
+                          detailsDto.timeLogSum > Duration.zero)
+                        const SizedBox(height: 30.0),
+
+                      // Category Select (only if ancestors are not shown)
                       if (detailsDto == null ||
                           detailsDto.ancestorTitles.isEmpty)
                         BlocBuilder<CategoriesCubit, CategoriesState>(
