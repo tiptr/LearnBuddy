@@ -201,7 +201,7 @@ class DbLearnListRepository implements LearnListRepository {
           learnMethod: Value(method),
           categoryId: Value(newLearnList.category.value?.id),
           creationDateTime: Value(DateTime.now()),
-          isArchived: newLearnList.isArchived,
+          isArchived: const Value(false)          //TODO: change for archive functionality
         ),
       );
 
