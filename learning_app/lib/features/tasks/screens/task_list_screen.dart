@@ -5,6 +5,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
+import 'package:learning_app/features/tasks/widgets/filter_select_dialog.dart';
 import 'package:learning_app/features/tasks/widgets/list_group_separator.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
@@ -30,6 +31,17 @@ class _TaskScreenState extends State<TaskScreen> {
       appBar: BaseTitleBar(
         title: "Deine Aufgaben",
         actions: [
+          MaterialButton(
+            child: Text("Filter auswählen"),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const FilterSelectDialog();
+                },
+              );
+            },
+          ),
           buildThreePointsMenu(
             context: context,
             showCategoryManagement: true,
