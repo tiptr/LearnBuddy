@@ -28,7 +28,8 @@ class SuggestedLeisureActivityCard extends StatelessWidget {
                 // Title
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 30, left:8 , right: 8, bottom: 8),
+                    padding: const EdgeInsets.only(
+                        top: 30, left: 8, right: 8, bottom: 8),
                     child: Text(
                       "Zeit für eine Pause!",
                       style: Theme.of(context).textTheme.mainPageTitleStyle,
@@ -107,11 +108,10 @@ class SuggestedLeisureActivityCard extends StatelessWidget {
                               width: 100.0,
                               height: 100.0,
                               child: SvgPicture.asset(
-                                activity.pathToImage ??
-                                    // For now, the crazy cat is the default when no path is present
-                                    'assets/leisure/leisure-fun-smiling-cats.svg',
-                                  color: Colors.cyan
-                              ),
+                                  activity.pathToImage ??
+                                      // For now, the crazy cat is the default when no path is present
+                                      'assets/leisure/leisure-fun-smiling-cats.svg',
+                                  color: Colors.cyan),
                             ),
                           ],
                         ),
