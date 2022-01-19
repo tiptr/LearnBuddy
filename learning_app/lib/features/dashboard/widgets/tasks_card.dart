@@ -55,7 +55,7 @@ class TasksCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 25.0),
                 ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: tasksProgressData.upcomingTasks.length,
