@@ -438,10 +438,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         SnackBar(
           content: Text(
             'Aufgabe erfolgreich gespeichert!',
-            style: Theme.of(context)
-                .textTheme
-                .textStyle2
-                .withSucess,
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
           ),
           backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
         ),
@@ -467,10 +464,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         SnackBar(
           content: Text(
             'Aufgabe erfolgreich gelöscht!',
-            style: Theme.of(context)
-                .textTheme
-                .textStyle2
-                .withSucess,
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
           ),
           backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
         ),
