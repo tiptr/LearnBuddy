@@ -63,11 +63,15 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
     ));
     _streamSubscriptionTask = stream.listen((TaskWithQueueStatus? parentTask) {
       // Duplicate
+      Task? task;
       if (parentTask == null) {
-        throw ArgumentError('Repo did not return any Task for id ${event.id}');
+        logger.d('Repo did not return any Task for id ${event.id}\nReturning to Inactive State.');
       }
-      Task task = parentTask.task.allTasks
+      else {
+        task = parentTask.task.allTasks
           .firstWhere((element) => element.id == event.id);
+      }
+      // If no task is found, null is emitted for both tasks
       add(TaskChangedEvent(
         parentTask: parentTask,
         task: task,
@@ -133,21 +137,27 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
       TaskChangedEvent event, Emitter<TimeLoggingState> emit) async {
     var currentState = state;
 
+    if(event.task == null || event.parentTask == null){
+      emit(InactiveState());
+    }
+    else {
+
     if (currentState is ActiveState) {
       emit(ActiveState(
         // Use the currently active timeLog, because it's the same Object
         // only some properties e.g. the title have changed.
         timeLog: currentState.timeLog,
-        parentTask: event.parentTask,
-        task: event.task,
+        parentTask: event.parentTask!,
+        task: event.task!,
       ));
     } else if (currentState is InitializedState) {
       emit(InitializedState(
-        parentTask: event.parentTask,
-        task: event.task,
+        parentTask: event.parentTask!,
+        task: event.task!,
       ));
     } else {
       logger.d("Invalid state.");
+    }
     }
   }
 

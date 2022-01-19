@@ -59,6 +59,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
             : "Die Pause ist vorbei. Weiter geht's!",
         title: 'Timer abgelaufen',
       );
+    }
+    if(event.duration <= 0){
       emit(TimerRunComplete(
           event.duration, state._pomodoroMode, state._countPhase));
     }
