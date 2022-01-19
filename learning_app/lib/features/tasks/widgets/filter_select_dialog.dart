@@ -1,7 +1,11 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/widgets/filter_category_selection.dart';
 import 'package:learning_app/features/tasks/widgets/filter_keyword_selection.dart';
 
@@ -112,6 +116,10 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                       setState(() {
                         selectedCategories = [];
                         selectedKeywords = [];
+
+                        BlocProvider.of<TasksCubit>(context)
+                            .loadTasksWithoutFilter();
+                        
                       });
                     },
                   ),
@@ -121,6 +129,15 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                       style: Theme.of(context).textTheme.textStyle4.withPrimary,
                     ),
                     onPressed: () {
+                      
+                      final filter = TaskFilter(
+                        categories: drift.Value(selectedCategories.map((category) => category.id).toList()),
+                        keywords: drift.Value(selectedKeywords.map((keyword) => keyword.id).toList()),
+                      );
+
+                      BlocProvider.of<TasksCubit>(context)
+                          .loadFilteredTasks(filter);
+                      
                       print("Anwenden Filterselektion");
                       print("Kategorien $selectedCategories");
                       print("Schlagwörter $selectedKeywords");

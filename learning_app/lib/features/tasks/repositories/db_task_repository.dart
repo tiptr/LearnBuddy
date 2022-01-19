@@ -41,7 +41,6 @@ class DbTaskRepository implements TaskRepository {
   final TimeLogsDao _timeLogsDao = getIt<TimeLogsDao>();
   final TaskQueueElementsDao _queueElementsDao = getIt<TaskQueueElementsDao>();
 
-  Stream<List<TaskWithQueueStatus>>? _orderedFilteredTasksStream;
   Stream<List<TaskWithQueueStatus>>? _queuedTasksStream;
 
   Stream<TaskAssociations>? _taskAssociationsStream;
@@ -52,18 +51,18 @@ class DbTaskRepository implements TaskRepository {
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    _orderedFilteredTasksStream = _orderedFilteredTasksStream ??
-        (_buildFilteredListStream(
-          taskFilter: taskFilter,
-          taskOrder: taskOrder,
-        ));
-    return _orderedFilteredTasksStream as Stream<List<TaskWithQueueStatus>>;
+    // Directly return the stream, as this one should be rebuild every time
+    // it is called with a new filter
+    return _buildFilteredListStream(
+      taskFilter: taskFilter,
+      taskOrder: taskOrder,
+    );
   }
 
   @override
   Stream<List<TaskWithQueueStatus>> watchQueuedTasks() {
     _queuedTasksStream =
-        _orderedFilteredTasksStream ?? _buildQueuedTasksStream();
+        _queuedTasksStream ?? _buildQueuedTasksStream();
     return _queuedTasksStream as Stream<List<TaskWithQueueStatus>>;
   }
 

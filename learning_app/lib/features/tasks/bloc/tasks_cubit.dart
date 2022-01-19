@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/task_queue/repositories/queue_repository.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
+import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
 
@@ -15,13 +16,22 @@ class TasksCubit extends Cubit<TaskState> {
     _queueRepository = queueRepository ?? getIt<QueueRepository>();
   }
 
-  Future<void> loadTasks() async {
-    // TODO: think about removing TaskLoading() since this state is
-    //  maybe not required anymore thanks to the streams
-    // TODO: I guess the state will be the right place to store the currently selected filters and more
-    emit(TaskLoading());
+  Future<void> loadTasksWithoutFilter() async {
+
     var tasks = _taskRepository.watchFilteredSortedTasks();
     emit(TasksLoaded(selectedTasksStream: tasks));
+  }
+
+  Future<void> loadFilteredTasks(TaskFilter taskFilter) async {
+    final currentState = state;
+
+    if (currentState is TasksLoaded) {
+      var tasks = _taskRepository.watchFilteredSortedTasks(taskFilter: taskFilter);
+      emit(TasksLoaded(
+          selectedTasksStream: tasks,
+          taskFilter: taskFilter,
+      ));
+    }
   }
 
   /// Toggles the done flag in a task in the cubit state

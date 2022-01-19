@@ -89,15 +89,12 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    _filteredSortedTopLevelTaskEntitiesStream =
-        (_filteredSortedTopLevelTaskEntitiesStream ??
-            (_createFilteredAndSortedTopLevelTaskEntitiesStream(
-              taskFilter: taskFilter,
-              taskOrder: taskOrder,
-            )));
-
-    return _filteredSortedTopLevelTaskEntitiesStream
-        as Stream<List<TaskEntity>>;
+    // Directly return the stream, as this one should be rebuild every time
+    // it is called with a new filter
+    return _createFilteredAndSortedTopLevelTaskEntitiesStream(
+      taskFilter: taskFilter,
+      taskOrder: taskOrder,
+    );
   }
 
   Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
@@ -148,8 +145,8 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       })
       ..where((tsk) {
         // category filter, if applied
-        if (taskFilter.category.present) {
-          return tsk.categoryId.isIn(taskFilter.category.value);
+        if (taskFilter.categories.present) {
+          return tsk.categoryId.isIn(taskFilter.categories.value);
         } else {
           return const CustomExpression('TRUE');
         }
