@@ -8,7 +8,6 @@ enum ThemeName {
 }
 
 class Themes {
-  static const prefKey = "themeName";
   static ScrollbarThemeData scrollBarTheme = ScrollbarThemeData(
     isAlwaysShown: false,
     thickness: MaterialStateProperty.all(10),

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/settings/widgets/settings_group.dart';
 import 'package:learning_app/features/themes/bloc/bloc.dart';
+import 'package:learning_app/features/themes/themes.dart';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 
@@ -17,12 +19,16 @@ class DisplayStyleSettingsScreen extends StatefulWidget {
 /// private State class that goes with MyStatefulWidget
 class _DisplayStyleSettingsScreenState
     extends State<DisplayStyleSettingsScreen> {
+  ThemeName? _themeName;
   @override
   Widget build(BuildContext context) {
     // Set initial dueDate:
 
     return ScreenWithoutBottomNavbarBaseTemplate(
-      titleBar: const GoBackTitleBar(title: "Darstellung und Farbe"),
+      titleBar: GoBackTitleBar(
+        title: "Darstellung und Farbe",
+        onExit: _onExit,
+      ),
       body: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(10.0),
@@ -36,7 +42,8 @@ class _DisplayStyleSettingsScreenState
                 value: state.isDark,
                 onChanged: (value) {
                   setState(() {
-                    BlocProvider.of<ThemeCubit>(context).toggleTheme();
+                    _themeName =
+                        BlocProvider.of<ThemeCubit>(context).toggleTheme();
                   });
                 },
                 activeColor: Theme.of(context).colorScheme.primary,
@@ -49,5 +56,9 @@ class _DisplayStyleSettingsScreenState
         ],
       ),
     );
+  }
+
+  void _onExit() async {
+    await SharedPreferencesData.storeThemeName(_themeName);
   }
 }

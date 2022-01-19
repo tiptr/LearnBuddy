@@ -8,6 +8,7 @@ class TextInputField extends StatefulWidget {
   final IconData? iconData;
   final Function(String)? onChange;
   final String preselectedText;
+  final TextEditingController? textEditingController;
 
   const TextInputField({
     Key? key,
@@ -16,19 +17,27 @@ class TextInputField extends StatefulWidget {
     required this.label,
     required this.hintText,
     this.iconData,
+    this.textEditingController,
   }) : super(key: key);
 
   @override
   State<TextInputField> createState() => _TextInputFieldState();
+
+  void setText(String text) {}
 }
 
 class _TextInputFieldState extends State<TextInputField> {
-  final TextEditingController _textEditingController = TextEditingController();
-
+  late final TextEditingController _textEditingController;
   @override
   void initState() {
     super.initState();
+    _textEditingController =
+        widget.textEditingController ?? TextEditingController();
     _textEditingController.text = widget.preselectedText;
+  }
+
+  void setText(String text) {
+    _textEditingController.text = text;
   }
 
   @override

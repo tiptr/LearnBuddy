@@ -58,6 +58,8 @@ extension CustomColorScheme on ColorScheme {
       "subtleBackgroundGrey": const Color(0xFF3F3F3F),
       "cardColor": const Color(0xFF303030),
       "shadowColor": const Color(0xFF000000),
+      "onSuccess": const Color(0xFF4BB543),
+      "onError": const Color(0xFFFF9494),
       "isDark": true,
     },
     Brightness.light: {
@@ -70,6 +72,8 @@ extension CustomColorScheme on ColorScheme {
       "subtleBackgroundGrey": const Color(0xFFEAECFA),
       "cardColor": const Color(0xFFFFFFFF),
       "shadowColor": const Color(0xFF000000).withOpacity(0.8),
+      "onSuccess": const Color(0xFF4BB543),
+      "onError": const Color(0xFFFF9494),
       "isDark": false,
     }
   };

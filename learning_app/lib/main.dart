@@ -8,6 +8,7 @@ import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
@@ -16,7 +17,6 @@ import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart
 import 'constants/theme_color_constants.dart';
 import 'features/themes/bloc/bloc.dart';
 import 'features/themes/themes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -30,11 +30,8 @@ Future<void> main() async {
   // Initialize dependency injection:
   configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? pref = prefs.getString(Themes.prefKey);
-  ThemeName themeName = ThemeName.values.singleWhere(
-      (mode) => mode.name == (pref ?? ThemeName.light.name),
-      orElse: () => ThemeName.light);
+  await SharedPreferencesData.init();
+  ThemeName themeName = SharedPreferencesData.themeName ?? ThemeName.light;
   Logger.level = Level.debug;
 
   runApp(
