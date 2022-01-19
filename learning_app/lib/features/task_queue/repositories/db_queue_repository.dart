@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
-import 'package:learning_app/features/task_queue/persistence/queue_dao.dart';
+import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
 import 'package:learning_app/features/task_queue/repositories/queue_repository.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/util/injection.dart';
 
 @Injectable(as: QueueRepository)
 class DbQueueRepository implements QueueRepository {
-  final QueueDao dao = getIt<QueueDao>();
+  final TaskQueueElementsDao dao = getIt<TaskQueueElementsDao>();
 
   @override
   Future<int> writeQueueOrder(List<TaskWithQueueStatus> taskList) async {
@@ -34,7 +34,7 @@ class DbQueueRepository implements QueueRepository {
       return true;
     } else {
       // Remove from queue
-      final affected = await dao.deleteQueueElementById(taskId);
+      final affected = await dao.deleteQueueElementByTaskId(taskId);
       return affected > 0;
     }
   }
