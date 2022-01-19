@@ -60,7 +60,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
         title: 'Timer abgelaufen',
       );
     }
-    if(event.duration <= 0){
+    if (event.duration <= 0) {
       emit(TimerRunComplete(
           event.duration, state._pomodoroMode, state._countPhase));
     }
