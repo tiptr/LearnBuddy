@@ -321,6 +321,17 @@ class _TaskCardState extends State<TaskCard> {
 
     if (confirmed) {
       BlocProvider.of<TasksCubit>(context).deleteTaskById(taskDto.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gelöscht!',
+            style: Theme.of(context).textTheme.textStyle2.withBackground, // TODO: change to green success
+          ),
+          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+        ),
+      );
+
       return true;
     }
 

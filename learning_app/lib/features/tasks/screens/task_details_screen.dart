@@ -417,7 +417,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
       logger.d(
           'The task is not ready to be saved! Description: $missingFieldsDescr');
 
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -427,14 +426,26 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
           backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
         ),
       );
-
-
-
-      // TODO: inform the user with a SnackBar
       return null;
     }
 
-    return await BlocProvider.of<AlterTaskCubit>(context).saveTask();
+    int? id = await BlocProvider.of<AlterTaskCubit>(context).saveTask();
+
+    if (id != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gespeichert!',
+            style: Theme.of(context).textTheme.textStyle2.withBackground, // TODO: change to green success
+          ),
+          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+        ),
+      );
+      return id;
+    } else {
+      // If nothing had been changed, still return the current id, if set
+      return widget.existingTaskId;
+    }
   }
 
   /// Handles the 'save task' functionality
@@ -446,6 +457,16 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
       Navigator.pop(context);
 
       BlocProvider.of<TasksCubit>(context).deleteTaskById(detailsDto.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gelöscht!',
+            style: Theme.of(context).textTheme.textStyle2.withBackground, // TODO: change to green success
+          ),
+          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+        ),
+      );
       return true;
     }
 
