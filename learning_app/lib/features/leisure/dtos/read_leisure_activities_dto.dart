@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/leisure/model/leisure_activity.dart';
 
-class LeisureActivity extends Equatable {
+class ReadLeisureActivitiesDto extends Equatable {
   final int id;
   final int categoryId;
   final String name;
@@ -12,7 +13,7 @@ class LeisureActivity extends Equatable {
   final bool isFavorite;
   final String? pathToImage; // nullable (define base image for all without one)
 
-  const LeisureActivity({
+  const ReadLeisureActivitiesDto({
     required this.id,
     required this.categoryId,
     required this.name,
@@ -24,6 +25,22 @@ class LeisureActivity extends Equatable {
     required this.isFavorite,
     this.pathToImage,
   });
+
+  static ReadLeisureActivitiesDto fromLeisureActivity(
+      LeisureActivity leisureActivity) {
+    return ReadLeisureActivitiesDto(
+      id: leisureActivity.id,
+      categoryId: leisureActivity.categoryId,
+      name: leisureActivity.name,
+      duration: leisureActivity.duration,
+      descriptionShort: leisureActivity.descriptionShort,
+      descriptionLong: leisureActivity.descriptionLong,
+      suitableForAgesAbove: leisureActivity.suitableForAgesAbove,
+      suitableForAgesBelow: leisureActivity.suitableForAgesBelow,
+      isFavorite: leisureActivity.isFavorite,
+      pathToImage: leisureActivity.pathToImage,
+    );
+  }
 
   @override
   List<Object?> get props => [
