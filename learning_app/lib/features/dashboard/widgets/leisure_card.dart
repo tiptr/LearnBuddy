@@ -15,7 +15,7 @@ class LeisureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var randomActivity =
-        BlocProvider.of<LeisureCubit>(context).getRandomLeisureActivity();
+        BlocProvider.of<LeisureCubit>(context).getDailyRandomLeisureActivity();
 
     return FutureBuilder(
       future: randomActivity, // async work

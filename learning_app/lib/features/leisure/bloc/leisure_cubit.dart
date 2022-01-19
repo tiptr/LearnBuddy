@@ -55,7 +55,7 @@ class LeisureCubit extends Cubit<LeisureState> {
     }
   }
 
-  Future<ReadLeisureActivitiesDto?> getRandomLeisureActivity() async {
+  Future<ReadLeisureActivitiesDto?> getDailyRandomLeisureActivity() async {
     if (state is! LeisuresLoaded) {
       return null;
     }
