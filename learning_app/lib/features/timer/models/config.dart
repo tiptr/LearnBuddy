@@ -11,8 +11,8 @@ class Config {
     countUntilLongerBreak,
   ) {
     _pomodoroMinutes = {
-      PomodoroMode.concentration: concentrationMinutes * 60,
-      PomodoroMode.shortBreak: breakMinutes * 60,
+      PomodoroMode.concentration: concentrationMinutes * 5,
+      PomodoroMode.shortBreak: breakMinutes * 5,
       PomodoroMode.longBreak: longerBreakMinutes * 60,
     };
     _countUntilLongerBreak = countUntilLongerBreak;
