@@ -60,60 +60,64 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
   Widget _card(BuildContext context) {
     var borderRadius = BasicCard.borderRadius;
 
-    return Card(
-      clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.all(0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      color: Theme.of(context).colorScheme.cardColor,
-      elevation: BasicCard.elevation.high,
-      shadowColor: Theme.of(context).colorScheme.shadowColor,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 3.0,
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          horizontal: 20.0, vertical: distanceBetweenCardsSubTasks),
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        margin: const EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
-        height: 75.0,
-        child: Expanded(
-          flex: 80,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Cancel button
-              Transform.scale(
-                scale: 1.3,
-                child: IconButton(
-                    onPressed: () {
-                      widget.onDiscard();
-                    },
-                    icon: Icon(
-                      Icons.cancel_outlined,
-                      color: Theme.of(context).colorScheme.onBackgroundHard,
-                    )),
-              ),
-              const SizedBox(width: 5.0), // min distance
-              // Title input
-              _buildTitleInputTextField(context),
-              const SizedBox(width: 5.0), // min distance
-              // Confirm button
-              Transform.scale(
-                scale: 1.3,
-                child: IconButton(
-                    onPressed: () {
-                      if (!titleEmpty) {
-                        widget.onUseButtonSubmit(_textEditingController.text);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.add_task_outlined,
-                      color: titleEmpty
-                          ? Theme.of(context).colorScheme.onBackgroundSoft
-                          : Theme.of(context).colorScheme.onBackgroundHard,
-                    )),
-              )
-            ],
+        color: Theme.of(context).colorScheme.cardColor,
+        elevation: BasicCard.elevation.high,
+        shadowColor: Theme.of(context).colorScheme.shadowColor,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10.0,
+            horizontal: 3.0,
+          ),
+          height: 75.0,
+          child: Expanded(
+            flex: 80,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Cancel button
+                Transform.scale(
+                  scale: 1.3,
+                  child: IconButton(
+                      onPressed: () {
+                        widget.onDiscard();
+                      },
+                      icon: Icon(
+                        Icons.cancel_outlined,
+                        color: Theme.of(context).colorScheme.onBackgroundHard,
+                      )),
+                ),
+                const SizedBox(width: 5.0), // min distance
+                // Title input
+                _buildTitleInputTextField(context),
+                const SizedBox(width: 5.0), // min distance
+                // Confirm button
+                Transform.scale(
+                  scale: 1.3,
+                  child: IconButton(
+                      onPressed: () {
+                        if (!titleEmpty) {
+                          widget.onUseButtonSubmit(_textEditingController.text);
+                        }
+                      },
+                      icon: Icon(
+                        Icons.add_task_outlined,
+                        color: titleEmpty
+                            ? Theme.of(context).colorScheme.onBackgroundSoft
+                            : Theme.of(context).colorScheme.onBackgroundHard,
+                      )),
+                )
+              ],
+            ),
           ),
         ),
       ),

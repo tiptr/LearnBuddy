@@ -36,4 +36,17 @@ class CreateTaskDto extends TaskManipulationDto {
   bool get isReadyToStore {
     return title.present && title.value != '';
   }
+
+  /// Whether this update-dto actually contains changes
+  @override
+  bool containsUpdates() {
+    // DueDate is automatically set, so not seen as change here
+    return title.present ||
+        description.present ||
+        categoryId.present ||
+        keywordIds.present ||
+        estimatedTime.present ||
+        learnListsIds.present ||
+        manualTimeEffortDelta.present;
+  }
 }
