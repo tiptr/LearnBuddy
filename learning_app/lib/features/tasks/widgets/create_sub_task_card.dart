@@ -81,47 +81,44 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
             horizontal: 3.0,
           ),
           height: 75.0,
-          child: Expanded(
-            flex: 80,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Cancel button
-                Transform.scale(
-                  scale: 1.3,
-                  child: IconButton(
-                      onPressed: () {
-                        widget.onDiscard();
-                      },
-                      icon: Icon(
-                        Icons.cancel_outlined,
-                        color: Theme.of(context).colorScheme.onBackgroundHard,
-                      )),
-                ),
-                const SizedBox(width: 5.0), // min distance
-                // Title input
-                _buildTitleInputTextField(context),
-                const SizedBox(width: 5.0), // min distance
-                // Confirm button
-                Transform.scale(
-                  scale: 1.3,
-                  child: IconButton(
-                      onPressed: () {
-                        if (!titleEmpty) {
-                          widget.onUseButtonSubmit(_textEditingController.text,
-                              widget.detailDto.category?.id);
-                        }
-                      },
-                      icon: Icon(
-                        Icons.add_task_outlined,
-                        color: titleEmpty
-                            ? Theme.of(context).colorScheme.onBackgroundSoft
-                            : Theme.of(context).colorScheme.onBackgroundHard,
-                      )),
-                )
-              ],
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Cancel button
+              Transform.scale(
+                scale: 1.3,
+                child: IconButton(
+                    onPressed: () {
+                      widget.onDiscard();
+                    },
+                    icon: Icon(
+                      Icons.cancel_outlined,
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
+                    )),
+              ),
+              const SizedBox(width: 5.0), // min distance
+              // Title input
+              _buildTitleInputTextField(context),
+              const SizedBox(width: 5.0), // min distance
+              // Confirm button
+              Transform.scale(
+                scale: 1.3,
+                child: IconButton(
+                    onPressed: () {
+                      if (!titleEmpty) {
+                        widget.onUseButtonSubmit(_textEditingController.text,
+                            widget.detailDto.category?.id);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.add_task_outlined,
+                      color: titleEmpty
+                          ? Theme.of(context).colorScheme.onBackgroundSoft
+                          : Theme.of(context).colorScheme.onBackgroundHard,
+                    )),
+              )
+            ],
           ),
         ),
       ),

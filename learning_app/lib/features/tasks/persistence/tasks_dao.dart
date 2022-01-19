@@ -214,6 +214,50 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
         },
       ]);
 
+    // Fix for the ordering of null values. TODO: think of a solution with SQL
+    if (taskOrder.attribute == TaskOrderAttributes.dueDate) {
+      if (taskOrder.direction == OrderDirection.asc) {
+        return sortedFilteredTopLevelTasksQuery.watch().map((list) {
+          // Order null to the end
+          list.sort((task1, task2) {
+            final s1 = task1.dueDate;
+            final s2 = task2.dueDate;
+
+            if (s1 == null && s2 == null) {
+              return 0;
+            } else if (s1 == null) {
+              return 1;
+            } else if (s2 == null) {
+              return -1;
+            } else {
+              return s1.compareTo(s2);
+            }
+          });
+          return list;
+        });
+      } else if (taskOrder.direction == OrderDirection.desc) {
+        return sortedFilteredTopLevelTasksQuery.watch().map((list) {
+          // Order null to the front
+          list.sort((task1, task2) {
+            final s1 = task1.dueDate;
+            final s2 = task2.dueDate;
+
+            if (s1 == null && s2 == null) {
+              return 0;
+            } else if (s1 == null) {
+              return -1;
+            } else if (s2 == null) {
+              return 1;
+            } else {
+              return s1.compareTo(s2);
+            }
+          });
+
+          return list;
+        });
+      }
+    }
+
     return sortedFilteredTopLevelTasksQuery.watch();
   }
 }
