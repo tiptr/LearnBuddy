@@ -14,7 +14,6 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/le
 import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 
 class LearningAidBodyAddScreen extends StatelessWidget {
   const LearningAidBodyAddScreen({Key? key}) : super(key: key);
