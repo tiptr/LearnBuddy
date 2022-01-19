@@ -78,7 +78,7 @@ class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainEl
                 itemBuilder: (context, i) {
                   return ListViewItem(
                     newDescriptionController: _descriptionControllers[i],
-                    id: idCount++,
+                    id: i,
                     onChange: onChangeText,
                   ); // item layout
                 },
@@ -94,8 +94,9 @@ class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainEl
                     //items.add(items.length);
                     items.add(ListViewItem(
                         newDescriptionController: newDescriptionController,
-                        id: idCount++,
+                        id: idCount,
                         onChange: onChangeText));
+                    idCount++;
                   });
                 },
                 child: Ink(
@@ -132,7 +133,7 @@ class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainEl
     cubit.alterLearnListAttribute(LearnListManipulationDto(
       words: drift.Value(words),
     ));
-    
+
     // validate required fields:
     if (!cubit.validateLearnListConstruction()) {
       // Not ready to save! Inform the user and continue
@@ -143,11 +144,26 @@ class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainEl
       return null;
     }
 
-    return await BlocProvider.of<AlterLearnListCubit>(context).saveLearnList(LearnMethods.bodyList);
+    return await cubit.saveLearnList(LearnMethods.simpleLearnList);
   }
 
   void onChangeText(String text, int id) async {
-    words.add(LearnListWord(id: id, word: text));
+    bool containsElementWithSameId = false;
+    LearnListWord? elementToOverwrite;
+
+    for(LearnListWord word in words) {
+      if(word.id == id) {
+        containsElementWithSameId = true;
+        elementToOverwrite = word;
+      }
+    }
+
+    if(containsElementWithSameId) {
+      words.remove(elementToOverwrite);
+      words.add(LearnListWord(id: id, word: text));
+    } else {
+      words.add(LearnListWord(id: id, word: text));
+    }
   }
 }
 
@@ -167,7 +183,8 @@ class ListViewItem extends StatelessWidget {
           hintText: "Text eingeben",
           iconData: Icons.edit,
           textController: newDescriptionController,
-          onChange: onChange
+          onChange: onChange,
+          id: id
         ),
         // Only for navigation to tags
         const SizedBox(height: 20.0),

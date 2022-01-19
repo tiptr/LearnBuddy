@@ -23,7 +23,8 @@ class DbLearnListRepository implements LearnListRepository {
   // load the data access object (with generated entities and queries) via dependency inj.
   final LearnListsDao _learnListDao = getIt<LearnListsDao>();
   final LearnListWordsDao _learnListWordsDao = getIt<LearnListWordsDao>();
-  final BodyListWordDetailsDao _bodyListWordDetailsDao = getIt<BodyListWordDetailsDao>();
+  final BodyListWordDetailsDao _bodyListWordDetailsDao =
+      getIt<BodyListWordDetailsDao>();
   final CategoriesDao _categoriesDao = getIt<CategoriesDao>();
 
   Stream<List<LearnList>>? _learnListStream;
@@ -182,9 +183,9 @@ class DbLearnListRepository implements LearnListRepository {
     }).toList();
   }
 
-
   @override
-  Future<int> createLearnList(CreateLearnListDto newLearnList, LearnMethods method) async {
+  Future<int> createLearnList(
+      CreateLearnListDto newLearnList, LearnMethods method) async {
     assert(newLearnList.isReadyToStore);
 
     // Do the complete update in a transaction, so that the streams will only
@@ -195,39 +196,43 @@ class DbLearnListRepository implements LearnListRepository {
     return _learnListDao.transaction(() async {
       int newLearnListId = await _learnListDao.createLearnList(
         db.LearnListsCompanion(
-          id: newLearnList.id,
-          name: newLearnList.name,
-          learnMethod: Value(method),
-          categoryId: Value(newLearnList.category.value?.id),
-          creationDateTime: Value(DateTime.now()),
-          isArchived: const Value(false)          //TODO: change for archive functionality
-        ),
+            id: newLearnList.id,
+            name: newLearnList.name,
+            learnMethod: Value(method),
+            categoryId: Value(newLearnList.category.value?.id),
+            creationDateTime: Value(DateTime.now()),
+            isArchived:
+                const Value(false) //TODO: change for archive functionality
+            ),
       );
 
       int i = 0;
-      for(LearnListWord word in newLearnList.words.value) {
-        _learnListWordsDao.transaction(() async {
-          int wordId = await _learnListWordsDao.createLearnListWord(
-            db.LearnListWordsCompanion(
-              id: Value(word.id),
-              listId: Value(newLearnListId),
-              orderPlacement: Value(i),
-              word: Value(word.word),      //TODO: change for archive functionality
-            ),
-          );
-
-          if(method == LearnMethods.bodyList) {
-          _bodyListWordDetailsDao.transaction(() async {
-            await _bodyListWordDetailsDao.createBodyListWord(
-              db.BodyListWordDetailsCompanion(
-                wordId: Value(wordId),
-                bodyPart: const Value.absent(),
-                association: const Value.absent()
+      for (LearnListWord word in newLearnList.words.value) {
+        await _learnListWordsDao.transaction(
+          () async {
+            int wordId = await _learnListWordsDao.createLearnListWord(
+              db.LearnListWordsCompanion(
+                id: Value(word.id),
+                listId: Value(newLearnListId),
+                orderPlacement: Value(i),
+                word: Value(word.word), //TODO: change for archive functionality
               ),
             );
-          });
-        }
-        });
+
+            if (method == LearnMethods.bodyList) {
+              await _bodyListWordDetailsDao.transaction(
+                () async {
+                  await _bodyListWordDetailsDao.createBodyListWord(
+                    db.BodyListWordDetailsCompanion(
+                        wordId: Value(wordId),
+                        bodyPart: const Value.absent(),
+                        association: const Value.absent()),
+                  );
+                },
+              );
+            }
+          },
+        );
         i++;
       }
 
