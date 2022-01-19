@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
@@ -19,6 +20,7 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
   final _descriptionControllers = [];
 
   List<Widget> items = [];
+  List<LearnListWord> words = [];
 
   @override
   void initState() {
@@ -26,6 +28,8 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
     //BlocProvider.of<CreateNewLearningAidCubit>(context)
     //    .startNewTaskConstruction(widget.parentId);
   }
+
+  int idCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +60,8 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
                 itemBuilder: (context, i) {
                   return ListViewItem(
                     newDescriptionController: _descriptionControllers[i],
+                    id: idCount++,
+                    onChange: onChangeText,
                   ); // item layout
                 },
               ),
@@ -69,7 +75,9 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
                     // add another item to the list
                     //items.add(items.length);
                     items.add(ListViewItem(
-                        newDescriptionController: newDescriptionController));
+                        newDescriptionController: newDescriptionController,
+                        id: idCount++,
+                        onChange: onChangeText));
                   });
                 },
                 child: Ink(
@@ -114,13 +122,19 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
 
     return await BlocProvider.of<AlterLearnListCubit>(context).saveLearnList(LearnMethods.bodyList);
   }
+
+  void onChangeText(String text, int id) async {
+    words.add(LearnListWord(id: id, word: text));
+  }
 }
 
 class ListViewItem extends StatelessWidget {
-  const ListViewItem({Key? key, required this.newDescriptionController})
+  const ListViewItem({Key? key, required this.newDescriptionController, required this.id, required this.onChange})
       : super(key: key);
 
   final TextEditingController newDescriptionController;
+  final int id;
+  final Function(String, int) onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +144,7 @@ class ListViewItem extends StatelessWidget {
           hintText: "Text eingeben",
           iconData: Icons.edit,
           textController: newDescriptionController,
-          onChange: (String s, int i) => {},        //TODO:
+          onChange: onChange
         ),
         // Only for navigation to tags
         const SizedBox(height: 20.0),
