@@ -48,4 +48,11 @@ class TaskLearnListsDao extends DatabaseAccessor<Database>
 
     return deleteStatement.go();
   }
+
+  Future<void> deleteTaskLearnListsByTaskId(int id) {
+    final deleteStatement = delete(taskLearnLists)
+      ..where((tbl) => tbl.taskId.equals(id));
+
+    return deleteStatement.go();
+  }
 }

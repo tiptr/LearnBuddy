@@ -72,4 +72,11 @@ class TimeLogsDao extends DatabaseAccessor<Database> with _$TimeLogsDaoMixin {
       duration: Value(duration),
     ));
   }
+
+  Future<void> deleteTimeLogsByTaskId(int id) {
+    final deleteStatement = delete(timeLogs)
+      ..where((tbl) => tbl.taskId.equals(id));
+
+    return deleteStatement.go();
+  }
 }
