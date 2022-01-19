@@ -1,21 +1,27 @@
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 
 class Config {
   late final int _countUntilLongerBreak;
   late Map _pomodoroMinutes;
+  final int defaultConcentrationMinutes = 25;
+  final int defaultBreakMinutes = 5;
+  final int defaultLongerBreakMinutes = 30;
+  final int defaultCountUntilLongerBreak = 4;
 
-  Config(
-    concentrationMinutes,
-    breakMinutes,
-    longerBreakMinutes,
-    countUntilLongerBreak,
-  ) {
+  Config() {
     _pomodoroMinutes = {
-      PomodoroMode.concentration: concentrationMinutes * 60,
-      PomodoroMode.shortBreak: breakMinutes * 60,
-      PomodoroMode.longBreak: longerBreakMinutes * 60,
+      PomodoroMode.concentration: (SharedPreferencesData.concentrationMinutes ??
+              defaultConcentrationMinutes) *
+          60,
+      PomodoroMode.shortBreak:
+          (SharedPreferencesData.breakMinutes ?? defaultBreakMinutes) * 60,
+      PomodoroMode.longBreak: (SharedPreferencesData.longerBreakMinutes ??
+              defaultLongerBreakMinutes) *
+          60,
     };
-    _countUntilLongerBreak = countUntilLongerBreak;
+    _countUntilLongerBreak = (SharedPreferencesData.countUntilLongerBreak ??
+        defaultCountUntilLongerBreak);
   }
 
   Map getPomodoroMinutes() => _pomodoroMinutes;

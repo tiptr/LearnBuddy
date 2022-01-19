@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/tasks/widgets/keyword_select_dialog.dart';
 
@@ -44,8 +46,8 @@ class KeyWordInputField extends StatelessWidget {
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF636573),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
             width: 2.0,
           ),
         ),
@@ -58,16 +60,19 @@ class KeyWordInputField extends StatelessWidget {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
-        prefixIcon: const Icon(
+        prefixIcon: Icon(
           Icons.new_label_outlined,
-          color: Color(0xFF636573),
+          color: Theme.of(context).colorScheme.onBackground,
         ),
-        label: const Text(
+        label: Text(
           "Schlagwörter",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
         hintText: 'Schlagwörter auswählen',
-        hintStyle: const TextStyle(color: Color(0xFF949597)),
+        hintStyle:
+            // Same TextStyle with a softer color. Inherited from the textfield,
+            // so the TextStyle is not explicitly defined with a constant
+            TextStyle(color: Theme.of(context).colorScheme.onBackgroundSoft),
       ),
     );
   }

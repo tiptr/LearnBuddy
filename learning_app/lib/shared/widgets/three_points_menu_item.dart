@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class ThreePointsMenuItem extends StatelessWidget {
   final String title;
@@ -15,10 +17,13 @@ class ThreePointsMenuItem extends StatelessWidget {
     return SizedBox(
       width: 300,
       child: ListTile(
-        title: Text(title),
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.textStyle2.withOnBackgroundHard,
+        ),
         trailing: Icon(
           iconData,
-          color: const Color(0xFF636573),
+          color: Theme.of(context).colorScheme.onBackgroundHard,
         ),
       ),
     );
