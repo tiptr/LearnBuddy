@@ -23,19 +23,19 @@ class LearnListAddScreen extends StatelessWidget {
       create: (context) {
         return AlterLearnListCubit();
       },
-      child: const LearnListAddScreenMainElement(),
+      child: const _LearnListAddScreenMainElement(),
     );
   }
 }
 
-class LearnListAddScreenMainElement extends StatefulWidget {
-  const LearnListAddScreenMainElement({Key? key}) : super(key: key);
+class _LearnListAddScreenMainElement extends StatefulWidget {
+  const _LearnListAddScreenMainElement({Key? key}) : super(key: key);
 
   @override
-  State<LearnListAddScreenMainElement> createState() => _LearnListAddScreenMainElementState();
+  State<_LearnListAddScreenMainElement> createState() => _LearnListAddScreenMainElementState();
 }
 
-class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainElement> {
+class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainElement> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
 
