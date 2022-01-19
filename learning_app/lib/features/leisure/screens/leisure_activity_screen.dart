@@ -42,6 +42,7 @@ class LeisureActivityScreen extends StatelessWidget {
         final activity = snapshot.data!;
 
         return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: LeisureAppBar(
             categoryTitle: activity.name,
             leisureActivity: activity,

@@ -43,6 +43,7 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
         final activities = snapshot.data!;
 
         return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: LeisureOverviewAppBar(
             categoryTitle: categoryTitle,
           ), //TODO: insert title
