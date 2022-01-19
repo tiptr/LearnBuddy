@@ -101,13 +101,14 @@ class _ListViewItemState extends State<ListViewItem> {
         Container(
           margin: const EdgeInsets.only(left: 10.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
                 _obscureText ? "*****" : widget.word,
               ),
               IconButton(
                 icon: _obscureText ? const Icon(Icons.visibility, color: Colors.black) : const Icon(Icons.visibility_off, color: Colors.black),
-                onPressed: _toggle
+                onPressed: _toggle,
               ),
             ],
           ),

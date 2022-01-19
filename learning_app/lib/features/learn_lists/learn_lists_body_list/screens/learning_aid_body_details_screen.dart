@@ -163,6 +163,7 @@ class _ListViewItemState extends State<ListViewItem> {
         Container(
           margin: const EdgeInsets.only(left: 10.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
                 _obscureText ? "*****" : widget.word,
