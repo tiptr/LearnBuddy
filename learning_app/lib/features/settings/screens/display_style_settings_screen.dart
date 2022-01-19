@@ -30,7 +30,7 @@ class _DisplayStyleSettingsScreenState
       ),
       body: ListView(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
         children: [
           SettingsGroup(
             title: "Darkmode",

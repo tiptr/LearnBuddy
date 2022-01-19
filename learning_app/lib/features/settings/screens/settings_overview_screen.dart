@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/settings_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/settings/screens/dashboard_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/display_style_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
+import 'package:learning_app/features/settings/screens/pomodoro_settings_screen.dart';
+import 'package:learning_app/features/themes/bloc/bloc.dart';
+import 'package:learning_app/shared/open_confirm_dialog.dart';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 import 'package:learning_app/features/settings/widgets/settings_group.dart';
 import 'package:learning_app/features/settings/screens/not_implemented_screen.dart';
+import 'package:learning_app/shared/widgets/three_points_menu.dart';
+import 'package:learning_app/util/logger.dart';
 
 class SettingsOverviewScreen extends StatelessWidget {
   const SettingsOverviewScreen({Key? key}) : super(key: key);
@@ -14,10 +25,16 @@ class SettingsOverviewScreen extends StatelessWidget {
     // Set initial dueDate:
 
     return ScreenWithoutBottomNavbarBaseTemplate(
-      titleBar: const GoBackTitleBar(title: "Einstellungen"),
+      titleBar: GoBackTitleBar(
+        title: "Einstellungen",
+        actionWidget: buildThreePointsMenu(
+            context: context,
+            showResetSettings: true,
+            onResetSettings: () => _resetSettings(context)),
+      ),
       body: ListView(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
         children: [
           _settingsGroup(
               context: context,
@@ -36,13 +53,13 @@ class SettingsOverviewScreen extends StatelessWidget {
               title: "Dashboard",
               subtitle: "Anzahl Aufgaben, Ausgleichsvorschlag, ...",
               iconData: Icons.house_outlined,
-              nextScreen: const NotImplementedScreen()),
+              nextScreen: const DashboardSettingsScreen()),
           _settingsGroup(
               context: context,
               title: "Pomodoro-Timer",
               subtitle: "Nicht-stören-Modus, Dauer der Phasen, ...",
               iconData: Icons.av_timer_outlined,
-              nextScreen: const NotImplementedScreen()),
+              nextScreen: const PomodoroSettingsScreen()),
           _settingsGroup(
               context: context,
               title: "Aufgaben",
@@ -52,7 +69,7 @@ class SettingsOverviewScreen extends StatelessWidget {
           _settingsGroup(
               context: context,
               title: "Ausgleichsvorschläge",
-              subtitle: "",
+              subtitle: "Welche Vorschläge angezeigt werden sollen",
               iconData: Icons.local_florist_outlined,
               nextScreen: const NotImplementedScreen()),
           _settingsGroup(
@@ -90,8 +107,38 @@ class SettingsOverviewScreen extends StatelessWidget {
           title: title,
           subTitle: subtitle,
           iconData: iconData,
+          colorHard: true,
         ),
       ),
     );
+  }
+
+  _resetSettings(BuildContext context) async {
+    var confirmed = await openConfirmDialog(
+        context: context,
+        title: "Einstellungen zurücksetzen?",
+        content: Text(
+          "Willst du die Einstellungen wirklich vollständig zurücksetzen?\n\nDu musst eventuell die App neu starten, damit alle Änderungen in Kraft treten.",
+          style: Theme.of(context)
+              .textTheme
+              .textStyle2
+              .withOverflow(TextOverflow.visible),
+        ));
+
+    if (confirmed) {
+      logger.d('Einstellungen werden zurückgesetzt');
+      SharedPreferencesData.resetSettings();
+      BlocProvider.of<ThemeCubit>(context).setToTheme(defaultThemeName);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Einstellungen erfolgreich zurückgesetzt!',
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
+        ),
+      );
+    }
   }
 }
