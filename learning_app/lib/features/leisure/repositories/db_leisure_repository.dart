@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
 import 'package:learning_app/features/leisure/model/leisure_category.dart';
@@ -65,4 +67,33 @@ class DbLeisureRepository implements LeisureRepository {
       },
     );
   }
+  /*Stream<TaskWithQueueStatus?> watchQueuedTaskWithId({required int id}) {
+    final queuedTasksStream = watchQueuedTasks();
+    return queuedTasksStream.map((queuedTasks) {
+      final matchingList =
+      queuedTasks.where((taskWithStatus) => taskWithStatus.task.id == id);
+      return matchingList.isNotEmpty ? matchingList.first : null;
+    });
+  }*/
+
+
+
+  @override
+  Stream<LeisureActivity> watchRandomLeisureActivity() {
+    final leisureCategoriesStream = watchLeisureCategories();
+    Stream<LeisureActivity> leisureActivityStream =  leisureCategoriesStream.map((leisureCategories) {
+      Random random = Random();
+      int randInt = random.nextInt(leisureCategories.length);
+      // TODO: check if there is a element in the category
+
+      final LeisureCategory randomLeisureCategory =  leisureCategories[randInt];
+      randInt = random.nextInt(randomLeisureCategory.activities.length);
+      final LeisureActivity randomLeisureActivity = randomLeisureCategory.activities[randInt];
+      return randomLeisureActivity;
+    });
+    return leisureActivityStream;
+
+  }
+
+
 }

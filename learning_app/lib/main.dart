@@ -4,6 +4,7 @@ import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/suggested_leisure_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
+import 'package:path/path.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
 import 'constants/theme_font_constants.dart';
@@ -92,6 +94,13 @@ void main() {
             return bloc;
           },
         ),
+        BlocProvider<SuggestedLeisureCubit>(
+          create: (context) {
+            var cubit = SuggestedLeisureCubit();
+            cubit.init();
+            return cubit;
+          },
+        )
       ],
       child: const MyApp(),
     ),

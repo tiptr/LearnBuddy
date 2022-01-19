@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/leisure/bloc/suggested_leisure_cubit.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
 import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
+import 'package:learning_app/features/timer/widgets/suggested_leisure_activity_card.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
@@ -22,8 +24,10 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          TimerBloc(timeLoggingBloc: context.read<TimeLoggingBloc>()),
+      create: (_) => TimerBloc(
+        timeLoggingBloc: context.read<TimeLoggingBloc>(),
+        suggestedLeisureCubit: context.read<SuggestedLeisureCubit>(),
+      ),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         // Will change to a custom title bar in the future
@@ -63,7 +67,7 @@ class _TimerViewState extends State<TimerView> {
   @override
   Widget build(BuildContext context) {
     final maxHeightForPanel = MediaQuery.of(context).size.height * 0.61;
-
+    final currentPomoMode = context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
     return SlidingUpPanel(
       controller: _panelController,
       borderRadius: const BorderRadius.only(
@@ -76,12 +80,18 @@ class _TimerViewState extends State<TimerView> {
       minHeight: 145,
       maxHeight: maxHeightForPanel,
       panelBuilder: (ScrollController sc) {
-        return TaskQueueList(
-          scrollController: sc,
-          panelController: _panelController,
-          panelOpenedInformer: _panelOpenedInformer,
-          panelMaxHeight: maxHeightForPanel,
-        );
+        if (currentPomoMode ==
+            PomodoroMode.concentration) {
+          return TaskQueueList(
+            scrollController: sc,
+            panelController: _panelController,
+            panelOpenedInformer: _panelOpenedInformer,
+            panelMaxHeight: maxHeightForPanel,
+          );
+        }
+        else {
+          return const SuggestedLeisureActivityCard();
+        }
       },
       color: Theme.of(context).colorScheme.cardColor,
       body: const Center(
