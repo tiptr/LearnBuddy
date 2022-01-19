@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_details_screen.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_details_screen_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_lists_detail_app_bar.dart';
@@ -15,11 +15,13 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
 
   List<String> bodyParts = [
     "Kopf:",
+    "Hals",
     "Brust:",
-    "Ellenbogen:",
+    "Schultern:",
     "Hände:",
     "Bauch:",
     "Po:",
+    "Oberschenkel",
     "Knie:",
     "Füße:"
   ];
@@ -89,7 +91,7 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: learnList
-                      .words.length, //should always be 8 for a body list!
+                      .words.length, //should always be 10 for a body list!
                   itemBuilder: (context, i) {
                     return LearningAidBodyDetailsListViewItem(
                       word: learnList.words[i].word,
