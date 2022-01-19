@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning_app/constants/basic_card.dart';
-import 'package:learning_app/constants/page_ids.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
-import 'package:learning_app/util/nav_cubit.dart';
+import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
 class LeisureCard extends StatelessWidget {
@@ -49,8 +48,17 @@ class LeisureCard extends StatelessWidget {
               height: 10.0,
             ),
             InkWell(
-              onTap: () {
-                BlocProvider.of<NavCubit>(context).navigateTo(PageId.leisure);
+              onTap: () => {
+                // Open the activity screen for the shown activity
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => LeisureActivityScreen(
+                      categoryId: activity.categoryId,
+                      activityId: activity.id,
+                    ),
+                  ),
+                )
               },
               child: Card(
                 clipBehavior: Clip.hardEdge,

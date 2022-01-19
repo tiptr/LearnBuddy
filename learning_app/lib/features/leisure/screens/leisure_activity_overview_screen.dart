@@ -46,18 +46,20 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
               itemCount: activities.length,
               itemBuilder: (BuildContext ctx, int idx) {
                 return GestureDetector(
-                    child: LeisureActivityCard(
-                      leisureActivity: activities[idx],
-                    ),
-                    onTap: () => {
-                          Navigator.push(
-                              ctx,
-                              MaterialPageRoute(
-                                builder: (ctx) => LeisureActivityScreen(
-                                    categoryId: categoryId,
-                                    activityId: activities[idx].id),
-                              ))
-                        });
+                  child: LeisureActivityCard(
+                    leisureActivity: activities[idx],
+                  ),
+                  onTap: () => {
+                    Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                        builder: (ctx) => LeisureActivityScreen(
+                            categoryId: categoryId,
+                            activityId: activities[idx].id),
+                      ),
+                    )
+                  },
+                );
               },
             ),
           );
