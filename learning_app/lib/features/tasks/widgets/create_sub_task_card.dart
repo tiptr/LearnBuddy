@@ -81,9 +81,7 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
             horizontal: 3.0,
           ),
           height: 75.0,
-          child: Expanded(
-            flex: 80,
-            child: Row(
+          child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -124,7 +122,6 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
             ),
           ),
         ),
-      ),
     );
   }
 
