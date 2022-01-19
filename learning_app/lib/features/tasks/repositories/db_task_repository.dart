@@ -215,39 +215,44 @@ class DbTaskRepository implements TaskRepository {
     });
   }
 
+  /// Deletes the task including subtasks and all related entities
   @override
   Future<bool> deleteById(int id) async {
     // // Get all subtasks
-    // final model = await watchTaskById(id: id).first;
-    //
-    // if (model == null) {
-    //   return false;
-    // }
-    //
-    // _tasksDao.transaction(() async {
-    //   // Remove from Task queue
-    //   _queueElementsDao.
-    //
-    //   await _deleteRecursively(model.task);
-    // });
-    //
-    // // Delete task-keyword relationships
-    // // Delete task-learnlist relationships
-    //
-    // // Remove TimeLogs
-    //
-    //
-    //
-    // // Remove task and subtasks
-    //
+    final model = await watchTaskById(id: id).first;
 
-    final affected = await _tasksDao.deleteTaskById(id);
-    return affected > 0;
+    if (model == null) {
+      return false;
+    }
+
+    _tasksDao.transaction(() async {
+      // Remove from Task queue
+      await _queueElementsDao.deleteQueueElementByTaskId(model.task.id);
+
+      await _deleteRecursively(model.task);
+    });
+
+    return true;
   }
 
-  // Future<void> _deleteRecursively(Task task) {
-  //
-  // }
+  Future<void> _deleteRecursively(Task task) async {
+    // Recursively call for children:
+    for (Task child in task.children) {
+      await _deleteRecursively(child);
+    }
+
+    // Delete task-keyword relationships
+    await _taskKeywordsDao.deleteTaskKeyWordsByTaskId(task.id);
+
+    // Delete task-learnlist relationships
+    await _taskLearnListsDao.deleteTaskLearnListsByTaskId(task.id);
+
+    // Remove TimeLogs
+    await _timeLogsDao.deleteTimeLogsByTaskId(task.id);
+
+    // Remove the task entity itself:
+    await _tasksDao.deleteTaskById(task.id);
+  }
 
   @override
   Future<bool> toggleDone(int taskId, bool done) async {
