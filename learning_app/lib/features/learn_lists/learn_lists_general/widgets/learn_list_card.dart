@@ -31,7 +31,6 @@ class LearnListCard extends StatelessWidget {
     //----------For Testing multiple options----------
     // TODO use real values from learningAid
     var categoryColor = Theme.of(context).colorScheme.noCategoryDefaultColor;
-    // const categoryColor = Colors.lightBlue.shade600;
     //////////////////////////////////////////////////
 
     return Dismissible(
@@ -54,9 +53,8 @@ class LearnListCard extends StatelessWidget {
               // TODO: Use color of category once added
               left: BorderSide(width: borderRadius, color: categoryColor),
             ),
-            color: Colors.white,
           ),
-          height: 110.0,
+          height: BasicCard.height,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

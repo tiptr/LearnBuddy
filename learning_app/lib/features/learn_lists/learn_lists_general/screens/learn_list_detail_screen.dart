@@ -43,15 +43,11 @@ class LearnListDetailScreen extends StatelessWidget {
                 margin: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    const Text(
+                    Text(
                       "Hier ist deine Lernliste:",
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.fade,
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.textStyle2.withBold,
                     ),
                     const SizedBox(height: 40.0),
                     ListView.builder(

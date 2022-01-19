@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_details_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
@@ -43,15 +46,10 @@ class LearnListsScreen extends StatelessWidget {
             stream: state.selectedListViewlearnListsStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Es sind keine Lernlisten verfügbar.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Color(0xFF636573),
-                    ),
-                  ),
+                return Center(
+                  child: Text('Es sind keine Lernlisten verfügbar.',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.textStyle4),
                 );
               }
 
@@ -101,31 +99,43 @@ class LearnListsScreen extends StatelessWidget {
     Alert(
         context: context,
         title: "Art der Lernhilfe",
-        content: Column(
-          children: [
-            CustomButton(
-              onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LearningAidBodyAddScreen(),
+        style: AlertStyle(
+          titleStyle: Theme.of(context)
+              .textTheme
+              .textStyle2
+              .withBold
+              .withOnBackgroundHard,
+          alertElevation: BasicCard.elevation.high,
+          backgroundColor: Theme.of(context).colorScheme.cardColor,
+        ),
+        content: Container(
+          color: Theme.of(context).colorScheme.cardColor,
+          child: Column(
+            children: [
+              CustomButton(
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LearningAidBodyAddScreen(),
+                  ),
                 ),
+                icon: Icons.accessibility_new_rounded,
+                text: "Begriffe an Körperteile binden",
               ),
-              icon: Icons.accessibility_new_rounded,
-              text: "Begriffe an Körperteile binden",
-            ),
-            const Divider(color: Colors.black),
-            CustomButton(
-              onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LearnListAddScreen(),
+              Divider(color: Theme.of(context).colorScheme.onBackgroundHard),
+              CustomButton(
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LearnListAddScreen(),
+                  ),
                 ),
-              ),
-              icon: Icons.format_list_bulleted,
-              text:
-                  "Begriffsliste                              ", //makes the buttons equally sized:)
-            )
-          ],
+                icon: Icons.format_list_bulleted,
+                text:
+                    "Begriffsliste                              ", //makes the buttons equally sized:)
+              )
+            ],
+          ),
         ),
         buttons: [
           //has to be empty, otherwise a "cancel" button will be inserted by default
@@ -148,7 +158,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).colorScheme.cardColor,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -156,7 +166,7 @@ class CustomButton extends StatelessWidget {
           children: <Widget>[
             Icon(
               icon,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onBackgroundHard,
             ),
             const SizedBox(
               width: 10.0,
@@ -164,7 +174,8 @@ class CustomButton extends StatelessWidget {
             Text(
               text,
               maxLines: 1,
-              style: const TextStyle(color: Colors.black),
+              style:
+                  Theme.of(context).textTheme.textStyle2.withOnBackgroundHard,
             ),
           ],
         ),

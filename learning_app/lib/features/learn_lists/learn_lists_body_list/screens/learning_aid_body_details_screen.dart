@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_details_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
@@ -70,23 +71,19 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
                       height: 5,
                       width: 80,
                       margin: const EdgeInsets.only(right: 10),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFCBCCCD),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(BasicCard.borderRadius)),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                const Text(
+                Text(
                   "Hier ist deine Körperliste:",
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.fade,
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.textStyle2.withBold,
                 ),
                 const SizedBox(height: 10.0),
                 ListView.builder(
@@ -104,7 +101,7 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 10.0)
               ],
             ),
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.background,
             body: SvgPicture.asset(
               "assets/learning_aids/moehm_alternative.svg",
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 
 class LearningAidBodyDetailAddListViewItem extends StatelessWidget {
@@ -25,10 +26,8 @@ class LearningAidBodyDetailAddListViewItem extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10.0),
             child: Text(
               text,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-              ),
+              style:
+                  Theme.of(context).textTheme.textStyle2.withOnBackgroundHard,
             ),
           ),
         ),

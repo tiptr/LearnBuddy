@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 class LearningAidBodyDetailsListViewItem extends StatefulWidget {
   final String text;
@@ -33,10 +35,8 @@ class _LearningAidBodyDetailsListViewItemState
             margin: const EdgeInsets.only(left: 10.0),
             child: Text(
               widget.text,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-              ),
+              style:
+                  Theme.of(context).textTheme.textStyle2.withOnBackgroundHard,
             ),
           ),
         ),
@@ -50,8 +50,11 @@ class _LearningAidBodyDetailsListViewItemState
               ),
               IconButton(
                   icon: _obscureText
-                      ? const Icon(Icons.visibility, color: Colors.black)
-                      : const Icon(Icons.visibility_off, color: Colors.black),
+                      ? Icon(Icons.visibility,
+                          color: Theme.of(context).colorScheme.onBackgroundHard)
+                      : Icon(Icons.visibility_off,
+                          color:
+                              Theme.of(context).colorScheme.onBackgroundHard),
                   onPressed: _toggle),
             ],
           ),

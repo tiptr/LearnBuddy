@@ -74,7 +74,7 @@ class TasksCardProgress extends StatelessWidget {
                       ),
                       Text(
                         remainingDuration == null
-                            ? "Keine Zeitschätzungen\n vorhanden"
+                            ? "Keine Zeitschätzungen\nvorhanden"
                             : "Heutiger Restaufwand:\n${remainingDuration.format()}",
                         style: Theme.of(context)
                             .textTheme

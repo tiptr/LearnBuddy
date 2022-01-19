@@ -4,6 +4,7 @@ import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_add_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
@@ -12,6 +13,8 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/models/lea
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class LearningAidBodyAddScreen extends StatelessWidget {
   const LearningAidBodyAddScreen({Key? key}) : super(key: key);
@@ -88,23 +91,19 @@ class _LearningAidBodyAddScreenMainElementState
                   height: 5,
                   width: 80,
                   margin: const EdgeInsets.only(right: 10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFCBCCCD),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(BasicCard.borderRadius)),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 10.0),
-            const Text(
+            Text(
               "Was möchtest du dir merken?",
               textAlign: TextAlign.left,
               overflow: TextOverflow.fade,
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.textStyle2.withBold,
             ),
             const SizedBox(height: 10.0),
             ListView.builder(
@@ -125,7 +124,7 @@ class _LearningAidBodyAddScreenMainElementState
             const SizedBox(height: 10.0)
           ],
         ),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         body: SvgPicture.asset(
           "assets/learning_aids/moehm_alternative.svg",
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 
 class LearnListDetailListViewItem extends StatefulWidget {
   final String word;
@@ -35,8 +36,14 @@ class _LearnListDetailListViewItemState
               ),
               IconButton(
                 icon: _obscureText
-                    ? const Icon(Icons.visibility, color: Colors.black)
-                    : const Icon(Icons.visibility_off, color: Colors.black),
+                    ? Icon(
+                        Icons.visibility,
+                        color: Theme.of(context).colorScheme.onBackgroundHard,
+                      )
+                    : Icon(
+                        Icons.visibility_off,
+                        color: Theme.of(context).colorScheme.onBackgroundHard,
+                      ),
                 onPressed: _toggle,
               ),
             ],
