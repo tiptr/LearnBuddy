@@ -6,6 +6,10 @@ class SharedPreferencesData {
 
   static const _namePrefKey = "personal.name";
   static const _agePrefKey = "personal.age";
+  static const _concentrationDurationPrefKey = "pomodoro.concentration";
+  static const _shortBreakPrefKey = "pomodoro.shortBreak";
+  static const _longBreakPrefKey = "pomodoro.longBreak";
+  static const _phaseCountUntilBreakPrefKey = "pomodoro.cycleCount";
   static const _themePrefKey = "theme.themeName";
   static const _displayLeisureOnDashboardPrefKey = "dashboard.displayLeisure";
   static const _taskCountOnDashboardPrefKey = "dashboard.taskCount";

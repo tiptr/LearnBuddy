@@ -3,6 +3,7 @@ import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/settings/screens/dashboard_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/display_style_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
+import 'package:learning_app/features/settings/screens/pomodoro_settings_screen.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 import 'package:learning_app/features/settings/widgets/settings_group.dart';
@@ -44,7 +45,7 @@ class SettingsOverviewScreen extends StatelessWidget {
               title: "Pomodoro-Timer",
               subtitle: "Nicht-stören-Modus, Dauer der Phasen, ...",
               iconData: Icons.av_timer_outlined,
-              nextScreen: const NotImplementedScreen()),
+              nextScreen: const PomodoroSettingsScreen()),
           _settingsGroup(
               context: context,
               title: "Aufgaben",

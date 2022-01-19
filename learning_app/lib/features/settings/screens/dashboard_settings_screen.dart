@@ -35,8 +35,6 @@ class _DashboardSettingsScreenState extends State<DashboardSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Set initial dueDate:
-
     return ScreenWithoutBottomNavbarBaseTemplate(
       titleBar: const GoBackTitleBar(
         title: "Dashboard",
@@ -46,7 +44,7 @@ class _DashboardSettingsScreenState extends State<DashboardSettingsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
         children: [
           Text(
-            "Hinweis",
+            "Hinweis:",
             style: Theme.of(context).textTheme.textStyle2.withBold,
           ),
           const SizedBox(
