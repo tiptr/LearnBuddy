@@ -44,7 +44,7 @@ class _KeyWordFormDialogState extends State<KeyWordFormDialog> {
             : "Schlagwort bearbeiten",
         style: Theme.of(context)
             .textTheme
-            .textStyle1
+            .textStyle2
             .withBold
             .withOnBackgroundHard,
       ),
