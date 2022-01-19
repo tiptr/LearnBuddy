@@ -1,6 +1,6 @@
 # Nicht-funktionale Anforderungen
 ### Benutzbarkeit
- **NFA01**: Unter normalen Umständen, also ohne Netzwerkprobleme und einem uneingeschränkt funktionsfähigen Smartphone, muss das Einrichten der grundlegenden Einstellungen beim ersten Öffnen der App muss innerhalb von 30 Sekunden möglich sein.
+ **NFA01**: Unter normalen Umständen, also ohne Netzwerkprobleme und einem uneingeschränkt funktionsfähigen Smartphone, muss das Einrichten der grundlegenden Einstellungen beim ersten Öffnen der App innerhalb von 30 Sekunden möglich sein.
 + **NFA02**: Das System muss für Schüler ab der vierten Klasse intuitiv nutzbar sein, sodass ein durchschnittlicher Schüler, der zuvor noch nie die App benutzt hat, innerhalb von 60 Sekunden bewusst mithilfe der unteren Menüleiste durch die einzelnen Teile der App navigieren kann. 
 + **NFA03**: Das Starten eines Timers muss innerhalb von zwei Clicks nach dem Öffnen der App möglich sein.
 + **NFA04**: Die App muss offline - bis auf das dynamische Laden von Ausgleichsübungen - vollständig funktionsfähig sein.
