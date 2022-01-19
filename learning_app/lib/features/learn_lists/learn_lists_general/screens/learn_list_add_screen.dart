@@ -19,6 +19,7 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: LearnListAddAppBar(textController: _titleController),
       body: SingleChildScrollView(
         child: Container(

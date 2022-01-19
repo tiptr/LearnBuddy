@@ -20,7 +20,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // of this object.
   TasksDao(Database db) : super(db);
 
-  Stream<List<TaskEntity>>? _filteredSortedTopLevelTaskEntitiesStream;
   Stream<List<TaskEntity>>? _subLevelTaskEntitiesStream;
   Stream<List<TaskEntity>>? _queuedTopLevelTaskEntitiesStream;
 
@@ -89,15 +88,12 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
   }) {
-    _filteredSortedTopLevelTaskEntitiesStream =
-        (_filteredSortedTopLevelTaskEntitiesStream ??
-            (_createFilteredAndSortedTopLevelTaskEntitiesStream(
-              taskFilter: taskFilter,
-              taskOrder: taskOrder,
-            )));
-
-    return _filteredSortedTopLevelTaskEntitiesStream
-        as Stream<List<TaskEntity>>;
+    // Directly return the stream, as this one should be rebuild every time
+    // it is called with a new filter
+    return _createFilteredAndSortedTopLevelTaskEntitiesStream(
+      taskFilter: taskFilter,
+      taskOrder: taskOrder,
+    );
   }
 
   Stream<List<TaskEntity>> _createQueuedTopLevelTaskEntitiesStream() {
@@ -148,22 +144,29 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       })
       ..where((tsk) {
         // category filter, if applied
-        if (taskFilter.category.present) {
-          return tsk.categoryId.equals(taskFilter.category.value?.id);
+        if (taskFilter.categories.present) {
+          return tsk.categoryId.isIn(taskFilter.categories.value);
         } else {
           return const CustomExpression('TRUE');
         }
       })
       ..where((tsk) {
         // overDue filter, if applied
-        if (taskFilter.overDue.present) {
-          if (taskFilter.overDue.value == true) {
+        if (taskFilter.dueToday.present) {
+          if (taskFilter.dueToday.value == true) {
             return // currentDate -> midnight, when the day began
-                tsk.dueDate.isSmallerThan(currentDate);
+                tsk.dueDate.year.isSmallerOrEqual(currentDate.year) &
+                    tsk.dueDate.month.isSmallerOrEqual(currentDate.month) &
+                    tsk.dueDate.day.isSmallerOrEqual(currentDate.day);
           } else {
             return tsk.dueDate.isNull() |
                 // currentDate -> midnight, when the day began
-                tsk.dueDate.isBiggerOrEqual(currentDate);
+                (tsk.dueDate.year.isBiggerOrEqual(currentDate.year) &
+                    tsk.dueDate.month.isBiggerOrEqual(currentDate.month) &
+                    tsk.dueDate.day.isBiggerOrEqual(currentDate.day) &
+                    (tsk.dueDate.year.isBiggerThan(currentDate.year) |
+                        tsk.dueDate.month.isBiggerThan(currentDate.month) |
+                        tsk.dueDate.day.isBiggerThan(currentDate.day)));
           }
         } else {
           return const CustomExpression('TRUE');
@@ -210,6 +213,50 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
           return OrderingTerm(expression: sortExpression, mode: orderingMode);
         },
       ]);
+
+    // Fix for the ordering of null values. TODO: think of a solution with SQL
+    if (taskOrder.attribute == TaskOrderAttributes.dueDate) {
+      if (taskOrder.direction == OrderDirection.asc) {
+        return sortedFilteredTopLevelTasksQuery.watch().map((list) {
+          // Order null to the end
+          list.sort((task1, task2) {
+            final s1 = task1.dueDate;
+            final s2 = task2.dueDate;
+
+            if (s1 == null && s2 == null) {
+              return 0;
+            } else if (s1 == null) {
+              return 1;
+            } else if (s2 == null) {
+              return -1;
+            } else {
+              return s1.compareTo(s2);
+            }
+          });
+          return list;
+        });
+      } else if (taskOrder.direction == OrderDirection.desc) {
+        return sortedFilteredTopLevelTasksQuery.watch().map((list) {
+          // Order null to the front
+          list.sort((task1, task2) {
+            final s1 = task1.dueDate;
+            final s2 = task2.dueDate;
+
+            if (s1 == null && s2 == null) {
+              return 0;
+            } else if (s1 == null) {
+              return -1;
+            } else if (s2 == null) {
+              return 1;
+            } else {
+              return s1.compareTo(s2);
+            }
+          });
+
+          return list;
+        });
+      }
+    }
 
     return sortedFilteredTopLevelTasksQuery.watch();
   }

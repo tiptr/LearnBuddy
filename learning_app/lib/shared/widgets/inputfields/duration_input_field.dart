@@ -6,12 +6,16 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 
 class DurationInputField extends StatefulWidget {
   final Function onChange;
+  final String label;
   final Duration? preselectedDuration;
+  final TextEditingController? textEditingController;
 
   const DurationInputField({
     Key? key,
     required this.onChange,
     required this.preselectedDuration,
+    required this.label,
+    this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -19,14 +23,19 @@ class DurationInputField extends StatefulWidget {
 }
 
 class _DurationInputFieldState extends State<DurationInputField> {
-  final TextEditingController _textEditingController = TextEditingController();
+  late final TextEditingController _textEditingController;
   Duration? duration;
 
   @override
   void initState() {
     super.initState();
-    duration = widget.preselectedDuration;
-    _textEditingController.text = duration.format(ifNull: '');
+    _textEditingController =
+        widget.textEditingController ?? TextEditingController();
+    if (widget.preselectedDuration != null) {
+      duration = widget.preselectedDuration;
+      _textEditingController.text = duration.format(ifNull: '');
+    }
+
     // This listener is used for disallowing text selection
     _textEditingController.addListener(() {
       _textEditingController.selection =
@@ -106,7 +115,7 @@ class _DurationInputFieldState extends State<DurationInputField> {
               )
             : null,
         label: Text(
-          "Zeitschätzung",
+          widget.label,
           style: Theme.of(context).textTheme.textStyle2.withBold,
         ),
         hintText: 'Dauer auswählen',

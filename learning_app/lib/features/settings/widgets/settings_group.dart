@@ -7,6 +7,7 @@ class SettingsGroup extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData iconData;
+  final bool? colorHard;
   final Widget? action;
 
   const SettingsGroup(
@@ -14,16 +15,15 @@ class SettingsGroup extends StatelessWidget {
       required this.title,
       required this.subTitle,
       required this.iconData,
+      this.colorHard,
       this.action})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextStyle titleStyle = Theme.of(context).textTheme.textStyle3.withBold;
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10.0,
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,7 +31,9 @@ class SettingsGroup extends StatelessWidget {
           // Icon
           Icon(
             iconData,
-            color: Theme.of(context).colorScheme.onBackgroundHard,
+            color: colorHard ?? false
+                ? Theme.of(context).colorScheme.onBackgroundHard
+                : Theme.of(context).colorScheme.onBackground,
           ),
           // Title and Subtitle
           Expanded(
@@ -47,11 +49,9 @@ class SettingsGroup extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: Theme.of(context)
-                        .textTheme
-                        .textStyle3
-                        .withBold
-                        .withOnBackgroundHard,
+                    style: colorHard ?? false
+                        ? titleStyle.withOnBackgroundHard
+                        : titleStyle,
                   ),
 
                   // SUbtitle

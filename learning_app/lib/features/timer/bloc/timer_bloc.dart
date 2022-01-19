@@ -16,6 +16,7 @@ part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker = const Ticker();
+  static Config currentConfig = Config();
 
   StreamSubscription<int>? _tickerSubscription;
 
@@ -59,6 +60,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
             : "Die Pause ist vorbei. Weiter geht's!",
         title: 'Timer abgelaufen',
       );
+    }
+    if (event.duration <= 0) {
       emit(TimerRunComplete(
           event.duration, state._pomodoroMode, state._countPhase));
     }
@@ -90,6 +93,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
+    currentConfig = Config();
     SoundApi.cancelSound();
     emit(state.onSkipPhase());
     _tickerSubscription?.cancel();
@@ -97,4 +101,6 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       timeLoggingBloc.add(StopTimeLoggingEvent());
     }
   }
+
+  static get config => currentConfig;
 }
