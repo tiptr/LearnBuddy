@@ -30,7 +30,7 @@ class LeisureScreen extends StatelessWidget {
       ),
       body: BlocBuilder<LeisureCubit, LeisureState>(
         builder: (context, state) {
-          if (state is! LeisureCategoryLoaded) {
+          if (state is! LeisuresLoaded) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -68,7 +68,7 @@ class LeisureScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) {
                         return LeisureActivityOverviewScreen(
-                          activities: categories[idx].activities,
+                          categoryId: categories[idx].id,
                         );
                       }),
                     ),

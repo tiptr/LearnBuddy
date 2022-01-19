@@ -7,15 +7,15 @@ abstract class LeisureState extends Equatable {
   List<Object> get props => [];
 }
 
-class InitialLeisureCategoryState extends LeisureState {}
+class InitialLeisuresState extends LeisureState {}
 
 // TODO: refactor LeisureCategory to hold the filters rather than the stream
 // ignore: must_be_immutable
-class LeisureCategoryLoaded extends LeisureState {
+class LeisuresLoaded extends LeisureState {
   Stream<List<LeisureCategory>> selectedLeisureCategoriesStream;
   late Stream<List<ReadLeisureCategoriesDto>> listViewLeisureCategoriesStream;
 
-  LeisureCategoryLoaded({required this.selectedLeisureCategoriesStream}) {
+  LeisuresLoaded({required this.selectedLeisureCategoriesStream}) {
     listViewLeisureCategoriesStream =
         selectedLeisureCategoriesStream.map((categoryList) {
       return categoryList

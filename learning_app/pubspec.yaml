@@ -62,10 +62,6 @@ dependencies:
   flutter_slidable: ^1.2.0
   flutter_svg: ^1.0.2
 
-
-
-  flutter_svg: ^1.0.1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

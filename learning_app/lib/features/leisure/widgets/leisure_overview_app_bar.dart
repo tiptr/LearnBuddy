@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 
+// TODO: combine into generic appbar
 class LeisureOverviewAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String categoryTitle;
@@ -31,20 +32,6 @@ class LeisureOverviewAppBar extends StatelessWidget
                       textAlign: TextAlign.left,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
-                IconButton(
-                  onPressed: () {
-                    //TODO: add search function
-                  },
-                  icon: const Icon(Icons.search),
-                  iconSize: 30,
-                ),
-                IconButton(
-                  onPressed: () {
-                    //TODO: add settings function
-                  },
-                  icon: const Icon(Icons.more_vert),
-                  iconSize: 30,
-                ),
               ],
             ),
           ),
@@ -54,5 +41,5 @@ class LeisureOverviewAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(mainScreensAppBarHeight);
+  Size get preferredSize => const Size.fromHeight(detailScreensAppBarHeight);
 }

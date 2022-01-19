@@ -4,14 +4,13 @@ import 'package:learning_app/constants/app_bar_height.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 
+// TODO: combine into generic appbar
 class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String categoryTitle;
   final ReadLeisureActivitiesDto leisureActivity;
 
   const LeisureAppBar(
-      {Key? key,
-      required this.categoryTitle,
-      required this.leisureActivity})
+      {Key? key, required this.categoryTitle, required this.leisureActivity})
       : super(key: key);
 
   @override
@@ -49,13 +48,6 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                           : Colors.grey),
                   iconSize: 30,
                 ),
-                IconButton(
-                  onPressed: () {
-                    //TODO: add settings function
-                  },
-                  icon: const Icon(Icons.more_vert),
-                  iconSize: 30,
-                ),
               ],
             ),
           ),
@@ -65,5 +57,5 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(mainScreensAppBarHeight);
+  Size get preferredSize => const Size.fromHeight(detailScreensAppBarHeight);
 }

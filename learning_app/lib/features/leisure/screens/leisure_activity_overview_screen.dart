@@ -1,42 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 import 'package:learning_app/features/leisure/widgets/leisure_overview_app_bar.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LeisureActivityOverviewScreen extends StatelessWidget {
-  final List<ReadLeisureActivitiesDto> activities;
+  final int categoryId;
 
-  const LeisureActivityOverviewScreen({required this.activities, Key? key})
+  const LeisureActivityOverviewScreen({required this.categoryId, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const LeisureOverviewAppBar(
-          categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
-      body: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: activities.length,
-        itemBuilder: (BuildContext ctx, int idx) {
-          return GestureDetector(
-              child: LeisureActivityCard(
-                leisureActivity: activities[idx],
+    return StreamBuilder<List<ReadLeisureActivitiesDto>>(
+        stream: BlocProvider.of<LeisureCubit>(context)
+            .watchLeisureActivitiesByCategoryId(categoryId: categoryId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                'Aktuell existieren leider keine Aktivitäten für die gewählte Kategorie',
+                textAlign: TextAlign.center,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .textStyle4,
               ),
-              onTap: () => {
-                    Navigator.push(
-                        ctx,
-                        MaterialPageRoute(
-                          builder: (ctx) => LeisureActivityScreen(
-                              leisureActivity: activities[idx]),
-                        ))
-                  });
-        },
-      ),
-    );
+            );
+          }
+
+          final activities = snapshot.data!;
+
+          return Scaffold(
+            appBar: const LeisureOverviewAppBar(
+                categoryTitle: "Fitness ohne Geräte"), //TODO: insert title
+            body: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: activities.length,
+              itemBuilder: (BuildContext ctx, int idx) {
+                return GestureDetector(
+                    child: LeisureActivityCard(
+                      leisureActivity: activities[idx],
+                    ),
+                    onTap: () =>
+                    {
+                      Navigator.push(
+                          ctx,
+                          MaterialPageRoute(
+                            builder: (ctx) =>
+                                LeisureActivityScreen(
+                                  categoryId: categoryId,
+                                    activityId: activities[idx].id
+                                ),
+                          ))
+                    });
+              },
+            ),
+          );
+        });
   }
 }
 

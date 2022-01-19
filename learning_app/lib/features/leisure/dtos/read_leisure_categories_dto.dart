@@ -35,7 +35,9 @@ class ReadLeisureCategoriesDto extends Equatable {
         id: leisureCategory.id,
         name: leisureCategory.name,
         pathToImage: leisureCategory.pathToImage,
-        activities: leisureCategory.activities.map((model) => ReadLeisureActivitiesDto.fromLeisureActivity(model)).toList(),
+        activities: leisureCategory.activities
+            .map((model) => ReadLeisureActivitiesDto.fromLeisureActivity(model))
+            .toList(),
         starCount: leisureCategory.activities
             .where((activity) => activity.isFavorite)
             .toList()
