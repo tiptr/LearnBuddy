@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_details_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
@@ -102,7 +103,7 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
                   itemCount: learnList.words.length, //should always be 8 for a body list!
                   itemBuilder: (context, i) {
                     var newDescriptionController = TextEditingController();
-                    return ListViewItem(
+                    return LearningAidBodyDetailsListViewItem(
                         word: learnList.words[i].word,
                         text: bodyParts[i],
                       );
@@ -119,62 +120,6 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class ListViewItem extends StatefulWidget {
-  final String text;
-  final String word;
-  const ListViewItem({Key? key, required this.text, required this.word}) : super(key: key);
-
-  @override
-  State<ListViewItem> createState() => _ListViewItemState();
-}
-
-class _ListViewItemState extends State<ListViewItem> {
-  bool _obscureText = true;
-
-  // Toggles the password show status
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            margin: const EdgeInsets.only(left: 10.0),
-            child: Text(
-              widget.text,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                _obscureText ? "*****" : widget.word,
-              ),
-              IconButton(
-                icon: _obscureText ? const Icon(Icons.visibility, color: Colors.black) : const Icon(Icons.visibility_off, color: Colors.black),
-                onPressed: _toggle
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

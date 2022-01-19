@@ -4,6 +4,7 @@ import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_add_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
@@ -113,7 +114,7 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
               itemBuilder: (context, i) {
                 var newDescriptionController = TextEditingController();
                 _descriptionControllers.add(newDescriptionController);
-                return ListViewItem(
+                return LearningAidBodyDetailAddListViewItem(
                   newDescriptionController: _descriptionControllers[i],
                   text: bodyParts[i],
                   id: i,
@@ -179,44 +180,5 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
     } else {
       words.add(LearnListWord(id: id, word: text));
     }
-  }
-}
-
-class ListViewItem extends StatelessWidget {
-  const ListViewItem(
-      {Key? key, required this.newDescriptionController, required this.text, required this.id, required this.onChange})
-      : super(key: key);
-
-  final TextEditingController newDescriptionController;
-  final String text;
-  final int id;
-  final Function(String, int) onChange;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            margin: const EdgeInsets.only(left: 10.0),
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-        TermInputField(
-          hintText: "Text eingeben",
-          iconData: Icons.edit,
-          textController: newDescriptionController,
-          id: id,
-          onChange: onChange
-        ),
-      ],
-    );
   }
 }

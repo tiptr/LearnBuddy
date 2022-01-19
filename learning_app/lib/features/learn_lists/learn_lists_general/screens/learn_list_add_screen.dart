@@ -8,6 +8,7 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/util/logger.dart';
@@ -78,7 +79,7 @@ class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainE
                 shrinkWrap: true,
                 itemCount: items.length,
                 itemBuilder: (context, i) {
-                  return ListViewItem(
+                  return LearnListAddListViewItem(
                     newDescriptionController: _descriptionControllers[i],
                     id: i,
                     onChange: onChangeText,
@@ -94,7 +95,7 @@ class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainE
                     _descriptionControllers.add(newDescriptionController);
                     // add another item to the list
                     //items.add(items.length);
-                    items.add(ListViewItem(
+                    items.add(LearnListAddListViewItem(
                         newDescriptionController: newDescriptionController,
                         id: idCount,
                         onChange: onChangeText));
@@ -174,31 +175,5 @@ class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainE
     } else {
       words.add(LearnListWord(id: id, word: text));
     }
-  }
-}
-
-class ListViewItem extends StatelessWidget {
-  const ListViewItem({Key? key, required this.newDescriptionController, required this.id, required this.onChange})
-      : super(key: key);
-
-  final TextEditingController newDescriptionController;
-  final int id;
-  final Function(String, int) onChange;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TermInputField(
-          hintText: "Text eingeben",
-          iconData: Icons.edit,
-          textController: newDescriptionController,
-          onChange: onChange,
-          id: id
-        ),
-        // Only for navigation to tags
-        const SizedBox(height: 20.0),
-      ],
-    );
   }
 }

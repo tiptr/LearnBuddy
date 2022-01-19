@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_detail_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learning_lists_detail_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 
@@ -59,7 +60,7 @@ class LearnListDetailScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: learnList.words.length,
                     itemBuilder: (context, i) {
-                      return ListViewItem(
+                      return LearnListDetailListViewItem(
                         word: learnList.words[i].word
                       );
                     },
@@ -71,49 +72,6 @@ class LearnListDetailScreen extends StatelessWidget {
           ),
         );
       }
-    );
-  }
-}
-
-
-class ListViewItem extends StatefulWidget {
-  final String word;
-  const ListViewItem({Key? key, required this.word}) : super(key: key);
-
-  @override
-  State<ListViewItem> createState() => _ListViewItemState();
-}
-
-class _ListViewItemState extends State<ListViewItem> {
-  bool _obscureText = true;
-
-  // Toggles the password show status
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(left: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                _obscureText ? "*****" : widget.word,
-              ),
-              IconButton(
-                icon: _obscureText ? const Icon(Icons.visibility, color: Colors.black) : const Icon(Icons.visibility_off, color: Colors.black),
-                onPressed: _toggle,
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
