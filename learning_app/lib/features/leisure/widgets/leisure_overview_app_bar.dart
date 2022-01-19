@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
 // TODO: combine into generic appbar
 class LeisureOverviewAppBar extends StatelessWidget
@@ -30,7 +31,11 @@ class LeisureOverviewAppBar extends StatelessWidget
                 Expanded(
                   child: Text(categoryTitle,
                       textAlign: TextAlign.left,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle1
+                          .withBold
+                          .withOnBackgroundHard),
                 ),
               ],
             ),

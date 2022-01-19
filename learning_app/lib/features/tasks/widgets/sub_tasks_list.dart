@@ -10,11 +10,13 @@ import 'package:learning_app/constants/theme_font_constants.dart';
 class SubTasksList extends StatefulWidget {
   final List<DetailsReadTaskDto> subTasksList;
   final bool directlyStartSubtaskCreation;
+  final DetailsReadTaskDto detailDto;
 
   const SubTasksList({
     Key? key,
     this.subTasksList = const [],
     this.directlyStartSubtaskCreation = false,
+    required this.detailDto,
   }) : super(key: key);
 
   @override
@@ -60,22 +62,23 @@ class _SubTasksListState extends State<SubTasksList> {
                     creatingModeActive = false;
                   });
                 },
-                onPressEnterSubmit: (title) {
+                onPressEnterSubmit: (title, categoryId) {
                   // When enter is used, allow the quick creation of multiple
                   // subtasks
                   // -> currentlyCreatingNewSubtask not changed on purpose
                   BlocProvider.of<AlterTaskCubit>(context)
-                      .createNewSubTask(title);
+                      .createNewSubTask(title, categoryId);
                 },
-                onUseButtonSubmit: (title) async {
+                onUseButtonSubmit: (title, categoryId) async {
                   // When the button is used, only create one subtask
                   setState(() {
                     creatingModeActive = false;
                   });
 
                   BlocProvider.of<AlterTaskCubit>(context)
-                      .createNewSubTask(title);
+                      .createNewSubTask(title, categoryId);
                 },
+                detailDto: widget.detailDto,
               );
             }
           },
