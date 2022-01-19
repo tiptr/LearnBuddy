@@ -53,9 +53,7 @@ class TasksCardProgress extends StatelessWidget {
               flex: processIndicatorFlexPortion,
               child: Center(
                 child: TasksProcessIndicator(
-                    progress: amountTotal > 0
-                      ? amountDone / amountTotal
-                      : 0,
+                    progress: amountTotal > 0 ? amountDone / amountTotal : 0,
                     size: 92.5),
               ),
             ),

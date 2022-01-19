@@ -119,7 +119,6 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
 
                         BlocProvider.of<TasksCubit>(context)
                             .loadTasksWithoutFilter();
-                        
                       });
                     },
                   ),
@@ -129,15 +128,16 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                       style: Theme.of(context).textTheme.textStyle4.withPrimary,
                     ),
                     onPressed: () {
-                      
                       final filter = TaskFilter(
-                        categories: drift.Value(selectedCategories.map((category) => category.id).toList()),
-                        keywords: drift.Value(selectedKeywords.map((keyword) => keyword.id).toList()),
+                        // dueToday: drift.Value(false),
+                        // done: drift.Value(true)
+                        // categories: drift.Value(selectedCategories.map((category) => category.id).toList()),
+                        // keywords: drift.Value(selectedKeywords.map((keyword) => keyword.id).toList()),
                       );
 
                       BlocProvider.of<TasksCubit>(context)
                           .loadFilteredTasks(filter);
-                      
+
                       print("Anwenden Filterselektion");
                       print("Kategorien $selectedCategories");
                       print("Schlagwörter $selectedKeywords");

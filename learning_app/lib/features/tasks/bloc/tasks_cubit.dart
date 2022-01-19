@@ -1,7 +1,9 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/task_queue/repositories/queue_repository.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
+import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/repositories/task_repository.dart';
 import 'package:learning_app/util/injection.dart';
@@ -17,7 +19,6 @@ class TasksCubit extends Cubit<TaskState> {
   }
 
   Future<void> loadTasksWithoutFilter() async {
-
     var tasks = _taskRepository.watchFilteredSortedTasks();
     emit(TasksLoaded(selectedTasksStream: tasks));
   }
@@ -26,10 +27,11 @@ class TasksCubit extends Cubit<TaskState> {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var tasks = _taskRepository.watchFilteredSortedTasks(taskFilter: taskFilter);
+      var tasks =
+          _taskRepository.watchFilteredSortedTasks(taskFilter: taskFilter);
       emit(TasksLoaded(
-          selectedTasksStream: tasks,
-          taskFilter: taskFilter,
+        selectedTasksStream: tasks,
+        taskFilter: taskFilter,
       ));
     }
   }
@@ -77,6 +79,22 @@ class TasksCubit extends Cubit<TaskState> {
       } else {
         return null;
       }
+    });
+  }
+
+  /// This returns the list-dtos for all due tasks
+  Stream<List<ListReadTaskDto>>? getDetailsDtoStreamForDashboard() {
+    final tasksStream =
+    _taskRepository.watchFilteredSortedTasks(
+        taskFilter: const TaskFilter(
+          dueToday: Value(true),
+        ),
+    );
+
+    return tasksStream.map((tasksList) {
+      return tasksList
+          .map((task) => ListReadTaskDto.fromTaskWithQueueStatus(task))
+          .toList();
     });
   }
 }

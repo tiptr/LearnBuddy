@@ -61,8 +61,7 @@ class DbTaskRepository implements TaskRepository {
 
   @override
   Stream<List<TaskWithQueueStatus>> watchQueuedTasks() {
-    _queuedTasksStream =
-        _queuedTasksStream ?? _buildQueuedTasksStream();
+    _queuedTasksStream = _queuedTasksStream ?? _buildQueuedTasksStream();
     return _queuedTasksStream as Stream<List<TaskWithQueueStatus>>;
   }
 
@@ -381,7 +380,8 @@ class DbTaskRepository implements TaskRepository {
       return stream.map(
           (tasksWithQueueStatus) => tasksWithQueueStatus.where((taskWithQueue) {
                 final wantedKeywordIds = taskFilter.keywords.value;
-                final actualKeywordIds = taskWithQueue.task.keywords.map((kwd) => kwd.id);
+                final actualKeywordIds =
+                    taskWithQueue.task.keywords.map((kwd) => kwd.id);
                 // accept, if at least one of the wanted is found
                 return wantedKeywordIds.any((wanted) {
                   return actualKeywordIds.contains(wanted);

@@ -11,21 +11,16 @@ import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 
-class TasksCard extends StatelessWidget {
-  const TasksCard({Key? key}) : super(key: key);
+class TasksCards extends StatelessWidget {
+  const TasksCards({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TasksCubit, TaskState>(
-      builder: (context, state) {
-        // This only checks for the success state, we might want to check for
-        // errors in the future here.
-        if (state is! TasksLoaded) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    final stream = BlocProvider.of<TasksCubit>(context)
+        .getDetailsDtoStreamForDashboard();
 
-        return StreamBuilder<List<ListReadTaskDto>>(
-          stream: state.selectedListViewTasksStream,
+    return StreamBuilder<List<ListReadTaskDto>>(
+          stream: stream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -100,7 +95,7 @@ class TasksCard extends StatelessWidget {
             );
           },
         );
-      },
-    );
+
+
   }
 }

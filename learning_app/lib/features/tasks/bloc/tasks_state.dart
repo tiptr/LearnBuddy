@@ -31,4 +31,3 @@ class TasksLoaded extends TaskState {
   @override
   List<Object> get props => [selectedTasksStream, taskFilter];
 }
-

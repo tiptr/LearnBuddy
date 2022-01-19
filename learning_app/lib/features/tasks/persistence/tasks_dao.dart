@@ -153,14 +153,21 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       })
       ..where((tsk) {
         // overDue filter, if applied
-        if (taskFilter.overDue.present) {
-          if (taskFilter.overDue.value == true) {
+        if (taskFilter.dueToday.present) {
+          if (taskFilter.dueToday.value == true) {
             return // currentDate -> midnight, when the day began
-                tsk.dueDate.isSmallerThan(currentDate);
+                tsk.dueDate.year.isSmallerOrEqual(currentDate.year) &
+                    tsk.dueDate.month.isSmallerOrEqual(currentDate.month) &
+                    tsk.dueDate.day.isSmallerOrEqual(currentDate.day);
           } else {
             return tsk.dueDate.isNull() |
                 // currentDate -> midnight, when the day began
-                tsk.dueDate.isBiggerOrEqual(currentDate);
+                (tsk.dueDate.year.isBiggerOrEqual(currentDate.year) &
+                    tsk.dueDate.month.isBiggerOrEqual(currentDate.month) &
+                    tsk.dueDate.day.isBiggerOrEqual(currentDate.day) &
+                    (tsk.dueDate.year.isBiggerThan(currentDate.year) |
+                        tsk.dueDate.month.isBiggerThan(currentDate.month) |
+                        tsk.dueDate.day.isBiggerThan(currentDate.day)));
           }
         } else {
           return const CustomExpression('TRUE');
