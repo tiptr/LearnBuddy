@@ -25,6 +25,7 @@ class DetailsReadTaskDto {
   // Instead, here the estimations of the subtasks are accumulated and the
   // estimations of finished subtasks are not added
   final Duration? remainingTimeEstimation; // minutes
+  final Duration timeLogSum;
 
   final List<DetailsReadTaskDto> children;
 
@@ -53,6 +54,7 @@ class DetailsReadTaskDto {
     required this.finishedSubTaskCount,
     this.remainingTimeEstimation,
     required this.children,
+    this.timeLogSum = Duration.zero,
   });
 
   /// Creates a details dto from the model. Optionally can provide the details
@@ -121,6 +123,7 @@ class DetailsReadTaskDto {
       subTaskCount: task.subTaskCount,
       finishedSubTaskCount: task.finishedSubTaskCount,
       remainingTimeEstimation: task.remainingTimeEstimation,
+      timeLogSum: task.sumAllTimeLogs,
       children: task.children
           .map((subTask) => DetailsReadTaskDto._buildFromTaskWithQueueStatus(
                 task: subTask,

@@ -17,6 +17,8 @@ import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/features/tasks/widgets/category_select_field.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
+import 'package:learning_app/features/tasks/widgets/task_ancestor_indicator.dart';
+import 'package:learning_app/features/tasks/widgets/task_used_time_indicator.dart';
 import 'package:learning_app/shared/widgets/inputfields/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/keyword_selection.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
@@ -210,39 +212,67 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                   margin: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      // Category Select
-                      BlocBuilder<CategoriesCubit, CategoriesState>(
-                          builder: (context, state) {
-                        if (state is! CategoriesLoaded) {
-                          return const CircularProgressIndicator();
-                        }
+                      // Show ancestor titles, if this is a subtask
+                      if (detailsDto != null &&
+                          detailsDto.ancestorTitles.isNotEmpty)
+                        TaskAncestorIndicator(
+                          topLevelId: detailsDto.topLevelParentId,
+                          ancestors: detailsDto.ancestorTitles,
+                          categoryColor: detailsDto.category?.color,
+                        ),
 
-                        return StreamBuilder<List<ReadCategoryDto>>(
-                          stream: state.categoriesStream,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
+                      if (detailsDto != null &&
+                          detailsDto.ancestorTitles.isNotEmpty)
+                        const SizedBox(height: 30.0),
 
-                            return CategorySelectField(
-                              onSelect: (int? categoryId) {
-                                BlocProvider.of<AlterTaskCubit>(context)
-                                    .alterTaskAttribute(
-                                  TaskManipulationDto(
-                                    categoryId: drift.Value(categoryId),
-                                  ),
+                      // Used time indicator, if timelogs exist
+                      if (detailsDto != null &&
+                          detailsDto.timeLogSum > Duration.zero)
+                        TaskUsedTimeIndicator(
+                          usedTime: detailsDto.timeLogSum,
+                        ),
+
+                      if (detailsDto != null &&
+                          detailsDto.timeLogSum > Duration.zero)
+                        const SizedBox(height: 30.0),
+
+                      // Category Select (only if ancestors are not shown)
+                      if (detailsDto == null ||
+                          detailsDto.ancestorTitles.isEmpty)
+                        BlocBuilder<CategoriesCubit, CategoriesState>(
+                            builder: (context, state) {
+                          if (state is! CategoriesLoaded) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          return StreamBuilder<List<ReadCategoryDto>>(
+                            stream: state.categoriesStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                              },
-                              options: snapshot.data!,
-                              preselectedCategoryId: detailsDto?.category?.id,
-                            );
-                          },
-                        );
-                      }),
-                      const SizedBox(height: 20.0),
+                              }
+
+                              return CategorySelectField(
+                                onSelect: (int? categoryId) {
+                                  BlocProvider.of<AlterTaskCubit>(context)
+                                      .alterTaskAttribute(
+                                    TaskManipulationDto(
+                                      categoryId: drift.Value(categoryId),
+                                    ),
+                                  );
+                                },
+                                options: snapshot.data!,
+                                preselectedCategoryId: detailsDto?.category?.id,
+                              );
+                            },
+                          );
+                        }),
+                      if (detailsDto == null ||
+                          detailsDto.ancestorTitles.isEmpty)
+                        const SizedBox(height: 20.0),
 
                       // Keywords Selection
                       BlocBuilder<KeyWordsCubit, KeyWordsState>(

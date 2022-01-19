@@ -27,7 +27,8 @@ class TaskAddAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<TaskAddAppBar> createState() => _TaskAddAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(detailScreensAppBarHeight);
+  Size get preferredSize =>
+      const Size.fromHeight(detailScreensAppBarHeight - 10);
 }
 
 class _TaskAddAppBarState extends State<TaskAddAppBar> {
@@ -60,7 +61,7 @@ class _TaskAddAppBarState extends State<TaskAddAppBar> {
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: const EdgeInsets.only(top: 10.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
