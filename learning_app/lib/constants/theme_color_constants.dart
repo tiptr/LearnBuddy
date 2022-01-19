@@ -9,6 +9,7 @@ class ColorSchemes {
   static ColorScheme darkColorScheme() {
     const backgroundColor = Color(0xFF212121);
     ColorScheme darkTheme = const ColorScheme.dark().copyWith(
+      brightness: Brightness.dark,
       primary: const Color(0xFF00FC82),
       secondary: const Color(0xFFF5F232),
       background: backgroundColor,
@@ -27,6 +28,7 @@ class ColorSchemes {
     const backgroundColor = Color(0xFFF9F9FE);
     const onBackgroundColor = Color(0xFF636573);
     ColorScheme theme = const ColorScheme.light().copyWith(
+      brightness: Brightness.light,
       primary: const Color(0xFF3444CF),
       secondary: const Color(0xFF9E5EE1),
       background: const Color(0xFFF9F9FE),

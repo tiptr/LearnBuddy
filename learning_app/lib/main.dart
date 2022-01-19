@@ -14,9 +14,9 @@ import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
-
 import 'features/themes/bloc/bloc.dart';
 import 'features/themes/themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -26,10 +26,15 @@ const List<Widget> _pages = <Widget>[
   LearnListsScreen(),
 ];
 
-void main() {
+Future<void> main() async {
   // Initialize dependency injection:
   configureDependencies();
-
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? pref = prefs.getString(Themes.prefKey);
+  ThemeName themeName = ThemeName.values.singleWhere(
+      (mode) => mode.name == (pref ?? ThemeName.light.name),
+      orElse: () => ThemeName.light);
   Logger.level = Level.debug;
 
   runApp(
@@ -85,13 +90,11 @@ void main() {
           },
         ),
         BlocProvider<ThemeCubit>(create: (context) {
-          return ThemeCubit(
-            initialState: ThemeState(
-              themeName: ThemeName.light,
-              themeData: Themes.lightThemeData(),
-              isDark: false,
-            ),
-          );
+          ThemeState themeState = ThemeState.fromName(themeName);
+          ThemeCubit themeCubit = ThemeCubit(initialState: themeState);
+          // Make sure the shared Preferences are updated
+          themeCubit.setToTheme(themeName);
+          return themeCubit;
         }),
       ],
       child: const MyApp(),
