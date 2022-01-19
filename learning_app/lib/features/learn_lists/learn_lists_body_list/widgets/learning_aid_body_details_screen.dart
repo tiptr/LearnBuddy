@@ -1,16 +1,19 @@
-
 import 'package:flutter/material.dart';
 
 class LearningAidBodyDetailsListViewItem extends StatefulWidget {
   final String text;
   final String word;
-  const LearningAidBodyDetailsListViewItem({Key? key, required this.text, required this.word}) : super(key: key);
+  const LearningAidBodyDetailsListViewItem(
+      {Key? key, required this.text, required this.word})
+      : super(key: key);
 
   @override
-  State<LearningAidBodyDetailsListViewItem> createState() => _LearningAidBodyDetailsListViewItemState();
+  State<LearningAidBodyDetailsListViewItem> createState() =>
+      _LearningAidBodyDetailsListViewItemState();
 }
 
-class _LearningAidBodyDetailsListViewItemState extends State<LearningAidBodyDetailsListViewItem> {
+class _LearningAidBodyDetailsListViewItemState
+    extends State<LearningAidBodyDetailsListViewItem> {
   bool _obscureText = true;
 
   // Toggles the password show status
@@ -46,9 +49,10 @@ class _LearningAidBodyDetailsListViewItemState extends State<LearningAidBodyDeta
                 _obscureText ? "*****" : widget.word,
               ),
               IconButton(
-                icon: _obscureText ? const Icon(Icons.visibility, color: Colors.black) : const Icon(Icons.visibility_off, color: Colors.black),
-                onPressed: _toggle
-              ),
+                  icon: _obscureText
+                      ? const Icon(Icons.visibility, color: Colors.black)
+                      : const Icon(Icons.visibility_off, color: Colors.black),
+                  onPressed: _toggle),
             ],
           ),
         ),

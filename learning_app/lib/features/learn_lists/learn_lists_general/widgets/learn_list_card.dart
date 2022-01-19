@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 

@@ -31,7 +31,8 @@ class BodyListWordDetailsDao extends DatabaseAccessor<Database>
         as Stream<List<BodyListWordDetailEntity>>;
   }
 
-  Future<int> createBodyListWord(BodyListWordDetailsCompanion bodyListWordDetailsCompanion) {
+  Future<int> createBodyListWord(
+      BodyListWordDetailsCompanion bodyListWordDetailsCompanion) {
     return into(bodyListWordDetails).insert(bodyListWordDetailsCompanion);
   }
 }

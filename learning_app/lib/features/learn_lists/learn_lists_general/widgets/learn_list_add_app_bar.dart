@@ -7,11 +7,13 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
 import 'package:drift/drift.dart' as drift;
 
-class LearnListAddAppBar extends StatelessWidget implements PreferredSizeWidget {
+class LearnListAddAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final TextEditingController textController;
   final Function() onSaveLearnList;
 
-  const LearnListAddAppBar({Key? key, required this.textController, required this.onSaveLearnList})
+  const LearnListAddAppBar(
+      {Key? key, required this.textController, required this.onSaveLearnList})
       : super(key: key);
 
   @override

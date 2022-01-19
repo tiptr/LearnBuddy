@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:drift/drift.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_state.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/create_learn_list_dto.dart';
@@ -87,16 +86,18 @@ class AlterLearnListCubit extends Cubit<AlterLearnListState> {
       // Save the learn list, if all required attributes are given
       ConstructingNewLearnList constructingState = currentState;
       if (constructingState.createLearnListDto.isReadyToStore) {
-        int newLearnListId =
-            await _learnListRepository.createLearnList(constructingState.createLearnListDto, method);
-        logger.d("[Learn List Cubit] New learn list was saved. Id: $newLearnListId");
+        int newLearnListId = await _learnListRepository.createLearnList(
+            constructingState.createLearnListDto, method);
+        logger.d(
+            "[Learn List Cubit] New learn list was saved. Id: $newLearnListId");
         emit(WaitingForAlterLearnListState());
         return newLearnListId;
       } else {
         // Not all requirements given
         logger.d(
             "[Learn List Cubit] Save learn list triggered, but not every required attribute was set");
-        emit(ConstructingNewLearnList(createLearnListDto: currentState.createLearnListDto));
+        emit(ConstructingNewLearnList(
+            createLearnListDto: currentState.createLearnListDto));
         return null;
       }
     } else {

@@ -10,12 +10,10 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class LearningAidBodyAddScreen extends StatelessWidget {
-
   const LearningAidBodyAddScreen({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +36,8 @@ class LearningAidBodyAddScreenMainElement extends StatefulWidget {
       _LearningAidBodyAddScreenMainElementState();
 }
 
-class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAddScreenMainElement> {
+class _LearningAidBodyAddScreenMainElementState
+    extends State<LearningAidBodyAddScreenMainElement> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
   List<Widget> items = [];
@@ -59,7 +58,7 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
     super.initState();
 
     BlocProvider.of<AlterLearnListCubit>(context)
-          .startNewLearnListConstruction();
+        .startNewLearnListConstruction();
   }
 
   @override
@@ -128,8 +127,8 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
         ),
         color: Colors.white,
         body: SvgPicture.asset(
-                "assets/learning_aids/moehm_alternative.svg",
-              ),
+          "assets/learning_aids/moehm_alternative.svg",
+        ),
       ),
     );
   }
@@ -143,13 +142,13 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
     var rdm = Random();
     var startId = rdm.nextInt(4294967280);
     final List<LearnListWord> wordsWithRandomIds = [];
-    for(int i = 0; i < words.length; i++){
+    for (int i = 0; i < words.length; i++) {
       wordsWithRandomIds.add(LearnListWord(id: startId++, word: words[i].word));
     }
     cubit.alterLearnListAttribute(LearnListManipulationDto(
       words: drift.Value(wordsWithRandomIds),
     ));
-                    
+
     // validate required fields:
     if (!cubit.validateLearnListConstruction()) {
       // Not ready to save! Inform the user and continue
@@ -167,14 +166,14 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
     bool containsElementWithSameId = false;
     LearnListWord? elementToOverwrite;
 
-    for(LearnListWord word in words) {
-      if(word.id == id) {
+    for (LearnListWord word in words) {
+      if (word.id == id) {
         containsElementWithSameId = true;
         elementToOverwrite = word;
       }
     }
 
-    if(containsElementWithSameId) {
+    if (containsElementWithSameId) {
       words.remove(elementToOverwrite);
       words.add(LearnListWord(id: id, word: text));
     } else {

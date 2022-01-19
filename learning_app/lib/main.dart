@@ -12,7 +12,6 @@ import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
 import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/util/injection.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:learning_app/util/notification_api.dart';
 import 'package:logger/logger.dart';
@@ -28,7 +27,7 @@ List<Widget> _pages = <Widget>[
   const TaskScreen(),
   const DashboardScreen(),
   const LeisureScreen(),
-  LearnListsScreen(),
+  const LearnListsScreen(),
 ];
 
 Future<void> main() async {

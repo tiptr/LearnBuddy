@@ -24,17 +24,16 @@ class ReadLearnListDto extends Equatable {
     required this.referencingTasksCount,
   });
 
-  static ReadLearnListDto fromLearnList(
-      LearnList learnList) {
+  static ReadLearnListDto fromLearnList(LearnList learnList) {
     return ReadLearnListDto(
-      id: learnList.id,
-      name: learnList.name,
-      creationDate: learnList.creationDate,
-      words: learnList.words,
-      category: learnList.category,
-      isArchived: learnList.isArchived,
-      referencingTasksCount: 0 //TODO: calculate it here correctly!!!
-    );
+        id: learnList.id,
+        name: learnList.name,
+        creationDate: learnList.creationDate,
+        words: learnList.words,
+        category: learnList.category,
+        isArchived: learnList.isArchived,
+        referencingTasksCount: 0 //TODO: calculate it here correctly!!!
+        );
   }
 
   /// Get the count of words in this list

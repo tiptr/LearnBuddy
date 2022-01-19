@@ -10,5 +10,6 @@ abstract class LearnListRepository {
 
   Stream<Map<int, LearnList>> watchIdToLearnListMap();
 
-  Future<int> createLearnList(CreateLearnListDto newLearnList, LearnMethods method);
+  Future<int> createLearnList(
+      CreateLearnListDto newLearnList, LearnMethods method);
 }

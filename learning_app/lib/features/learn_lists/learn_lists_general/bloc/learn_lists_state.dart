@@ -17,7 +17,8 @@ class LearnListLoaded extends LearnListsState {
   late Stream<List<ReadLearnListDto>> selectedListViewlearnListsStream;
 
   LearnListLoaded({required this.selectedLearnListsStream}) {
-    selectedListViewlearnListsStream = selectedLearnListsStream.map((learnListsList) {
+    selectedListViewlearnListsStream =
+        selectedLearnListsStream.map((learnListsList) {
       return learnListsList
           .map((learnList) => ReadLearnListDto.fromLearnList(learnList))
           .toList();

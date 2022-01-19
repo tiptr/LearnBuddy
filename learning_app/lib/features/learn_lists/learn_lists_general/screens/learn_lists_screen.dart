@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grouped_list/grouped_list.dart';
-import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_details_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_state.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -36,10 +33,10 @@ class LearnListsScreen extends StatelessWidget {
       body: BlocBuilder<LearnListsCubit, LearnListsState>(
         builder: (context, state) {
           if (state is! LearnListLoaded) {
-             return const Center(
-               child: CircularProgressIndicator(),
-             );
-           }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
           return StreamBuilder<List<ReadLearnListDto>>(
             stream: state.selectedListViewlearnListsStream,
@@ -60,28 +57,26 @@ class LearnListsScreen extends StatelessWidget {
               final learnLists = snapshot.data!;
 
               return ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: learnLists.length,
-                itemBuilder: (BuildContext ctx, int idx) {
-                  return GestureDetector(
-                    child: LearnListCard(
-                      learningAid: learnLists[idx],
-                    ),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        if(learnLists[idx] is BodyList) {
-                          return LearningAidBodyDetailsScreen(learnListId: learnLists[idx].id);
-                        } else {
-                          return LearnListDetailScreen(learnListId: learnLists[idx].id);
-                        }
-                      })
-                    )
-                  );
-                }
-              );
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: learnLists.length,
+                  itemBuilder: (BuildContext ctx, int idx) {
+                    return GestureDetector(
+                        child: LearnListCard(
+                          learningAid: learnLists[idx],
+                        ),
+                        onTap: () => Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              if (learnLists[idx] is BodyList) {
+                                return LearningAidBodyDetailsScreen(
+                                    learnListId: learnLists[idx].id);
+                              } else {
+                                return LearnListDetailScreen(
+                                    learnListId: learnLists[idx].id);
+                              }
+                            })));
+                  });
             },
           );
         },

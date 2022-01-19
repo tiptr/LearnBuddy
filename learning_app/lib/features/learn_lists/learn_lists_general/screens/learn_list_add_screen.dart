@@ -9,12 +9,10 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/models/lea
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_list_view_item.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/util/logger.dart';
 
 class LearnListAddScreen extends StatelessWidget {
-
   const LearnListAddScreen({Key? key}) : super(key: key);
 
   @override
@@ -33,10 +31,12 @@ class _LearnListAddScreenMainElement extends StatefulWidget {
   const _LearnListAddScreenMainElement({Key? key}) : super(key: key);
 
   @override
-  State<_LearnListAddScreenMainElement> createState() => _LearnListAddScreenMainElementState();
+  State<_LearnListAddScreenMainElement> createState() =>
+      _LearnListAddScreenMainElementState();
 }
 
-class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainElement> {
+class _LearnListAddScreenMainElementState
+    extends State<_LearnListAddScreenMainElement> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
 
@@ -139,7 +139,7 @@ class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainE
     var rdm = Random();
     var startId = rdm.nextInt(4294967280);
     final List<LearnListWord> wordsWithRandomIds = [];
-    for(int i = 0; i < words.length; i++){
+    for (int i = 0; i < words.length; i++) {
       wordsWithRandomIds.add(LearnListWord(id: startId++, word: words[i].word));
     }
     cubit.alterLearnListAttribute(LearnListManipulationDto(
@@ -163,14 +163,14 @@ class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainE
     bool containsElementWithSameId = false;
     LearnListWord? elementToOverwrite;
 
-    for(LearnListWord word in words) {
-      if(word.id == id) {
+    for (LearnListWord word in words) {
+      if (word.id == id) {
         containsElementWithSameId = true;
         elementToOverwrite = word;
       }
     }
 
-    if(containsElementWithSameId) {
+    if (containsElementWithSameId) {
       words.remove(elementToOverwrite);
       words.add(LearnListWord(id: id, word: text));
     } else {

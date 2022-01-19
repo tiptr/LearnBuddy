@@ -8,7 +8,8 @@ import 'package:learning_app/util/injection.dart';
 class LearnListsCubit extends Cubit<LearnListsState> {
   late final LearnListRepository _learnListRepository;
 
-  LearnListsCubit({LearnListRepository? learnListRepository}) : super(InitialLearnListState()) {
+  LearnListsCubit({LearnListRepository? learnListRepository})
+      : super(InitialLearnListState()) {
     _learnListRepository = learnListRepository ?? getIt<LearnListRepository>();
   }
 
@@ -21,15 +22,13 @@ class LearnListsCubit extends Cubit<LearnListsState> {
     emit(LearnListLoaded(selectedLearnListsStream: learnList));
   }
 
-  Stream<ReadLearnListDto> watchLearnListById(
-       {required int learnListId}) {
-     final currentState = state;
-     if (currentState is LearnListLoaded) {
-       return currentState.selectedListViewlearnListsStream.map((learnList) =>
-       learnList
-           .firstWhere((list) => list.id == learnListId));
-     } else {
-       throw InvalidStateException();
-     }
-   }
+  Stream<ReadLearnListDto> watchLearnListById({required int learnListId}) {
+    final currentState = state;
+    if (currentState is LearnListLoaded) {
+      return currentState.selectedListViewlearnListsStream.map((learnList) =>
+          learnList.firstWhere((list) => list.id == learnListId));
+    } else {
+      throw InvalidStateException();
+    }
+  }
 }
