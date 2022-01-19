@@ -104,43 +104,38 @@ class ActiveTaskCard extends StatelessWidget {
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.textStyle2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.hourglass_top,
-                          size: 15,
-                          color: Theme.of(context).colorScheme.onBackgroundHard,
-                        ),
-                        Text(
-                          "Urspr.: " + estimatedTime,
-                          style: Theme.of(context)
-                              .textTheme
-                              .textStyle4
-                              .withOnBackgroundHard,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.hourglass_bottom,
-                          size: 15,
-                          color: Theme.of(context).colorScheme.onBackgroundHard,
-                        ),
-                        Text(
-                          "Aufgewendet: " + timeSpent,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context)
-                              .textTheme
-                              .textStyle4
-                              .withOnBackgroundHard,
-                        ),
-                      ],
-                    )
-                  ],
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.hourglass_top,
+                        size: 15,
+                        color: Theme.of(context).colorScheme.onBackgroundHard,
+                      ),
+                      Text(
+                        "Urspr.: " + estimatedTime,
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle4
+                            .withOnBackgroundHard,
+                      ),
+                      Icon(
+                        Icons.hourglass_bottom,
+                        size: 15,
+                        color: Theme.of(context).colorScheme.onBackgroundHard,
+                      ),
+                      Text(
+                        "Aufgewendet: " + timeSpent,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle4
+                            .withOnBackgroundHard,
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

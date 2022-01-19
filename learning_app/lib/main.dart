@@ -8,6 +8,7 @@ import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/screens/task_list_screen.dart';
 import 'package:learning_app/features/timer/screens/timer_screen.dart';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/util/injection.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:learning_app/util/notification_api.dart';
@@ -15,7 +16,8 @@ import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
-import 'constants/theme_font_constants.dart';
+import 'features/themes/bloc/bloc.dart';
+import 'features/themes/themes.dart';
 
 const List<Widget> _pages = <Widget>[
   TimerScreen(),
@@ -25,10 +27,12 @@ const List<Widget> _pages = <Widget>[
   LearnListsScreen(),
 ];
 
-void main() {
+Future<void> main() async {
   // Initialize dependency injection:
   configureDependencies();
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesData.init();
+  ThemeName themeName = SharedPreferencesData.themeName ?? ThemeName.light;
   Logger.level = Level.debug;
 
   runApp(
@@ -83,6 +87,13 @@ void main() {
             return bloc;
           },
         ),
+        BlocProvider<ThemeCubit>(create: (context) {
+          ThemeState themeState = ThemeState.fromName(themeName);
+          ThemeCubit themeCubit = ThemeCubit(initialState: themeState);
+          // Make sure the shared Preferences are updated
+          themeCubit.setToTheme(themeName);
+          return themeCubit;
+        }),
       ],
       child: const MyApp(),
     ),
@@ -106,35 +117,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData();
-    // Must be declared explicitly to be passed on to the TextTheme, which relies
-    // on the colorScheme
-    // final ColorScheme colorScheme = ColorSchemes.darkColorScheme();
-    final ColorScheme colorScheme = ColorSchemes.defaultColorScheme();
-    final TextTheme textTheme = TextThemes.defaultTextTheme(colorScheme);
-    return MaterialApp(
-      title: 'Lernbuddy',
-      theme: theme.copyWith(
-        colorScheme: colorScheme,
-        scrollbarTheme: ScrollbarThemeData(
-          isAlwaysShown: false,
-          thickness: MaterialStateProperty.all(10),
-          radius: const Radius.circular(10),
-          minThumbLength: 50,
-        ),
-        textTheme: textTheme,
-
-        // necessary for native Components like DatePicker or DurationPicker:
-        // Date and Durationpicker background
-        dialogBackgroundColor: colorScheme.cardColor,
-        // ColorPicker hex-textfield label
-        hintColor: colorScheme.onBackgroundSoft,
-        // DurationPicker innercircle color
-        canvasColor: colorScheme.cardColor,
-        // DurationPicker thick circle border
-        backgroundColor: colorScheme.tertiary,
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, state) => MaterialApp(
+        title: 'Lernbuddy',
+        theme: state.themeData,
+        home: const MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }

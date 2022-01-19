@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
 import 'package:learning_app/features/settings/screens/settings_overview_screen.dart';
@@ -27,7 +28,7 @@ Widget buildThreePointsMenu({
   Function? onHelp,
 }) {
   return PopupMenuButton<ThreePointsMenuItems>(
-    color: Colors.white,
+    color: Theme.of(context).colorScheme.cardColor,
     onSelected: (ThreePointsMenuItems result) {
       switch (result) {
         case ThreePointsMenuItems.delete:
