@@ -4,6 +4,7 @@ import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/bloc/categories_state.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
+import 'package:learning_app/shared/widgets/color_indicator.dart';
 
 class FilterCategorySelection extends StatelessWidget {
   final List<ReadCategoryDto> selected;
@@ -47,7 +48,8 @@ class FilterCategorySelection extends StatelessWidget {
                   "Kategorien",
                   style: Theme.of(context)
                       .textTheme
-                      .textStyle1
+                      .textStyle2
+                      .withBold
                       .withOnBackgroundSoft,
                 ),
                 const SizedBox(height: 10.0),
@@ -63,16 +65,41 @@ class FilterCategorySelection extends StatelessWidget {
                           onTap: () {
                             onTap(c);
                           },
-                          child: Chip(
-                            label: Text(c.name),
-                            backgroundColor: isSelected(c) ? c.color : null,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
+                          child: SizedBox(
+                            height: 40,
+                            width: 120,
+                            // color: isSelected(c) ? c.color : null,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 15.0),
+                                  child: ColorIndicator(
+                                    color: c.color,
+                                    height: 30.0,
+                                    width: 10.0,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 65,
+                                  child: Text(
+                                    c.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .textStyle4
+                                        .withBold
+                                        .withOnBackgroundHard,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                if (isSelected(c)) const Icon(Icons.check)
+                              ],
+                            ),
                           ),
                         ),
                       )
                       .toList(),
-                )
+                ),
               ],
             );
           },

@@ -5,6 +5,7 @@ import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
+import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/features/tasks/widgets/filter_category_selection.dart';
 import 'package:learning_app/features/tasks/widgets/filter_keyword_selection.dart';
@@ -101,25 +102,7 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                           .withOnBackgroundSoft,
                     ),
                     onPressed: () {
-                      print("Abbruch Filterselektion");
-                    },
-                  ),
-                  MaterialButton(
-                    child: Text(
-                      "Zurücksetzen",
-                      style: Theme.of(context)
-                          .textTheme
-                          .textStyle4
-                          .withOnBackgroundSoft,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedCategories = [];
-                        selectedKeywords = [];
-
-                        BlocProvider.of<TasksCubit>(context)
-                            .loadTasksWithoutFilter();
-                      });
+                      Navigator.of(context).pop();
                     },
                   ),
                   MaterialButton(
@@ -128,26 +111,46 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                       style: Theme.of(context).textTheme.textStyle4.withPrimary,
                     ),
                     onPressed: () {
-                      final filter = TaskFilter(
-                        // dueToday: drift.Value(false),
-                        // done: drift.Value(true)
-                        categories: drift.Value(selectedCategories
+                      final currentState =
+                          BlocProvider.of<TasksCubit>(context).state;
+
+                      if (currentState is TasksLoaded) {
+                        final currentFilter =
+                            currentState.taskFilter ?? const TaskFilter();
+
+                        final categoryIds = selectedCategories
                             .map((category) => category.id)
-                            .toList()),
-                        keywords: drift.Value(selectedKeywords
-                            .map((keyword) => keyword.id)
-                            .toList()),
-                        categoryNames: selectedCategories
+                            .toList();
+
+                        final categoryNames = selectedCategories
                             .map((category) => category.name)
-                            .toList(),
-                        keywordNames: selectedKeywords
+                            .toList();
+
+                        final keywordIds = selectedKeywords
+                            .map((keyword) => keyword.id)
+                            .toList();
+
+                        final keywordNames = selectedKeywords
                             .map((keyword) => keyword.name)
-                            .toList(),
-                      );
+                            .toList();
 
-                      BlocProvider.of<TasksCubit>(context)
-                          .loadFilteredTasks(filter);
+                        final newFilter = TaskFilter(
+                          keywords: keywordIds.isEmpty
+                              ? const drift.Value.absent()
+                              : drift.Value(keywordIds),
+                          categories: categoryIds.isEmpty
+                              ? const drift.Value.absent()
+                              : drift.Value(categoryIds),
+                          dueToday: currentFilter.dueToday, // TODO
+                          done: currentFilter.done,
+                          categoryNames: categoryNames,
+                          keywordNames: keywordNames,
+                        );
 
+                        BlocProvider.of<TasksCubit>(context)
+                            .loadFilteredTasks(newFilter);
+                      }
+                      Navigator.of(context).pop();
                     },
                   )
                 ],

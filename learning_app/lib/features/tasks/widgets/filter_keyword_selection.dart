@@ -47,7 +47,8 @@ class FilterKeyWordSelection extends StatelessWidget {
                   "Schlagwörter",
                   style: Theme.of(context)
                       .textTheme
-                      .textStyle1
+                      .textStyle2
+                      .withBold
                       .withOnBackgroundSoft,
                 ),
                 const SizedBox(height: 10.0),
