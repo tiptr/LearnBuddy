@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
@@ -125,11 +126,9 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
           ],
         ),
         color: Colors.white,
-        body: const Image(
-          image: AssetImage(
-            "assets/learning_aids/moehm_alternative.png",
-          ),
-        ),
+        body: SvgPicture.asset(
+                "assets/learning_aids/moehm_alternative.svg",
+              ),
       ),
     );
   }

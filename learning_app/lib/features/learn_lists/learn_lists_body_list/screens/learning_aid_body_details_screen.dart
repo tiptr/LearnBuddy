@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
@@ -112,11 +113,9 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
               ],
             ),
             color: Colors.white,
-            body: const Image(
-              image: AssetImage(
-                "assets/learning_aids/moehm_alternative.png",
+            body: SvgPicture.asset(
+                "assets/learning_aids/moehm_alternative.svg",
               ),
-            ),
           ),
         );
       },
