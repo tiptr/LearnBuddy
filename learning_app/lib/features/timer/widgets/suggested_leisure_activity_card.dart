@@ -26,20 +26,24 @@ class SuggestedLeisureActivityCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // Title
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Zeit für eine Pause!",
-                    style: Theme.of(context).textTheme.mainPageTitleStyle,
-                    textAlign: TextAlign.start,
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30, left:8 , right: 8, bottom: 8),
+                    child: Text(
+                      "Zeit für eine Pause!",
+                      style: Theme.of(context).textTheme.mainPageTitleStyle,
+                      textAlign: TextAlign.start,
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Hier ein Vorschlag für etwas Abwechslung:",
-                    style: Theme.of(context).textTheme.textStyle4,
-                    textAlign: TextAlign.start,
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Hier ein Vorschlag für etwas Abwechslung:",
+                      style: Theme.of(context).textTheme.textStyle4,
+                      textAlign: TextAlign.start,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -106,6 +110,7 @@ class SuggestedLeisureActivityCard extends StatelessWidget {
                                 activity.pathToImage ??
                                     // For now, the crazy cat is the default when no path is present
                                     'assets/leisure/leisure-fun-smiling-cats.svg',
+                                  color: Colors.cyan
                               ),
                             ),
                           ],

@@ -57,11 +57,11 @@ class ActiveTaskCard extends StatelessWidget {
     } else {
       throw InvalidStateException();
     }
-    final String estimatedTime = task.fullTimeEstimation.toExactSecondsFormat();
+    final String estimatedTime = task.fullTimeEstimation.formatShort();
     final Duration sumDuration = task.sumAllTimeLogs;
     final String timeSpent =
         (activeDuration == null ? sumDuration : sumDuration + activeDuration)
-            .toExactSecondsFormat();
+            .formatShort();
     final Widget topLevelTaskWidget = Text(
       "Unteraufgabe von: " + parentTask.task.title,
       maxLines: 1,
