@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_category_cubit.dart';
-import 'package:learning_app/features/leisure/bloc/leisure_category_state.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
+import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
@@ -27,17 +29,55 @@ class LeisureScreen extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<LeasureCategoryCubit, LeasureCategoryState>(
-        bloc: LeasureCategoryCubit(),
+      body: BlocBuilder<LeisureCubit, LeisureState>(
         builder: (context, state) {
-          return ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: state.leisureCategoriesDtos.length,
-            itemBuilder: (BuildContext ctx, int idx) => LeisureCategoryCard(
-              leisureCategory: state.leisureCategoriesDtos[idx],
-            ),
+          if (state is! LeisuresLoaded) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return StreamBuilder<List<ReadLeisureCategoriesDto>>(
+            stream: state.listViewLeisureCategoriesStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Es sind keine Ausgleichsübungen verfügbar.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFF636573),
+                    ),
+                  ),
+                );
+              }
+
+              final categories = snapshot.data!;
+
+              return ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: categories.length,
+                itemBuilder: (BuildContext ctx, int idx) {
+                  return GestureDetector(
+                    child: LeisureCategoryCard(
+                      leisureCategory: categories[idx],
+                    ),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return LeisureActivityOverviewScreen(
+                          categoryId: categories[idx].id,
+                          categoryTitle: categories[idx].name,
+                        );
+                      }),
+                    ),
+                  );
+                },
+              );
+            },
           );
         },
       ),
@@ -84,11 +124,13 @@ class LeisureCategoryCard extends StatelessWidget {
                     StarCount(
                       count: leisureCategory.starCount,
                     ),
-                    Image(
-                      image: AssetImage(leisureCategory.pathToImage ??
-                          defaultLeisureCategoryImagePath),
+                    SizedBox(
                       width: 85.0,
                       height: 85.0,
+                      child: SvgPicture.asset(
+                        leisureCategory.pathToImage ??
+                            defaultLeisureCategoryImagePath,
+                      ),
                     ),
                   ],
                 ),

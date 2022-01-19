@@ -58,7 +58,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
                     : "Kategorie bearbeiten",
                 style: Theme.of(context)
                     .textTheme
-                    .textStyle1
+                    .textStyle2
                     .withBold
                     .withOnBackgroundHard,
               ),
@@ -73,7 +73,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
               ColorIndicator(color: selectedColor, height: 30.0, width: 10.0),
               Container(
                 margin: const EdgeInsets.only(left: 10.0),
-                width: 250.0,
+                width: 200,
                 child: TextField(
                   // Use subtitle1 here, to match the inputfield Styles from the
                   // native components (DatePicker,ColorPicker-hex-field)
@@ -176,6 +176,17 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
 
                 // Close dialog
                 Navigator.of(context).pop();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Kategorie erfolgreich gespeichert!',
+                      style: Theme.of(context).textTheme.textStyle2.withSucess,
+                    ),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.subtleBackgroundGrey,
+                  ),
+                );
               },
             )
           ],

@@ -97,6 +97,21 @@ class KeyWordCard extends StatelessWidget {
 
                       BlocProvider.of<KeyWordsCubit>(context)
                           .deleteKeyWordById(keyword.id);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Schlagwort erfolgreich gelöscht!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .textStyle2
+                                .withSucess,
+                          ),
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .subtleBackgroundGrey,
+                        ),
+                      );
                     }
                   },
                   icon: Icon(
