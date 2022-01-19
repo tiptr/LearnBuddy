@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 
 class KeywordSelectDialog extends StatefulWidget {
@@ -46,9 +48,6 @@ class _KeywordSelectDialogState extends State<KeywordSelectDialog> {
     return AlertDialog(
       titlePadding: const EdgeInsets.all(0),
       contentPadding: const EdgeInsets.all(0),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-      ),
       content: SingleChildScrollView(
         child: Column(
           children: [
@@ -70,6 +69,10 @@ class _KeywordSelectDialogState extends State<KeywordSelectDialog> {
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                         elevation: 4.0,
+                        shadowColor: Theme.of(context).colorScheme.shadowColor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Column(
@@ -78,13 +81,12 @@ class _KeywordSelectDialogState extends State<KeywordSelectDialog> {
                                 activeColor:
                                     Theme.of(context).colorScheme.primary,
                                 dense: true,
-                                title: Text(
-                                  widget.options[index].name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
+                                title: Text(widget.options[index].name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .textStyle2
+                                        .withBold
+                                        .withOnBackgroundHard),
                                 value: isSelected(widget.options[index].id),
                                 onChanged: (bool? _) {
                                   toggleItem(widget.options[index]);
@@ -103,21 +105,21 @@ class _KeywordSelectDialogState extends State<KeywordSelectDialog> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MaterialButton(
-                  child: const Text(
+                  child: Text(
                     "Abbrechen",
-                    style: TextStyle(color: Colors.grey),
+                    style: Theme.of(context)
+                        .textTheme
+                        .textStyle2
+                        .withOnBackgroundSoft,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(null);
                   },
                 ),
                 MaterialButton(
-                  child: Text(
-                    "Hinzufügen",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                  child: Text("Hinzufügen",
+                      style:
+                          Theme.of(context).textTheme.textStyle2.withPrimary),
                   onPressed: () {
                     Navigator.of(context).pop(selectedOptions);
                   },
