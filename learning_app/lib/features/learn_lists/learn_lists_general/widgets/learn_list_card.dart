@@ -100,7 +100,7 @@ class LearnListCard extends StatelessWidget {
           ),
           // Date Chip
           Expanded(
-            flex: 30,
+            flex: 45,
             child: Chip(
               label: Text(
                 learnList.creationDate.toString(),
