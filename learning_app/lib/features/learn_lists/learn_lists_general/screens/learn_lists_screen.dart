@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_details_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_state.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
@@ -72,8 +74,11 @@ class LearnListsScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        //TODO: return the correct screen with the learn list dto (either this or bodyScreen)
-                        return LearnListDetailScreen(learnListId: learnLists[idx].id);
+                        if(learnLists[idx] is! BodyList) {
+                          return LearningAidBodyDetailsScreen(learnListId: learnLists[idx].id);
+                        } else {
+                          return LearnListDetailScreen(learnListId: learnLists[idx].id);
+                        }
                       })
                     )
                   );
