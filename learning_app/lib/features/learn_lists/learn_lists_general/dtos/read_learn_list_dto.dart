@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:learning_app/features/categories/models/category.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import '../models/learn_list_word.dart';
 
 class ReadLearnListDto extends Equatable {
@@ -10,6 +12,7 @@ class ReadLearnListDto extends Equatable {
   final List<LearnListWord> words;
   final Category? category;
   final bool isArchived;
+  final LearnMethods type;
 
   // To be calculated additionally to the attributes from the model.
   final int referencingTasksCount;
@@ -22,9 +25,17 @@ class ReadLearnListDto extends Equatable {
     this.category,
     required this.isArchived,
     required this.referencingTasksCount,
+    required this.type,
   });
 
   static ReadLearnListDto fromLearnList(LearnList learnList) {
+    LearnMethods type;
+    if (learnList is BodyList) {
+      type = LearnMethods.bodyList;
+    } else {
+      type = LearnMethods.simpleLearnList;
+    }
+
     return ReadLearnListDto(
         id: learnList.id,
         name: learnList.name,
@@ -32,7 +43,8 @@ class ReadLearnListDto extends Equatable {
         words: learnList.words,
         category: learnList.category,
         isArchived: learnList.isArchived,
-        referencingTasksCount: 0 //TODO: calculate it here correctly!!!
+        referencingTasksCount: 0, //TODO: calculate it here correctly!!!
+        type: type,
         );
   }
 

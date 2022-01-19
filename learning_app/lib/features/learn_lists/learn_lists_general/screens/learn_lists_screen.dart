@@ -6,6 +6,7 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_state.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_card.dart';
@@ -68,7 +69,7 @@ class LearnListsScreen extends StatelessWidget {
                         ),
                         onTap: () => Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              if (learnLists[idx] is BodyList) {
+                              if (learnLists[idx].type == LearnMethods.bodyList) {
                                 return LearningAidBodyDetailsScreen(
                                     learnListId: learnLists[idx].id);
                               } else {
@@ -102,7 +103,7 @@ class LearnListsScreen extends StatelessWidget {
         content: Column(
           children: [
             CustomButton(
-              onPressed: () => Navigator.push(
+              onPressed: () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const LearningAidBodyAddScreen(),
@@ -113,7 +114,7 @@ class LearnListsScreen extends StatelessWidget {
             ),
             const Divider(color: Colors.black),
             CustomButton(
-              onPressed: () => Navigator.push(
+              onPressed: () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const LearnListAddScreen(),

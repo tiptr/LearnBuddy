@@ -14,9 +14,6 @@ class LearnListsCubit extends Cubit<LearnListsState> {
   }
 
   Future<void> loadLearnLists() async {
-    // TODO: think about removing TaskLoading() since this state is
-    //  maybe not required anymore thanks to the streams
-    // TODO: I guess the state will be the right place to store the currently selected filters and more
     emit(LearnListLoading());
     var learnList = _learnListRepository.watchLearnLists();
     emit(LearnListLoaded(selectedLearnListsStream: learnList));

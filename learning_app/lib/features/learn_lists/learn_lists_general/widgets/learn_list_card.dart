@@ -29,7 +29,7 @@ class LearnListCard extends StatelessWidget {
     //////////////////////////////////////////////////
     //----------For Testing multiple options----------
     // TODO use real values from learningAid
-    var categoryColor = Colors.red;
+    var categoryColor = Theme.of(context).colorScheme.noCategoryDefaultColor;
     // const categoryColor = Colors.lightBlue.shade600;
     //////////////////////////////////////////////////
 
