@@ -18,7 +18,7 @@ class BaseTitleBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       shadowColor: Colors.transparent,
       elevation: 0.0,
-      foregroundColor: const Color(0xFF636573),
+      foregroundColor: Theme.of(context).colorScheme.onBackground,
       title: Text(
         title,
         style: Theme.of(context).textTheme.mainPageTitleStyle,
