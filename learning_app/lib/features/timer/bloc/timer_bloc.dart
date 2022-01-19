@@ -51,7 +51,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       }
       emit(TimerRunInProgress(
           event.duration, state._pomodoroMode, state._countPhase));
-    } else {
+    } else if (event.duration == 0){
       NotificationApi.showNotification(
         payload: 'timer',
         body: state.getPomodoroMode() == PomodoroMode.concentration
