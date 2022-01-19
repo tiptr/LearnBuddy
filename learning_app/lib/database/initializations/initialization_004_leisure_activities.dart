@@ -58,19 +58,19 @@ Future<void> initialization004LeisureActivities() async {
               'assets/leisure/leisure-fun-confusion.svg',
             ),
           ),
-          LeisureActivitiesCompanion.insert(
-            id: const Value(3),
-            leisureCategoryId: 0,
-            name: 'Zunge Rollen',
-            duration: const Duration(minutes: 10),
-            descriptionShort: 'Versuche deine Zunge einzurollen.',
-            descriptionLong: const Value<String>(
-                'Manche Menschen können ihre Zunge rollen. Schaffst du das auch? Keine Sorge, manchmal braucht es ein bisschen Übung. Gib nicht auf!'),
-            isFavorite: false,
-            pathToImage: const Value<String>(
-              'assets/leisure/leisure-fun-roll-tongue.svg',
-            ),
-          ),
+          // LeisureActivitiesCompanion.insert(
+          //   id: const Value(3),
+          //   leisureCategoryId: 0,
+          //   name: 'Zunge Rollen',
+          //   duration: const Duration(minutes: 10),
+          //   descriptionShort: 'Versuche deine Zunge einzurollen.',
+          //   descriptionLong: const Value<String>(
+          //       'Manche Menschen können ihre Zunge rollen. Schaffst du das auch? Keine Sorge, manchmal braucht es ein bisschen Übung. Gib nicht auf!'),
+          //   isFavorite: false,
+          //   pathToImage: const Value<String>(
+          //     'assets/leisure/leisure-fun-roll-tongue.svg',
+          //   ),
+          // ),
           LeisureActivitiesCompanion.insert(
             id: const Value(4),
             leisureCategoryId: 0,
@@ -127,20 +127,20 @@ Future<void> initialization004LeisureActivities() async {
               'assets/leisure/leisure-fun-home.svg',
             ),
           ),
-          LeisureActivitiesCompanion.insert(
-            id: const Value(8),
-            leisureCategoryId: 0,
-            name: 'Zitronen Challenge',
-            duration: const Duration(minutes: 10),
-            descriptionShort:
-                'Iss eine Scheibe Zitrone ohne das Gesicht zu verziehen!',
-            descriptionLong: const Value<String>(
-                'Schaffst du es in eine Scheibe Zitrone zu beißen, ohne dass du das Gesicht verziehst? Wer von deinen Freunden hat seine Gesichtszüge am Besten unter Kontrolle während er die Zitronenscheibe isst?'),
-            isFavorite: false,
-            pathToImage: const Value<String>(
-              'assets/leisure/leisure-fun-lemon.svg',
-            ),
-          ),
+          // LeisureActivitiesCompanion.insert(
+          //   id: const Value(8),
+          //   leisureCategoryId: 0,
+          //   name: 'Zitronen Challenge',
+          //   duration: const Duration(minutes: 10),
+          //   descriptionShort:
+          //       'Iss eine Scheibe Zitrone ohne das Gesicht zu verziehen!',
+          //   descriptionLong: const Value<String>(
+          //       'Schaffst du es in eine Scheibe Zitrone zu beißen, ohne dass du das Gesicht verziehst? Wer von deinen Freunden hat seine Gesichtszüge am Besten unter Kontrolle während er die Zitronenscheibe isst?'),
+          //   isFavorite: false,
+          //   pathToImage: const Value<String>(
+          //     'assets/leisure/leisure-fun-lemon.svg',
+          //   ),
+          // ),
           /**************************************************************************************************/
           //Fitness ohne Geräte
           LeisureActivitiesCompanion.insert(
