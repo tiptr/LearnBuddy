@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 
 const double iconSize = 14.0;
 
@@ -12,15 +13,17 @@ const double distanceBetweenCardsSubTasks = 7.0;
 /// The card used inside the tasks detail screen for the quick creation of new
 /// subtasks
 class CreateSubTaskCard extends StatefulWidget {
-  final Function(String) onPressEnterSubmit;
-  final Function(String) onUseButtonSubmit;
+  final Function(String, int?) onPressEnterSubmit;
+  final Function(String, int?) onUseButtonSubmit;
   final Function onDiscard;
+  final DetailsReadTaskDto detailDto;
 
   const CreateSubTaskCard({
     Key? key,
     required this.onPressEnterSubmit,
     required this.onUseButtonSubmit,
     required this.onDiscard,
+    required this.detailDto,
   }) : super(key: key);
 
   @override
@@ -106,7 +109,8 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
                   child: IconButton(
                       onPressed: () {
                         if (!titleEmpty) {
-                          widget.onUseButtonSubmit(_textEditingController.text);
+                          widget.onUseButtonSubmit(_textEditingController.text,
+                              widget.detailDto.category?.id);
                         }
                       },
                       icon: Icon(
@@ -146,7 +150,7 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
         ),
         controller: _textEditingController,
         onSubmitted: (text) {
-          widget.onPressEnterSubmit(text);
+          widget.onPressEnterSubmit(text, widget.detailDto.category?.id);
         },
       ),
     );

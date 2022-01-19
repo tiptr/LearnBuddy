@@ -32,11 +32,11 @@ class TimeNoticeEvent extends TimeLoggingEvent {
 }
 
 class TaskChangedEvent extends TimeLoggingEvent {
-  final TaskWithQueueStatus parentTask;
-  final Task task;
+  final TaskWithQueueStatus? parentTask;
+  final Task? task;
   const TaskChangedEvent({
-    required this.task,
-    required this.parentTask,
+    this.task,
+    this.parentTask,
   });
 }
 
