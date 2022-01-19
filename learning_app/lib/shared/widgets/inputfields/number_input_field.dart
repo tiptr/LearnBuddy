@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
-class TextInputField extends StatefulWidget {
+class NumberInputField extends StatefulWidget {
   final String label;
   final String hintText;
   final IconData? iconData;
@@ -10,7 +11,7 @@ class TextInputField extends StatefulWidget {
   final String? preselectedText;
   final TextEditingController? textEditingController;
 
-  const TextInputField({
+  const NumberInputField({
     Key? key,
     required this.onChange,
     this.preselectedText,
@@ -21,16 +22,17 @@ class TextInputField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TextInputField> createState() => _TextInputFieldState();
+  State<NumberInputField> createState() => _NumberInputFieldState();
 
   void setText(String text) {}
 }
 
-class _TextInputFieldState extends State<TextInputField> {
+class _NumberInputFieldState extends State<NumberInputField> {
   late final TextEditingController _textEditingController;
   @override
   void initState() {
     super.initState();
+
     _textEditingController =
         widget.textEditingController ?? TextEditingController();
     if (widget.preselectedText != null) {
@@ -82,6 +84,10 @@ class _TextInputFieldState extends State<TextInputField> {
       maxLines: null, // no limit
       controller: _textEditingController,
       onChanged: widget.onChange,
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
     );
   }
 }

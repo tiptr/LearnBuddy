@@ -25,9 +25,8 @@ class _DisplayStyleSettingsScreenState
     // Set initial dueDate:
 
     return ScreenWithoutBottomNavbarBaseTemplate(
-      titleBar: GoBackTitleBar(
+      titleBar: const GoBackTitleBar(
         title: "Darstellung und Farbe",
-        onExit: _onExit,
       ),
       body: ListView(
         shrinkWrap: true,
@@ -44,6 +43,7 @@ class _DisplayStyleSettingsScreenState
                   setState(() {
                     _themeName =
                         BlocProvider.of<ThemeCubit>(context).toggleTheme();
+                    _saveTheme();
                   });
                 },
                 activeColor: Theme.of(context).colorScheme.primary,
@@ -58,7 +58,7 @@ class _DisplayStyleSettingsScreenState
     );
   }
 
-  void _onExit() async {
+  void _saveTheme() async {
     await SharedPreferencesData.storeThemeName(_themeName);
   }
 }
