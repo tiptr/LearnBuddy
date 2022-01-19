@@ -57,11 +57,11 @@ class ActiveTaskCard extends StatelessWidget {
     } else {
       throw InvalidStateException();
     }
-    final String estimatedTime = task.fullTimeEstimation.toExactSecondsFormat();
+    final String estimatedTime = task.fullTimeEstimation.toListViewFormat();
     final Duration sumDuration = task.sumAllTimeLogs;
     final String timeSpent =
         (activeDuration == null ? sumDuration : sumDuration + activeDuration)
-            .toExactSecondsFormat();
+            .toListViewFormat();
     final Widget topLevelTaskWidget = Text(
       "Unteraufgabe von: " + parentTask.task.title,
       maxLines: 1,
@@ -104,39 +104,40 @@ class ActiveTaskCard extends StatelessWidget {
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.textStyle2),
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.hourglass_top,
-                        size: 15,
-                        color: Theme.of(context).colorScheme.onBackgroundHard,
-                      ),
-                      Text(
-                        "Urspr.: " + estimatedTime,
-                        style: Theme.of(context)
-                            .textTheme
-                            .textStyle4
-                            .withOnBackgroundHard,
-                      ),
-                      Icon(
-                        Icons.hourglass_bottom,
-                        size: 15,
-                        color: Theme.of(context).colorScheme.onBackgroundHard,
-                      ),
-                      Text(
-                        "Aufgewendet: " + timeSpent,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .textStyle4
-                            .withOnBackgroundHard,
-                      ),
-                    ],
-                  ),
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.hourglass_top,
+                      size: 15,
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
+                    ),
+                    Text(
+                      "Urspr.: " + estimatedTime,
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle4
+                          .withOnBackgroundHard,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.hourglass_bottom,
+                      size: 15,
+                      color: Theme.of(context).colorScheme.onBackgroundHard,
+                    ),
+                    Text(
+                      "Aufgewendet: " + timeSpent,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle4
+                          .withOnBackgroundHard,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
