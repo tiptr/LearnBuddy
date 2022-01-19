@@ -124,13 +124,24 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
   }
 }
 
-class ListViewItem extends StatelessWidget {
-  const ListViewItem(
-      {Key? key, required this.text, required this.word})
-      : super(key: key);
-
+class ListViewItem extends StatefulWidget {
   final String text;
   final String word;
+  const ListViewItem({Key? key, required this.text, required this.word}) : super(key: key);
+
+  @override
+  State<ListViewItem> createState() => _ListViewItemState();
+}
+
+class _ListViewItemState extends State<ListViewItem> {
+  bool _obscureText = true;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +152,7 @@ class ListViewItem extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.only(left: 10.0),
             child: Text(
-              text,
+              widget.text,
               style: const TextStyle(
                 fontSize: 15,
                 color: Colors.black,
@@ -149,7 +160,20 @@ class ListViewItem extends StatelessWidget {
             ),
           ),
         ),
-        Text(word),
+        Container(
+          margin: const EdgeInsets.only(left: 10.0),
+          child: Row(
+            children: <Widget>[
+              Text(
+                _obscureText ? "*****" : widget.word,
+              ),
+              IconButton(
+                icon: _obscureText ? const Icon(Icons.visibility, color: Colors.black) : const Icon(Icons.visibility_off, color: Colors.black),
+                onPressed: _toggle
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

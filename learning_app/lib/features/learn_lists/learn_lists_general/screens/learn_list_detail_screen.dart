@@ -75,19 +75,43 @@ class LearnListDetailScreen extends StatelessWidget {
   }
 }
 
-class ListViewItem extends StatelessWidget {
-  const ListViewItem({Key? key, required this.word})
-      : super(key: key);
 
+class ListViewItem extends StatefulWidget {
   final String word;
+  const ListViewItem({Key? key, required this.word}) : super(key: key);
+
+  @override
+  State<ListViewItem> createState() => _ListViewItemState();
+}
+
+class _ListViewItemState extends State<ListViewItem> {
+  bool _obscureText = true;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(word),
-        // Only for navigation to tags
-        const SizedBox(height: 20.0),
+        Container(
+          margin: const EdgeInsets.only(left: 10.0),
+          child: Row(
+            children: <Widget>[
+              Text(
+                _obscureText ? "*****" : widget.word,
+              ),
+              IconButton(
+                icon: _obscureText ? const Icon(Icons.visibility, color: Colors.black) : const Icon(Icons.visibility_off, color: Colors.black),
+                onPressed: _toggle
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
