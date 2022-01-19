@@ -8,16 +8,30 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/te
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/util/logger.dart';
 
-//TODO: add cubit
+class LearnListAddScreen extends StatelessWidget {
 
-class LearnListAddScreen extends StatefulWidget {
   const LearnListAddScreen({Key? key}) : super(key: key);
 
   @override
-  State<LearnListAddScreen> createState() => _LearnListAddScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider<AlterLearnListCubit>(
+      lazy: true,
+      create: (context) {
+        return AlterLearnListCubit();
+      },
+      child: const LearnListAddScreenMainElement(),
+    );
+  }
 }
 
-class _LearnListAddScreenState extends State<LearnListAddScreen> {
+class LearnListAddScreenMainElement extends StatefulWidget {
+  const LearnListAddScreenMainElement({Key? key}) : super(key: key);
+
+  @override
+  State<LearnListAddScreenMainElement> createState() => _LearnListAddScreenMainElementState();
+}
+
+class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainElement> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
 
@@ -27,8 +41,8 @@ class _LearnListAddScreenState extends State<LearnListAddScreen> {
   @override
   void initState() {
     super.initState();
-    //BlocProvider.of<CreateNewLearningAidCubit>(context)
-    //    .startNewTaskConstruction(widget.parentId);
+    BlocProvider.of<AlterLearnListCubit>(context)
+        .startNewLearnListConstruction();
   }
 
   int idCount = 0;

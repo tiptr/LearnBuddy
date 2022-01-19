@@ -9,7 +9,7 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/te
 class LearnListDetailScreen extends StatelessWidget {
   final int learnListId;
 
-  LearnListDetailScreen({
+  const LearnListDetailScreen({
     required this.learnListId,
     Key? key,
   }) : super(key: key);
