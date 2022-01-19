@@ -23,7 +23,9 @@ class DbLeisureRepository implements LeisureRepository {
   @override
   Future<bool> toggleFavorite(int activityId, bool favorite) async {
     final affected = await _leisureActivitiesDao.toggleActivityFavoriteById(
-        activityId, favorite);
+      activityId,
+      favorite,
+    );
     return affected > 0;
   }
 
@@ -42,19 +44,25 @@ class DbLeisureRepository implements LeisureRepository {
         leisureCategoryIdToActivityMapStream =
         _leisureActivitiesDao.watchCategoryIdToActivityMap();
 
-    return leisureCategoryEntitiesStream.switchMap((categoryList) {
-      return leisureCategoryIdToActivityMapStream
-          .map((categoryIdToActivitiesMap) {
-        final List<LeisureCategory> resultList = [];
-        for (var category in categoryList) {
-          resultList.add(LeisureCategory(
-              id: category.id,
-              name: category.name,
-              pathToImage: category.pathToImage,
-              activities: categoryIdToActivitiesMap[category.id] ?? []));
-        }
-        return resultList;
-      });
-    });
+    return leisureCategoryEntitiesStream.switchMap(
+      (categoryList) {
+        return leisureCategoryIdToActivityMapStream.map(
+          (categoryIdToActivitiesMap) {
+            final List<LeisureCategory> resultList = [];
+            for (var category in categoryList) {
+              resultList.add(
+                LeisureCategory(
+                  id: category.id,
+                  name: category.name,
+                  pathToImage: category.pathToImage,
+                  activities: categoryIdToActivitiesMap[category.id] ?? [],
+                ),
+              );
+            }
+            return resultList;
+          },
+        );
+      },
+    );
   }
 }
