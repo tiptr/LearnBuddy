@@ -25,8 +25,7 @@ class Task {
   }
 
   int get finishedSubTaskCount {
-    // TODO: implement this!
-    return children.length;
+    return children.where((childTask) => childTask.doneDateTime != null).length;
   }
 
   // Prefers higher definition of estimated time; I.e. if top level task has time estimate,
