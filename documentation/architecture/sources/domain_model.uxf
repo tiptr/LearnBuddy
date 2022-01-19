@@ -1,730 +1,131 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>9</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1503</x>
-      <y>261</y>
-      <w>225</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>Aufgabe
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>1670</x><y>290</y><w>250</w><h>160</h></coordinates><panel_attributes>Aufgabe
 -
 zeitschaetzung
 verbrauchteZeit
 abgeschlossen
-zieldatum</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1071</x>
-      <y>135</y>
-      <w>225</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>Tag
+zieldatum</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1190</x><y>140</y><w>250</w><h>90</h></coordinates><panel_attributes>Kategorie
 -
-bezeichnung
-farbe</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1962</x>
-      <y>144</y>
-      <w>225</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>AusgleichsvorschlagListe
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>585</x>
-      <y>261</y>
-      <w>225</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>Lernhilfe
+name
+farbe</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2180</x><y>130</y><w>250</w><h>60</h></coordinates><panel_attributes>AusgleichsvorschlagListe
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>290</y><w>250</w><h>50</h></coordinates><panel_attributes>Lernhilfe
 -
-titel</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>819</x>
-      <y>486</y>
-      <w>225</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>KörperteileLernListe
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>684</x>
-      <y>306</y>
-      <w>261</w>
-      <h>198</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0;270.0;110.0;270.0;200.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>369</x>
-      <y>486</y>
-      <w>225</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>LernGeschichte
+titel</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>510</y><w>250</w><h>50</h></coordinates><panel_attributes>KörperteileLernListe
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>330</y><w>290</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;270;90;270;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>510</y><w>250</w><h>110</h></coordinates><panel_attributes>LernGeschichte
 -
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>468</x>
-      <y>306</y>
-      <w>243</w>
-      <h>198</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>250.0;10.0;250.0;110.0;10.0;110.0;10.0;200.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>819</x>
-      <y>621</y>
-      <w>225</w>
-      <h>63</h>
-    </coordinates>
-    <panel_attributes>KörperteilBegriffZuordnung
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>918</x>
-      <y>522</y>
-      <w>108</w>
-      <h>117</h>
-    </coordinates>
-    <panel_attributes>lt=-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>330</y><w>270</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>250;10;250;90;10;90;10;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>660</y><w>250</w><h>70</h></coordinates><panel_attributes>KörperteilBegriffZuordnung
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1020</x><y>550</y><w>110</w><h>130</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-merkbegriffe &gt;</panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1962</x>
-      <y>279</y>
-      <w>225</w>
-      <h>117</h>
-    </coordinates>
-    <panel_attributes>Ausgleichsvorschlag
+merkbegriffe &gt;</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2180</x><y>280</y><w>250</w><h>130</h></coordinates><panel_attributes>Ausgleichsvorschlag
 -
 titel
 beschreibung
 bild
 dauer
-link</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1512</x>
-      <y>396</y>
-      <w>162</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-
+link</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1680</x><y>440</y><w>180</w><h>90</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-unterAufgabeVon &gt;</panel_attributes>
-    <additional_attributes>150.0;10.0;150.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1071</x>
-      <y>0</y>
-      <w>225</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>TagVerwaltung
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1287</x>
-      <y>207</y>
-      <w>333</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-
+unterAufgabeVon &gt;</panel_attributes><additional_attributes>150;10;150;70;10;70;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1190</x><y>0</y><w>250</w><h>60</h></coordinates><panel_attributes>KategorieVerwaltung
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1430</x><y>200</y><w>360</w><h>110</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=*
-&lt; istZugeordnet</panel_attributes>
-    <additional_attributes>250.0;60.0;250.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>801</x>
-      <y>261</y>
-      <w>720</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>lt=-
+istZugeordnet ^</panel_attributes><additional_attributes>250;90;250;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>890</x><y>290</y><w>800</w><h>50</h></coordinates><panel_attributes>lt=-
 m1=0..1
 m2=0..1
-&lt; aufgabenRessource</panel_attributes>
-    <additional_attributes>10.0;20.0;780.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>585</x>
-      <y>126</y>
-      <w>225</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>LernhilfenSpeicher
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>684</x>
-      <y>171</y>
-      <w>99</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>lt=-
+&lt; aufgabenRessource</panel_attributes><additional_attributes>10;20;780;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>110</y><w>250</w><h>60</h></coordinates><panel_attributes>LernhilfenSpeicher
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>160</y><w>100</w><h>150</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-beinhaltet &gt;</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1503</x>
-      <y>126</y>
-      <w>225</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>AufgabenListe
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>630</x>
-      <y>819</y>
-      <w>225</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>MerkBegriff
+beinhaltet &gt;</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1670</x><y>110</y><w>250</w><h>60</h></coordinates><panel_attributes>AufgabenListe
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>880</y><w>250</w><h>90</h></coordinates><panel_attributes>MerkBegriff
 -
 begriff
-zusatz_beschreibung</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>549</x>
-      <y>738</y>
-      <w>171</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>lt=-
+zusatz_beschreibung</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>790</y><w>190</w><h>110</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-begriff &gt;</panel_attributes>
-    <additional_attributes>160.0;90.0;160.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1044</x>
-      <y>819</y>
-      <w>225</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>KörperteilZuordnungsPunkt
+begriff &gt;</panel_attributes><additional_attributes>160;90;160;40;10;40;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1160</x><y>880</y><w>250</w><h>90</h></coordinates><panel_attributes>KörperteilZuordnungsPunkt
 -
 bezeichnung
 bild
-position</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>990</x>
-      <y>675</y>
-      <w>189</w>
-      <h>162</h>
-    </coordinates>
-    <panel_attributes>lt=-
+position</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1100</x><y>720</y><w>210</w><h>180</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-angeheftetAn &gt;</panel_attributes>
-    <additional_attributes>180.0;160.0;180.0;90.0;10.0;90.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>783</x>
-      <y>675</y>
-      <w>99</w>
-      <h>162</h>
-    </coordinates>
-    <panel_attributes>lt=-
+angeheftetAn &gt;</panel_attributes><additional_attributes>180;160;180;90;10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>870</x><y>720</y><w>110</w><h>180</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-&lt; begriff</panel_attributes>
-    <additional_attributes>10.0;160.0;10.0;90.0;90.0;90.0;90.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>369</x>
-      <y>684</y>
-      <w>225</w>
-      <h>63</h>
-    </coordinates>
-    <panel_attributes>LernSatz
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>0</x>
-      <y>315</y>
-      <w>225</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>LernGeschichtenSeedVerwaltung
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>0</x>
-      <y>486</y>
-      <w>225</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>LernGeschichtenSeed
+&lt; begriff</panel_attributes><additional_attributes>10;160;10;90;90;90;90;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>730</y><w>250</w><h>70</h></coordinates><panel_attributes>LernSatz
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>320</y><w>250</w><h>100</h></coordinates><panel_attributes>LernGeschichtenSeedVerwaltung
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>510</y><w>250</w><h>90</h></coordinates><panel_attributes>LernGeschichtenSeed
 -
-textbeginn</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>216</x>
-      <y>513</y>
-      <w>171</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>lt=-
+textbeginn</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>540</y><w>190</w><h>50</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-grundlageFuer &gt;</panel_attributes>
-    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>99</x>
-      <y>396</y>
-      <w>99</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>lt=-
+grundlageFuer &gt;</panel_attributes><additional_attributes>170;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>110</x><y>410</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-beinhaltet &gt;</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>468</x>
-      <y>576</y>
-      <w>99</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=-
+beinhaltet &gt;</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>610</y><w>100</w><h>140</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
 beinhaltet &gt;
-{ordered}</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>324</x>
-      <y>819</y>
-      <w>225</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>LernSatzVariante
+{ordered}</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>880</y><w>250</w><h>90</h></coordinates><panel_attributes>LernSatzVariante
 -
 satz
-gewaehlt</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>423</x>
-      <y>738</y>
-      <w>117</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>lt=-
+gewaehlt</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>790</y><w>120</w><h>110</h></coordinates><panel_attributes>lt=-
 m1=3
 m2=1
-satzvarianten &gt;</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1044</x>
-      <y>1017</y>
-      <w>225</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>VirtuellerKoerper
+satzvarianten &gt;</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1160</x><y>1100</y><w>250</w><h>90</h></coordinates><panel_attributes>VirtuellerKoerper
 -
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1143</x>
-      <y>891</y>
-      <w>108</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1270</x><y>960</y><w>110</w><h>160</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-&lt; koerperteile </panel_attributes>
-    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1611</x>
-      <y>171</y>
-      <w>99</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>lt=-
+&lt; koerperteile </panel_attributes><additional_attributes>10;140;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1790</x><y>160</y><w>100</w><h>150</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-beinhaltet &gt;</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1179</x>
-      <y>45</y>
-      <w>99</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>lt=-
+beinhaltet &gt;</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1310</x><y>50</y><w>100</w><h>110</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-beinhaltet &gt;</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1971</x>
-      <y>819</y>
-      <w>216</w>
-      <h>135</h>
-    </coordinates>
-    <panel_attributes>NutzerProfil
+beinhaltet v</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1920</x><y>850</y><w>240</w><h>150</h></coordinates><panel_attributes>NutzerProfil
 -
 alter
 name
-pomodoroPhasenLaenge</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1512</x>
-      <y>639</y>
-      <w>225</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>Arbeitseinheit
--
-datum
-uhrzeitBeginn
-dauer</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1512</x>
-      <y>1017</y>
-      <w>225</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>RegelWochenArbeitsPlan
--
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1512</x>
-      <y>819</y>
-      <w>225</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>RegelArbeitsSlot
--
-uhrzeit
-tag
-dauer</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1611</x>
-      <y>882</y>
-      <w>117</w>
-      <h>153</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=*
-geplanteSlots &gt;</panel_attributes>
-    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1674</x>
-      <y>396</y>
-      <w>117</w>
-      <h>261</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=*
-m2=1
-eingeplantAls &gt;</panel_attributes>
-    <additional_attributes>10.0;270.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1962</x>
-      <y>585</y>
-      <w>225</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>Timer
+pomodoroPhasenLaenge</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1910</x><y>590</y><w>250</w><h>160</h></coordinates><panel_attributes>Timer
 -
 startZeitstempel
 endZeitstempel
 geplanteDauer
 istInProduktivModus
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1728</x>
-      <y>657</y>
-      <w>252</w>
-      <h>45</h>
-    </coordinates>
-    <panel_attributes>lt=-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1910</x><y>360</y><w>240</w><h>250</h></coordinates><panel_attributes>lt=-
 m1=0..1
 m2=0..1
-&lt; arbeitetAn</panel_attributes>
-    <additional_attributes>260.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1719</x>
-      <y>351</y>
-      <w>261</w>
-      <h>288</h>
-    </coordinates>
-    <panel_attributes>lt=-
+arbeitetAn ^</panel_attributes><additional_attributes>150;230;150;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2150</x><y>400</y><w>290</w><h>310</h></coordinates><panel_attributes>lt=-
 m1=0..1
 m2=0..1
-&lt; arbeitetAn</panel_attributes>
-    <additional_attributes>270.0;290.0;150.0;290.0;150.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>2070</x>
-      <y>387</y>
-      <w>135</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=0..1
-m2=0..1
-pausenVorschlag &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1611</x>
-      <y>702</y>
-      <w>126</w>
-      <h>135</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=*
-generiertDurch &gt;</panel_attributes>
-    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1971</x>
-      <y>1062</y>
-      <w>216</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>Standardeinstellungen
+pausenVorschlag  v</panel_attributes><additional_attributes>160;10;160;280;10;280</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1920</x><y>1120</y><w>240</w><h>90</h></coordinates><panel_attributes>Standardeinstellungen
 -
 alter
-timerdauer</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1971</x>
-      <y>1215</y>
-      <w>216</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>StandardeinstellungenVerwaltung
--</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>2070</x>
-      <y>1134</y>
-      <w>117</w>
-      <h>99</h>
-    </coordinates>
-    <panel_attributes>lt=-
+timerdauer</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1920</x><y>1290</y><w>240</w><h>90</h></coordinates><panel_attributes>StandardeinstellungenVerwaltung
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2030</x><y>1200</y><w>110</w><h>110</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-konfiguriertIn &gt;</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>2070</x>
-      <y>945</y>
-      <w>135</w>
-      <h>135</h>
-    </coordinates>
-    <panel_attributes>lt=-
+konfiguriertIn &gt;</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2030</x><y>990</y><w>140</w><h>150</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-AbaenderungVon &gt;</panel_attributes>
-    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>2070</x>
-      <y>720</y>
-      <w>126</w>
-      <h>117</h>
-    </coordinates>
-    <panel_attributes>lt=-
+AbaenderungVon &gt;</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2030</x><y>740</y><w>130</w><h>130</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=1
-eingestelltDurch &gt;</panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>783</x>
-      <y>207</y>
-      <w>306</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-
+eingestelltDurch &gt;</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>870</x><y>200</y><w>340</w><h>110</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=*
-&lt; istZugeordnet</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;10.0;320.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>2070</x>
-      <y>189</y>
-      <w>99</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>lt=-
+&lt; istZugeordnet</panel_attributes><additional_attributes>10;90;10;10;320;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2300</x><y>180</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=-
 m1=*
 m2=1
-beinhaltet &gt;</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-</diagram>
+beinhaltet &gt;</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1240</x><y>520</y><w>220</w><h>60</h></coordinates><panel_attributes>SchlagwortVerwaltung
+-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1240</x><y>390</y><w>220</w><h>50</h></coordinates><panel_attributes>Schlagwort
+-
+name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1354</x><y>430</y><w>100</w><h>110</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1
+beinhaltet ^</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>1444</x><y>380</y><w>250</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=*
+&lt; istZugeordnet</panel_attributes><additional_attributes>16;20;230;20</additional_attributes></element></diagram>

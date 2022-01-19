@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:learning_app/features/leisure/bloc/suggested_leisure_cubit.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
 import 'package:learning_app/features/timer/models/config.dart';
@@ -21,8 +22,11 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   StreamSubscription<int>? _tickerSubscription;
 
   late final TimeLoggingBloc timeLoggingBloc;
+  late final SuggestedLeisureCubit suggestedLeisureCubit;
 
-  TimerBloc({required this.timeLoggingBloc}) : super(TimerInitial()) {
+  TimerBloc(
+      {required this.timeLoggingBloc, required this.suggestedLeisureCubit})
+      : super(TimerInitial()) {
     on<TimerStarted>(_onStarted);
     on<TimerPaused>(_onPaused);
     on<TimerResumed>(_onResumed);
@@ -93,6 +97,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onSkipped(TimerSkip event, Emitter<TimerState> emit) {
+    suggestedLeisureCubit.newLeisureActivity();
     currentConfig = Config();
     SoundApi.cancelSound();
     emit(state.onSkipPhase());

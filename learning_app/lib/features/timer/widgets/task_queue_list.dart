@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
+import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
+import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
+import 'package:learning_app/features/timer/widgets/suggested_leisure_activity_card.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list_tile.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/util/logger.dart';
@@ -10,7 +13,7 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 
 const listTileHeight = 50;
 
-class TaskQueueList extends StatefulWidget {
+class DraggableSheetView extends StatefulWidget {
   final ScrollController scrollController;
   final PanelController panelController;
   final Stream<bool> panelOpenedInformer;
@@ -18,7 +21,7 @@ class TaskQueueList extends StatefulWidget {
 
   //final List<TaskWithQueueStatus>? taskList;
 
-  const TaskQueueList({
+  const DraggableSheetView({
     required this.scrollController,
     required this.panelController,
     required this.panelOpenedInformer,
@@ -27,11 +30,11 @@ class TaskQueueList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TaskQueueList> createState() => _TaskQueueListState();
+  State<DraggableSheetView> createState() => _DraggableSheetViewState();
 }
 
-class _TaskQueueListState extends State<TaskQueueList> {
-  _TaskQueueListState();
+class _DraggableSheetViewState extends State<DraggableSheetView> {
+  _DraggableSheetViewState();
 
   @override
   void initState() {
@@ -57,6 +60,8 @@ class _TaskQueueListState extends State<TaskQueueList> {
 
   @override
   Widget build(BuildContext context) {
+    final currentPomoMode =
+        context.select((TimerBloc bloc) => bloc.state.getPomodoroMode());
     return BlocBuilder<TaskQueueBloc, TaskQueueState>(
         // buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
         builder: (context, state) {
@@ -86,8 +91,6 @@ class _TaskQueueListState extends State<TaskQueueList> {
                 ),
               ),
             ),
-
-            // The list of tasks:
             Flexible(
               child: GestureDetector(
                 onTapDown: (details) {
@@ -102,29 +105,9 @@ class _TaskQueueListState extends State<TaskQueueList> {
                     widget.scrollController.jumpTo(10.0);
                   }
                 },
-                child: ReorderableListView(
-                  anchor:
-                      0.05, // This is important for making drag and drop work.
-                  scrollController: widget.scrollController,
-                  children: generateExpansionTiles(state.tasks),
-                  onReorder: (oldIndex, newIndex) {
-                    // Ignore the pseudo element at the end:
-                    if (newIndex <= state.tasks.length) {
-                      setState(
-                        () {
-                          if (newIndex > oldIndex) {
-                            newIndex -= 1;
-                          }
-                          final TaskWithQueueStatus item =
-                              state.tasks.removeAt(oldIndex);
-                          state.tasks.insert(newIndex, item);
-                          BlocProvider.of<TaskQueueBloc>(context)
-                              .add(UpdateQueueOrderEvent(state.tasks));
-                        },
-                      );
-                    }
-                  },
-                ),
+                child: currentPomoMode == PomodoroMode.concentration
+                    ? queuedTaskList(state)
+                    : SuggestedLeisureActivityCard(widget.scrollController),
               ),
             ),
           ],
@@ -133,6 +116,30 @@ class _TaskQueueListState extends State<TaskQueueList> {
         return const CircularProgressIndicator();
       }
     });
+  }
+
+  Widget queuedTaskList(TaskQueueReady state) {
+    return ReorderableListView(
+      anchor: 0.05, // This is important for making drag and drop work.
+      scrollController: widget.scrollController,
+      children: generateExpansionTiles(state.tasks),
+      onReorder: (oldIndex, newIndex) {
+        // Ignore the pseudo element at the end:
+        if (newIndex <= state.tasks.length) {
+          setState(
+            () {
+              if (newIndex > oldIndex) {
+                newIndex -= 1;
+              }
+              final TaskWithQueueStatus item = state.tasks.removeAt(oldIndex);
+              state.tasks.insert(newIndex, item);
+              BlocProvider.of<TaskQueueBloc>(context)
+                  .add(UpdateQueueOrderEvent(state.tasks));
+            },
+          );
+        }
+      },
+    );
   }
 
   List<Widget> generateExpansionTiles(List<TaskWithQueueStatus> list) {
