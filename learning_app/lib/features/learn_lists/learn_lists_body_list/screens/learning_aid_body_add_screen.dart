@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
+import 'package:learning_app/util/logger.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class LearningAidBodyAddScreen extends StatefulWidget {
+class LearningAidBodyAddScreen extends StatelessWidget {
+
   const LearningAidBodyAddScreen({Key? key}) : super(key: key);
 
   @override
-  State<LearningAidBodyAddScreen> createState() =>
-      _LearningAidBodyAddScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider<AlterLearnListCubit>(
+      lazy: true,
+      create: (context) {
+        return AlterLearnListCubit();
+      },
+      child: const LearningAidBodyAddScreenMainElement(),
+    );
+  }
 }
 
-class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
+class LearningAidBodyAddScreenMainElement extends StatefulWidget {
+  const LearningAidBodyAddScreenMainElement({Key? key}) : super(key: key);
+
+  @override
+  State<LearningAidBodyAddScreenMainElement> createState() =>
+      _LearningAidBodyAddScreenMainElementState();
+}
+
+class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAddScreenMainElement> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
   List<Widget> items = [];
@@ -27,9 +47,20 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    BlocProvider.of<AlterLearnListCubit>(context)
+          .startNewLearnListConstruction();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: LearnListAddAppBar(textController: _titleController),
+      appBar: LearnListAddAppBar(
+        textController: _titleController,
+        onSaveLearnList: onSaveLearnList,
+      ),
       body: SlidingUpPanel(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(18.0),
@@ -93,6 +124,22 @@ class _LearningAidBodyAddScreenState extends State<LearningAidBodyAddScreen> {
         ),
       ),
     );
+  }
+
+  /// Handles the 'save learn list' functionality
+  Future<int?> onSaveLearnList() async {
+    final cubit = BlocProvider.of<AlterLearnListCubit>(context);
+    // validate required fields:
+    if (!cubit.validateLearnListConstruction()) {
+      // Not ready to save! Inform the user and continue
+      final missingFieldsDescr = cubit.getMissingFieldsDescription();
+      logger.d(
+          'The task is not ready to be saved! Description: $missingFieldsDescr');
+      // TODO: inform the user with a SnackBar
+      return null;
+    }
+
+    return await BlocProvider.of<AlterLearnListCubit>(context).saveLearnList(LearnMethods.bodyList);
   }
 }
 

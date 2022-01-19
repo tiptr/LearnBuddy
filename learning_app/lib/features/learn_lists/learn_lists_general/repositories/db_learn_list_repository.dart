@@ -1,10 +1,13 @@
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
+import 'package:learning_app/database/database.dart' as db;
 import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/categories/persistence/categories_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list_learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/create_learn_list_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
@@ -179,4 +182,31 @@ class DbLearnListRepository implements LearnListRepository {
       return listModel;
     }).toList();
   }
+
+
+  @override
+  Future<int> createLearnList(CreateLearnListDto newLearnList, LearnMethods method) async {
+    assert(newLearnList.isReadyToStore);
+
+    // Do the complete update in a transaction, so that the streams will only
+    // update once, after the whole update is ready
+
+    // Important: whenever using transactions, every (!) query / update / insert
+    //            inside, has to be awaited -> data loss possible otherwise!
+    return _learnListDao.transaction(() async {
+      int newTaskId = await _learnListDao.createLearnList(
+        db.LearnListsCompanion(
+          id: newLearnList.id,
+          name: newLearnList.name,
+          learnMethod: Value(method),
+          categoryId: Value(newLearnList.category.value?.id),
+          creationDateTime: Value(DateTime.now()),
+          isArchived: newLearnList.isArchived,
+        ),
+      );
+
+      return newTaskId;
+    });
+  }
+
 }

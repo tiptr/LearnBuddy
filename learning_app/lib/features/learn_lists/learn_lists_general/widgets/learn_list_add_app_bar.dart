@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
+import 'package:drift/drift.dart' as drift;
 
-class LearnListAddAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class LearnListAddAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController textController;
+  final Function() onSaveLearnList;
 
-  const LearnListAddAppBar({Key? key, required this.textController})
+  const LearnListAddAppBar({Key? key, required this.textController, required this.onSaveLearnList})
       : super(key: key);
 
   @override
@@ -48,13 +52,23 @@ class LearnListAddAppBar extends StatelessWidget
                         .textStyle2
                         .withOnBackgroundHard
                         .withBold,
+                    onChanged: (text) async {
+                      BlocProvider.of<AlterLearnListCubit>(context)
+                          .alterLearnListAttribute(LearnListManipulationDto(
+                        name: drift.Value(text),
+                      ));
+                    },
                     autofocus: true,
                     maxLines: 1,
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    //TODO: add cubit
+                  onPressed: () async {
+                    int? savedLearnListId = await onSaveLearnList();
+
+                    if (savedLearnListId != null) {
+                      Navigator.pop(context);
+                    }
                   },
                   icon: Icon(
                     Icons.save_outlined,
