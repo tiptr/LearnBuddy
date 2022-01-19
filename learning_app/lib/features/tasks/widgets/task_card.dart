@@ -13,10 +13,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 const double iconSize = 14.0;
 
-const double verticalPaddingCardContentTopLevel = 10;
+final double verticalPaddingCardContentTopLevel =
+    BasicCard.padding.innerVertical;
 const double verticalPaddingCardContentSubTasks = 2;
 
-const double distanceBetweenCardsTopLevel = 10.0;
+final double distanceBetweenCardsTopLevel = BasicCard.padding.outerVertical;
 const double distanceBetweenCardsSubTasks = 7.0;
 
 /// The card used inside the the main tasks list as well as for the subtasks (!)
@@ -150,7 +151,8 @@ class _TaskCardState extends State<TaskCard> {
 
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: widget._isSubTaskCard ? 20.0 : 10.0,
+          horizontal:
+              widget._isSubTaskCard ? 20.0 : BasicCard.padding.outerHorizontal,
           vertical: widget._isSubTaskCard
               ? distanceBetweenCardsSubTasks
               : distanceBetweenCardsTopLevel),
