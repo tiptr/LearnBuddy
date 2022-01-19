@@ -149,15 +149,22 @@ class _TaskQueueListState extends State<TaskQueueList> {
         )
     ];
 
+    // Generate a placeholder element, if the list does not span the whole
+    // view area
+    // Reason: The list should not be scrolled to the top when using drag and
+    // drop (because otherwise the panel will be closed as well)
     final missingHeight = widget.panelMaxHeight -
         (list.length * listTileHeight) // current actual height of the elements
         -
         50; // constant part of the panel
 
-    widgetList.add(SizedBox(
-      key: const Key('Placeholder element at the end of the list'),
-      height: missingHeight,
-    ));
+    if (missingHeight > 0) {
+      widgetList.add(SizedBox(
+        key: const Key('Placeholder element at the end of the list'),
+        height: missingHeight,
+      ));
+    }
+
     return widgetList;
   }
 

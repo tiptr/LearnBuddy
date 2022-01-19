@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/dashboard/widgets/leisure_card.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
@@ -8,6 +9,8 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       // Will change to a custom title bar in the future
@@ -22,14 +25,24 @@ class DashboardScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          children: const [
-            SizedBox(height: 15.0),
-            TasksCard(),
-            SizedBox(height: 30.0),
-          ],
+      body: Scrollbar(
+        controller: _scrollController,
+        interactive: true,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              children: const [
+                SizedBox(height: 15.0),
+                TasksCard(),
+                SizedBox(height: 30.0),
+                LeisureCard(),
+                SizedBox(height: 30.0),
+              ],
+            ),
+          ),
         ),
       ),
     );
