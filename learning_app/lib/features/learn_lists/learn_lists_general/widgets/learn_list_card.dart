@@ -3,6 +3,7 @@ import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 
 const double iconSize = 18.0;
 
@@ -68,7 +69,7 @@ class LearnListCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Upper Row
-                    _buildUpperRow(context),
+                    _buildUpperRow(context, _learningAid),
                     // Lower Row
                     _buildLowerRow(context, _learningAid)
                   ],
@@ -81,7 +82,7 @@ class LearnListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildUpperRow(BuildContext context) {
+  Widget _buildUpperRow(BuildContext context, ReadLearnListDto learnList) {
     return Expanded(
       flex: 50,
       child: Row(
@@ -102,8 +103,7 @@ class LearnListCard extends StatelessWidget {
             flex: 30,
             child: Chip(
               label: Text(
-                // TODO: Use real date here
-                "Heute",
+                learnList.creationDate.toString(),
                 style:
                     Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
@@ -127,7 +127,10 @@ class LearnListCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(Icons.accessibility_new_rounded,
+          Icon(
+              learnList.type == LearnMethods.bodyList
+                  ? Icons.accessibility_new_rounded
+                  : Icons.list,
               size: iconSize,
               color: Theme.of(context).colorScheme.onBackgroundSoft),
           const Spacer(flex: 1),

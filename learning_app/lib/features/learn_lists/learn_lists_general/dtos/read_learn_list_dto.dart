@@ -37,15 +37,15 @@ class ReadLearnListDto extends Equatable {
     }
 
     return ReadLearnListDto(
-        id: learnList.id,
-        name: learnList.name,
-        creationDate: learnList.creationDate,
-        words: learnList.words,
-        category: learnList.category,
-        isArchived: learnList.isArchived,
-        referencingTasksCount: 0, //TODO: calculate it here correctly!!!
-        type: type,
-        );
+      id: learnList.id,
+      name: learnList.name,
+      creationDate: learnList.creationDate,
+      words: learnList.words,
+      category: learnList.category,
+      isArchived: learnList.isArchived,
+      referencingTasksCount: 0, //TODO: calculate it here correctly!!!
+      type: type,
+    );
   }
 
   /// Get the count of words in this list

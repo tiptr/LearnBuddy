@@ -69,7 +69,8 @@ class LearnListsScreen extends StatelessWidget {
                         ),
                         onTap: () => Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              if (learnLists[idx].type == LearnMethods.bodyList) {
+                              if (learnLists[idx].type ==
+                                  LearnMethods.bodyList) {
                                 return LearningAidBodyDetailsScreen(
                                     learnListId: learnLists[idx].id);
                               } else {
