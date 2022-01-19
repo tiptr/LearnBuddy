@@ -9,6 +9,8 @@ import 'package:learning_app/features/tasks/bloc/tasks_state.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/dashboard_constants.dard';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 
 class TasksCard extends StatelessWidget {
@@ -42,7 +44,10 @@ class TasksCard extends StatelessWidget {
             }
 
             // Todo: use a setting for 2 here
-            var tasksProgressData = calculateProgressData(snapshot.data!, 2);
+            var tasksProgressData = calculateProgressData(
+                snapshot.data!,
+                SharedPreferencesData.taskCountOnDashboard ??
+                    defaultTaskCountOnDashboard);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

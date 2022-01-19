@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/settings_constants.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
@@ -34,7 +35,7 @@ Future<void> main() async {
   configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesData.init();
-  ThemeName themeName = SharedPreferencesData.themeName ?? ThemeName.light;
+  ThemeName themeName = SharedPreferencesData.themeName ?? defaultThemeName;
   Logger.level = Level.debug;
 
   runApp(

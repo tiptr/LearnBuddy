@@ -6,7 +6,9 @@ class SharedPreferencesData {
 
   static const _namePrefKey = "personal.name";
   static const _agePrefKey = "personal.age";
-  static const _themePrefKey = "themeName";
+  static const _themePrefKey = "theme.themeName";
+  static const _displayLeisureOnDashboardPrefKey = "dashboard.displayLeisure";
+  static const _taskCountOnDashboardPrefKey = "dashboard.taskCount";
 
   static Future init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -14,6 +16,10 @@ class SharedPreferencesData {
   }
 
   static String? get userName => _prefs.getString(_namePrefKey);
+  static bool? get displayLeisureOnDashboard =>
+      _prefs.getBool(_displayLeisureOnDashboardPrefKey);
+  static int? get taskCountOnDashboard =>
+      _prefs.getInt(_taskCountOnDashboardPrefKey);
   static int? get userAge {
     int? age = _prefs.getInt(_agePrefKey);
     return age == null || age == -1 ? null : age;
@@ -43,4 +49,8 @@ class SharedPreferencesData {
 
   static Future storeThemeName(ThemeName? themeName) async => await _prefs
       .setString(_themePrefKey, themeName == null ? "" : themeName.name);
+  static Future storeTaskCountOnDashboard(int taskCount) async =>
+      await _prefs.setInt(_taskCountOnDashboardPrefKey, taskCount);
+  static Future storeDisplayLeisureOnDashboard(bool displayLeisure) async =>
+      await _prefs.setBool(_displayLeisureOnDashboardPrefKey, displayLeisure);
 }

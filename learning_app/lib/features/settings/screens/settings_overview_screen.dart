@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
+import 'package:learning_app/features/settings/screens/dashboard_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/display_style_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
@@ -17,7 +19,7 @@ class SettingsOverviewScreen extends StatelessWidget {
       titleBar: const GoBackTitleBar(title: "Einstellungen"),
       body: ListView(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
         children: [
           _settingsGroup(
               context: context,
@@ -36,7 +38,7 @@ class SettingsOverviewScreen extends StatelessWidget {
               title: "Dashboard",
               subtitle: "Anzahl Aufgaben, Ausgleichsvorschlag, ...",
               iconData: Icons.house_outlined,
-              nextScreen: const NotImplementedScreen()),
+              nextScreen: const DashboardSettingsScreen()),
           _settingsGroup(
               context: context,
               title: "Pomodoro-Timer",
@@ -52,7 +54,7 @@ class SettingsOverviewScreen extends StatelessWidget {
           _settingsGroup(
               context: context,
               title: "Ausgleichsvorschläge",
-              subtitle: "",
+              subtitle: "Welche Vorschläge angezeigt werden sollen",
               iconData: Icons.local_florist_outlined,
               nextScreen: const NotImplementedScreen()),
           _settingsGroup(
@@ -90,6 +92,7 @@ class SettingsOverviewScreen extends StatelessWidget {
           title: title,
           subTitle: subtitle,
           iconData: iconData,
+          colorHard: true,
         ),
       ),
     );
