@@ -36,7 +36,8 @@ class _TaskScreenState extends State<TaskScreen> {
       }
 
       final TaskFilter currentFilter = state.taskFilter ?? const TaskFilter();
-      final bool isFiltered = BlocProvider.of<TasksCubit>(context).isFilterActive();
+      final bool isFiltered =
+          BlocProvider.of<TasksCubit>(context).isFilterActive();
 
       final showingDoneTasks =
           currentFilter.done.present ? currentFilter.done.value : false;
@@ -47,6 +48,7 @@ class _TaskScreenState extends State<TaskScreen> {
         appBar: BaseTitleBar(
           title: "Aufgaben",
           actions: [
+            // Filters:
             IconButton(
               onPressed: () {
                 showDialog(
@@ -58,6 +60,7 @@ class _TaskScreenState extends State<TaskScreen> {
               },
               icon: const Icon(Icons.filter_list_outlined),
             ),
+            // Done tasks
             IconButton(
                 onPressed: () {
                   final newFilter = TaskFilter(
@@ -65,6 +68,8 @@ class _TaskScreenState extends State<TaskScreen> {
                     categories: currentFilter.categories,
                     dueToday: currentFilter.dueToday,
                     done: drift.Value(!currentFilter.done.value),
+                    categoryNames: currentFilter.categoryNames,
+                    keywordNames: currentFilter.keywordNames,
                   );
 
                   BlocProvider.of<TasksCubit>(context)
@@ -73,6 +78,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 icon: Icon(showingDoneTasks
                     ? Icons.done_all_outlined
                     : Icons.remove_done_outlined)),
+            // Three points menu
             buildThreePointsMenu(
               context: context,
               showCategoryManagement: true,
@@ -103,8 +109,7 @@ class _TaskScreenState extends State<TaskScreen> {
             return Column(
               children: [
                 // Filter info and reset button, if some filters set
-                if (isFiltered)
-                  TaskFilterIndicator(taskFilter: currentFilter),
+                if (isFiltered) TaskFilterIndicator(taskFilter: currentFilter),
 
                 // Task List
                 Flexible(

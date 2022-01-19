@@ -22,10 +22,10 @@ class TaskFilter {
   });
 
   bool isCustomFilter() {
-    return categories.present
-        || keywords.present
-        || !done.present
-        || (done.present && done.value == true)
-        || dueToday.present;
+    return categories.present ||
+        keywords.present ||
+        !done.present ||
+        (done.present && done.value == true) ||
+        dueToday.present;
   }
 }

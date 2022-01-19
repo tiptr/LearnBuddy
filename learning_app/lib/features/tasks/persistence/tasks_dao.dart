@@ -20,7 +20,6 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
   // of this object.
   TasksDao(Database db) : super(db);
 
-  Stream<List<TaskEntity>>? _filteredSortedTopLevelTaskEntitiesStream;
   Stream<List<TaskEntity>>? _subLevelTaskEntitiesStream;
   Stream<List<TaskEntity>>? _queuedTopLevelTaskEntitiesStream;
 

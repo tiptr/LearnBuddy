@@ -3,7 +3,6 @@ import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
-import 'package:learning_app/util/logger.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 
 class TasksCardItem extends StatelessWidget {
