@@ -25,8 +25,9 @@ class LeisureCubit extends Cubit<LeisureState> {
     await _leisureRepository.toggleFavorite(activityId, isFavorite);
   }
 
-  Stream<List<ReadLeisureActivitiesDto>> watchLeisureActivitiesByCategoryId(
-      {required int categoryId}) {
+  Stream<List<ReadLeisureActivitiesDto>> watchLeisureActivitiesByCategoryId({
+    required int categoryId,
+  }) {
     final currentState = state;
     if (currentState is LeisuresLoaded) {
       return currentState.listViewLeisureCategoriesStream.map((categories) =>
