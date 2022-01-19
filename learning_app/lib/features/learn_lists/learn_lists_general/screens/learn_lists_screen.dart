@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_details_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/learn_lists_state.dart';
