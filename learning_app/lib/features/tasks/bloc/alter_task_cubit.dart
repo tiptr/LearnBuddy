@@ -31,8 +31,6 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
         createTaskDto: CreateTaskDto(parentId: parentTaskId),
       ));
     }
-
-    // TODO: handle other states
   }
 
   /// Begins the alternation of an existing task.
@@ -46,8 +44,6 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
         updateTaskDto: UpdateTaskDto(id: taskId),
       ));
     }
-
-    // TODO: handle other states
   }
 
   /// To be called while in 'ConstructingNewTask' or 'AlteringExistingTask' state.
@@ -157,7 +153,7 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
   /// currently being altered
   ///
   /// Only works out of a existing task, so the state has to be 'AlteringExistingTask'
-  Future<bool> createNewSubTask(String title) async {
+  Future<bool> createNewSubTask(String title, int? categoryId) async {
     final currentState = state;
     if (currentState is AlteringExistingTask) {
       AlteringExistingTask constructingState = currentState;
@@ -170,7 +166,7 @@ class AlterTaskCubit extends Cubit<AlterTaskState> {
         parentId: constructingState.updateTaskDto.id,
         title: Value(title),
         // Adopt the category from the parent
-        categoryId: constructingState.updateTaskDto.categoryId,
+        categoryId: Value(categoryId),
       ));
 
       logger.d("[Task Cubit] New subtask was saved. Id: $newSubTaskId");

@@ -1,19 +1,31 @@
 import 'package:drift/drift.dart';
-import 'package:learning_app/features/categories/models/category.dart';
-import 'package:learning_app/features/keywords/models/keyword.dart';
 
 class TaskFilter {
-  final Value<Category?> category;
-  // Keywords are alternatives: If one matches, the task is being returned
-  final Value<List<KeyWord>> keywords;
+  final Value<List<int>> categories;
+  // Keywords and Categories are alternatives: If one matches, the task is being returned
+  final Value<List<int>> keywords;
   // A task is considered done starting the day after the one it was toggled done
   final Value<bool> done;
-  final Value<bool> overDue;
+  final Value<bool> dueToday;
+
+  // Further information -> only used by the frontend
+  final List<String> categoryNames;
+  final List<String> keywordNames;
 
   const TaskFilter({
-    this.category = const Value.absent(),
+    this.categories = const Value.absent(),
     this.keywords = const Value.absent(),
     this.done = const Value(false), // Default: only active tasks
-    this.overDue = const Value.absent(),
+    this.dueToday = const Value.absent(),
+    this.categoryNames = const [],
+    this.keywordNames = const [],
   });
+
+  bool isCustomFilter() {
+    return categories.present ||
+        keywords.present ||
+        !done.present ||
+        (done.present && done.value == true) ||
+        dueToday.present;
+  }
 }
