@@ -149,7 +149,7 @@ class TasksDao extends DatabaseAccessor<Database> with _$TasksDaoMixin {
       ..where((tsk) {
         // category filter, if applied
         if (taskFilter.category.present) {
-          return tsk.categoryId.equals(taskFilter.category.value?.id);
+          return tsk.categoryId.isIn(taskFilter.category.value);
         } else {
           return const CustomExpression('TRUE');
         }

@@ -3,9 +3,9 @@ import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/keywords/models/keyword.dart';
 
 class TaskFilter {
-  final Value<Category?> category;
-  // Keywords are alternatives: If one matches, the task is being returned
-  final Value<List<KeyWord>> keywords;
+  final Value<List<int>> category;
+  // Keywords and Categories are alternatives: If one matches, the task is being returned
+  final Value<List<int>> keywords;
   // A task is considered done starting the day after the one it was toggled done
   final Value<bool> done;
   final Value<bool> overDue;

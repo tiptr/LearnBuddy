@@ -359,6 +359,10 @@ class DbTaskRepository implements TaskRepository {
 
   /// Actually creates the main filtered task list stream.
   /// To be called only once.
+  ///
+  /// Since the keywords for the tasks are only known here, the keywords-filter
+  /// also is applied here, instead of as part of the tasks-query.
+  /// This will only delay this, if the filter is present, though.
   Stream<List<TaskWithQueueStatus>> _buildFilteredListStream({
     TaskFilter taskFilter = const TaskFilter(),
     TaskOrder taskOrder = const TaskOrder(),
@@ -377,11 +381,11 @@ class DbTaskRepository implements TaskRepository {
     if (taskFilter.keywords.present) {
       return stream.map(
           (tasksWithQueueStatus) => tasksWithQueueStatus.where((taskWithQueue) {
-                final wantedKeywords = taskFilter.keywords.value;
-                final actualKeywords = taskWithQueue.task.keywords;
+                final wantedKeywordIds = taskFilter.keywords.value;
+                final actualKeywordIds = taskWithQueue.task.keywords.map((kwd) => kwd.id);
                 // accept, if at least one of the wanted is found
-                return wantedKeywords.any((wanted) {
-                  return actualKeywords.contains(wanted);
+                return wantedKeywordIds.any((wanted) {
+                  return actualKeywordIds.contains(wanted);
                 });
               }).toList());
     } else {
@@ -391,10 +395,6 @@ class DbTaskRepository implements TaskRepository {
 
   /// Actually creates a task list stream.
   /// Create the list of tasks with their queue status by merging everything
-  ///
-  /// Since the keywords for the tasks are only known here, the keywords-filter
-  /// also is applied here, instead of as part of the tasks-query.
-  /// This will only delay this, if the filter is present, though.
   Stream<List<TaskWithQueueStatus>> _buildListStream(
       {required Stream<List<TaskEntity>> topLevelEntitiesStream}) {
     // switchMap is used to create a new sub-stream
