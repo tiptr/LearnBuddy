@@ -215,6 +215,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                       if (detailsDto != null &&
                           detailsDto.ancestorTitles.isNotEmpty)
                         TaskAncestorIndicator(
+                          topLevelId: detailsDto.topLevelParentId,
                           ancestors: detailsDto.ancestorTitles,
                           categoryColor: detailsDto.category?.color,
                         ),

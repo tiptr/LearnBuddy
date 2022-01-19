@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/shared/widgets/color_indicator.dart';
 
 class TaskAncestorIndicator extends StatelessWidget {
   final List<String> ancestors;
   final Color? categoryColor;
+  final int? topLevelId;
 
   const TaskAncestorIndicator({
     Key? key,
+    required this.topLevelId,
     required this.ancestors,
     required this.categoryColor,
   }) : super(key: key);
@@ -18,7 +21,22 @@ class TaskAncestorIndicator extends StatelessWidget {
     final String topLevelParent = ancestors.first;
     final List<String> subAncestors = ancestors.sublist(1);
 
-    return Row(
+    return InkWell(
+        onTap: () async {
+          if (topLevelId != null) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TaskDetailsScreen(
+                  existingTaskId: topLevelId,
+                  topLevelParentId: topLevelId,
+                ),
+              ),
+            );
+          }
+    },
+    child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,15 +98,7 @@ class TaskAncestorIndicator extends StatelessWidget {
           ),
         ),
       ],
+    ),
     );
-
-    // return Container(
-    //   width: width,
-    //   height: height,
-    //   decoration: BoxDecoration(
-    //     color: color,
-    //     borderRadius: BorderRadius.circular(5.0),
-    //   ),
-    // );
   }
 }
