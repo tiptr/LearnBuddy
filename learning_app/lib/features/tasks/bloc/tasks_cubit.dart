@@ -42,6 +42,7 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
+  /// Deletes the task including subtasks and all related entities
   Future<void> deleteTaskById(int id) async {
     final currentState = state;
 
