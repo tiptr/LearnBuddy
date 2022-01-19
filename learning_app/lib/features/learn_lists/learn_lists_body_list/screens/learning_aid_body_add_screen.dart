@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_add_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
@@ -94,6 +95,7 @@ class _LearningAidBodyAddScreenMainElementState
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                         Radius.circular(BasicCard.borderRadius)),
+                    color: Theme.of(context).colorScheme.subtleBackgroundGrey,
                   ),
                 ),
               ),
@@ -106,19 +108,22 @@ class _LearningAidBodyAddScreenMainElementState
               style: Theme.of(context).textTheme.textStyle2.withBold,
             ),
             const SizedBox(height: 10.0),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, i) {
-                var newDescriptionController = TextEditingController();
-                _descriptionControllers.add(newDescriptionController);
-                return LearningAidBodyDetailAddListViewItem(
-                  newDescriptionController: _descriptionControllers[i],
-                  text: bodyParts[i],
-                  id: i,
-                  onChange: onChangeText,
-                );
-              },
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.65,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (context, i) {
+                  var newDescriptionController = TextEditingController();
+                  _descriptionControllers.add(newDescriptionController);
+                  return LearningAidBodyDetailAddListViewItem(
+                    newDescriptionController: _descriptionControllers[i],
+                    text: bodyParts[i],
+                    id: i,
+                    onChange: onChangeText,
+                  );
+                },
+              ),
             ),
             // Only for navigation to tags
             const SizedBox(height: 10.0)
