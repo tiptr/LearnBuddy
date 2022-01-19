@@ -59,6 +59,7 @@ class _LearnListAddScreenMainElementState extends State<_LearnListAddScreenMainE
         textController: _titleController,
         onSaveLearnList: onSaveLearnList,
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20.0),
