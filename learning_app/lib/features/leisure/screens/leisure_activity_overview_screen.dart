@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
@@ -21,54 +23,55 @@ class LeisureActivityOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ReadLeisureActivitiesDto>>(
-        stream: BlocProvider.of<LeisureCubit>(context)
-            .watchLeisureActivitiesByCategoryId(categoryId: categoryId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      stream: BlocProvider.of<LeisureCubit>(context)
+          .watchLeisureActivitiesByCategoryId(categoryId: categoryId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(
-                'Aktuell existieren leider keine Aktivitäten für die gewählte Kategorie',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.textStyle4,
-              ),
-            );
-          }
-
-          final activities = snapshot.data!;
-
-          return Scaffold(
-            appBar: LeisureOverviewAppBar(
-              categoryTitle: categoryTitle,
-            ), //TODO: insert title
-            body: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: activities.length,
-              itemBuilder: (BuildContext ctx, int idx) {
-                return GestureDetector(
-                  child: LeisureActivityCard(
-                    leisureActivity: activities[idx],
-                  ),
-                  onTap: () => {
-                    Navigator.push(
-                      ctx,
-                      MaterialPageRoute(
-                        builder: (ctx) => LeisureActivityScreen(
-                            categoryId: categoryId,
-                            activityId: activities[idx].id),
-                      ),
-                    )
-                  },
-                );
-              },
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              'Aktuell existieren leider keine Aktivitäten für die gewählte Kategorie',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.textStyle4,
             ),
           );
-        });
+        }
+
+        final activities = snapshot.data!;
+
+        return Scaffold(
+          appBar: LeisureOverviewAppBar(
+            categoryTitle: categoryTitle,
+          ), //TODO: insert title
+          body: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: activities.length,
+            itemBuilder: (BuildContext ctx, int idx) {
+              return GestureDetector(
+                child: LeisureActivityCard(
+                  leisureActivity: activities[idx],
+                ),
+                onTap: () => {
+                  Navigator.push(
+                    ctx,
+                    MaterialPageRoute(
+                      builder: (ctx) => LeisureActivityScreen(
+                          categoryId: categoryId,
+                          activityId: activities[idx].id),
+                    ),
+                  )
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -85,10 +88,11 @@ class LeisureActivityCard extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(BasicCard.borderRadius),
         ),
-        color: Colors.white,
-        elevation: 5,
+        color: Theme.of(context).colorScheme.cardColor,
+        elevation: BasicCard.elevation.high,
+        shadowColor: Theme.of(context).colorScheme.shadowColor,
         child: Container(
           padding: const EdgeInsets.all(20.0),
           child: Row(
@@ -110,7 +114,7 @@ class LeisureActivityCard extends StatelessWidget {
                     Icon(
                       Icons.star,
                       color: leisureActivity.isFavorite
-                          ? Colors.purple
+                          ? Theme.of(context).colorScheme.secondary
                           : Colors.grey,
                     ),
                     SizedBox(
@@ -151,12 +155,16 @@ class LeisureActivityDescription extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+          style: Theme.of(context)
+              .textTheme
+              .textStyle2
+              .withBold
+              .withOnBackgroundHard,
         ),
         const SizedBox(height: 10),
         Text(
           "$duration min",
-          style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+          style: Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
         )
       ],
     );

@@ -39,12 +39,16 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   onPressed: () {
                     BlocProvider.of<LeisureCubit>(context).toggleFavorite(
-                        leisureActivity.id, !leisureActivity.isFavorite);
+                      leisureActivity.id,
+                      !leisureActivity.isFavorite,
+                    );
                   },
-                  icon: Icon(Icons.star,
-                      color: leisureActivity.isFavorite
-                          ? Colors.purple
-                          : Colors.grey),
+                  icon: Icon(
+                    Icons.star,
+                    color: leisureActivity.isFavorite
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.grey,
+                  ),
                   iconSize: 30,
                 ),
               ],
