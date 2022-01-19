@@ -133,11 +133,12 @@ class _LearnListAddScreenMainElementState extends State<LearnListAddScreenMainEl
     final cubit = BlocProvider.of<AlterLearnListCubit>(context);
     //save the words
     //TODO: replace this in the future
-    //generate random ids
+    //generate random ids (that are ascendent)
+    var rdm = Random();
+    var startId = rdm.nextInt(4294967280);
     final List<LearnListWord> wordsWithRandomIds = [];
-    for(LearnListWord word in words){
-      var rdm = Random();
-      wordsWithRandomIds.add(LearnListWord(id: rdm.nextInt(4294967290), word: word.word));
+    for(int i = 0; i < words.length; i++){
+      wordsWithRandomIds.add(LearnListWord(id: startId++, word: words[i].word));
     }
     cubit.alterLearnListAttribute(LearnListManipulationDto(
       words: drift.Value(wordsWithRandomIds),
