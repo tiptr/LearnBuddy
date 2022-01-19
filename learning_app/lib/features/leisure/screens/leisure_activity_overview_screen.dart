@@ -96,6 +96,7 @@ class LeisureActivityCard extends StatelessWidget {
         shadowColor: Theme.of(context).colorScheme.shadowColor,
         child: Container(
           padding: const EdgeInsets.all(20.0),
+          height: BasicCard.height,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,7 +117,7 @@ class LeisureActivityCard extends StatelessWidget {
                       Icons.star,
                       color: leisureActivity.isFavorite
                           ? Theme.of(context).colorScheme.secondary
-                          : Colors.grey,
+                          : Theme.of(context).colorScheme.onBackgroundSoft,
                     ),
                     SizedBox(
                       width: 85.0,
@@ -124,7 +125,7 @@ class LeisureActivityCard extends StatelessWidget {
                       child: SvgPicture.asset(
                         leisureActivity.pathToImage ??
                             defaultLeisureCategoryImagePath,
-                        color: Colors.cyan,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     )
                   ],

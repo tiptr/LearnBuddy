@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 
@@ -34,7 +36,11 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Expanded(
                   child: Text(categoryTitle,
                       textAlign: TextAlign.left,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle1
+                          .withBold
+                          .withOnBackgroundHard),
                 ),
                 IconButton(
                   onPressed: () {
@@ -43,12 +49,10 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                       !leisureActivity.isFavorite,
                     );
                   },
-                  icon: Icon(
-                    Icons.star,
-                    color: leisureActivity.isFavorite
-                        ? Theme.of(context).colorScheme.secondary
-                        : Colors.grey,
-                  ),
+                  icon: Icon(Icons.star,
+                      color: leisureActivity.isFavorite
+                          ? Theme.of(context).colorScheme.secondary
+                          : Theme.of(context).colorScheme.onBackgroundSoft),
                   iconSize: 30,
                 ),
               ],

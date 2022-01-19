@@ -70,10 +70,11 @@ class LeisureActivityScreen extends StatelessWidget {
                   Center(
                     child: Text(
                       activity.duration.inMinutes.toString() + " Minuten",
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle2
+                          .withBold
+                          .withOnBackgroundHard,
                     ),
                   ),
                   // Spacer
@@ -83,24 +84,26 @@ class LeisureActivityScreen extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: Text(
                         activity.descriptionShort,
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.visible,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .textStyle2
+                            .withBold
+                            .withOnBackgroundHard
+                            .withOverflow(TextOverflow.visible),
                       ),
                     ),
                   ),
                   // Spacer
                   const SizedBox(height: 20.0),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Text(
                       "Details:",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle2
+                          .withBold
+                          .withOnBackgroundHard,
                     ),
                   ),
                   // Spacer
@@ -109,7 +112,7 @@ class LeisureActivityScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Text(
                       activity.descriptionLong ?? '',
-                      overflow: TextOverflow.visible,
+                      style: Theme.of(context).textTheme.settingsInfoTextStyle,
                     ),
                   ),
                 ],
