@@ -382,7 +382,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
                     ? SubTasksList(
                         subTasksList: detailsDto.children,
                         directlyStartSubtaskCreation:
-                            widget.directlyStartSubtaskCreation)
+                            widget.directlyStartSubtaskCreation,
+                        detailDto: detailsDto,
+                      )
                     : InkWell(
                         onTap: () async {
                           int? savedTaskId = await onSaveTask();
