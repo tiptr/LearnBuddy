@@ -98,7 +98,6 @@ LazyDatabase _openConnection() {
     'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details.drift',
     'package:learning_app/features/leisure/persistence/leisure_categories.drift',
     'package:learning_app/features/leisure/persistence/leisure_activities.drift',
-    'package:learning_app/features/leisure/persistence/leisure_category_triggers.drift',
   },
 )
 class Database extends _$Database {
@@ -134,7 +133,7 @@ class Database extends _$Database {
           // Call every initialization scripts that are implemented:
           await initialization001Categories();
           await initialization002Keywords();
-          await initialization003LeisureActivities();
+          await initialization003LeisureCategories();
           await initialization004LeisureActivities();
 
           if (insertDemoDataAtFirstStartup) {

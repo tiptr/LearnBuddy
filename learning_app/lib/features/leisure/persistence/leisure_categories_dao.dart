@@ -20,4 +20,14 @@ class LeisureCategoriesDao extends DatabaseAccessor<Database>
   // this constructor is required so that the main database can create an instance
   // of this object.
   LeisureCategoriesDao(Database db) : super(db);
+
+  Stream<List<LeisureCategoryEntity>>? _leisureCategoryEntitiesStream;
+
+  Stream<List<LeisureCategoryEntity>> watchLeisureCategoryEntities() {
+    _leisureCategoryEntitiesStream =
+        _leisureCategoryEntitiesStream ?? (select(leisureCategories).watch());
+
+    return _leisureCategoryEntitiesStream
+        as Stream<List<LeisureCategoryEntity>>;
+  }
 }

@@ -7,7 +7,7 @@ import '../database.dart';
 ///
 /// This file is called from inside database.dart. Future initialization scripts
 /// have to be explicitly added there, too.
-Future<void> initialization003LeisureActivities() async {
+Future<void> initialization003LeisureCategories() async {
   final LeisureCategoriesDao _dao = getIt<LeisureCategoriesDao>();
   // Batch insert, no awaits required inside
   await _dao.batch((batch) {
@@ -15,27 +15,27 @@ Future<void> initialization003LeisureActivities() async {
       LeisureCategoriesCompanion.insert(
         id: const Value(0),
         name: 'Fun Challenges',
-        pathToImage: const Value('assets/leisure/leisure-group-fun.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-fun.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(1),
         name: 'Fitness ohne Geräte',
-        pathToImage: const Value('assets/leisure/leisure-group-fitness.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-fitness.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(2),
         name: 'Yoga & Meditation',
-        pathToImage: const Value('assets/leisure/leisure-group-yoga.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-yoga.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(3),
         name: 'Outdoor & Bewegung',
-        pathToImage: const Value('assets/leisure/leisure-group-outdoor.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-outdoor.svg'),
       ),
       LeisureCategoriesCompanion.insert(
         id: const Value(4),
         name: 'Weitere Vorschäge',
-        pathToImage: const Value('assets/leisure/leisure-group-further.png'),
+        pathToImage: const Value('assets/leisure/leisure-group-further.svg'),
       ),
     ]);
   });
