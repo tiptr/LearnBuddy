@@ -31,28 +31,35 @@ class TaskFilterIndicator extends StatelessWidget {
               children: [
                 Text(
                   'Aktive Filter:',
-                  style: Theme.of(context).textTheme.textStyle3.withBold,
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle3
+                      .withBold
+                      .withOnBackgroundHard,
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 if (taskFilter.dueToday.present &&
                     taskFilter.dueToday.value == true)
                   Text(
                     'Heute fällig',
-                    style: Theme.of(context).textTheme.textStyle3.withBold,
+                    style: Theme.of(context).textTheme.textStyle3,
                   ),
                 if (taskFilter.done.present && taskFilter.done.value == true)
                   Text(
                     'Erledigte Aufgaben',
-                    style: Theme.of(context).textTheme.textStyle3.withBold,
+                    style: Theme.of(context).textTheme.textStyle3,
                   ),
                 for (String category in taskFilter.categoryNames)
                   Text(
                     'Kategorie: $category',
-                    style: Theme.of(context).textTheme.textStyle3.withBold,
+                    style: Theme.of(context).textTheme.textStyle3,
                   ),
                 for (String keyword in taskFilter.keywordNames)
                   Text(
                     'Schlagwort: $keyword',
-                    style: Theme.of(context).textTheme.textStyle3.withBold,
+                    style: Theme.of(context).textTheme.textStyle3,
                   ),
               ],
             ),

@@ -22,6 +22,7 @@ class FilterSelectDialog extends StatefulWidget {
 class _FilterSelectDialogState extends State<FilterSelectDialog> {
   List<ReadCategoryDto> selectedCategories = [];
   List<ReadKeyWordDto> selectedKeywords = [];
+  bool onlyDueTasks = false;
 
   @override
   void initState() {
@@ -38,16 +39,16 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
         "Filter",
         style: Theme.of(context).textTheme.mainPageTitleStyle,
       ),
-      content: Scrollbar(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 350,
-                width: 500,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 400,
+            width: 350,
+            child: Scrollbar(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,77 +88,109 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                         );
                       },
                     ),
+                    const SizedBox(height: 25.0),
+                    Text(
+                      "Fälligkeit",
+                      style: Theme.of(context)
+                          .textTheme
+                          .textStyle2
+                          .withBold
+                          .withOnBackgroundSoft,
+                    ),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Nur fällige anzeigen",
+                          style: Theme.of(context)
+                              .textTheme
+                              .textStyle2
+                              .withOnBackgroundHard,
+                        ),
+                        Switch(
+                          value: onlyDueTasks,
+                          onChanged: (value) {
+                            setState(() {
+                              onlyDueTasks = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  MaterialButton(
-                    child: Text(
-                      "Abbrechen",
-                      style: Theme.of(context)
-                          .textTheme
-                          .textStyle4
-                          .withOnBackgroundSoft,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  MaterialButton(
-                    child: Text(
-                      "Anwenden",
-                      style: Theme.of(context).textTheme.textStyle4.withPrimary,
-                    ),
-                    onPressed: () {
-                      final currentState =
-                          BlocProvider.of<TasksCubit>(context).state;
-
-                      if (currentState is TasksLoaded) {
-                        final currentFilter =
-                            currentState.taskFilter ?? const TaskFilter();
-
-                        final categoryIds = selectedCategories
-                            .map((category) => category.id)
-                            .toList();
-
-                        final categoryNames = selectedCategories
-                            .map((category) => category.name)
-                            .toList();
-
-                        final keywordIds = selectedKeywords
-                            .map((keyword) => keyword.id)
-                            .toList();
-
-                        final keywordNames = selectedKeywords
-                            .map((keyword) => keyword.name)
-                            .toList();
-
-                        final newFilter = TaskFilter(
-                          keywords: keywordIds.isEmpty
-                              ? const drift.Value.absent()
-                              : drift.Value(keywordIds),
-                          categories: categoryIds.isEmpty
-                              ? const drift.Value.absent()
-                              : drift.Value(categoryIds),
-                          dueToday: currentFilter.dueToday, // TODO
-                          done: currentFilter.done,
-                          categoryNames: categoryNames,
-                          keywordNames: keywordNames,
-                        );
-
-                        BlocProvider.of<TasksCubit>(context)
-                            .loadFilteredTasks(newFilter);
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MaterialButton(
+                child: Text(
+                  "Abbrechen",
+                  style: Theme.of(context)
+                      .textTheme
+                      .textStyle4
+                      .withOnBackgroundSoft,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
+              MaterialButton(
+                child: Text(
+                  "Anwenden",
+                  style: Theme.of(context).textTheme.textStyle4.withPrimary,
+                ),
+                onPressed: () {
+                  final currentState =
+                      BlocProvider.of<TasksCubit>(context).state;
+
+                  if (currentState is TasksLoaded) {
+                    final currentFilter =
+                        currentState.taskFilter ?? const TaskFilter();
+
+                    final categoryIds = selectedCategories
+                        .map((category) => category.id)
+                        .toList();
+
+                    final categoryNames = selectedCategories
+                        .map((category) => category.name)
+                        .toList();
+
+                    final keywordIds =
+                        selectedKeywords.map((keyword) => keyword.id).toList();
+
+                    final keywordNames = selectedKeywords
+                        .map((keyword) => keyword.name)
+                        .toList();
+
+                    final newFilter = TaskFilter(
+                      keywords: keywordIds.isEmpty
+                          ? const drift.Value.absent()
+                          : drift.Value(keywordIds),
+                      categories: categoryIds.isEmpty
+                          ? const drift.Value.absent()
+                          : drift.Value(categoryIds),
+                      dueToday: onlyDueTasks
+                          ? const drift.Value(true)
+                          : const drift.Value.absent(),
+                      done: currentFilter.done,
+                      categoryNames: categoryNames,
+                      keywordNames: keywordNames,
+                    );
+
+                    BlocProvider.of<TasksCubit>(context)
+                        .loadFilteredTasks(newFilter);
+                  }
+                  Navigator.of(context).pop();
+                },
+              )
             ],
           ),
-        ),
+        ],
       ),
     );
   }
