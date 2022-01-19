@@ -10,7 +10,7 @@ import 'package:learning_app/features/keywords/persistence/keywords_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/repositories/learn_list_repository.dart';
 import 'package:learning_app/features/tasks/models/queue_status.dart';
-import 'package:learning_app/features/tasks/persistence/task_queue_elements_dao.dart';
+import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
 import 'package:learning_app/features/tasks/dtos/create_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/update_task_dto.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
@@ -92,15 +92,15 @@ class DbTaskRepository implements TaskRepository {
   /// Calling this multiple times creates new streams at each call without
   /// destroying the other ones automatically (like with the list streams).
   @override
-  Stream<TaskWithQueueStatus?> watchTopLevelTaskById({required int id}) {
-    final topLevelTaskEntityStream = _tasksDao.watchTaskById(id);
+  Stream<TaskWithQueueStatus?> watchTaskById({required int id}) {
+    final taskEntityStream = _tasksDao.watchTaskById(id);
     // Reuse the list-method for combining the entities to a model:
-    final singleTopLevelTaskEntityListStream = topLevelTaskEntityStream
+    final singleTaskEntityListStream = taskEntityStream
         .where((entity) => entity != null)
         .map((entity) => [entity as TaskEntity]);
 
-    final singleModelListStream = _buildListStream(
-        topLevelEntitiesStream: singleTopLevelTaskEntityListStream);
+    final singleModelListStream =
+        _buildListStream(topLevelEntitiesStream: singleTaskEntityListStream);
 
     return singleModelListStream
         .where((list) => list.isNotEmpty)
@@ -215,10 +215,43 @@ class DbTaskRepository implements TaskRepository {
     });
   }
 
+  /// Deletes the task including subtasks and all related entities
   @override
   Future<bool> deleteById(int id) async {
-    final affected = await _tasksDao.deleteTaskById(id);
-    return affected > 0;
+    // // Get all subtasks
+    final model = await watchTaskById(id: id).first;
+
+    if (model == null) {
+      return false;
+    }
+
+    _tasksDao.transaction(() async {
+      // Remove from Task queue
+      await _queueElementsDao.deleteQueueElementByTaskId(model.task.id);
+
+      await _deleteRecursively(model.task);
+    });
+
+    return true;
+  }
+
+  Future<void> _deleteRecursively(Task task) async {
+    // Recursively call for children:
+    for (Task child in task.children) {
+      await _deleteRecursively(child);
+    }
+
+    // Delete task-keyword relationships
+    await _taskKeywordsDao.deleteTaskKeyWordsByTaskId(task.id);
+
+    // Delete task-learnlist relationships
+    await _taskLearnListsDao.deleteTaskLearnListsByTaskId(task.id);
+
+    // Remove TimeLogs
+    await _timeLogsDao.deleteTimeLogsByTaskId(task.id);
+
+    // Remove the task entity itself:
+    await _tasksDao.deleteTaskById(task.id);
   }
 
   @override

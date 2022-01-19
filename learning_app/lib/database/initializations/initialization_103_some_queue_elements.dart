@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:drift/drift.dart';
-import 'package:learning_app/features/tasks/persistence/task_queue_elements_dao.dart';
+import 'package:learning_app/features/task_queue/persistence/task_queue_elements_dao.dart';
 import 'package:learning_app/util/injection.dart';
 import '../database.dart';
 

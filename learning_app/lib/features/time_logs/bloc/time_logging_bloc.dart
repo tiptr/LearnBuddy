@@ -101,8 +101,6 @@ class TimeLoggingBloc extends Bloc<TimeLoggingEvent, TimeLoggingState> {
         parentTask: currentState.parentTask,
         task: currentState.task,
       ));
-    } else {
-      logger.d('Timer Logging not in Initialized State and Start was called!');
     }
   }
 
