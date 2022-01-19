@@ -1,7 +1,7 @@
 part of 'timer_bloc.dart';
 
 abstract class TimerState {
-  final Config _config = Config(1, 1, 15, 4);
+  final Config _config = Config();
   late int
       _countPhase; // Phase count is between 0 and (2 * countUntilLongerBreak - 1)
   late PomodoroMode _pomodoroMode;
