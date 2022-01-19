@@ -82,6 +82,8 @@ extension CustomStyle on TextStyle {
   TextStyle get withTertiary => copyWith(color: _colorScheme.tertiary);
   TextStyle get withOnTertiary => copyWith(color: _colorScheme.onTertiary);
   TextStyle get withBackground => copyWith(color: _colorScheme.background);
+  TextStyle get withSucess => copyWith(color: _colorScheme.success);
+  TextStyle get withError => copyWith(color: _colorScheme.error);
 
   // Same style but bold
   TextStyle get withBold => copyWith(fontWeight: FontWeight.bold);
