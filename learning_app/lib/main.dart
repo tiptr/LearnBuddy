@@ -17,7 +17,6 @@ import 'package:learning_app/util/nav_cubit.dart';
 import 'package:learning_app/util/notification_api.dart';
 import 'package:logger/logger.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
-import 'package:path/path.dart';
 import 'features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
 import 'constants/theme_color_constants.dart';
 import 'features/themes/bloc/bloc.dart';

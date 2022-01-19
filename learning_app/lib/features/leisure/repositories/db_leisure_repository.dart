@@ -76,24 +76,21 @@ class DbLeisureRepository implements LeisureRepository {
     });
   }*/
 
-
-
   @override
   Stream<LeisureActivity> watchRandomLeisureActivity() {
     final leisureCategoriesStream = watchLeisureCategories();
-    Stream<LeisureActivity> leisureActivityStream =  leisureCategoriesStream.map((leisureCategories) {
+    Stream<LeisureActivity> leisureActivityStream =
+        leisureCategoriesStream.map((leisureCategories) {
       Random random = Random();
       int randInt = random.nextInt(leisureCategories.length);
       // TODO: check if there is a element in the category
 
-      final LeisureCategory randomLeisureCategory =  leisureCategories[randInt];
+      final LeisureCategory randomLeisureCategory = leisureCategories[randInt];
       randInt = random.nextInt(randomLeisureCategory.activities.length);
-      final LeisureActivity randomLeisureActivity = randomLeisureCategory.activities[randInt];
+      final LeisureActivity randomLeisureActivity =
+          randomLeisureCategory.activities[randInt];
       return randomLeisureActivity;
     });
     return leisureActivityStream;
-
   }
-
-
 }

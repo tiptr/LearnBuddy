@@ -28,7 +28,8 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
     Stream<List<TaskWithQueueStatus>> stream =
         _taskRepository.watchQueuedTasks();
     _subscription?.cancel();
-    _subscription = stream.listen((List<TaskWithQueueStatus> taskListFromStream) {
+    _subscription =
+        stream.listen((List<TaskWithQueueStatus> taskListFromStream) {
       add(UpdateQueueEvent(taskListFromStream));
     });
 

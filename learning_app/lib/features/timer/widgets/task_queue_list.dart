@@ -91,11 +91,25 @@ class _DraggableSheetViewState extends State<DraggableSheetView> {
                 ),
               ),
             ),
-            if (currentPomoMode == PomodoroMode.concentration)
-              // The list of tasks:
-              queuedTaskList(state)
-            else
-              const SuggestedLeisureActivityCard()
+            Flexible(
+              child: GestureDetector(
+                onTapDown: (details) {
+                  // This is used to fix the drag-and-drop reordering of
+                  // the tasks, in the case that the list is scrolled up
+                  // completely
+                  // This has the purpose of not having the list at a scroll-
+                  // offset of 0, when dragging items down via drag and drop.
+                  // If that is the case, the whole sliding up panel is being
+                  // moved instead.
+                  if (widget.scrollController.offset < 10) {
+                    widget.scrollController.jumpTo(10.0);
+                  }
+                },
+                child: currentPomoMode == PomodoroMode.concentration
+                    ? queuedTaskList(state)
+                    : SuggestedLeisureActivityCard(widget.scrollController),
+              ),
+            ),
           ],
         );
       } else {
@@ -105,43 +119,26 @@ class _DraggableSheetViewState extends State<DraggableSheetView> {
   }
 
   Widget queuedTaskList(TaskQueueReady state) {
-    return Flexible(
-      child: GestureDetector(
-        onTapDown: (details) {
-          // This is used to fix the drag-and-drop reordering of
-          // the tasks, in the case that the list is scrolled up
-          // completely
-          // This has the purpose of not having the list at a scroll-
-          // offset of 0, when dragging items down via drag and drop.
-          // If that is the case, the whole sliding up panel is being
-          // moved instead.
-          if (widget.scrollController.offset < 10) {
-            widget.scrollController.jumpTo(10.0);
-          }
-        },
-        child: ReorderableListView(
-          anchor: 0.05, // This is important for making drag and drop work.
-          scrollController: widget.scrollController,
-          children: generateExpansionTiles(state.tasks),
-          onReorder: (oldIndex, newIndex) {
-            // Ignore the pseudo element at the end:
-            if (newIndex <= state.tasks.length) {
-              setState(
-                () {
-                  if (newIndex > oldIndex) {
-                    newIndex -= 1;
-                  }
-                  final TaskWithQueueStatus item =
-                      state.tasks.removeAt(oldIndex);
-                  state.tasks.insert(newIndex, item);
-                  BlocProvider.of<TaskQueueBloc>(context)
-                      .add(UpdateQueueOrderEvent(state.tasks));
-                },
-              );
-            }
-          },
-        ),
-      ),
+    return ReorderableListView(
+      anchor: 0.05, // This is important for making drag and drop work.
+      scrollController: widget.scrollController,
+      children: generateExpansionTiles(state.tasks),
+      onReorder: (oldIndex, newIndex) {
+        // Ignore the pseudo element at the end:
+        if (newIndex <= state.tasks.length) {
+          setState(
+            () {
+              if (newIndex > oldIndex) {
+                newIndex -= 1;
+              }
+              final TaskWithQueueStatus item = state.tasks.removeAt(oldIndex);
+              state.tasks.insert(newIndex, item);
+              BlocProvider.of<TaskQueueBloc>(context)
+                  .add(UpdateQueueOrderEvent(state.tasks));
+            },
+          );
+        }
+      },
     );
   }
 

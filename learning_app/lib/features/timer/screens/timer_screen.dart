@@ -9,7 +9,6 @@ import 'package:learning_app/features/timer/models/pomodoro_mode.dart';
 import 'package:learning_app/features/timer/widgets/actions.dart'
     show TimerActions;
 import 'package:learning_app/features/timer/widgets/active_task.dart';
-import 'package:learning_app/features/timer/widgets/suggested_leisure_activity_card.dart';
 import 'package:learning_app/features/timer/widgets/task_queue_list.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';

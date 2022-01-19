@@ -14,7 +14,7 @@ class SuggestedLeisureCubit extends Cubit<SuggestedLeisureState> {
 
   SuggestedLeisureCubit() : super(SuggestedLeisureInitial());
 
-  void init(){
+  void init() {
     _subscription = _repository.watchRandomLeisureActivity().listen((event) {
       emit(SuggestedLeisureLoaded(event));
     });
@@ -29,7 +29,4 @@ class SuggestedLeisureCubit extends Cubit<SuggestedLeisureState> {
 
     emit(SuggestedLeisureLoaded(await stream.first));
   }
-
-
-
 }

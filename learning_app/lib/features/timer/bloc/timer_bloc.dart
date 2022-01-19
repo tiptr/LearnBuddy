@@ -23,7 +23,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   late final TimeLoggingBloc timeLoggingBloc;
   late final SuggestedLeisureCubit suggestedLeisureCubit;
 
-  TimerBloc({required this.timeLoggingBloc, required this.suggestedLeisureCubit}) : super(TimerInitial()) {
+  TimerBloc(
+      {required this.timeLoggingBloc, required this.suggestedLeisureCubit})
+      : super(TimerInitial()) {
     on<TimerStarted>(_onStarted);
     on<TimerPaused>(_onPaused);
     on<TimerResumed>(_onResumed);
