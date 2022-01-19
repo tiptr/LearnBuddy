@@ -99,7 +99,7 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
 
               _saveLongBreakMinutes();
             },
-            preselectedDuration: _concentrationMinutes,
+            preselectedDuration: _longBreakMinutes,
           ),
           spacer,
           NumberInputField(
@@ -115,7 +115,7 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
                       radix: 10) ??
                   defaultCountUntilLongerBreak;
 
-              _saveCyvleCount();
+              _saveCycleCount();
             },
           ),
           spacer,
@@ -158,14 +158,14 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
   }
 
   void _saveLongBreakMinutes() async {
-    await SharedPreferencesData.storeBreakMinutes(_shortBreakMinutes);
-  }
-
-  void _saveShortBreakMinutes() async {
     await SharedPreferencesData.storeLongerBreakMinutes(_longBreakMinutes);
   }
 
-  void _saveCyvleCount() async {
+  void _saveShortBreakMinutes() async {
+    await SharedPreferencesData.storeBreakMinutes(_shortBreakMinutes);
+  }
+
+  void _saveCycleCount() async {
     await SharedPreferencesData.storeCountUntilLongerBreak(_cycleCount);
   }
 

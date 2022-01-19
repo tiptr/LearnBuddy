@@ -73,4 +73,16 @@ class SharedPreferencesData {
 
   static Future storeCountUntilLongerBreak(int cycleCount) async =>
       await _prefs.setInt(_phaseCountUntilBreakPrefKey, cycleCount);
+
+  static void resetSettings() {
+    _prefs.remove(_agePrefKey);
+    _prefs.remove(_namePrefKey);
+    _prefs.remove(_displayLeisureOnDashboardPrefKey);
+    _prefs.remove(_taskCountOnDashboardPrefKey);
+    _prefs.remove(_concentrationDurationPrefKey);
+    _prefs.remove(_longBreakPrefKey);
+    _prefs.remove(_shortBreakPrefKey);
+    _prefs.remove(_phaseCountUntilBreakPrefKey);
+    _prefs.remove(_themePrefKey);
+  }
 }
