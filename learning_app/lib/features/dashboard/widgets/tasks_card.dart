@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/settings_constants.dart';
 import 'package:learning_app/features/dashboard/util/calculate_progress_data.dart';
 import 'package:learning_app/constants/page_ids.dart';
 import 'package:learning_app/features/dashboard/widgets/tasks_card_item.dart';
@@ -8,6 +9,7 @@ import 'package:learning_app/features/tasks/bloc/tasks_cubit.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/shared/shared_preferences_data.dart';
 import 'package:learning_app/features/tasks/filter_and_sorting/tasks_filter.dart';
 import 'package:learning_app/util/nav_cubit.dart';
 import 'package:drift/drift.dart' as drift;
@@ -37,8 +39,10 @@ class TasksCard extends StatelessWidget {
           );
         }
 
-        // Todo: use a setting for 2 here
-        var tasksProgressData = calculateProgressData(snapshot.data!, 2);
+        var tasksProgressData = calculateProgressData(
+            snapshot.data!,
+            SharedPreferencesData.taskCountOnDashboard ??
+                defaultTaskCountOnDashboard);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -332,6 +332,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
 
                       // Duration Select
                       DurationInputField(
+                        label: "Zeitschätzung",
                         preselectedDuration: detailsDto != null
                             ? detailsDto.estimatedTime
                             : preSelectedTimeEstimate,
