@@ -148,6 +148,7 @@ class MyHomePage extends StatelessWidget {
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: IndexedStack(
           index: selectedIndex,
           children: _pages,

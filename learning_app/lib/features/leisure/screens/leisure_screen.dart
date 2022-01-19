@@ -41,14 +41,11 @@ class LeisureScreen extends StatelessWidget {
             stream: state.listViewLeisureCategoriesStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
                     'Es sind keine Ausgleichsübungen verfügbar.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Color(0xFF636573),
-                    ),
+                    style: Theme.of(context).textTheme.textStyle4,
                   ),
                 );
               }
