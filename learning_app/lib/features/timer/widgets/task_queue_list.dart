@@ -149,7 +149,6 @@ class _TaskQueueListState extends State<TaskQueueList> {
         )
     ];
 
-
     // Generate a placeholder element, if the list does not span the whole
     // view area
     // Reason: The list should not be scrolled to the top when using drag and
