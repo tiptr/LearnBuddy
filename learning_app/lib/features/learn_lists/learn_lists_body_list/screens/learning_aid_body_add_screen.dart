@@ -46,11 +46,13 @@ class _LearningAidBodyAddScreenMainElementState
   List<Widget> items = [];
   List<String> bodyParts = [
     "Kopf:",
+    "Hals",
     "Brust:",
-    "Ellenbogen:",
+    "Schultern:",
     "Hände:",
     "Bauch:",
     "Po:",
+    "Oberschenkel",
     "Knie:",
     "Füße:"
   ];
@@ -108,7 +110,7 @@ class _LearningAidBodyAddScreenMainElementState
             const SizedBox(height: 10.0),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 8,
+              itemCount: 10,
               itemBuilder: (context, i) {
                 var newDescriptionController = TextEditingController();
                 _descriptionControllers.add(newDescriptionController);
