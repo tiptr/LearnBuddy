@@ -85,6 +85,7 @@ class LeisureActivityScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.visible,
                         ),
                       ),
                     ),
@@ -107,9 +108,7 @@ class LeisureActivityScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Text(
                       activity.descriptionLong ?? '',
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                      ),
+                      overflow: TextOverflow.visible,
                     ),
                   ),
                 ],

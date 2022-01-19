@@ -37,8 +37,6 @@ class TaskQueueBloc extends Bloc<TaskQueueEvent, TaskQueueState> {
           tasks: event.taskList,
           selectedTask: currentState.selectedTask,
         ));
-      } else {
-        logger.d("This state should not be accessible.");
       }
     });
 

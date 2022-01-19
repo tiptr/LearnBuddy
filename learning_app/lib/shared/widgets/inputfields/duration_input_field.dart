@@ -43,7 +43,7 @@ class _DurationInputFieldState extends State<DurationInputField> {
 
         var resultingDuration = await showDurationPicker(
           context: context,
-          initialTime: const Duration(minutes: 30),
+          initialTime: duration ?? const Duration(minutes: 30),
           snapToMins: 5,
         );
 

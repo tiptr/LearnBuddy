@@ -46,7 +46,7 @@ class _DateInputFieldState extends State<DateInputField> {
 
         var picked = await showDatePicker(
           context: context,
-          initialDate: now,
+          initialDate: date ?? now,
           firstDate: firstDate,
           lastDate: lastDate,
         );

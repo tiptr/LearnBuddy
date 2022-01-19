@@ -16,11 +16,12 @@ import 'package:learning_app/features/tasks/dtos/details_read_task_dto.dart';
 import 'package:learning_app/features/tasks/dtos/task_manipulation_dto.dart';
 import 'package:learning_app/features/tasks/widgets/category_select_field.dart';
 import 'package:learning_app/features/tasks/widgets/date_input_field.dart';
-import 'package:learning_app/features/tasks/widgets/duration_input_field.dart';
+import 'package:learning_app/shared/widgets/inputfields/duration_input_field.dart';
 import 'package:learning_app/features/tasks/widgets/keyword_selection.dart';
 import 'package:learning_app/features/tasks/widgets/sub_tasks_list.dart';
+import 'package:learning_app/features/tasks/widgets/task_delete_dialog.dart';
 import 'package:learning_app/features/tasks/widgets/task_details_app_bar.dart';
-import 'package:learning_app/features/tasks/widgets/text_input_field.dart';
+import 'package:learning_app/shared/widgets/inputfields/text_input_field.dart';
 import 'package:learning_app/util/logger.dart';
 
 final DateTime? preSelectedDueDate = DateTime.now();
@@ -190,7 +191,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         appBar: TaskAddAppBar(
           existingTask: detailsDto,
           onSaveTask: onSaveTask,
-          onDelete: onDeleteTask,
+          onDelete: () {
+            onDeleteTask(detailsDto!);
+          },
           onExit: onExitTask,
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -420,8 +423,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
   }
 
   /// Handles the 'save task' functionality
-  Future<bool> onDeleteTask() async {
-    // TODO: implement
+  Future<bool> onDeleteTask(DetailsReadTaskDto detailsDto) async {
+    var confirmed = await taskDeleteConfirmDialog(
+        context: context, title: detailsDto.title);
+
+    if (confirmed) {
+      Navigator.pop(context);
+
+      BlocProvider.of<TasksCubit>(context).deleteTaskById(detailsDto.id);
+      return true;
+    }
+
     return false;
   }
 

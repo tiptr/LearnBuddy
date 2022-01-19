@@ -7,13 +7,15 @@ class SettingsGroup extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData iconData;
+  final Widget? action;
 
-  const SettingsGroup({
-    Key? key,
-    required this.title,
-    required this.subTitle,
-    required this.iconData,
-  }) : super(key: key);
+  const SettingsGroup(
+      {Key? key,
+      required this.title,
+      required this.subTitle,
+      required this.iconData,
+      this.action})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,8 @@ class SettingsGroup extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          if (action != null) action!,
         ],
       ),
     );
