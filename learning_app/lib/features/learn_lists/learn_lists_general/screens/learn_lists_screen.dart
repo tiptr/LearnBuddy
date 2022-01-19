@@ -17,9 +17,7 @@ import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'learn_list_add_screen.dart';
 
 class LearnListsScreen extends StatelessWidget {
-  LearnListsScreen({Key? key}) : super(key: key);
-
-  final ScrollController _scrollController = ScrollController();
+  const LearnListsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
