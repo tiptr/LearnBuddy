@@ -131,7 +131,7 @@ class _TaskCardState extends State<TaskCard> {
             },
             autoClose: false,
             backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.error,
             icon: Icons.delete_outline_outlined,
             label: 'Endgültig löschen',
           ),
@@ -321,6 +321,17 @@ class _TaskCardState extends State<TaskCard> {
 
     if (confirmed) {
       BlocProvider.of<TasksCubit>(context).deleteTaskById(taskDto.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Aufgabe erfolgreich gelöscht!',
+            style: Theme.of(context).textTheme.textStyle2.withSucess,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
+        ),
+      );
+
       return true;
     }
 
