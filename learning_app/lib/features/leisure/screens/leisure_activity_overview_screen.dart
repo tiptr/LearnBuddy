@@ -95,6 +95,7 @@ class LeisureActivityCard extends StatelessWidget {
         elevation: BasicCard.elevation.high,
         shadowColor: Theme.of(context).colorScheme.shadowColor,
         child: Container(
+          height: BasicCard.height,
           padding: const EdgeInsets.all(20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -152,7 +153,7 @@ class LeisureActivityDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           title,
