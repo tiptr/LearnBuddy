@@ -192,6 +192,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         return onExitTask();
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: TaskAddAppBar(
           existingTask: detailsDto,
           onSaveTask: onSaveTask,
@@ -200,7 +201,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
           },
           onExit: onExitTask,
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
         body: Scrollbar(
           interactive: true,
           controller: _scrollController,

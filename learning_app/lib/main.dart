@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_lists_screen.dart';
+import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/screens/leisure_screen.dart';
 import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
@@ -79,6 +81,14 @@ Future<void> main() async {
             return cubit;
           },
         ),
+        BlocProvider<LeisureCubit>(
+          lazy: true,
+          create: (context) {
+            var cubit = LeisureCubit();
+            cubit.loadLeisureCategories();
+            return cubit;
+          },
+        ),
         BlocProvider<TaskQueueBloc>(
           lazy: true,
           create: (context) {
@@ -138,6 +148,7 @@ class MyHomePage extends StatelessWidget {
 
     return BlocBuilder<NavCubit, int>(builder: (context, selectedIndex) {
       return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: IndexedStack(
           index: selectedIndex,
           children: _pages,
