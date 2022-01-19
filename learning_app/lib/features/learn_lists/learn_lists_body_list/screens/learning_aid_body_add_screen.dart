@@ -1,6 +1,9 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/term_input_field.dart';
@@ -45,6 +48,7 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
     "Knie:",
     "Füße:"
   ];
+  List<LearnListWord> words = [];
 
   @override
   void initState() {
@@ -109,6 +113,8 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
                 return ListViewItem(
                   newDescriptionController: _descriptionControllers[i],
                   text: bodyParts[i],
+                  id: i,
+                  onChange: onChangeText,
                 );
               },
             ),
@@ -129,6 +135,10 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
   /// Handles the 'save learn list' functionality
   Future<int?> onSaveLearnList() async {
     final cubit = BlocProvider.of<AlterLearnListCubit>(context);
+    cubit.alterLearnListAttribute(LearnListManipulationDto(
+      words: drift.Value(words),
+    ));
+                    
     // validate required fields:
     if (!cubit.validateLearnListConstruction()) {
       // Not ready to save! Inform the user and continue
@@ -141,15 +151,21 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
 
     return await BlocProvider.of<AlterLearnListCubit>(context).saveLearnList(LearnMethods.bodyList);
   }
+
+  void onChangeText(String text, int id) async {
+    this.words.add(LearnListWord(id: id, word: text));
+  }
 }
 
 class ListViewItem extends StatelessWidget {
   const ListViewItem(
-      {Key? key, required this.newDescriptionController, required this.text})
+      {Key? key, required this.newDescriptionController, required this.text, required this.id, required this.onChange})
       : super(key: key);
 
   final TextEditingController newDescriptionController;
   final String text;
+  final int id;
+  final Function(String, int) onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +188,8 @@ class ListViewItem extends StatelessWidget {
           hintText: "Text eingeben",
           iconData: Icons.edit,
           textController: newDescriptionController,
+          id: id,
+          onChange: onChange
         ),
       ],
     );

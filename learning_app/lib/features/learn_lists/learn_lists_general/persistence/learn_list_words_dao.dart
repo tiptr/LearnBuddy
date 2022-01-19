@@ -29,4 +29,8 @@ class LearnListWordsDao extends DatabaseAccessor<Database>
 
     return _learnListWordsEntitiesStream as Stream<List<LearnListWordEntity>>;
   }
+
+  Future<int> createLearnListWord(LearnListWordsCompanion learnListWordsCompanion) {
+    return into(learnListWords).insert(learnListWordsCompanion);
+  }
 }

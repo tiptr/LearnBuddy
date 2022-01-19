@@ -73,6 +73,7 @@ class ListViewItem extends StatelessWidget {
           hintText: "Text eingeben",
           iconData: Icons.edit,
           textController: newDescriptionController,
+          onChange: (String s, int x) => {},
         ),
         // Only for navigation to tags
         const SizedBox(height: 20.0),

@@ -23,8 +23,7 @@ class DbLearnListRepository implements LearnListRepository {
   // load the data access object (with generated entities and queries) via dependency inj.
   final LearnListsDao _learnListDao = getIt<LearnListsDao>();
   final LearnListWordsDao _learnListWordsDao = getIt<LearnListWordsDao>();
-  final BodyListWordDetailsDao _bodyListWordDetailsDao =
-      getIt<BodyListWordDetailsDao>();
+  final BodyListWordDetailsDao _bodyListWordDetailsDao = getIt<BodyListWordDetailsDao>();
   final CategoriesDao _categoriesDao = getIt<CategoriesDao>();
 
   Stream<List<LearnList>>? _learnListStream;
@@ -194,7 +193,7 @@ class DbLearnListRepository implements LearnListRepository {
     // Important: whenever using transactions, every (!) query / update / insert
     //            inside, has to be awaited -> data loss possible otherwise!
     return _learnListDao.transaction(() async {
-      int newTaskId = await _learnListDao.createLearnList(
+      int newLearnListId = await _learnListDao.createLearnList(
         db.LearnListsCompanion(
           id: newLearnList.id,
           name: newLearnList.name,
@@ -205,8 +204,34 @@ class DbLearnListRepository implements LearnListRepository {
         ),
       );
 
-      return newTaskId;
+      int i = 0;
+      for(LearnListWord word in newLearnList.words.value) {
+        _learnListWordsDao.transaction(() async {
+          int wordId = await _learnListWordsDao.createLearnListWord(
+            db.LearnListWordsCompanion(
+              id: Value(word.id),
+              listId: Value(newLearnListId),
+              orderPlacement: Value(i),
+              word: Value(word.word),      //TODO: change for archive functionality
+            ),
+          );
+
+          if(method == LearnMethods.bodyList) {
+          _bodyListWordDetailsDao.transaction(() async {
+            await _bodyListWordDetailsDao.createBodyListWord(
+              db.BodyListWordDetailsCompanion(
+                wordId: Value(wordId),
+                bodyPart: const Value.absent(),
+                association: const Value.absent()
+              ),
+            );
+          });
+        }
+        });
+        i++;
+      }
+
+      return newLearnListId;
     });
   }
-
 }
