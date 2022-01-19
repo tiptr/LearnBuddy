@@ -30,7 +30,7 @@ class _DashboardSettingsScreenState extends State<DashboardSettingsScreen> {
     super.initState();
     // Initial value, if present
     _loadSharedPreferences();
-    _countTextEditingController.text = _countStringRep(_tasksCount);
+    _countTextEditingController.text = "$_tasksCount";
   }
 
   @override
@@ -92,12 +92,6 @@ class _DashboardSettingsScreenState extends State<DashboardSettingsScreen> {
         ],
       ),
     );
-  }
-
-  String _countStringRep(int count) {
-    return count == defaultTaskCountOnDashboard
-        ? "$count (Standardwert)"
-        : "$count";
   }
 
   void _saveDisplayLeisure() async {

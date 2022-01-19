@@ -40,10 +40,12 @@ class SharedPreferencesData {
     );
   }
 
-  static int? get concentrationMinutes => null;
-  static int? get breakMinutes => null;
-  static int? get longerBreakMinutes => null;
-  static int? get countUntilLongerBreak => null;
+  static int? get concentrationMinutes =>
+      _prefs.getInt(_concentrationDurationPrefKey);
+  static int? get breakMinutes => _prefs.getInt(_shortBreakPrefKey);
+  static int? get longerBreakMinutes => _prefs.getInt(_longBreakPrefKey);
+  static int? get countUntilLongerBreak =>
+      _prefs.getInt(_phaseCountUntilBreakPrefKey);
 
   static Future storeUserName(String? name) async =>
       await _prefs.setString(_namePrefKey, name ?? "");
@@ -57,4 +59,18 @@ class SharedPreferencesData {
       await _prefs.setInt(_taskCountOnDashboardPrefKey, taskCount);
   static Future storeDisplayLeisureOnDashboard(bool displayLeisure) async =>
       await _prefs.setBool(_displayLeisureOnDashboardPrefKey, displayLeisure);
+
+  static Future storeConcentrationMinutes(
+          Duration concentrationMinutes) async =>
+      await _prefs.setInt(
+          _concentrationDurationPrefKey, concentrationMinutes.inMinutes);
+
+  static Future storeBreakMinutes(Duration shortBreakMinutes) async =>
+      await _prefs.setInt(_shortBreakPrefKey, shortBreakMinutes.inMinutes);
+
+  static Future storeLongerBreakMinutes(Duration longBreakMinutes) async =>
+      await _prefs.setInt(_longBreakPrefKey, longBreakMinutes.inMinutes);
+
+  static Future storeCountUntilLongerBreak(int cycleCount) async =>
+      await _prefs.setInt(_phaseCountUntilBreakPrefKey, cycleCount);
 }

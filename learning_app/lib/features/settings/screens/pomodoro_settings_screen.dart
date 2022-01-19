@@ -9,6 +9,7 @@ import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/inputfields/duration_input_field.dart';
 import 'package:learning_app/shared/widgets/inputfields/number_input_field.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
+import 'package:path/path.dart';
 
 class PomodoroSettingsScreen extends StatefulWidget {
   const PomodoroSettingsScreen({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
     super.initState();
     // Initial value, if present
     _loadSharedPreferences();
-    _countTextEditingController.text = _countStringRep(_cycleCount);
+    _countTextEditingController.text = "$_cycleCount";
   }
 
   @override
@@ -46,6 +47,18 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
         children: [
           Text(
+            "Hinweis:",
+            style: Theme.of(context).textTheme.textStyle2.withBold,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            "Damit die Änderungen an diesen Einstellungen wirksam werden, muss die App neu gestartet werden",
+            style: Theme.of(context).textTheme.settingsInfoTextStyle,
+          ),
+          spacer,
+          Text(
             "Bitte beachten:",
             style: Theme.of(context).textTheme.textStyle2.withBold,
           ),
@@ -53,7 +66,7 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
             height: 5,
           ),
           Text(
-            "Die Standardwerte spiegeln die Empfehlungen der Pomodoro-Technik wieder. Sie zielen auf ein ausgewogenes Verhältnis zwischen Lern- oder Arbeitsphasen und den Pausen ab.\nUnten erfährst du mehr über die Pomodoro-Technik\nEine Änderung der Werte kann diesen Effekt negativ beeinflussen.",
+            "Die Standardwerte spiegeln die Empfehlungen der Pomodoro-Technik wieder. Sie zielen auf ein ausgewogenes Verhältnis zwischen Lern- oder Arbeitsphasen und den Pausen ab. \n\nUnten erfährst du mehr über die Pomodoro-Technik.\n\nEine Änderung der Werte kann diesen Effekt negativ beeinflussen.",
             style: Theme.of(context).textTheme.settingsInfoTextStyle,
           ),
           spacer,
@@ -122,30 +135,39 @@ class _PomodoroSettingsScreenState extends State<PomodoroSettingsScreen> {
                   Theme.of(context).colorScheme.onBackgroundSoft,
             ),
           ),
+          spacer,
+          Text(
+            "Über Pomodoro",
+            style: Theme.of(context).textTheme.textStyle2.withBold,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            "Die Pomodoro-Technik (von italienisch pomodoro = Tomate) ist eine Methode des Zeitmanagements.\n\nDas System verwendet einen Kurzzeitwecker, um Arbeit in 25-Minuten-Abschnitte – die sogenannten pomodori – und Pausenzeiten zu unterteilen.\n\nDer Name  stammt von der Küchenuhr, die der Erfinder bei seinen ersten Versuchen benutzte. Diese sah aus wie eine Tomate.\n\nDie Methode basiert auf der Idee, dass häufige Pausen die geistige Beweglichkeit verbessern können",
+            style: Theme.of(context).textTheme.settingsInfoTextStyle,
+          ),
+          spacer,
         ],
       ),
     );
   }
 
-  String _countStringRep(int count) {
-    return count == defaultCountUntilLongerBreak
-        ? "$count (Standardwert)"
-        : "$count";
-  }
-
   void _saveConcentrationMinutes() async {
-    // await SharedPreferencesData.storeDisplayLeisureOnPomodoro(_displayLeisure);
+    await SharedPreferencesData.storeConcentrationMinutes(
+        _concentrationMinutes);
   }
 
   void _saveLongBreakMinutes() async {
-    // await SharedPreferencesData.storeTaskCountOnPomodoro(_tasksCount);
+    await SharedPreferencesData.storeBreakMinutes(_shortBreakMinutes);
   }
+
   void _saveShortBreakMinutes() async {
-    // await SharedPreferencesData.storeDisplayLeisureOnPomodoro(_displayLeisure);
+    await SharedPreferencesData.storeLongerBreakMinutes(_longBreakMinutes);
   }
 
   void _saveCyvleCount() async {
-    // await SharedPreferencesData.storeTaskCountOnPomodoro(_tasksCount);
+    await SharedPreferencesData.storeCountUntilLongerBreak(_cycleCount);
   }
 
   void _loadSharedPreferences() {
