@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,8 +138,16 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
   Future<int?> onSaveLearnList() async {
     final cubit = BlocProvider.of<AlterLearnListCubit>(context);
     //save the words
+    //TODO: replace this in the future
+    //generate random ids (that are ascendent)
+    var rdm = Random();
+    var startId = rdm.nextInt(4294967280);
+    final List<LearnListWord> wordsWithRandomIds = [];
+    for(int i = 0; i < words.length; i++){
+      wordsWithRandomIds.add(LearnListWord(id: startId++, word: words[i].word));
+    }
     cubit.alterLearnListAttribute(LearnListManipulationDto(
-      words: drift.Value(words),
+      words: drift.Value(wordsWithRandomIds),
     ));
                     
     // validate required fields:
