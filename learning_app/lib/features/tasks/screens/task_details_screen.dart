@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
@@ -415,6 +416,20 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
       final missingFieldsDescr = cubit.getMissingFieldsDescription();
       logger.d(
           'The task is not ready to be saved! Description: $missingFieldsDescr');
+
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Bitte zuerst einen Titel festlegen.',
+            style: Theme.of(context).textTheme.textStyle2.withBackground,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+        ),
+      );
+
+
+
       // TODO: inform the user with a SnackBar
       return null;
     }
