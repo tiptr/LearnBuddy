@@ -150,11 +150,26 @@ class _LearningAidBodyAddScreenMainElementState extends State<LearningAidBodyAdd
       return null;
     }
 
-    return await BlocProvider.of<AlterLearnListCubit>(context).saveLearnList(LearnMethods.bodyList);
+    return await cubit.saveLearnList(LearnMethods.bodyList);
   }
 
   void onChangeText(String text, int id) async {
-    this.words.add(LearnListWord(id: id, word: text));
+    bool containsElementWithSameId = false;
+    LearnListWord? elementToOverwrite;
+
+    for(LearnListWord word in words) {
+      if(word.id == id) {
+        containsElementWithSameId = true;
+        elementToOverwrite = word;
+      }
+    }
+
+    if(containsElementWithSameId) {
+      words.remove(elementToOverwrite);
+      words.add(LearnListWord(id: id, word: text));
+    } else {
+      words.add(LearnListWord(id: id, word: text));
+    }
   }
 }
 
