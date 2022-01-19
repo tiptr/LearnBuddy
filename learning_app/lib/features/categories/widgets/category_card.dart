@@ -104,6 +104,21 @@ class CategoryCard extends StatelessWidget {
                     if (confirmed) {
                       BlocProvider.of<CategoriesCubit>(context)
                           .deleteCategoryById(category.id);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Kategorie erfolgreich gelöscht!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .textStyle2
+                                .withSucess,
+                          ),
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .subtleBackgroundGrey,
+                        ),
+                      );
                     }
                   },
                   icon: Icon(

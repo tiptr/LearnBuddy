@@ -128,6 +128,17 @@ class _KeyWordFormDialogState extends State<KeyWordFormDialog> {
 
                 // Close dialog
                 Navigator.of(context).pop();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Schlagwort erfolgreich gespeichert!',
+                      style: Theme.of(context).textTheme.textStyle2.withSucess,
+                    ),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.subtleBackgroundGrey,
+                  ),
+                );
               },
             )
           ],
