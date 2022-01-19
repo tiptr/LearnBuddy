@@ -13,7 +13,7 @@ part 'task_queue_elements_dao.g.dart';
 @DriftAccessor(
   // Include the drift file containing the entity definitions and queries
   include: {
-    'package:learning_app/features/tasks/persistence/task_queue_elements.drift'
+    'package:learning_app/features/task_queue/persistence/task_queue_elements.drift'
   },
 )
 class TaskQueueElementsDao extends DatabaseAccessor<Database>
@@ -58,5 +58,39 @@ class TaskQueueElementsDao extends DatabaseAccessor<Database>
       }
       return idToPlacement;
     });
+  }
+
+  Future<int> updateQueuePosition(int id, int queuePosition) async {
+    return (update(taskQueueElements)
+          ..where((tuple) => tuple.taskId.equals(id)))
+        .write(TaskQueueElementsCompanion(
+      taskId: Value(id),
+      orderPlacement: Value(queuePosition),
+    ));
+  }
+
+  Future<int> deleteQueueElementByTaskId(int id) async {
+    return (delete(taskQueueElements)
+          ..where((tuple) => tuple.taskId.equals(id)))
+        .go();
+  }
+
+  Future<int?> getMaxQueuePosition() async {
+    final max = taskQueueElements.orderPlacement.max();
+    final query = selectOnly(taskQueueElements)..addColumns([max]);
+
+    return query.map((row) => row.read(max)).getSingle();
+  }
+
+  Future<int> addElementToQueueByTaskId(int taskId) async {
+    final int maxPos = await getMaxQueuePosition() ?? -1;
+
+    final element = TaskQueueElementsCompanion.insert(
+      taskId: Value(taskId),
+      addedToQueueDateTime: DateTime.now(),
+      orderPlacement: maxPos + 1,
+    );
+
+    return into(taskQueueElements).insert(element);
   }
 }

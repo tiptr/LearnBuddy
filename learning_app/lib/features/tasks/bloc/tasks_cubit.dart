@@ -42,19 +42,12 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
+  /// Deletes the task including subtasks and all related entities
   Future<void> deleteTaskById(int id) async {
     final currentState = state;
 
     if (currentState is TasksLoaded) {
-      var success = await _taskRepository.deleteById(id);
-      if (!success) return;
-      // TODO: notify user? Maybe not required, since this can never fail?
-
-      // TODO: if the task has subtasks, notify the user about this
-
-      // TODO: remove this, because it is not needed anymore thanks to reactivity through streams and listeners
-      // Refresh the list to remove the task
-      // loadTasks();
+      await _taskRepository.deleteById(id);
     }
   }
 
@@ -64,7 +57,7 @@ class TasksCubit extends Cubit<TaskState> {
   Stream<DetailsReadTaskDto?>? getDetailsDtoStreamById(
       int taskId, int topLevelParentId) {
     final topLevelTaskStream =
-        _taskRepository.watchTopLevelTaskById(id: topLevelParentId);
+        _taskRepository.watchTaskById(id: topLevelParentId);
 
     return topLevelTaskStream.map((topLevel) {
       // Only create a details-dto, if the task was found

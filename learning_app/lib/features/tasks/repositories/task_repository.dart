@@ -15,7 +15,7 @@ abstract class TaskRepository {
 
   Stream<TaskWithQueueStatus?> watchQueuedTaskWithId({required int id});
 
-  Stream<TaskWithQueueStatus?> watchTopLevelTaskById({required int id});
+  Stream<TaskWithQueueStatus?> watchTaskById({required int id});
 
   Future<int> createTask(CreateTaskDto newTask);
 
