@@ -1,11 +1,15 @@
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/database.dart';
+import 'package:learning_app/database/database.dart' as db;
 import 'package:learning_app/features/categories/models/category.dart';
 import 'package:learning_app/features/categories/persistence/categories_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/models/body_list_learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/persistence/body_list_word_details_dao.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/create_learn_list_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_list_words_dao.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/persistence/learn_lists_dao.dart';
@@ -154,9 +158,85 @@ class DbLearnListRepository implements LearnListRepository {
         case LearnMethods.storyList:
           // TODO: Handle this case when implementing the story list.
           throw UnimplementedError();
+        case LearnMethods.simpleLearnList:
+          final wordEntities = listIdToWordsMap[listEntity.id];
+          final List<LearnListWord>? wordModels = wordEntities
+              ?.map((wordEntity) => LearnListWord(
+                    id: wordEntity.id,
+                    word: wordEntity.word,
+                  ))
+              .toList();
+
+          listModel = LearnList(
+            id: listEntity.id,
+            name: listEntity.name,
+            creationDate: listEntity.creationDateTime,
+            words: wordModels ?? [],
+            category: idToCategoryMap[listEntity.categoryId],
+            isArchived: listEntity.isArchived,
+          );
+
+          break;
       }
 
       return listModel;
     }).toList();
+  }
+
+  @override
+  Future<int> createLearnList(
+      CreateLearnListDto newLearnList, LearnMethods method) async {
+    assert(newLearnList.isReadyToStore);
+
+    // Do the complete update in a transaction, so that the streams will only
+    // update once, after the whole update is ready
+
+    // Important: whenever using transactions, every (!) query / update / insert
+    //            inside, has to be awaited -> data loss possible otherwise!
+    return _learnListDao.transaction(() async {
+      int newLearnListId = await _learnListDao.createLearnList(
+        db.LearnListsCompanion(
+            id: newLearnList.id,
+            name: newLearnList.name,
+            learnMethod: Value(method),
+            categoryId: Value(newLearnList.category.value?.id),
+            creationDateTime: Value(DateTime.now()),
+            isArchived:
+                const Value(false) //TODO: change for archive functionality
+            ),
+      );
+
+      int i = 0;
+      for (LearnListWord word in newLearnList.words.value) {
+        await _learnListWordsDao.transaction(
+          () async {
+            int wordId = await _learnListWordsDao.createLearnListWord(
+              db.LearnListWordsCompanion(
+                id: Value(word.id),
+                listId: Value(newLearnListId),
+                orderPlacement: Value(i),
+                word: Value(word.word), //TODO: change for archive functionality
+              ),
+            );
+
+            if (method == LearnMethods.bodyList) {
+              await _bodyListWordDetailsDao.transaction(
+                () async {
+                  await _bodyListWordDetailsDao.createBodyListWord(
+                    db.BodyListWordDetailsCompanion(
+                        wordId: Value(wordId),
+                        bodyPart: const Value.absent(),
+                        association: const Value.absent()),
+                  );
+                },
+              );
+            }
+          },
+        );
+        i++;
+      }
+
+      return newLearnListId;
+    });
   }
 }

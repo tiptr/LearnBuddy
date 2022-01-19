@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-abstract class LearnListWord extends Equatable {
+class LearnListWord extends Equatable {
   final int id;
   final String word;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
@@ -66,7 +67,9 @@ class FilterKeyWordSelection extends StatelessWidget {
                           },
                           child: Chip(
                             label: Text(c.name),
-                            backgroundColor: isSelected(c) ? Colors.cyan : null,
+                            backgroundColor: isSelected(c)
+                                ? Theme.of(context).colorScheme.tertiary
+                                : null,
                             materialTapTargetSize:
                                 MaterialTapTargetSize.shrinkWrap,
                           ),

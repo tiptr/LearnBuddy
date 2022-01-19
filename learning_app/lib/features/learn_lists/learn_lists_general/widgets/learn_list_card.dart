@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/models/learning_aid.dart';
 import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_learn_list_dto.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 
 const double iconSize = 18.0;
 
 class LearnListCard extends StatelessWidget {
-  final LearningAid _learningAid;
+  final ReadLearnListDto _learningAid;
 
-  const LearnListCard({Key? key, required LearningAid learningAid})
+  const LearnListCard({Key? key, required ReadLearnListDto learningAid})
       : _learningAid = learningAid,
         super(key: key);
 
@@ -17,18 +18,19 @@ class LearnListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: _card(context),
+      child: InkWell(
+        child: _card(context),
+      ),
     );
   }
 
   Widget _card(BuildContext context) {
-    var borderRadius = BasicCard.borderRadius;
+    final borderRadius = BasicCard.borderRadius;
 
     //////////////////////////////////////////////////
     //----------For Testing multiple options----------
     // TODO use real values from learningAid
-    var categoryColor = Colors.red;
-    // const categoryColor = Colors.lightBlue.shade600;
+    var categoryColor = Theme.of(context).colorScheme.noCategoryDefaultColor;
     //////////////////////////////////////////////////
 
     return Dismissible(
@@ -52,7 +54,7 @@ class LearnListCard extends StatelessWidget {
               left: BorderSide(width: borderRadius, color: categoryColor),
             ),
           ),
-          height: 110.0,
+          height: BasicCard.height,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,9 +67,9 @@ class LearnListCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Upper Row
-                    _buildUpperRow(context),
+                    _buildUpperRow(context, _learningAid),
                     // Lower Row
-                    _buildLowerRow(context),
+                    _buildLowerRow(context, _learningAid)
                   ],
                 ),
               )
@@ -78,7 +80,7 @@ class LearnListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildUpperRow(BuildContext context) {
+  Widget _buildUpperRow(BuildContext context, ReadLearnListDto learnList) {
     return Expanded(
       flex: 50,
       child: Row(
@@ -87,7 +89,7 @@ class LearnListCard extends StatelessWidget {
           // Title
           Expanded(
             flex: 70,
-            child: Text(_learningAid.title,
+            child: Text(_learningAid.name,
                 style: Theme.of(context)
                     .textTheme
                     .textStyle2
@@ -96,11 +98,10 @@ class LearnListCard extends StatelessWidget {
           ),
           // Date Chip
           Expanded(
-            flex: 30,
+            flex: 45,
             child: Chip(
               label: Text(
-                // TODO: Use real date here
-                "Heute",
+                learnList.creationDate.toString(),
                 style:
                     Theme.of(context).textTheme.textStyle4.withOnBackgroundHard,
               ),
@@ -117,18 +118,22 @@ class LearnListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLowerRow(BuildContext context) {
+  Widget _buildLowerRow(BuildContext context, ReadLearnListDto learnList) {
+    int wordCount = learnList.words.length;
     return Expanded(
       flex: 50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(Icons.accessibility_new_rounded,
+          Icon(
+              learnList.type == LearnMethods.bodyList
+                  ? Icons.accessibility_new_rounded
+                  : Icons.list,
               size: iconSize,
               color: Theme.of(context).colorScheme.onBackgroundSoft),
           const Spacer(flex: 1),
           Text(
-            "9 Begriffe",
+            "$wordCount Begriffe",
             textAlign: TextAlign.end,
             style: Theme.of(context).textTheme.textStyle4.withOnBackgroundSoft,
           ),

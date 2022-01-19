@@ -29,4 +29,13 @@ class LearnListsDao extends DatabaseAccessor<Database>
 
     return _learnListEntitiesStream as Stream<List<LearnListEntity>>;
   }
+
+  /// Creates a new learn list and returns its id.
+  ///
+  /// Takes a LearnListsCompanion rather than a learn list. This is auto-generated and
+  /// here allows to define only required values that are not auto-generated
+  /// like the ID.
+  Future<int> createLearnList(LearnListsCompanion learnListsCompanion) {
+    return into(learnLists).insert(learnListsCompanion);
+  }
 }

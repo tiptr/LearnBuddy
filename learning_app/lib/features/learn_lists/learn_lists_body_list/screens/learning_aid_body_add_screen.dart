@@ -1,19 +1,22 @@
 import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:learning_app/constants/basic_card.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/features/learn_lists/learn_lists_body_list/widgets/learning_aid_body_add_list_view_item.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_list_word.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_app_bar.dart';
-import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_add_list_view_item.dart';
-import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/util/logger.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 
-class LearnListAddScreen extends StatelessWidget {
-  const LearnListAddScreen({Key? key}) : super(key: key);
+class LearningAidBodyAddScreen extends StatelessWidget {
+  const LearningAidBodyAddScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,35 +25,45 @@ class LearnListAddScreen extends StatelessWidget {
       create: (context) {
         return AlterLearnListCubit();
       },
-      child: const _LearnListAddScreenMainElement(),
+      child: const LearningAidBodyAddScreenMainElement(),
     );
   }
 }
 
-class _LearnListAddScreenMainElement extends StatefulWidget {
-  const _LearnListAddScreenMainElement({Key? key}) : super(key: key);
+class LearningAidBodyAddScreenMainElement extends StatefulWidget {
+  const LearningAidBodyAddScreenMainElement({Key? key}) : super(key: key);
 
   @override
-  State<_LearnListAddScreenMainElement> createState() =>
-      _LearnListAddScreenMainElementState();
+  State<LearningAidBodyAddScreenMainElement> createState() =>
+      _LearningAidBodyAddScreenMainElementState();
 }
 
-class _LearnListAddScreenMainElementState
-    extends State<_LearnListAddScreenMainElement> {
+class _LearningAidBodyAddScreenMainElementState
+    extends State<LearningAidBodyAddScreenMainElement> {
   final _titleController = TextEditingController();
   final _descriptionControllers = [];
-
   List<Widget> items = [];
+  List<String> bodyParts = [
+    "Kopf:",
+    "Hals",
+    "Brust:",
+    "Schultern:",
+    "Hände:",
+    "Bauch:",
+    "Po:",
+    "Oberschenkel:",
+    "Knie:",
+    "Füße:",
+  ];
   List<LearnListWord> words = [];
 
   @override
   void initState() {
     super.initState();
+
     BlocProvider.of<AlterLearnListCubit>(context)
         .startNewLearnListConstruction();
   }
-
-  int idCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,72 +72,64 @@ class _LearnListAddScreenMainElementState
         textController: _titleController,
         onSaveLearnList: onSaveLearnList,
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Text(
-                "Was möchtest du dir merken?",
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.fade,
-                style: Theme.of(context)
-                    .textTheme
-                    .textStyle2
-                    .withBold
-                    .withOnBackgroundSoft,
-              ),
-              const SizedBox(height: 40.0),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: items.length,
-                itemBuilder: (context, i) {
-                  return LearnListAddListViewItem(
-                    newDescriptionController: _descriptionControllers[i],
-                    id: i,
-                    onChange: onChangeText,
-                  ); // item layout
-                },
-              ),
-              // Only for navigation to tags
-              const SizedBox(height: 10.0),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    var newDescriptionController = TextEditingController();
-                    _descriptionControllers.add(newDescriptionController);
-                    // add another item to the list
-                    //items.add(items.length);
-                    items.add(LearnListAddListViewItem(
-                        newDescriptionController: newDescriptionController,
-                        id: idCount,
-                        onChange: onChangeText));
-                    idCount++;
-                  });
-                },
-                child: Ink(
-                  width: 200,
-                  height: 50,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add,
-                            size: 30.0,
-                            color: Theme.of(context).colorScheme.primary),
-                        Text("Neuer Begriff",
-                            style: Theme.of(context)
-                                .textTheme
-                                .textStyle2
-                                .withPrimary),
-                      ],
-                    ),
+      body: SlidingUpPanel(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(18.0),
+          topRight: Radius.circular(18.0),
+        ),
+        parallaxEnabled: true,
+        parallaxOffset: .0,
+        panelSnapping: true,
+        minHeight: 145,
+        maxHeight: MediaQuery.of(context).size.height * 0.85,
+        panel: Column(
+          children: [
+            // The indicator on top showing the draggability of the panel
+            InkWell(
+              child: Center(
+                heightFactor: 5,
+                child: Container(
+                  height: 5,
+                  width: 80,
+                  margin: const EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(BasicCard.borderRadius)),
+                    color: Theme.of(context).colorScheme.subtleBackgroundGrey,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              "Was möchtest du dir merken?",
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.fade,
+              style: Theme.of(context).textTheme.textStyle2.withBold,
+            ),
+            const SizedBox(height: 10.0),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (context, i) {
+                  var newDescriptionController = TextEditingController();
+                  _descriptionControllers.add(newDescriptionController);
+                  return LearningAidBodyDetailAddListViewItem(
+                    newDescriptionController: _descriptionControllers[i],
+                    text: bodyParts[i],
+                    id: i,
+                    onChange: onChangeText,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        color: Theme.of(context).colorScheme.background,
+        body: SvgPicture.asset(
+          "assets/learning_aids/moehm_alternative.svg",
         ),
       ),
     );
@@ -156,7 +161,7 @@ class _LearnListAddScreenMainElementState
       return null;
     }
 
-    return await cubit.saveLearnList(LearnMethods.simpleLearnList);
+    return await cubit.saveLearnList(LearnMethods.bodyList);
   }
 
   void onChangeText(String text, int id) async {

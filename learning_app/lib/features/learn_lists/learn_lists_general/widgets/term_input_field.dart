@@ -4,12 +4,16 @@ class TermInputField extends StatelessWidget {
   final String hintText;
   final IconData? iconData;
   final TextEditingController textController;
+  final int? id;
+  final Function(String, int) onChange;
 
   const TermInputField({
     Key? key,
     required this.hintText,
     required this.iconData,
     required this.textController,
+    this.id,
+    required this.onChange,
   }) : super(key: key);
 
   @override
@@ -28,6 +32,7 @@ class TermInputField extends StatelessWidget {
       ),
       controller: textController,
       autofocus: true,
+      onChanged: (text) => onChange(text, id ?? 0),
     );
   }
 }
