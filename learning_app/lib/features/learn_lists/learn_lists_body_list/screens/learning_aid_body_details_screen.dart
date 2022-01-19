@@ -21,8 +21,8 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
     "Hände:",
     "Bauch:",
     "Po:",
-    "Oberschenkel",
-    "Knie:",
+    "Oberschenkel:"
+        "Knie:",
     "Füße:"
   ];
 
@@ -62,7 +62,7 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
             parallaxOffset: .0,
             panelSnapping: true,
             minHeight: 145,
-            maxHeight: MediaQuery.of(context).size.height * 0.80,
+            maxHeight: MediaQuery.of(context).size.height * 0.85,
             panel: Column(
               children: [
                 // The indicator on top showing the draggability of the panel
@@ -88,19 +88,20 @@ class LearningAidBodyDetailsScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.textStyle2.withBold,
                 ),
                 const SizedBox(height: 10.0),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: learnList
-                      .words.length, //should always be 10 for a body list!
-                  itemBuilder: (context, i) {
-                    return LearningAidBodyDetailsListViewItem(
-                      word: learnList.words[i].word,
-                      text: bodyParts[i],
-                    );
-                  },
-                ),
-                // Only for navigation to tags
-                const SizedBox(height: 10.0)
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: learnList
+                        .words.length, //should always be 9 for a body list!
+                    itemBuilder: (context, i) {
+                      return LearningAidBodyDetailsListViewItem(
+                        word: learnList.words[i].word,
+                        text: bodyParts[i],
+                      );
+                    },
+                  ),
+                )
               ],
             ),
             color: Theme.of(context).colorScheme.background,

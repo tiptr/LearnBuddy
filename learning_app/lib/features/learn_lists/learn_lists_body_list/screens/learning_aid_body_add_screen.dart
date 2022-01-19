@@ -51,9 +51,9 @@ class _LearningAidBodyAddScreenMainElementState
     "Hände:",
     "Bauch:",
     "Po:",
-    "Oberschenkel",
+    "Oberschenkel:",
     "Knie:",
-    "Füße:"
+    "Füße:",
   ];
   List<LearnListWord> words = [];
 
@@ -81,7 +81,7 @@ class _LearningAidBodyAddScreenMainElementState
         parallaxOffset: .0,
         panelSnapping: true,
         minHeight: 145,
-        maxHeight: MediaQuery.of(context).size.height * 0.80,
+        maxHeight: MediaQuery.of(context).size.height * 0.85,
         panel: Column(
           children: [
             // The indicator on top showing the draggability of the panel
@@ -109,7 +109,7 @@ class _LearningAidBodyAddScreenMainElementState
             ),
             const SizedBox(height: 10.0),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.65,
+              height: MediaQuery.of(context).size.height * 0.5,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: 10,
@@ -125,8 +125,6 @@ class _LearningAidBodyAddScreenMainElementState
                 },
               ),
             ),
-            // Only for navigation to tags
-            const SizedBox(height: 10.0)
           ],
         ),
         color: Theme.of(context).colorScheme.background,
