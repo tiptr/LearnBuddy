@@ -60,7 +60,11 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
   Widget _card(BuildContext context) {
     var borderRadius = BasicCard.borderRadius;
 
-    return Card(
+    return Container(
+        padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+        vertical: distanceBetweenCardsSubTasks),
+    child: Card(
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.all(0),
       shape: RoundedRectangleBorder(
@@ -117,6 +121,7 @@ class _CreateSubTaskCardState extends State<CreateSubTaskCard> {
           ),
         ),
       ),
+    ),
     );
   }
 
