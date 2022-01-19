@@ -22,7 +22,7 @@ Future<void> initialization004LeisureActivities() async {
             name: 'Grinsende Katzen',
             duration: const Duration(minutes: 10),
             descriptionShort:
-                'Zeichne auf einem Papier fünf Katzen mit verschiedenen fröhlichen menschlichen Gesichtsausdrücken.\n Teilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.',
+                'Zeichne auf einem Papier fünf Katzen mit verschiedenen fröhlichen menschlichen Gesichtsausdrücken.\nTeilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.',
             descriptionLong: const Value<String>(
                 'Überlege dir, was es für verschiedene Arten gibt, Freude zu zeigen. Was ist der Unterschied zwischen einem Lachen, Grinsen und schmunzeln? Versuche das in deine Bilder der Katzen mit einfließen zu lassen. Alle sollen individuell aussehen. Lass uns die Unterschiedlichkeit feiern!'),
             isFavorite: false,
@@ -36,7 +36,7 @@ Future<void> initialization004LeisureActivities() async {
             name: 'Verrückte Katzen',
             duration: const Duration(minutes: 10),
             descriptionShort:
-                'Zeichne auf einem Papier fünf Katzen mit verschiedenen menschlichen Gesichtsausdrücken.\n Teilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.',
+                'Zeichne auf einem Papier fünf Katzen mit verschiedenen menschlichen Gesichtsausdrücken.\nTeilt die Bilder innerhalb eurer Klasse und identifiziert euren Picasso.',
             descriptionLong: const Value<String>(
                 'Überlege dir, was es für verschiedene Menschliche Gesichtsausdrücke gibt. Manche sind fröhlich, manche traurig, manche nachdenklich und noch viel mehr! Versuche diese Gefühle durch deine Katzen auszudrücken. Alle sollen individuell aussehen. Lass uns die Unterschiedlichkeit feiern!'),
             isFavorite: false,
