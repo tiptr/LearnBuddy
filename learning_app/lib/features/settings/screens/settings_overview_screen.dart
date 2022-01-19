@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:learning_app/features/settings/screens/dashboard_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/display_style_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';

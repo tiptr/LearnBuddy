@@ -9,7 +9,6 @@ import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/shared/widgets/inputfields/duration_input_field.dart';
 import 'package:learning_app/shared/widgets/inputfields/number_input_field.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
-import 'package:path/path.dart';
 
 class PomodoroSettingsScreen extends StatefulWidget {
   const PomodoroSettingsScreen({Key? key}) : super(key: key);
