@@ -93,6 +93,8 @@ extension CustomColorScheme on ColorScheme {
 
   Color get onBackgroundSoft => customs[brightness]!["onBackgroundSoft"]!;
 
+  Color get onSuccess => customs[brightness]!["onSuccess"]!;
+
   Color get subtleBackgroundGrey =>
       customs[brightness]!["subtleBackgroundGrey"]!;
 

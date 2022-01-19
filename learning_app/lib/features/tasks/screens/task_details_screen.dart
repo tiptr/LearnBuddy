@@ -423,9 +423,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
         SnackBar(
           content: Text(
             'Bitte zuerst einen Titel festlegen.',
-            style: Theme.of(context).textTheme.textStyle2.withBackground,
+            style: Theme.of(context).textTheme.textStyle2.withOnBackgroundHard,
           ),
-          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
         ),
       );
       return null;
@@ -441,9 +441,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
             style: Theme.of(context)
                 .textTheme
                 .textStyle2
-                .withBackground, // TODO: change to green success
+                .withSucess,
           ),
-          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
         ),
       );
       return id;
@@ -470,9 +470,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreenMainElement> {
             style: Theme.of(context)
                 .textTheme
                 .textStyle2
-                .withBackground, // TODO: change to green success
+                .withSucess,
           ),
-          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
         ),
       );
       return true;

@@ -131,7 +131,7 @@ class _TaskCardState extends State<TaskCard> {
             },
             autoClose: false,
             backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.error,
             icon: Icons.delete_outline_outlined,
             label: 'Endgültig löschen',
           ),
@@ -329,9 +329,9 @@ class _TaskCardState extends State<TaskCard> {
             style: Theme.of(context)
                 .textTheme
                 .textStyle2
-                .withBackground, // TODO: change to green success
+                .withSucess,
           ),
-          backgroundColor: Theme.of(context).colorScheme.onBackgroundSoft,
+          backgroundColor: Theme.of(context).colorScheme.subtleBackgroundGrey,
         ),
       );
 
