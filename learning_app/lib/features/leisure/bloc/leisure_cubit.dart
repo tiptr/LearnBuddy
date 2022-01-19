@@ -16,15 +16,18 @@ class LeisureCubit extends Cubit<LeisureState> {
   Future<void> loadLeisureCategories() async {
     // TODO: I guess the state will be the right place to store the currently selected filters and more
     var leisureCategories = _leisureRepository.watchLeisureCategories();
-    emit(LeisuresLoaded(selectedLeisureCategoriesStream: leisureCategories));
+    emit(
+      LeisuresLoaded(selectedLeisureCategoriesStream: leisureCategories),
+    );
   }
 
   Future<void> toggleFavorite(int activityId, bool isFavorite) async {
     await _leisureRepository.toggleFavorite(activityId, isFavorite);
   }
 
-  Stream<List<ReadLeisureActivitiesDto>> watchLeisureActivitiesByCategoryId(
-      {required int categoryId}) {
+  Stream<List<ReadLeisureActivitiesDto>> watchLeisureActivitiesByCategoryId({
+    required int categoryId,
+  }) {
     final currentState = state;
     if (currentState is LeisuresLoaded) {
       return currentState.listViewLeisureCategoriesStream.map((categories) =>
@@ -36,8 +39,10 @@ class LeisureCubit extends Cubit<LeisureState> {
     }
   }
 
-  Stream<ReadLeisureActivitiesDto> watchLeisureActivityById(
-      {required int categoryId, required int activityId}) {
+  Stream<ReadLeisureActivitiesDto> watchLeisureActivityById({
+    required int categoryId,
+    required int activityId,
+  }) {
     final currentState = state;
     if (currentState is LeisuresLoaded) {
       final activitiesStream =
@@ -48,5 +53,29 @@ class LeisureCubit extends Cubit<LeisureState> {
     } else {
       throw InvalidStateException();
     }
+  }
+
+  Future<ReadLeisureActivitiesDto?> getDailyRandomLeisureActivity() async {
+    if (state is! LeisuresLoaded) {
+      return null;
+    }
+
+    var leisureCategories =
+        await _leisureRepository.watchLeisureCategories().first;
+
+    var allActivities = leisureCategories
+        .map((e) => e.activities)
+        .reduce((value, element) => [...value, ...element]);
+
+    var todayNumber = DateTime.now().day;
+
+    // Calculate a pseudo random activity index,
+    // but always the same for the same day.
+    var pseudoRandomActivity =
+        allActivities[allActivities.length - 1 % todayNumber];
+
+    return ReadLeisureActivitiesDto.fromLeisureActivity(
+      pseudoRandomActivity,
+    );
   }
 }

@@ -11,6 +11,19 @@ extension DurationFormatting on Duration? {
     }
   }
 
+  String formatShort({String? ifNull}) {
+    if (this == null) {
+      return ifNull ?? 'Ohne Dauer';
+    } else {
+      final duration = this as Duration;
+
+      final hours = (duration.inMinutes / 60).floor();
+      final minutes = (duration.inMinutes % 60).toString();
+
+      return hours > 0 ? "${hours.toString()} h $minutes min" : "$minutes min";
+    }
+  }
+
   String toExactSecondsFormat({String? ifNull}) {
     if (this == null) {
       return ifNull ?? 'Ohne Dauer';
