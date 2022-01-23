@@ -131,33 +131,37 @@ class PomodoroPhaseCountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentProdStep =
-    ((context.select((TimerBloc bloc) => bloc.state.getCountPhase()) - 1) / 2).floor();
-    final totalProdSteps = (context
-        .select((TimerBloc bloc) => bloc.state.getConfig().getPhaseCountIncBreaks()) / 2).floor();
+        ((context.select((TimerBloc bloc) => bloc.state.getCountPhase()) - 1) /
+                2)
+            .floor();
+    final totalProdSteps = (context.select((TimerBloc bloc) =>
+                bloc.state.getConfig().getPhaseCountIncBreaks()) /
+            2)
+        .floor();
     final completedSessionColor = Theme.of(context).colorScheme.tertiary;
     final unCompletedSessionColor =
         Theme.of(context).colorScheme.onBackgroundSoft;
     return SizedBox(
-        width: 150,
-        child: StepProgressIndicator(
-        totalSteps: totalProdSteps,
-        currentStep: currentProdStep + 1,
-        // index starts with 1 apparently :(
-        selectedColor: completedSessionColor,
-        size: 20,
-        padding: 5,
-        customStep: (index, color, _) {
-          return Container(
-            width: 20.0,
-            height: 20.0,
-            decoration: BoxDecoration(
-              color: color == completedSessionColor
-                  ? completedSessionColor
-                  : unCompletedSessionColor,
-              shape: BoxShape.circle,
-            ),
-          );
-        }),
+      width: 150,
+      child: StepProgressIndicator(
+          totalSteps: totalProdSteps,
+          currentStep: currentProdStep + 1,
+          // index starts with 1 apparently :(
+          selectedColor: completedSessionColor,
+          size: 20,
+          padding: 5,
+          customStep: (index, color, _) {
+            return Container(
+              width: 20.0,
+              height: 20.0,
+              decoration: BoxDecoration(
+                color: color == completedSessionColor
+                    ? completedSessionColor
+                    : unCompletedSessionColor,
+                shape: BoxShape.circle,
+              ),
+            );
+          }),
     );
   }
 }
