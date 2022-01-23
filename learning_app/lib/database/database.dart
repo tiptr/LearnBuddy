@@ -19,12 +19,11 @@ import 'package:learning_app/features/task_queue/persistence/task_queue_elements
 import 'package:learning_app/features/tasks/persistence/task_keywords_dao.dart';
 import 'package:learning_app/features/tasks/persistence/task_learn_lists_dao.dart';
 import 'package:learning_app/features/time_logs/persistence/time_logs_dao.dart';
-import 'package:learning_app/shared/shared_preferences_data.dart';
+import 'package:learning_app/util/storage_services.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:learning_app/constants/storage_constants.dart';
-import 'dart:convert';
 
 // DAOs used to structure the database queries access
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
@@ -62,9 +61,7 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
-    final customLocation = SharedPreferencesData.storageLocation;
-    final Directory dbFolder =
-        Directory.fromRawPath(const Utf8Encoder().convert(customLocation));
+    final Directory dbFolder = appStorageDirectory;
 
     final file = File(p.join(dbFolder.path, databaseName));
     return NativeDatabase(file);

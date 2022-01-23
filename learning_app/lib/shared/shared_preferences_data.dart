@@ -17,7 +17,6 @@ class SharedPreferencesData {
   static const _themePrefKey = "theme.themeName";
   static const _displayLeisureOnDashboardPrefKey = "dashboard.displayLeisure";
   static const _taskCountOnDashboardPrefKey = "dashboard.taskCount";
-  static const _customStorageLocation = "storage.customLocation";
 
   static Future init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -38,16 +37,7 @@ class SharedPreferencesData {
   }
 
   static String get storageLocation {
-    if (_prefs.containsKey(_customStorageLocation)) {
-      return _prefs.getString(_customStorageLocation) ??
-          _defaultStorageLocation;
-    } else {
-      return _defaultStorageLocation;
-    }
-  }
-
-  static bool get isCustomStorageLocation {
-    return _prefs.containsKey(_customStorageLocation);
+    return _defaultStorageLocation;
   }
 
   static ThemeName? get themeName {
@@ -95,14 +85,6 @@ class SharedPreferencesData {
   static Future storeCountUntilLongerBreak(int cycleCount) async =>
       await _prefs.setInt(_phaseCountUntilBreakPrefKey, cycleCount);
 
-  static Future storeCustomStorageLocation(String? location) async {
-    if (location == null) {
-      await _prefs.remove(_customStorageLocation);
-    } else {
-      await _prefs.setString(_customStorageLocation, location);
-    }
-  }
-
   static void resetSettings() {
     _prefs.remove(_agePrefKey);
     _prefs.remove(_namePrefKey);
@@ -113,8 +95,5 @@ class SharedPreferencesData {
     _prefs.remove(_shortBreakPrefKey);
     _prefs.remove(_phaseCountUntilBreakPrefKey);
     _prefs.remove(_themePrefKey);
-    // Custom storage location excluded on purpose, because just resetting this
-    // without giving the user a possibility to move their data accordingly
-    // would not be a great idea.
   }
 }
