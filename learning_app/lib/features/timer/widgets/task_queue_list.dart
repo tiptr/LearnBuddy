@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/task_queue/bloc/task_queue_bloc.dart';
 import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/timer/bloc/timer_bloc.dart';
@@ -93,22 +94,19 @@ class _DraggableSheetViewState extends State<DraggableSheetView> {
             ),
             Flexible(
               child: GestureDetector(
-                onTapDown: (details) {
-                  // This is used to fix the drag-and-drop reordering of
-                  // the tasks, in the case that the list is scrolled up
-                  // completely
-                  // This has the purpose of not having the list at a scroll-
-                  // offset of 0, when dragging items down via drag and drop.
-                  // If that is the case, the whole sliding up panel is being
-                  // moved instead.
-                  if (widget.scrollController.offset < 10) {
-                    widget.scrollController.jumpTo(10.0);
-                  }
-                },
-                child: currentPomoMode == PomodoroMode.concentration
-                    ? queuedTaskList(state)
-                    : SuggestedLeisureActivityCard(widget.scrollController),
-              ),
+                  onTapDown: (details) {
+                    // This is used to fix the drag-and-drop reordering of
+                    // the tasks, in the case that the list is scrolled up
+                    // completely
+                    // This has the purpose of not having the list at a scroll-
+                    // offset of 0, when dragging items down via drag and drop.
+                    // If that is the case, the whole sliding up panel is being
+                    // moved instead.
+                    if (widget.scrollController.offset < 10) {
+                      widget.scrollController.jumpTo(10.0);
+                    }
+                  },
+                  child: queuedTaskList(state, currentPomoMode)),
             ),
           ],
         );
@@ -118,11 +116,11 @@ class _DraggableSheetViewState extends State<DraggableSheetView> {
     });
   }
 
-  Widget queuedTaskList(TaskQueueReady state) {
+  Widget queuedTaskList(TaskQueueReady state, PomodoroMode currentPomoMode) {
     return ReorderableListView(
       anchor: 0.05, // This is important for making drag and drop work.
       scrollController: widget.scrollController,
-      children: generateExpansionTiles(state.tasks),
+      children: generateExpansionTiles(state.tasks, currentPomoMode),
       onReorder: (oldIndex, newIndex) {
         // Ignore the pseudo element at the end:
         if (newIndex <= state.tasks.length) {
@@ -142,7 +140,39 @@ class _DraggableSheetViewState extends State<DraggableSheetView> {
     );
   }
 
-  List<Widget> generateExpansionTiles(List<TaskWithQueueStatus> list) {
+  List<Widget> generateExpansionTiles(
+      List<TaskWithQueueStatus> list, PomodoroMode currentPomoMode) {
+    // If in pause mode, show leisure activity:
+    if (currentPomoMode != PomodoroMode.concentration) {
+      final List<Widget> widgetList = [];
+      widgetList.add(const SuggestedLeisureActivityCard(
+        key: Key('Leisure suggestion element for a timer list'),
+      ));
+      return widgetList;
+    }
+
+    // Productive mode -> If list empty, show placeholder
+    if (list.isEmpty) {
+      // return information placeholder instead
+      final List<Widget> widgetList = [];
+      widgetList.add(Container(
+          key: const Key('Placeholder element for a empty list'),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 5.0,
+          ),
+          child: Text(
+            'Keine Aufgaben für die heutige Bearbeitung ausgewählt.\n\n'
+            'Streiche in der Aufgabenliste einzelne Todos nach rechts, '
+            'um sie für die Bearbeitung auszuwählen.',
+            style: Theme.of(context).textTheme.textStyle3,
+            maxLines: 5,
+            textAlign: TextAlign.center,
+          )));
+      return widgetList;
+    }
+
+    // Productive mode and elements exist -> return actual list
     List<Widget> widgetList = [
       for (int i = 0; i < list.length; i++)
         Dismissible(
