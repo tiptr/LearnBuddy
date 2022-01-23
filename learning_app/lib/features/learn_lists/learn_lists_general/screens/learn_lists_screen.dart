@@ -10,6 +10,7 @@ import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/read_
 import 'package:learning_app/features/learn_lists/learn_lists_body_list/screens/learning_aid_body_add_screen.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/models/learn_methods.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/screens/learn_list_detail_screen.dart';
+import 'package:learning_app/shared/widgets/gradient_floating_action_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/widgets/learn_list_card.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
@@ -80,16 +81,13 @@ class LearnListsScreen extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: gradientFloatingActionButton(
         heroTag: "NavigateToLearningAidAddScreen",
         onPressed: () {
           _openPopup(context);
         },
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        iconData: Icons.add,
+        context: context,
       ),
     );
   }

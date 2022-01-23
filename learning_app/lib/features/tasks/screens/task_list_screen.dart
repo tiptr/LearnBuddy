@@ -11,6 +11,7 @@ import 'package:learning_app/features/tasks/widgets/list_group_separator.dart';
 import 'package:learning_app/features/tasks/widgets/task_card.dart';
 import 'package:learning_app/features/tasks/widgets/task_filter_indicator.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/gradient_floating_action_button.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
@@ -151,7 +152,7 @@ class _TaskScreenState extends State<TaskScreen> {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: gradientFloatingActionButton(
           heroTag: "NavigateToTaskAddScreen",
           onPressed: () => Navigator.push(
             context,
@@ -159,11 +160,8 @@ class _TaskScreenState extends State<TaskScreen> {
               builder: (context) => const TaskDetailsScreen(),
             ),
           ),
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          iconData: Icons.add,
+          context: context,
         ),
       );
     });

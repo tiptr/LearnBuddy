@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_state.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
+import 'package:learning_app/shared/widgets/gradient_floating_action_button.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_form_dialog.dart';
@@ -52,19 +53,18 @@ class KeyWordOverviewScreen extends StatelessWidget {
             return ScreenWithoutBottomNavbarBaseTemplate(
               titleBar: const GoBackTitleBar(title: "Schlagwörter"),
               body: body,
-              fab: FloatingActionButton(
-                heroTag: "NavigateToKeyWordAddScreen",
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const KeyWordFormDialog(existingKeyword: null);
-                    },
-                  );
-                },
-                child: const Icon(Icons.add),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
+              fab: gradientFloatingActionButton(
+                  heroTag: "NavigateToKeyWordAddScreen",
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const KeyWordFormDialog(existingKeyword: null);
+                      },
+                    );
+                  },
+                  iconData: Icons.add,
+                  context: context),
             );
           },
         );

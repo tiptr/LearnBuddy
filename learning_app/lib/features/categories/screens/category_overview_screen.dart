@@ -7,6 +7,7 @@ import 'package:learning_app/features/categories/widgets/category_form_dialog.da
 import 'package:learning_app/features/categories/widgets/category_card.dart';
 import 'package:learning_app/shared/widgets/go_back_title_bar.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/gradient_floating_action_button.dart';
 import 'package:learning_app/shared/widgets/screen_without_bottom_navbar_base_template.dart';
 
 class CategoryOverviewScreen extends StatelessWidget {
@@ -51,21 +52,20 @@ class CategoryOverviewScreen extends StatelessWidget {
             return ScreenWithoutBottomNavbarBaseTemplate(
               titleBar: const GoBackTitleBar(title: "Kategorien"),
               body: body,
-              fab: FloatingActionButton(
-                heroTag: "NavigateToCategoryAddScreen",
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const CategoryFormDialog(
-                        existingCategory: null,
-                      );
-                    },
-                  );
-                },
-                child: const Icon(Icons.add),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
+              fab: gradientFloatingActionButton(
+                  heroTag: "NavigateToCategoryAddScreen",
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const CategoryFormDialog(
+                          existingCategory: null,
+                        );
+                      },
+                    );
+                  },
+                  iconData: Icons.add,
+                  context: context),
             );
           },
         );
