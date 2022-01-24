@@ -25,12 +25,10 @@ class CategorySelectItem extends StatelessWidget {
             width: 10.0,
           ),
         ),
-        Expanded(
-          child: Text(
-            category.name,
-            style: Theme.of(context).textTheme.textStyle2.withOutBold,
-            textAlign: TextAlign.start,
-          ),
+        Text(
+          category.name,
+          style: Theme.of(context).textTheme.textStyle2.withOutBold,
+          textAlign: TextAlign.start,
         ),
       ],
     );
