@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
@@ -28,7 +29,8 @@ class _CategorySelectFieldState extends State<CategorySelectField> {
     super.initState();
 
     if (widget.preselectedCategoryId != null) {
-      category = widget.options[widget.preselectedCategoryId!];
+      category = widget.options.firstWhereOrNull(
+          (catDto) => catDto.id == widget.preselectedCategoryId);
     }
   }
 

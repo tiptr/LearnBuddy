@@ -13,24 +13,30 @@ class CategorySelectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 10.0),
-          child: ColorIndicator(
-            color: category.color,
-            height: 30.0,
-            width: 10.0,
+    return SizedBox(
+      width: 100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: 10.0),
+            child: ColorIndicator(
+              color: category.color,
+              height: 30.0,
+              width: 10.0,
+            ),
           ),
-        ),
-        Text(
-          category.name,
-          style: Theme.of(context).textTheme.textStyle2.withOutBold,
-          textAlign: TextAlign.start,
-        ),
-      ],
+          SizedBox(
+            width: 200,
+            child: Text(
+              category.name,
+              style: Theme.of(context).textTheme.textStyle2.withOutBold,
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
