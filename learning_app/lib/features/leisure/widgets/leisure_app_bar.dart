@@ -5,6 +5,7 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 // TODO: combine into generic appbar
 class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -27,12 +28,14 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                  iconSize: 30,
-                ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: gradientIcon(
+                      iconData: Icons.arrow_back,
+                      size: 30,
+                      context: context,
+                    )),
                 Expanded(
                   child: Text(categoryTitle,
                       textAlign: TextAlign.left,
@@ -43,18 +46,19 @@ class LeisureAppBar extends StatelessWidget implements PreferredSizeWidget {
                           .withOnBackgroundHard),
                 ),
                 IconButton(
-                  onPressed: () {
-                    BlocProvider.of<LeisureCubit>(context).toggleFavorite(
-                      leisureActivity.id,
-                      !leisureActivity.isFavorite,
-                    );
-                  },
-                  icon: Icon(Icons.star,
-                      color: leisureActivity.isFavorite
-                          ? Theme.of(context).colorScheme.secondary
-                          : Theme.of(context).colorScheme.onBackgroundSoft),
-                  iconSize: 30,
-                ),
+                    onPressed: () {
+                      BlocProvider.of<LeisureCubit>(context).toggleFavorite(
+                        leisureActivity.id,
+                        !leisureActivity.isFavorite,
+                      );
+                    },
+                    icon: gradientIcon(
+                        iconData: Icons.star,
+                        size: 30,
+                        context: context,
+                        gradient: !leisureActivity.isFavorite
+                            ? Theme.of(context).colorScheme.noColorGradient
+                            : null)),
               ],
             ),
           ),

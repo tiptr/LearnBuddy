@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 class LearnListsDetailAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -23,8 +24,11 @@ class LearnListsDetailAppBar extends StatelessWidget
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
-                  iconSize: 30,
+                  icon: gradientIcon(
+                    iconData: Icons.arrow_back,
+                    size: 30,
+                    context: context,
+                  ),
                 ),
                 Expanded(
                   child: Text(

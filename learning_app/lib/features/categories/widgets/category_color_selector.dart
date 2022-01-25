@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/features/categories/widgets/color_add_dialog.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 import 'package:learning_app/util/logger.dart';
 
 class CategoryColorSelector extends StatefulWidget {
@@ -94,7 +95,11 @@ Widget pickerLayoutBuilder(BuildContext context, List<Color> colors,
               onColorSelect(selectedColor);
             }
           },
-          icon: const Icon(Icons.add, size: 40),
+          icon: gradientIcon(
+            iconData: Icons.add,
+            size: 40,
+            context: context,
+          ),
           color: Theme.of(context).colorScheme.primary,
         )
       ],

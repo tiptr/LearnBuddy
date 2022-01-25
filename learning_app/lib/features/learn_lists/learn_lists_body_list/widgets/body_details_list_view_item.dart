@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 class LearningAidBodyDetailsListViewItem extends StatefulWidget {
   final String text;
@@ -49,12 +49,11 @@ class _LearningAidBodyDetailsListViewItemState
                 _obscureText ? "*****" : widget.word,
               ),
               IconButton(
-                  icon: _obscureText
-                      ? Icon(Icons.visibility,
-                          color: Theme.of(context).colorScheme.onBackgroundHard)
-                      : Icon(Icons.visibility_off,
-                          color:
-                              Theme.of(context).colorScheme.onBackgroundHard),
+                  icon: gradientIcon(
+                    iconData:
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                    context: context,
+                  ),
                   onPressed: _toggle),
             ],
           ),

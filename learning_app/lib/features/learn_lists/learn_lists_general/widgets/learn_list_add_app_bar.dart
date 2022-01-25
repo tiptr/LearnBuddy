@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/bloc/alter_learn_list_cubit.dart';
 import 'package:learning_app/features/learn_lists/learn_lists_general/dtos/learn_list_manipulation_dto.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 class LearnListAddAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -31,11 +31,11 @@ class LearnListAddAppBar extends StatelessWidget
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.onBackgroundHard,
+                  icon: gradientIcon(
+                    iconData: Icons.arrow_back,
+                    context: context,
+                    size: 30,
                   ),
-                  iconSize: 30,
                 ),
                 Expanded(
                   child: TextField(
@@ -65,19 +65,18 @@ class LearnListAddAppBar extends StatelessWidget
                   ),
                 ),
                 IconButton(
-                  onPressed: () async {
-                    int? savedLearnListId = await onSaveLearnList();
+                    onPressed: () async {
+                      int? savedLearnListId = await onSaveLearnList();
 
-                    if (savedLearnListId != null) {
-                      Navigator.pop(context);
-                    }
-                  },
-                  icon: Icon(
-                    Icons.save_outlined,
-                    color: Theme.of(context).colorScheme.onBackgroundHard,
-                  ),
-                  iconSize: 30,
-                ),
+                      if (savedLearnListId != null) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    icon: gradientIcon(
+                      iconData: Icons.save_outlined,
+                      context: context,
+                      size: 30,
+                    )),
               ],
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/categories/screens/category_overview_screen.dart';
 import 'package:learning_app/features/keywords/screens/keyword_overview_screen.dart';
 import 'package:learning_app/features/settings/screens/settings_overview_screen.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 import 'package:learning_app/shared/widgets/three_points_menu_item.dart';
 
 // This is the type used by the popup menu below.
@@ -113,5 +114,10 @@ Widget buildThreePointsMenu({
               title: 'Zurücksetzen', iconData: Icons.undo_outlined),
         ),
     ],
+    icon: gradientIcon(
+      iconData: Icons.more_vert,
+      size: 30,
+      context: context,
+    ),
   );
 }

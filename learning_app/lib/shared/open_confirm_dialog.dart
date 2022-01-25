@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
 
@@ -42,9 +43,11 @@ Future<bool> openConfirmDialog({
                     },
                   ),
                   MaterialButton(
-                    child: Text("Bestätigen",
+                    child: GradientText("Bestätigen",
                         style:
-                            Theme.of(context).textTheme.textStyle2.withPrimary),
+                            Theme.of(context).textTheme.textStyle2.withPrimary,
+                        gradient:
+                            Theme.of(context).colorScheme.primaryGradient),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },

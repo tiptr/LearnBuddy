@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/dtos/create_key_word_dto.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
@@ -96,9 +97,10 @@ class _KeyWordFormDialogState extends State<KeyWordFormDialog> {
               },
             ),
             MaterialButton(
-              child: Text(
+              child: GradientText(
                 "Speichern",
                 style: Theme.of(context).textTheme.textStyle3.withPrimary,
+                gradient: Theme.of(context).colorScheme.primaryGradient,
               ),
               onPressed: () {
                 logger.d(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -29,17 +29,15 @@ class GoBackTitleBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 IconButton(
-                  onPressed: () {
-                    if (onExit != null) onExit!();
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.onBackgroundHard,
-                  ),
-                  iconSize: 30,
-                  color: Theme.of(context).colorScheme.onBackgroundHard,
-                ),
+                    onPressed: () {
+                      if (onExit != null) onExit!();
+                      Navigator.pop(context);
+                    },
+                    icon: gradientIcon(
+                      iconData: Icons.arrow_back,
+                      context: context,
+                      size: 30,
+                    )),
                 Expanded(
                   child: Text(
                     title,

@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/features/categories/dtos/read_category_dto.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
@@ -140,9 +142,10 @@ class _FilterSelectDialogState extends State<FilterSelectDialog> {
                 },
               ),
               MaterialButton(
-                child: Text(
+                child: GradientText(
                   "Anwenden",
                   style: Theme.of(context).textTheme.textStyle4.withPrimary,
+                  gradient: Theme.of(context).colorScheme.primaryGradient,
                 ),
                 onPressed: () {
                   final currentState =

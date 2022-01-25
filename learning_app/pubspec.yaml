@@ -67,6 +67,8 @@ dependencies:
   # Slidable cards e.g. for selecting for the task-queue:
   flutter_slidable: ^1.2.0
   flutter_svg: ^1.0.2
+  # UI
+  gradient_widgets: ^0.6.0
 
 dev_dependencies:
   flutter_test:

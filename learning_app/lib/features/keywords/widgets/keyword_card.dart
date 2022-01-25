@@ -4,6 +4,7 @@ import 'package:learning_app/features/keywords/bloc/keywords_cubit.dart';
 import 'package:learning_app/features/keywords/dtos/read_key_word_dto.dart';
 import 'package:learning_app/features/keywords/widgets/keyword_form_dialog.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 import 'package:learning_app/util/logger.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
@@ -61,9 +62,9 @@ class KeyWordCard extends StatelessWidget {
                       },
                     );
                   },
-                  icon: Icon(
-                    Icons.create_outlined,
-                    color: Theme.of(context).colorScheme.secondary,
+                  icon: gradientIcon(
+                    iconData: Icons.create_outlined,
+                    context: context,
                   ),
                 ),
                 IconButton(
@@ -114,9 +115,9 @@ class KeyWordCard extends StatelessWidget {
                       );
                     }
                   },
-                  icon: Icon(
-                    Icons.delete_outlined,
-                    color: Theme.of(context).colorScheme.secondary,
+                  icon: gradientIcon(
+                    iconData: Icons.delete_outlined,
+                    context: context,
                   ),
                 )
               ],

@@ -8,6 +8,7 @@ import 'package:learning_app/features/leisure/bloc/leisure_state.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_categories_dto.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_overview_screen.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
@@ -186,7 +187,7 @@ class StarCount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.star, color: Theme.of(context).colorScheme.secondary),
+        gradientIcon(iconData: Icons.star, context: context),
         Text(
           count.toString(),
           style: Theme.of(context).textTheme.textStyle3.withOnBackgroundHard,

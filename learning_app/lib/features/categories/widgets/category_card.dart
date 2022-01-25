@@ -7,6 +7,7 @@ import 'package:learning_app/shared/widgets/color_indicator.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
 import 'package:learning_app/constants/theme_color_constants.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 const double iconSize = 18.0;
 
@@ -70,9 +71,9 @@ class CategoryCard extends StatelessWidget {
                       },
                     );
                   },
-                  icon: Icon(
-                    Icons.create_outlined,
-                    color: Theme.of(context).colorScheme.secondary,
+                  icon: gradientIcon(
+                    iconData: Icons.create_outlined,
+                    context: context,
                   ),
                 ),
                 IconButton(
@@ -121,9 +122,9 @@ class CategoryCard extends StatelessWidget {
                       );
                     }
                   },
-                  icon: Icon(
-                    Icons.delete_outlined,
-                    color: Theme.of(context).colorScheme.secondary,
+                  icon: gradientIcon(
+                    iconData: Icons.delete_outlined,
+                    context: context,
                   ),
                 )
               ],

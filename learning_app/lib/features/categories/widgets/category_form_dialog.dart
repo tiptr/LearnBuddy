@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:learning_app/features/categories/bloc/categories_cubit.dart';
 import 'package:learning_app/features/categories/dtos/create_category_dto.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
@@ -142,9 +143,10 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
               },
             ),
             MaterialButton(
-              child: Text(
+              child: GradientText(
                 "Speichern",
                 style: Theme.of(context).textTheme.textStyle3.withPrimary,
+                gradient: Theme.of(context).colorScheme.primaryGradient,
               ),
               onPressed: () {
                 logger.d(

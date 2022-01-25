@@ -12,6 +12,7 @@ import 'package:learning_app/features/tasks/widgets/task_card.dart';
 import 'package:learning_app/features/tasks/widgets/task_filter_indicator.dart';
 import 'package:learning_app/shared/widgets/base_title_bar.dart';
 import 'package:learning_app/shared/widgets/gradient_floating_action_button.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 import 'package:learning_app/shared/widgets/three_points_menu.dart';
 import 'package:learning_app/util/formatting_comparison/date_time_extensions.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
@@ -59,26 +60,33 @@ class _TaskScreenState extends State<TaskScreen> {
                   },
                 );
               },
-              icon: const Icon(Icons.filter_list_outlined),
+              icon: gradientIcon(
+                iconData: Icons.filter_list_outlined,
+                context: context,
+              ),
             ),
             // Done tasks
             IconButton(
-                onPressed: () {
-                  final newFilter = TaskFilter(
-                    keywords: currentFilter.keywords,
-                    categories: currentFilter.categories,
-                    dueToday: currentFilter.dueToday,
-                    done: drift.Value(!currentFilter.done.value),
-                    categoryNames: currentFilter.categoryNames,
-                    keywordNames: currentFilter.keywordNames,
-                  );
+              onPressed: () {
+                final newFilter = TaskFilter(
+                  keywords: currentFilter.keywords,
+                  categories: currentFilter.categories,
+                  dueToday: currentFilter.dueToday,
+                  done: drift.Value(!currentFilter.done.value),
+                  categoryNames: currentFilter.categoryNames,
+                  keywordNames: currentFilter.keywordNames,
+                );
 
-                  BlocProvider.of<TasksCubit>(context)
-                      .loadFilteredTasks(newFilter);
-                },
-                icon: Icon(showingDoneTasks
+                BlocProvider.of<TasksCubit>(context)
+                    .loadFilteredTasks(newFilter);
+              },
+              icon: gradientIcon(
+                iconData: showingDoneTasks
                     ? Icons.done_all_outlined
-                    : Icons.remove_done_outlined)),
+                    : Icons.remove_done_outlined,
+                context: context,
+              ),
+            ),
             // Three points menu
             buildThreePointsMenu(
               context: context,

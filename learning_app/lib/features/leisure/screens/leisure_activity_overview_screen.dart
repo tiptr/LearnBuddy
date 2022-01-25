@@ -9,6 +9,7 @@ import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.d
 import 'package:learning_app/features/leisure/widgets/leisure_overview_app_bar.dart';
 import 'package:learning_app/features/leisure/screens/leisure_activity_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 class LeisureActivityOverviewScreen extends StatelessWidget {
   final int categoryId;
@@ -113,11 +114,12 @@ class LeisureActivityCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.star,
-                      color: leisureActivity.isFavorite
-                          ? Theme.of(context).colorScheme.secondary
-                          : Theme.of(context).colorScheme.onBackgroundSoft,
+                    gradientIcon(
+                      iconData: Icons.star,
+                      gradient: !leisureActivity.isFavorite
+                          ? Theme.of(context).colorScheme.noColorGradient
+                          : null,
+                      context: context,
                     ),
                     SizedBox(
                       width: 85.0,

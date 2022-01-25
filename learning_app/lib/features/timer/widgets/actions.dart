@@ -34,12 +34,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -59,12 +59,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -87,12 +87,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -112,12 +112,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -140,12 +140,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -165,12 +165,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -192,12 +192,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -222,12 +222,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -247,12 +247,12 @@ class TimerActions extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .textStyle3
-                              .withBackground,
+                              .withOnPrimary,
                         ),
                       ),
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackgroundSoft,
+                      gradient: Theme.of(context).colorScheme.primaryGradient,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                   ),

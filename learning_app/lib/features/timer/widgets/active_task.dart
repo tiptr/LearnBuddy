@@ -9,6 +9,7 @@ import 'package:learning_app/features/tasks/models/task_with_queue_status.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/features/time_logs/bloc/time_logging_bloc.dart';
 import 'package:learning_app/features/timer/exceptions/invalid_state_exception.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 import 'package:learning_app/util/formatting_comparison/duration_extensions.dart';
 
 class ActiveTaskBar extends StatelessWidget {
@@ -145,7 +146,10 @@ class ActiveTaskCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: const Icon(Icons.clear),
+                icon: gradientIcon(
+                  iconData: Icons.clear,
+                  context: context,
+                ),
                 onPressed: () {
                   TimeLoggingBloc timeLoggingBloc =
                       context.read<TimeLoggingBloc>();
@@ -167,7 +171,7 @@ class ActiveTaskCard extends StatelessWidget {
               ),
               Flexible(
                 child: IconButton(
-                  icon: const Icon(Icons.launch),
+                  icon: gradientIcon(iconData: Icons.launch, context: context),
                   onPressed: () async {
                     Navigator.push(
                       context,

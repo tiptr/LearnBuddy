@@ -70,7 +70,7 @@ class TasksCardProgress extends StatelessWidget {
                         Icons.hourglass_top_outlined,
                         size: 40.0,
                         // TODO: to be structured in the theme-issue:
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onBackgroundSoft,
                       ),
                       Text(
                         remainingDuration == null

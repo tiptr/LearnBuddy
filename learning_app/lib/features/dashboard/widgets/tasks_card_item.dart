@@ -4,6 +4,7 @@ import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/tasks/dtos/list_read_task_dto.dart';
 import 'package:learning_app/features/tasks/screens/task_details_screen.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 class TasksCardItem extends StatelessWidget {
   final ListReadTaskDto task;
@@ -72,9 +73,9 @@ class TasksCardItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: Icon(
-                      Icons.open_in_new_outlined,
-                      color: Theme.of(context).colorScheme.primary,
+                    icon: gradientIcon(
+                      iconData: Icons.open_in_new_outlined,
+                      context: context,
                       size: 24.0,
                     ),
                     onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:learning_app/constants/basic_card.dart';
 import 'package:learning_app/features/categories/constants/selection_colors.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
@@ -59,9 +60,10 @@ class _ColorAddDialogState extends State<ColorAddDialog> {
                   },
                 ),
                 MaterialButton(
-                  child: Text(
+                  child: GradientText(
                     "Hinzufügen",
                     style: Theme.of(context).textTheme.textStyle3.withPrimary,
+                    gradient: Theme.of(context).colorScheme.primaryGradient,
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(selectedColor);

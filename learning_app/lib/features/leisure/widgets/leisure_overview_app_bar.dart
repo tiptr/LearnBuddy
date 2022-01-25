@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/constants/app_bar_height.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/shared/widgets/gradient_icon.dart';
 
 // TODO: combine into generic appbar
 class LeisureOverviewAppBar extends StatelessWidget
@@ -25,8 +26,11 @@ class LeisureOverviewAppBar extends StatelessWidget
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back),
-                  iconSize: 30,
+                  icon: gradientIcon(
+                    iconData: Icons.arrow_back,
+                    size: 30,
+                    context: context,
+                  ),
                 ),
                 Expanded(
                   child: Text(categoryTitle,

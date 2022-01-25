@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 
 const primaryLight = Color(0xFF3444CF);
-const primaryDark = Color(0xFF7AD7Ff);
+const primaryDark = Colors.red; //Color(0xFF7AD7Ff);
 
 const secondaryLight = Color(0xFF9E5EE1);
 const secondaryDark = Color(0xFFF5F232);
+
+const orangeGradient = LinearGradient(
+    colors: [Color(0xFFFFCC00), Color(0xFFEE2222)],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight);
+const blueGradient = LinearGradient(
+    colors: [Color(0xFF2CDCA1), Color(0xFF638DE7)],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight);
+const purpleGradient = LinearGradient(
+    colors: [Color(0xFFC56BD7), Color(0xFF5848BB)],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight);
 
 /// Contains multiple instances of usable [ColorScheme] objects.
 /// The class [ColorScheme] does not contain all attributes used in the code,
@@ -13,7 +26,7 @@ const secondaryDark = Color(0xFFF5F232);
 class ColorSchemes {
   /// Feature Relase: dark mode
   static ColorScheme darkColorScheme() {
-    const backgroundColor = Color(0xFF121212);
+    const backgroundColor = Color(0xFF222428);
     ColorScheme darkTheme = const ColorScheme.dark().copyWith(
       brightness: Brightness.dark,
       primary: primaryDark,
@@ -21,7 +34,7 @@ class ColorSchemes {
       background: backgroundColor,
       onPrimary: const Color(0xFFFFFFFF),
       onSecondary: const Color(0xFF000000),
-      onBackground: const Color(0xFFAAAAFF),
+      onBackground: const Color(0xFFAAAAAA),
       //necessary for native components such as DatePicker, DurationPicker
       surface: backgroundColor,
       onSurface: const Color(0xFFCCCCFF),
@@ -61,13 +74,12 @@ extension CustomColorScheme on ColorScheme {
       "onBackgroundSoft": const Color(0xFF636573),
       "tertiary": const Color(0xFF7AD7F0),
       "onTertiary": const Color(0xFF000000), // Same as onBackgroundHard
-      "subtleBackgroundGrey": const Color(0xFF3F3F3F),
-      "cardColor": const Color(0xFF212121),
+      "subtleBackgroundGrey": const Color(0xFF4F4F5F),
+      "cardColor": const Color(0xFF2b2b34),
       "shadowColor": const Color(0xFF000000),
       "success": const Color(0xFF4BB543),
       "onError": const Color(0xFFFF9494),
-      "primaryGradient":
-          const LinearGradient(colors: [Colors.yellow, Colors.red]),
+      "primaryGradient": orangeGradient,
       "isDark": true,
     },
     Brightness.light: {
@@ -82,8 +94,7 @@ extension CustomColorScheme on ColorScheme {
       "shadowColor": const Color(0xFF000000).withOpacity(0.8),
       "success": const Color(0xFF4BB543),
       "onError": const Color(0xFFFF9494),
-      "primaryGradient":
-          const LinearGradient(colors: [Colors.yellow, Colors.red]),
+      "primaryGradient": orangeGradient,
       "isDark": false,
     }
   };
@@ -112,6 +123,8 @@ extension CustomColorScheme on ColorScheme {
 
   // Independent of mode
   Color get checkColor => const Color(0xFFFFFFFF);
+  LinearGradient get noColorGradient =>
+      LinearGradient(colors: [onBackgroundSoft, onBackgroundSoft]);
 
   bool get isDark => customs[brightness]!["isDark"]!;
 
