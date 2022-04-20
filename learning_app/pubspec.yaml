@@ -48,11 +48,14 @@ dependencies:
   quiver: ^3.0.1+1 #Used for the Metronome
   grouped_list: ^4.1.0 # List with group separators
   rxdart: 0.27.3 # advanced stream features
+  restart_app: ^1.1.0
   # Persistence:
   drift: ^1.1.1
   sqlite3_flutter_libs: ^0.5.2
   path_provider: ^2.0.8
   shared_preferences: ^2.0.12
+  file_picker: ^4.3.2
+  archive: ^3.1.9
   # Dependency injection:
   injectable: ^1.5.0
   get_it: ^7.2.0

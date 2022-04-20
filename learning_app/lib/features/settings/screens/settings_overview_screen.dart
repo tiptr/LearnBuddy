@@ -7,6 +7,7 @@ import 'package:learning_app/features/settings/screens/dashboard_settings_screen
 import 'package:learning_app/features/settings/screens/display_style_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/personal_settings_screen.dart';
 import 'package:learning_app/features/settings/screens/pomodoro_settings_screen.dart';
+import 'package:learning_app/features/settings/screens/storage_settings_screen.dart';
 import 'package:learning_app/features/themes/bloc/bloc.dart';
 import 'package:learning_app/shared/open_confirm_dialog.dart';
 import 'package:learning_app/shared/shared_preferences_data.dart';
@@ -78,6 +79,12 @@ class SettingsOverviewScreen extends StatelessWidget {
               subtitle: "Körpermethode: Standardansicht, ...",
               iconData: Icons.library_books_outlined,
               nextScreen: const NotImplementedScreen()),
+          _settingsGroup(
+              context: context,
+              title: "Speicher und Daten",
+              subtitle: "Speicherort, Export & Import...",
+              iconData: Icons.sd_storage_outlined,
+              nextScreen: const StorageSettingsScreen()),
           _settingsGroup(
               context: context,
               title: "Über die App",

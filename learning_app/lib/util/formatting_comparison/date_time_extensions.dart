@@ -10,6 +10,17 @@ extension DateTimeFormatting on DateTime? {
     }
   }
 
+  /// Provides a format that results in an alphabetic sorting equivalent
+  /// to a sorting by date and time
+  String formatAlphabeticSorting({String? ifNull}) {
+    if (this == null) {
+      return ifNull ?? 'no_timestamp';
+    } else {
+      final dateTime = this as DateTime;
+      return DateFormat('yyyy_MM_dd-kk_mm_ss').format(dateTime);
+    }
+  }
+
   /// Provides a short string representation of a Date
   ///
   /// Without the year, if equal to the current.

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_app/constants/leisure_default_image_paths.dart';
-import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/constants/theme_font_constants.dart';
+import 'package:learning_app/constants/theme_color_constants.dart';
 import 'package:learning_app/features/leisure/bloc/leisure_cubit.dart';
 import 'package:learning_app/features/leisure/dtos/read_leisure_activities_dto.dart';
 import 'package:learning_app/features/leisure/widgets/leisure_app_bar.dart';

@@ -1,8 +1,12 @@
+import 'package:learning_app/constants/storage_constants.dart';
 import 'package:learning_app/features/themes/themes.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesData {
   static late SharedPreferences _prefs;
+  static late String _defaultStorageLocation;
 
   static const _namePrefKey = "personal.name";
   static const _agePrefKey = "personal.age";
@@ -16,6 +20,9 @@ class SharedPreferencesData {
 
   static Future init() async {
     _prefs = await SharedPreferences.getInstance();
+    _defaultStorageLocation = join(
+        (await getApplicationDocumentsDirectory()).path,
+        defaultDirectorySubFolderName);
     return _prefs;
   }
 
@@ -27,6 +34,10 @@ class SharedPreferencesData {
   static int? get userAge {
     int? age = _prefs.getInt(_agePrefKey);
     return age == null || age == -1 ? null : age;
+  }
+
+  static String get storageLocation {
+    return _defaultStorageLocation;
   }
 
   static ThemeName? get themeName {

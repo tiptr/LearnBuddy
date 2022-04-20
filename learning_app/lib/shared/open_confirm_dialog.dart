@@ -8,6 +8,8 @@ Future<bool> openConfirmDialog({
   required BuildContext context,
   required String title,
   required Widget content,
+  String? confirmButtonText,
+  String? cancelButtonText,
 }) async {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
@@ -32,7 +34,7 @@ Future<bool> openConfirmDialog({
               Row(
                 children: [
                   MaterialButton(
-                    child: Text("Abbrechen",
+                    child: Text(cancelButtonText ?? "Abbrechen",
                         style: Theme.of(context)
                             .textTheme
                             .textStyle2
@@ -42,7 +44,7 @@ Future<bool> openConfirmDialog({
                     },
                   ),
                   MaterialButton(
-                    child: Text("Bestätigen",
+                    child: Text(confirmButtonText ?? "Bestätigen",
                         style:
                             Theme.of(context).textTheme.textStyle2.withPrimary),
                     onPressed: () {

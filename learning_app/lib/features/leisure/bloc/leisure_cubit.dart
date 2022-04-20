@@ -67,12 +67,13 @@ class LeisureCubit extends Cubit<LeisureState> {
         .map((e) => e.activities)
         .reduce((value, element) => [...value, ...element]);
 
-    var todayNumber = DateTime.now().day;
+    final now = DateTime.now();
+    var todayNumber = now.day + 30 * now.month + 365 * now.year;
 
     // Calculate a pseudo random activity index,
     // but always the same for the same day.
     var pseudoRandomActivity =
-        allActivities[allActivities.length - 1 % todayNumber];
+        allActivities[todayNumber % allActivities.length];
 
     return ReadLeisureActivitiesDto.fromLeisureActivity(
       pseudoRandomActivity,

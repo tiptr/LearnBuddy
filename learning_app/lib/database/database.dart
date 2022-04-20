@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learning_app/database/initializations/initialization_003_leisure_categories.dart';
@@ -20,11 +19,11 @@ import 'package:learning_app/features/task_queue/persistence/task_queue_elements
 import 'package:learning_app/features/tasks/persistence/task_keywords_dao.dart';
 import 'package:learning_app/features/tasks/persistence/task_learn_lists_dao.dart';
 import 'package:learning_app/features/time_logs/persistence/time_logs_dao.dart';
+import 'package:learning_app/util/storage_services.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:learning_app/constants/database_constants.dart';
+import 'package:learning_app/constants/storage_constants.dart';
 
 // DAOs used to structure the database queries access
 import 'package:learning_app/features/tasks/persistence/tasks_dao.dart';
@@ -55,14 +54,15 @@ import 'migrations/v02_to_v03_migration.dart';
 part 'database.g.dart';
 
 // Toggle to activate / deactivate the demo-data generation at startup
-const insertDemoDataAtFirstStartup = true;
+const insertDemoDataAtFirstStartup = false;
 
 LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
-    final dbFolder = await getApplicationDocumentsDirectory();
+    final Directory dbFolder = appStorageDirectory;
+
     final file = File(p.join(dbFolder.path, databaseName));
     return NativeDatabase(file);
   });
